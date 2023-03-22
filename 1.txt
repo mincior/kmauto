@@ -1,0 +1,10 @@
+6	208	3
+7	508	3
+8	308	3
+9	Boxer	3
+10	301	3
+11	Octavia	4
+12	Scala	4
+13	Superb	4
+14	Fabia	4
+15	Kodiaq	4

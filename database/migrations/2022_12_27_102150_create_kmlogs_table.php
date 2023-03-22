@@ -1,0 +1,48 @@
+<?php
+
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+//Begin craft placeholder #1
+class CreateKmlogsTable extends Migration
+//End craft placeholder #1
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        //Begin craft placeholder #2
+		Schema::create('kmlogs', function (Blueprint $table) {
+			$table->id();
+			$table->integer('km')->nullable();
+			$table->string('picture');
+			$table->string('status');
+			$table->string('observations');
+			$table->datetime('data');
+			$table->bigInteger('user_id')->unsigned()->index()->nullable();
+			$table->foreign('user_id')->references('id')->on('users');
+			$table->bigInteger('car_id')->unsigned()->index()->nullable();
+			$table->foreign('car_id')->references('id')->on('cars');		
+		//End craft placeholder #2
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+    //Begin craft placeholder #3
+	Schema::dropIfExists('kmlogs');
+	//End craft placeholder #3
+    }
+}
+
+// EOF
