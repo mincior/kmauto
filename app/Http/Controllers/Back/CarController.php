@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CarStoreRequest;
 use App\Http\Requests\CarUpdateRequest;
+use Illuminate\Support\Facades\Response;
 use Yajra\DataTables\Facades\DataTables;
 
 class CarController extends Controller
@@ -57,13 +58,14 @@ class CarController extends Controller
 
     public function getDepartmentCars($department_id)
     {
-        $departments = Department::with('cars')->where('id', '=', $department_id)->get()[0]['cars'];
-        //dd($departments);
+        $departments = Response::json(Department::select('id', 'name')->orderBy('name'));
+        // $departments = Department::with('cars')->where('id', '=', $department_id)->get()[0]['cars'];
         return $departments;
     }
 
     public function getDepartmentUsers($department_id)
     {
+
         $departments = Department::with('users')->where('id', '=', $department_id)->get()[0]['users'];
         return $departments;
     }

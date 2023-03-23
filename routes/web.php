@@ -49,8 +49,8 @@ Route::middleware('auth')->group(function () {
         /* ---------------------------------------- */
         // Cars
         Route::controller(CarController::class)->group(function () {
-            Route::get('/cars/get-department-cars/{department_id}',[CarController::class,'getDepartmentCars'])->name('get-department-cars');
             Route::get('/cars/get-department-users/{department_id}',[CarController::class,'getDepartmentUsers'])->name('get-department-users');
+            Route::get('/cars/get-department-cars/{department_id}',[CarController::class,'getDepartmentCars'])->name('get-department-cars');
             Route::delete('/cars/massDestroy', 'massDestroy')->name('cars.massDestroy');
             Route::resource('/cars', CarController::class)->except(['destroy']);
         });

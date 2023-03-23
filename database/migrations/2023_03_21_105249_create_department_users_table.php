@@ -17,7 +17,7 @@ class CreateDepartmentUsersTable extends Migration
             $table->bigIncrements('id');
             //Begin craft placeholder #1
             $table->string('observatii', 200);
-			$table->date('data');
+			$table->date('data')->nullable();
 			$table->bigInteger('department_id')->unsigned()->index()->nullable();
 			$table->foreign('department_id')->references('id')->on('departments');
 			$table->bigInteger('user_id')->unsigned()->index()->nullable();
