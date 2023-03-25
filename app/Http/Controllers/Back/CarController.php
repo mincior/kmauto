@@ -20,7 +20,6 @@ class CarController extends Controller
 {
     public function index(Request $request)
     {   
-        //merge debug si acasa si la serv
         if ($request->ajax()) {          
             // $cars = Car::with('brand','departments','type', 'user')->get();
             //     dd($cars[0]);
