@@ -18,6 +18,8 @@ use Yajra\DataTables\Facades\DataTables;
 
 class CarController extends Controller
 {
+
+    //o mica modificare de test
     public function index(Request $request)
     {   
         if ($request->ajax()) {          
