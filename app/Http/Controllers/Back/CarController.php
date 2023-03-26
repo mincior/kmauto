@@ -64,12 +64,6 @@ class CarController extends Controller
         return $departments;
     }
 
-    public function getDepartmentUsers($department_id)
-    {
-
-        $departments = Department::with('users')->where('id', '=', $department_id)->get()[0]['users'];
-        return $departments;
-    }
 
     public function getBrandTypes($brand_id)
     {

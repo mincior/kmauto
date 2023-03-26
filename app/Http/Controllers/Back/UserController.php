@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\Back;
 
+use App\Models\User;
+use App\Models\Department;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\UserStoreRequest;
 use App\Http\Requests\UserUpdateRequest;
-use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Password;
-use Symfony\Component\HttpFoundation\Response;
 use Yajra\DataTables\Facades\DataTables;
+use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
 {
@@ -34,6 +35,13 @@ class UserController extends Controller
         abort_if(Gate::denies('developer'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         return view('back.users.create');
+    }
+    
+    public function getDepartmentUsers($department_id)
+    {
+
+        $departments = Department::with('users')->where('id', '=', $department_id)->get()[0]['users'];
+        return $departments;
     }
 
     public function store(UserStoreRequest $request)

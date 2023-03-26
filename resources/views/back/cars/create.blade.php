@@ -13,7 +13,7 @@
             <div class="card mb-3">
                 <div class="card-header">
                     <div class="row">
-                        <div class="col">Masini1 - adaugare</div>
+                        <div class="col">Masini - adaugare</div>
 
                         <div class="col fs-5 text-end">
                             <img src="{{ asset('img/icons/person.png') }}" />
@@ -39,7 +39,7 @@
                         <label for="department_id" class="col-md-2 col-form-label">Filiala :</label>
 
                         <div class="col-md-4">
-                            <select name="department_id" id="department-select" data-deptid="1" data-carid="1"  class="form-select">
+                            <select name="department_id" id="department_select" data-deptid="1" data-userid="1"  class="form-select">
                                 <option value="">Alege ...</option>
                                 @foreach ($departments as $department)
                                     <option value="{{ $department['id'] }}">{{ $department['name'] }}</option>
@@ -55,12 +55,12 @@
                         <label for="user_id" class="col-md-2 col-form-label">Utilizatorul :</label>
 
                         <div class="col-md-4">
-                            <select name="user_id" id="users-select" class="form-select my-select2">
-                                <option value="0">Alege ...</option>
-                                @foreach ($users as $user)
+                            <select name="user_id" id="user_select" class="form-select my-select2">
+                                <option value="0">Choose ...</option>
+                                {{-- @foreach ($users as $user)
 
                                 <option value="{{ $user['id'] }}">{{ $user['name'] }}</option>
-                                @endforeach
+                                @endforeach --}}
                             </select>
                             @error('user_id')
                             <span class="invalid-feedback" role="alert">{{ $message }}</span>
@@ -176,6 +176,7 @@
 @endsection
 
 @section('scripts')
+<script src="{{ asset('js/me/get_department_users.js') }}"></script>
 <script src="{{ asset('js/me/get_brand_types.js') }}"></script>
 <script>
     jQuery(document).ready(function($) {
