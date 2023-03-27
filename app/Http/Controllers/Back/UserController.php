@@ -39,9 +39,8 @@ class UserController extends Controller
     
     public function getDepartmentUsers($department_id)
     {
-
-        $departments = Department::with('users')->where('id', '=', $department_id)->get()[0]['users'];
-        return $departments;
+        $users = Department::with('users')->where('id', '=', $department_id)->get()[0]['users'];
+        return $users;
     }
 
     public function store(UserStoreRequest $request)

@@ -180,6 +180,7 @@
 <script src="{{ asset('js/me/get_brand_types.js') }}"></script>
 <script>
     jQuery(document).ready(function($) {
+        $('#numar').focus();
         $('.my-select2').select2();
     });
 </script>

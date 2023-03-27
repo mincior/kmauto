@@ -53,15 +53,15 @@ class CarController extends Controller
     {
         $departments = Department::select('id', 'name')->orderBy('name')->get();
         $brands = Brand::select('id', 'name')->orderBy('name')->get();
-        $users = User::select('id', 'name')->orderBy('name')->get();
-        return view('back.cars.create', compact('departments', 'brands', 'users'));
+        //$users = User::select('id', 'name')->orderBy('name')->get();
+        return view('back.cars.create', compact('departments', 'brands'));
     }
 
     public function getDepartmentCars($department_id)
     {
-        $departments = Response::json(Department::select('id', 'name')->orderBy('name'));
+        $cars = Response::json(Department::select('id', 'name')->orderBy('name'));
         // $departments = Department::with('cars')->where('id', '=', $department_id)->get()[0]['cars'];
-        return $departments;
+        return $cars;
     }
 
 
