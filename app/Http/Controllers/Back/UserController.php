@@ -37,11 +37,6 @@ class UserController extends Controller
         return view('back.users.create');
     }
     
-    public function getDepartmentUsers($department_id)
-    {
-        $users = Department::with('users')->where('id', '=', $department_id)->get()[0]['users'];
-        return $users;
-    }
 
     public function store(UserStoreRequest $request)
     {

@@ -14,7 +14,7 @@ $("#department_select").change(function () {
 
 //incarca utilizatorii filialei
 function get_department_users( department_id, user_id) {
-	let url = window.location.origin + '/back/users/get-department-users' + '/' + department_id
+	let url = window.location.origin + '/back/cars/get-department-users' + '/' + department_id
 	//ajax http request
 	axios.get(url)
 		.then(function (res) {

@@ -24,7 +24,7 @@ class CarController extends Controller
         if ($request->ajax()) {          
             // $cars = Car::with('brand','departments','type', 'user')->get();
             //     dd($cars[0]);
-            $cars = Car::with('brand','departments','type', 'user')->select(sprintf('%s.*', (new Car)->getTable()));
+            $cars = Car::with('brand','departments','type', 'users_department')->select(sprintf('%s.*', (new Car)->getTable()));
             return DataTables::of($cars)
                 ->addColumn('DT_RowId', function ($row) {
                     return $row->id;
@@ -55,6 +55,16 @@ class CarController extends Controller
         $brands = Brand::select('id', 'name')->orderBy('name')->get();
         //$users = User::select('id', 'name')->orderBy('name')->get();
         return view('back.cars.create', compact('departments', 'brands'));
+    }
+
+
+    public function getDepartmentUsers($department_id)
+    {
+        $users = Car::with('department_users')->get()[11]['numar'];//['department_users'][0]['telefon'];
+        //$users = Car::with('department_users')->where('id', '=', $department_id)->get()[0]['users'];
+        dd($users);
+        //$users = Department::with('users')->where('id', '=', $department_id)->get()[0]['users'];
+        return $users;
     }
 
     public function getDepartmentCars($department_id)
