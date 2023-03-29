@@ -1,9 +1,8 @@
 <nav class="navbar navbar-dark bg-secondary fixed-top d-print-none">
     <div class=" container-fluid">
         {{-- left --}}
-        {{-- center --}}
-        <div>
-            <button class="btn btn-lg btn-outline-dark me-1" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" tabindex="-1" title="Menu">
+            <div>
+                <button class="btn btn-lg btn-outline-dark me-1" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" tabindex="-1" title="Menu">
                 <i class="bi bi-list"></i>
             </button>
             <a class="btn btn-lg btn-success text-white me-1" href="/" title="Home" role="button" tabindex="-1">
@@ -21,10 +20,13 @@
                 </a>
             </div> --}}
         </div>
+        {{-- center --}}
+        <div>
+            @include('back.components.year')
+        </div>
 
         {{-- right --}}
         <div>
-            {{-- @include('back.components.year') --}}
 
 
             <div class="btn-group me-1" role="group">

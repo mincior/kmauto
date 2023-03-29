@@ -19,7 +19,8 @@ trait CarRelationships
 		return $this->belongsToMany('App\\Models\\Department', 'car_departments')->withPivot('department_id', 'car_id');
 	}
 	public function department_users(){
-		//trece prin doua tabele pivot (car_departments si department_users) si unul intermediar (departments) pentru a ajunge la user
+		//Foloseste Staudenmeir - hasManyDeep. Trece prin doua tabele pivot (car_departments si department_users) si
+		// unul intermediar (departments) pentru a ajunge la user
 		return $this->hasManyDeep('App\\Models\\User', ['car_departments', 'App\\Models\\Department', 'department_users'])->withIntermediate('App\\Models\\Department');
 	}
 	public function brand(){

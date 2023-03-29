@@ -9,8 +9,8 @@ use App\Models\Brand;
 use App\Models\Country;
 use App\Models\Department;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use App\Http\Requests\CarStoreRequest;
 use App\Http\Requests\CarUpdateRequest;
 use Illuminate\Support\Facades\Response;
@@ -60,7 +60,7 @@ class CarController extends Controller
 
     public function getDepartmentUsers($department_id)
     {
-        $users = Car::with('department_users')->get()[11]['numar'];//['department_users'][0]['telefon'];
+        $users = Car::with('department_users')->get()[1]['numar'];//['department_users'][0]['telefon'];
         //$users = Car::with('department_users')->where('id', '=', $department_id)->get()[0]['users'];
         dd($users);
         //$users = Department::with('users')->where('id', '=', $department_id)->get()[0]['users'];

@@ -1,0 +1,3 @@
+- Pe un interval
+	- o masina nu poate avea decat un singur utilizator care apartine aceleiasi filiale;
+	- un utilizator poate introduce la mai multe masini care apartin aceleeasi filiale;
