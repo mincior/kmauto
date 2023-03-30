@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Back;
 
+use App\Models\Month;
 use App\Models\Interval;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -33,13 +34,20 @@ class GeneralController extends Controller
         return response()->json($notification);
     }
 
-    public function setValueSession(Request $request)
+    public function setValueMonthSelect(Request $request)
     {
-        $request->session()->put($request->key, $request->value);
+        $months = Month::select('select')->update(array('select' => 0));
+        $months= Month::where('id', $request->value)->update(array('select' => 1));
         return response()->noContent();
     }
 
-    public function getMonthIntervals($month_id)
+     public function setValueIntervalSelect(Request $request)
+    {
+        $months = Interval::select('select')->update(array('select' => 0));
+        $months= Interval::where('id', $request->value)->update(array('select' => 1));
+        return response()->noContent();
+    }
+   public function getMonthIntervals($month_id)
     {
         $intervale = Interval::Select('id', 'interval')->where('month_id', '=', $month_id)->get()->toArray();
         return $intervale;

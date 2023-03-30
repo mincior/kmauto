@@ -1,7 +1,8 @@
 <?php
-$luni = \App\Models\Month::Select('id', 'anul_luna', 'data_raportarii')->distinct('anul_luna')->orderBy('data_raportarii','DESC')->get();
-// $intervale = \App\Models\Interval::where('data_raportarii', $luni[0]['data_raportarii'])->get();
-//dd((string)$luni[0]['id'], Session::get('APP.MONTH'));
+$months = \App\Models\Month::Select('id', 'anul_luna', 'data_raportarii')->orderBy('data_raportarii','DESC')->take(5)->get();
+$selectedMonth_id = \App\Models\Month::Select('id')->where('select', 1)->get()[0]['id'];
+// $intervale = \App\Models\Interval::where('data_raportarii', $months[0]['data_raportarii'])->get();
+//dd((string)$months[0]['id'], Session::get('APP.MONTH'));
 ?>
 <nav class="navbar navbar-dark bg-secondary fixed-top d-print-none">
     <div class=" container-fluid">
@@ -27,10 +28,10 @@ $luni = \App\Models\Month::Select('id', 'anul_luna', 'data_raportarii')->distinc
         </div>
         {{-- center --}}
         <div class="me-1">
-            <select id="month_select" class="form-select"  data-monthid="1" style="width: 110%">
-                @foreach($luni as $luna);
-                    <option {{((string)$luna['id'] == Session::get('APP.MONTH')) ? "selected": ""}} value="{{ $luna['id'] }}" >
-                        {{ $luna['anul_luna'] }}
+            <select id="month_select" class="form-select"  style="width: 110%">
+                @foreach($months as $month);
+                    <option {{((string)$month['id'] == $selectedMonth_id) ? "selected": ""}} value="{{ $month['id'] }}" >
+                        {{ $month['anul_luna'] }}
                     </option>'
                 @endforeach
             </select>

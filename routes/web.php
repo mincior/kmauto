@@ -26,7 +26,8 @@ Route::middleware('auth')->group(function () {
         Route::controller(GeneralController::class)->group(function () {
             Route::get('/general/get-month-intervals/{anul_luna}', 'getMonthIntervals')->name('get-month-intervals');
             Route::post('/general/setValueDB', 'setValueDB')->name('general.setValueDB');
-            Route::post('/general/setValueSession', 'setValueSession')->name('general.setValueSession');
+            Route::post('/general/setValueMonthSelect', 'setValueMonthSelect')->name('general.setValueMonthSelect');
+            Route::post('/general/setValueIntervalSelect', 'setValueIntervalSelect')->name('general.setValueIntervalSelect');
             Route::get('/general/getDatatablesHelp', 'getDatatablesHelp')->name('general.getDatatablesHelp');
         });
         /* ---------------------------------------- */
