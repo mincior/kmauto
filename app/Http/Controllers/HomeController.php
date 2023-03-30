@@ -25,7 +25,7 @@ class HomeController extends Controller
     {
         if (Auth::check()) {
             if (!session('APP')) {
-                session(['APP.YEAR' => date('Y')]);
+                session(['APP.MONTH' => date('Y')]);
             }
 
             if (session('status')) {

@@ -1,3 +1,8 @@
+<?php
+$luni = \App\Models\Month::Select('id', 'anul_luna', 'data_raportarii')->distinct('anul_luna')->orderBy('data_raportarii','DESC')->get();
+// $intervale = \App\Models\Interval::where('data_raportarii', $luni[0]['data_raportarii'])->get();
+//dd((string)$luni[0]['id'], Session::get('APP.MONTH'));
+?>
 <nav class="navbar navbar-dark bg-secondary fixed-top d-print-none">
     <div class=" container-fluid">
         {{-- left --}}
@@ -21,8 +26,19 @@
             </div> --}}
         </div>
         {{-- center --}}
-        <div>
-            @include('back.components.year')
+        <div class="me-1">
+            <select id="month_select" class="form-select"  data-monthid="1" style="width: 110%">
+                @foreach($luni as $luna);
+                    <option {{((string)$luna['id'] == Session::get('APP.MONTH')) ? "selected": ""}} value="{{ $luna['id'] }}" >
+                        {{ $luna['anul_luna'] }}
+                    </option>'
+                @endforeach
+            </select>
+        </div>
+        <div class="me-2">
+            <select id="interval_select" class="form-select"  style="width: 140%" >
+
+            </select>
         </div>
 
         {{-- right --}}
@@ -43,8 +59,7 @@
                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                 <i class="bi bi-box-arrow-right"></i>
             </a>
-            <span class="text-white">{{ Auth::user()->name }}</span>
-        </div>
+                    </div>
 
         {{-- Offcanvas Menu --}}
         @include('back.components.offcanvas')
@@ -55,3 +70,9 @@
         </form>
     </div>
 </nav>
+@section('scripts')
+
+@parent
+<script src="{{ asset('js/me/get_month_intervals.js') }}"></script>
+
+@endsection

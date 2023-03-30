@@ -24,6 +24,7 @@ Route::middleware('auth')->group(function () {
     Route::prefix('back')->as('back.')->group(function () {
         // General routines
         Route::controller(GeneralController::class)->group(function () {
+            Route::get('/general/get-month-intervals/{anul_luna}', 'getMonthIntervals')->name('get-month-intervals');
             Route::post('/general/setValueDB', 'setValueDB')->name('general.setValueDB');
             Route::post('/general/setValueSession', 'setValueSession')->name('general.setValueSession');
             Route::get('/general/getDatatablesHelp', 'getDatatablesHelp')->name('general.getDatatablesHelp');
@@ -49,15 +50,15 @@ Route::middleware('auth')->group(function () {
         /* ---------------------------------------- */
         // Cars
         Route::controller(CarController::class)->group(function () {
-            Route::get('/cars/get-department-users/{department_id}',[CarController::class,'getDepartmentUsers'])->name('get-department-users');
-            Route::get('/cars/get-department-cars/{department_id}',[CarController::class,'getDepartmentCars'])->name('get-department-cars');
+            Route::get('/cars/get-department-users/{department_id}','getDepartmentUsers')->name('get-department-users');
+            Route::get('/cars/get-department-cars/{department_id}','getDepartmentCars')->name('get-department-cars');
             Route::delete('/cars/massDestroy', 'massDestroy')->name('cars.massDestroy');
             Route::resource('/cars', CarController::class)->except(['destroy']);
         });
         /* ---------------------------------------- */
         // Cars
         Route::controller(BrandController::class)->group(function () {
-            Route::get('/brands/get-brand-types/{brand_id}',[BrandController::class,'getBrandTypes'])->name('get-brand-types');
+            Route::get('/brands/get-brand-types/{brand_id}','getBrandTypes')->name('get-brand-types');
             Route::delete('/brands/massDestroy', 'massDestroy')->name('brands.massDestroy');
             Route::resource('/brands', BrandController::class)->except(['destroy']);
         });

@@ -1,7 +1,7 @@
 <div class="card mb-3">
     <div class="card-header">
         <div class="row">
-            <div class="col">Status <strong>{{ Session::get('APP.YEAR') }}</strong></div>
+            <div class="col">Status <strong>{{ Session::get('APP.MONTH') }}</strong></div>
 
             <div class="col fs-5 text-end">
                 <img src="{{ asset('img/icons/statistics.png') }}" />

@@ -20,6 +20,8 @@ class DatabaseSeeder extends Seeder
         $this->call(CarsTableSeeder::class);
         $this->call(CarDepartmentTableSeeder::class);
         $this->call(DepartmentUserTableSeeder::class);
+        $this->call(MonthTableSeeder::class);
+        $this->call(IntervalTableSeeder::class);
        
     }
 }

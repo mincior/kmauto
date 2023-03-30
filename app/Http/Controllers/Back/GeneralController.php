@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Back;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Database\QueryException;
+use App\Models\Interval;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Session;
 
 class GeneralController extends Controller
 {
@@ -34,8 +36,13 @@ class GeneralController extends Controller
     public function setValueSession(Request $request)
     {
         $request->session()->put($request->key, $request->value);
-
         return response()->noContent();
+    }
+
+    public function getMonthIntervals($month_id)
+    {
+        $intervale = Interval::Select('id', 'interval')->where('month_id', '=', $month_id)->get()->toArray();
+        return $intervale;
     }
 
     public function getDatatablesHelp()
