@@ -42,7 +42,7 @@ class UserStoreRequest extends FormRequest
                 'min:8',
                 'max:255',
             ],
-            'is_developer' => [
+            'is_admin' => [
                 'required',
                 'string',
                 'min:1',

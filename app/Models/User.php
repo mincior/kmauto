@@ -23,7 +23,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'is_developer',
+        'is_admin',
     ];
 
     /**
@@ -61,7 +61,7 @@ class User extends Authenticatable
     /* -------------------------------------------------------------------------------------------- */
     public function getIsDeveloperAttribute()
     {
-        return $this->attributes['is_developer'] == 1;
+        return $this->attributes['is_admin'] == 1;
     }
 
     /* -------------------------------------------------------------------------------------------- */

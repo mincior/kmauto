@@ -21,7 +21,7 @@ return new class extends Migration
 			$table->integer('limita_km')->default(20)->nullable();
 			$table->string('observatii', 250)->nullable();
 			$table->boolean('activ', 1)->default('1')->nullable();		
-            $table->boolean('is_developer', 1)->default(0);
+            $table->boolean('is_admin', 1)->default(0);
 			$table->string('calificativ', 250)->nullable();
             $table->rememberToken();
             $table->timestamps();

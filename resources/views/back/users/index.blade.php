@@ -176,8 +176,8 @@
                         }
                     },
                     {
-                        data: 'is_developer',
-                        name: 'is_developer',
+                        data: 'is_admin',
+                        name: 'is_admin',
                         searchable: false,
                         className: "text-center no-select toggleIsDeveloper",
                         render: function(data, type, row, meta) {
@@ -234,7 +234,7 @@
             $('#sqltable tbody').on('click', 'td.toggleIsDeveloper', function() {
                 const table = 'users';
                 const id = oTable.row($(this).closest("tr")).data().DT_RowId;
-                const key = 'is_developer';
+                const key = 'is_admin';
                 var value = oTable.cell(this).data();
 
                 if (id == 1) {

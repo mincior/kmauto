@@ -77,12 +77,12 @@
                         <hr class="narrow" />
 
                         <div class="row mb-3">
-                            <label for="is_developer" class="col-md-4 col-form-label">Developer ?</label>
+                            <label for="is_admin" class="col-md-4 col-form-label">Developer ?</label>
 
                             <div class="col-md-2">
-                                <select class="form-select" name="is_developer" id="is_developer">
-                                    <option value="0" @if ($user->is_developer == 0) selected @endif>No</option>
-                                    <option value="1" @if ($user->is_developer == 1) selected @endif>Yes</option>
+                                <select class="form-select" name="is_admin" id="is_admin">
+                                    <option value="0" @if ($user->is_admin == 0) selected @endif>No</option>
+                                    <option value="1" @if ($user->is_admin == 1) selected @endif>Yes</option>
                                 </select>
                             </div>
                         </div>
