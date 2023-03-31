@@ -9,7 +9,7 @@
     </div>
 
     <div class="card-body p-0">
-        <img src="{{ asset('img/administration.jpg') }}" alt="administration" class="d-block w-100" />
+        <img src="{{ asset('img/consolight.png') }}" alt="consolight" class="d-block w-100" />
     </div>
 
     <div class="card-footer">

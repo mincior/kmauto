@@ -21,37 +21,37 @@
 
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img src="{{ asset('img/carousel/001.jpg') }}" class="d-block w-100" alt="001">
+                    <img src="{{ asset('img/carousel/001.png') }}" class="d-block w-100" alt="001">
                     <div class="carousel-caption d-none d-md-block">
                         <h5>Frontend and backend development</h5>
                     </div>
                 </div>
                 <div class="carousel-item">
-                    <img src="{{ asset('img/carousel/002.jpg') }}" class="d-block w-100" alt="002">
+                    <img src="{{ asset('img/carousel/002.png') }}" class="d-block w-100" alt="002">
                     <div class="carousel-caption d-none d-md-block">
                         <h5>SEO</h5>
                     </div>
                 </div>
                 <div class="carousel-item">
-                    <img src="{{ asset('img/carousel/003.jpg') }}" class="d-block w-100" alt="003">
+                    <img src="{{ asset('img/carousel/003.png') }}" class="d-block w-100" alt="003">
                     <div class="carousel-caption d-none d-md-block">
                         <h5>Planning & advice</h5>
                     </div>
                 </div>
                 <div class="carousel-item">
-                    <img src="{{ asset('img/carousel/004.jpg') }}" class="d-block w-100" alt="006">
+                    <img src="{{ asset('img/carousel/004.png') }}" class="d-block w-100" alt="006">
                     <div class="carousel-caption d-none d-md-block">
                         <h5>Laravel 9</h5>
                     </div>
                 </div>
                 <div class="carousel-item">
-                    <img src="{{ asset('img/carousel/005.jpg') }}" class="d-block w-100" alt="006">
+                    <img src="{{ asset('img/carousel/005.png') }}" class="d-block w-100" alt="006">
                     <div class="carousel-caption d-none d-md-block">
                         <h5>Bootstrap 5</h5>
                     </div>
                 </div>
                 <div class="carousel-item">
-                    <img src="{{ asset('img/carousel/006.jpg') }}" class="d-block w-100" alt="006">
+                    <img src="{{ asset('img/carousel/006.png') }}" class="d-block w-100" alt="006">
                     <div class="carousel-caption d-none d-md-block">
                         <h5>Datatables</h5>
                     </div>
