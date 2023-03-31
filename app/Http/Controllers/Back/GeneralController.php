@@ -36,19 +36,27 @@ class GeneralController extends Controller
 
     public function setValueMonthSelect(Request $request)
     {
+        //sterge selectul pentru toate lunile
         $query = Month::select('select')->update(array('select' => 0));
+
+        //si seteaza selectul doar pentru luna month_id
         $query= Month::where('id', $request->month_id)->update(array('select' => 1));
         return response()->noContent();
     }
 
      public function setValueIntervalSelect(Request $request)
     {
+        //sterge selectul pentru toate intervalele lunii selectate
         $query = Interval::select('select', 'month_id')->where('month_id', $request->month_id)->update(array('select' => 0));
+
+        //si seteaza selectul doar pentru intervalul selectat al lunii selectate
         $query= Interval::where('month_id', $request->month_id)->where('id', $request->interval_id)->update(array('select' => 1));
+        
         return response()->noContent();
     }
    public function getMonthIntervals($month_id)
     {
+        //returneaza toate intervalele lunii selectate
         $intervale = Interval::Select('id', 'interval', 'select')->where('month_id', '=', $month_id)->get()->toArray();
         return $intervale;
     }

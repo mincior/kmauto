@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 //Begin craft placeholder #1
-class CreateMonthsTable extends Migration
+class CreateSettingsTable extends Migration
 //End craft placeholder #1
 {
     /**
@@ -16,12 +16,10 @@ class CreateMonthsTable extends Migration
     public function up()
     {
         //Begin craft placeholder #2
-		Schema::create('months', function (Blueprint $table) {
+		Schema::create('settings', function (Blueprint $table) {
 			$table->id();
-			$table->date('data_raportarii');
-			$table->string('anul_luna');		
-			$table->boolean('select')->default(0);
-			$table->boolean('inchisa')->default(0);		
+			$table->string('nume');
+			$table->string('valoare');		
 		//End craft placeholder #2
             $table->timestamps();
             $table->timestamp('deleted_at')->nullable();
@@ -36,7 +34,7 @@ class CreateMonthsTable extends Migration
     public function down()
     {
     //Begin craft placeholder #3
-	Schema::dropIfExists('months');
+	Schema::dropIfExists('settings');
 	//End craft placeholder #3
     }
 }

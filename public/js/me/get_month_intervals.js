@@ -2,9 +2,10 @@
 //In tabelul months exista campul select care va fi pe 1 doar pentru luna selectata
 //astfel ca aici va sosi in $("#month_select").val() id-ul lunii selectate
 //Aduce intervalele selectate si selecteaza pe primul
-
 //incarca intervalele lunii si selecteaza pe primul
 let url = window.location.origin + '/back/general/get-month-intervals' + '/' + $("#month_select").val() //
+let mon =     JSON.stringify($("#month_select").data('months'));
+console.log(mon);
 axios.get(url) //ajax http request
     .then(function (res) {
         //sterge intervalele din select pentru a le aduce pe cele ale lunii selectate
@@ -64,3 +65,4 @@ $("#interval_select").change(function () {
         }
     });
 });
+

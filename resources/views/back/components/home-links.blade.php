@@ -24,7 +24,7 @@
         <hr />
         <b>Optiuni</b> :
         <ul>
-            <li><b>Bara de navigare superioara</b> Pentru a naviga rapid in diversele parti ale aplicatiei</li>
+            <li id="myli"><b>Bara de navigare superioara</b> Pentru a naviga rapid in diversele parti ale aplicatiei</li>
             <li><b>Meniu lateral</b> pentru a accesa optiunile folosite mai rar</li>
             <li><b>Utilizatori</b> accesare de pe telefonul mobil printr-ul link plasat pe ecranul principal :</li>
             <ul>
@@ -115,3 +115,4 @@
         });
     </script>
 @endsection
+

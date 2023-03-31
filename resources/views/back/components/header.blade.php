@@ -1,11 +1,17 @@
 <?php
-$months = \App\Models\Month::Select('id', 'anul_luna', 'data_raportarii')->orderBy('data_raportarii','DESC')->take(5)->get();
-$selectedMonth_id = \App\Models\Month::Select('id')->where('select', 1)->get()[0]['id'];
-$selectedInterval_id = \App\Models\Interval::Select('id')->where('month_id', $selectedMonth_id)->where('select', 1)->get()[0]['id'];
-// $intervale = \App\Models\Interval::where('data_raportarii', $months[0]['data_raportarii'])->get();
+    $current_month = date_create(date("Y-m-d"));
+    $current_day = 4;//intval(date("d"));
+    $current_month = date_create(date("Y-m"));
+    $numarZileLunaAnterioara = intval(\App\Models\Setting::where('nume', 'numarZileLunaAnterioara')->first()->valoare);
+    if($current_day<$numarZileLunaAnterioara){
+        $current_month = date_add($current_month, date_interval_create_from_date_string("-1 months"));
+    }
+    $current_month = date_format($current_month,"Y-m-d");
+    $months = \App\Models\Month::Select()->orderBy('data_raportarii','DESC')->take(5)->get();
+    $mm= json_encode($months);
 ?>
-<nav class="navbar navbar-dark bg-secondary fixed-top d-print-none">
-    <div class=" container-fluid">
+<nav class="navbar navbar-dark bg-secondary fixed-top d-print-none" id="my-nav-bar">
+    <div class=" container-fluid"  id="myli">
         {{-- left --}}
             <div>
                 <button class="btn btn-lg btn-outline-dark me-1" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" tabindex="-1" title="Menu">
@@ -28,9 +34,9 @@ $selectedInterval_id = \App\Models\Interval::Select('id')->where('month_id', $se
         </div>
         {{-- center --}}
         <div class="me-1">
-            <select id="month_select" class="form-select"  style="width: 110%">
+            <select id="month_select" class="form-select"  style="width: 110%" data-months="{{$mm}}">
                 @foreach($months as $month);
-                    <option {{((string)$month['id'] == $selectedMonth_id) ? "selected": ""}} value="{{ $month['id'] }}" >
+                    <option {{((string)$month['select'] == 1) ? "selected": ""}} value="{{ $month['id'] }}" >
                         {{ $month['anul_luna'] }}
                     </option>'
                 @endforeach
@@ -74,6 +80,6 @@ $selectedInterval_id = \App\Models\Interval::Select('id')->where('month_id', $se
 @section('scripts')
 
 @parent
-<script src="{{ asset('js/me/get_month_intervals.js') }}"></script>
+    <script src="{{ asset('js/me/get_month_intervals.js') }}"></script>
 
 @endsection

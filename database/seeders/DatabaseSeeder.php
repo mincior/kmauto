@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
         $this->call(DepartmentUserTableSeeder::class);
         $this->call(MonthTableSeeder::class);
         $this->call(IntervalTableSeeder::class);
+        $this->call(SettingsTableSeeder::class);
        
     }
 }
