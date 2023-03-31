@@ -36,20 +36,20 @@ class GeneralController extends Controller
 
     public function setValueMonthSelect(Request $request)
     {
-        $months = Month::select('select')->update(array('select' => 0));
-        $months= Month::where('id', $request->value)->update(array('select' => 1));
+        $query = Month::select('select')->update(array('select' => 0));
+        $query= Month::where('id', $request->month_id)->update(array('select' => 1));
         return response()->noContent();
     }
 
      public function setValueIntervalSelect(Request $request)
     {
-        $months = Interval::select('select')->update(array('select' => 0));
-        $months= Interval::where('id', $request->value)->update(array('select' => 1));
+        $query = Interval::select('select', 'month_id')->where('month_id', $request->month_id)->update(array('select' => 0));
+        $query= Interval::where('month_id', $request->month_id)->where('id', $request->interval_id)->update(array('select' => 1));
         return response()->noContent();
     }
    public function getMonthIntervals($month_id)
     {
-        $intervale = Interval::Select('id', 'interval')->where('month_id', '=', $month_id)->get()->toArray();
+        $intervale = Interval::Select('id', 'interval', 'select')->where('month_id', '=', $month_id)->get()->toArray();
         return $intervale;
     }
 

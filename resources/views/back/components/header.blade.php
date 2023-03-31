@@ -1,8 +1,8 @@
 <?php
 $months = \App\Models\Month::Select('id', 'anul_luna', 'data_raportarii')->orderBy('data_raportarii','DESC')->take(5)->get();
 $selectedMonth_id = \App\Models\Month::Select('id')->where('select', 1)->get()[0]['id'];
+$selectedInterval_id = \App\Models\Interval::Select('id')->where('month_id', $selectedMonth_id)->where('select', 1)->get()[0]['id'];
 // $intervale = \App\Models\Interval::where('data_raportarii', $months[0]['data_raportarii'])->get();
-//dd((string)$months[0]['id'], Session::get('APP.MONTH'));
 ?>
 <nav class="navbar navbar-dark bg-secondary fixed-top d-print-none">
     <div class=" container-fluid">

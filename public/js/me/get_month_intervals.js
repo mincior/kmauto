@@ -20,9 +20,10 @@ axios.get(url) //ajax http request
         for (var i = 0; i < len; i++) {
             //scoate id-ul intervalului curent
             var id = res.data[i]['id'];
+            var sel = res.data[i]['select'];
             var interval = res.data[i]['interval'];
             //pune 'selected' pentru masina cu id-ul interval_id
-            var sel = ((i == 0) ? 'selected' : '');
+            var sel = ((sel == 1) ? 'selected' : '');
             //adauga masina in caseta (select) cu masini
             $("#interval_select").append("<option " + sel + " value='" + id + "'>" + interval + "</option>");
         }
@@ -31,15 +32,31 @@ axios.get(url) //ajax http request
 	
 //cand se selecteaza luna se salveaza in months campul select dupa care se da refresh la pagina
 $("#month_select").change(function () { //Atentie, la selectare nu se aduc intervalele ci doar se scrie campul select din months
-    let key = 'APP.MONTH';
-    let value = $(this).val();
-    let url = window.location.origin + '/back/general/setValueMonthSelect'
+	let month_id = $(this).val();
+	let url = window.location.origin + '/back/general/setValueMonthSelect'
+	$.ajax({
+		method: 'POST',
+		url: url,
+		data: {
+			month_id: month_id,
+		},
+		success: function (response) {
+			window.location.reload();
+
+		}
+	});
+});
+//cand se selecteaza intervalul se salveaza in intervale campul select dupa care se da refresh la pagina
+$("#interval_select").change(function () { 
+    let month_id = $("#month_select").val();
+    let interval_id = $(this).val();
+    let url = window.location.origin + '/back/general/setValueIntervalSelect'
     $.ajax({
         method: 'POST',
         url: url,
         data: {
-            key: key,
-            value: value,
+            month_id: month_id,
+            interval_id: interval_id,
         },
         success: function (response) {
             window.location.reload();
