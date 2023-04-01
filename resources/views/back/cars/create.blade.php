@@ -176,12 +176,15 @@
 @endsection
 
 @section('scripts')
+
 <script src="{{ asset('js/me/get_department_users.js') }}"></script>
 <script src="{{ asset('js/me/get_brand_types.js') }}"></script>
 <script>
     jQuery(document).ready(function($) {
         $('#numar').focus();
         $('.my-select2').select2();
+        $('#my-nav-bar').addClass('d-none');//ascunde bara de navigare cand sunt pe create car
+        
     });
 </script>
 @endsection

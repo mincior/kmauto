@@ -8,9 +8,12 @@
     }
     $current_month = date_format($current_month,"Y-m-d");
     $months = \App\Models\Month::Select()->orderBy('data_raportarii','DESC')->take(5)->get();
-    $mm= json_encode($months);
+    //$selectedMonthId = \App\Models\Month::where('select', 1)->first()->id;
+    $lunaCurentaEsteInchisa = \App\Models\Month::where('select', 1)->first()->inchisa;
+    $mm= json_encode($months);//test pentru transmitere array catre javascript (JSON.strignify)
+    //dd($current_month, $lunaCurentaEsteInchisa);
 ?>
-<nav class="navbar navbar-dark bg-secondary fixed-top d-print-none" id="my-nav-bar">
+<nav class="navbar navbar-dark {{$lunaCurentaEsteInchisa == 0 ? 'bg-success' : 'bg-danger'}} fixed-top d-print-none" id="my-nav-bar">
     <div class=" container-fluid"  id="myli">
         {{-- left --}}
             <div>

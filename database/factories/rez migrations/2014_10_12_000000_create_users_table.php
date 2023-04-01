@@ -25,7 +25,6 @@ return new class extends Migration
 			$table->string('calificativ', 250)->nullable();
             $table->rememberToken();
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

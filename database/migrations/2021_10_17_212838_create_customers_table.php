@@ -39,7 +39,6 @@ class CreateCustomersTable extends Migration
             $table->boolean('send_newsletter')->default(0);
 
             $table->timestamps();
-            $table->softDeletes();
         });
 
         // composiet indexen
