@@ -25,8 +25,6 @@ class CreateCarsTable extends Migration
 			$table->string('observatii')->nullable();
 			$table->bigInteger('type_id')->unsigned()->index()->nullable();
 			$table->foreign('type_id')->references('id')->on('types');
-			$table->bigInteger('user_id')->unsigned()->index()->nullable();
-			$table->foreign('user_id')->references('id')->on('users');
 			$table->bigInteger('brand_id')->unsigned()->index()->nullable();
 			$table->foreign('brand_id')->references('id')->on('brands');		
 		//End craft placeholder #2

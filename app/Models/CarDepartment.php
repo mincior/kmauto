@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class CarDepartment extends Model
 
 {
-use HasFactory;
+use HasFactory, CarDepartmentRelationships;
     protected $fillable = [
 		'department_id',
 		'car_id'

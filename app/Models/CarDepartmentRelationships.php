@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
-trait KmlogRelationships
+trait CarDepartmentRelationships
 {
-	//Begin Creative craft placeholder #1
+	//Begin craft placeholder #1
 	public function interval(){
 		return $this->belongsTo('App\\Models\\Interval');
 	}
-	//End Creative craft placeholder #1
+
+	//End craft placeholder #1
 }

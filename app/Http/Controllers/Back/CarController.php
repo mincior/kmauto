@@ -24,7 +24,7 @@ class CarController extends Controller
         if ($request->ajax()) {          
             // $cars = Car::with('brand','departments','type', 'user')->get();
             //     dd($cars[0]);
-            $cars = Car::with('brand','departments','type', 'users_department')->select(sprintf('%s.*', (new Car)->getTable()));
+            $cars = Car::with('brand','departments','type', 'department_users')->select(sprintf('%s.*', (new Car)->getTable()));
             return DataTables::of($cars)
                 ->addColumn('DT_RowId', function ($row) {
                     return $row->id;

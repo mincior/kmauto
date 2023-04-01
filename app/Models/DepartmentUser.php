@@ -9,7 +9,7 @@ class DepartmentUser extends Model
 
 
 {
-	use HasFactory;
+	use HasFactory,  DepartmentUserRelationships;
     protected $fillable = [
 		'department_id',
 		'user_id'

@@ -22,7 +22,8 @@ class CreateKmlogsTable extends Migration
 			$table->string('picture');
 			$table->string('status');
 			$table->string('observations');
-			$table->datetime('data');
+			$table->bigInteger('interval_id')->unsigned()->index()->nullable();
+			$table->foreign('interval_id')->references('id')->on('intervals');
 			$table->bigInteger('user_id')->unsigned()->index()->nullable();
 			$table->foreign('user_id')->references('id')->on('users');
 			$table->bigInteger('car_id')->unsigned()->index()->nullable();

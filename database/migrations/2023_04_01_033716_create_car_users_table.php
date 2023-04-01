@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateDepartmentUsersTable extends Migration
+class CreateCarUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,18 +13,15 @@ class CreateDepartmentUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('department_users', function (Blueprint $table) {
+        Schema::create('car_users', function (Blueprint $table) {
             $table->bigIncrements('id');
             //Begin craft placeholder #1
-            $table->string('observatii', 200);
-			$table->date('data')->nullable();
 			$table->bigInteger('interval_id')->unsigned()->index()->nullable();
 			$table->foreign('interval_id')->references('id')->on('intervals');
-			$table->bigInteger('department_id')->unsigned()->index()->nullable();
-			$table->foreign('department_id')->references('id')->on('departments');
 			$table->bigInteger('user_id')->unsigned()->index()->nullable();
 			$table->foreign('user_id')->references('id')->on('users');
-
+			$table->bigInteger('car_id')->unsigned()->index()->nullable();
+			$table->foreign('car_id')->references('id')->on('cars');
 			//End craft placeholder #1
             $table->timestamps();
         });
@@ -37,6 +34,6 @@ class CreateDepartmentUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('department_users');
+        Schema::dropIfExists('car_users');
     }
 }

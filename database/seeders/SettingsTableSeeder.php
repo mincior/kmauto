@@ -29,7 +29,8 @@ class SettingsTableSeeder extends Seeder
             new Sequence(
                 [
                     'nume' => 'numarZileLunaAnterioara',
-                    'valoare' => '10'
+                    'valoare' => '10',
+                    'interval_id' => 1,
                 ],
                 
             )            
