@@ -17,7 +17,7 @@
     <div class=" container-fluid"  id="myli">
         {{-- left --}}
         <div>
-            <button class="btn btn-lg btn-outline-dark me-1" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" tabindex="-1" title="Menu">
+            <button class="btn btn-lg btn-outline-dark me-1  mb-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" tabindex="-1" title="Menu">
                 <i class="bi bi-list"></i>
             </button>
             <a class="btn btn-lg btn-success text-white me-1" href="/" title="Home" role="button" tabindex="-1">
@@ -64,7 +64,7 @@
                 @endforeach
             </select>
         </div>
-        <div class="me-2">
+        <div class="me-2 ">
             <select id="interval_select" class="form-select"  style="width: 100%" >
 
             </select>
