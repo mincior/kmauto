@@ -32,7 +32,7 @@ class MonthTableSeeder extends Seeder
                 ],
 
                 [
-                    'id' => 2, 'data_raportarii' => '2023-01-01', 'anul_luna' => 'decembrie 2022','select' => 0, 'inchisa' => 0,
+                    'id' => 2, 'data_raportarii' => '2023-01-01', 'anul_luna' => 'decembrie 2022','select' => 0, 'inchisa' => 1,
                 ],
 
                 [
@@ -48,7 +48,7 @@ class MonthTableSeeder extends Seeder
                 ],
 
                 [
-                    'id' => 6, 'data_raportarii' => '2023-05-01', 'anul_luna' => 'aprilie 2023','select' => 1,'inchisa' => 1,
+                    'id' => 6, 'data_raportarii' => '2023-05-01', 'anul_luna' => 'aprilie 2023','select' => 1,'inchisa' => 0,
                 ],
 
             )

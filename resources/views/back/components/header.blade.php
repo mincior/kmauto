@@ -65,7 +65,7 @@
             </select>
         </div>
         <div class="me-2">
-            <select id="interval_select" class="form-select"  style="width: 140%" >
+            <select id="interval_select" class="form-select"  style="width: 100%" >
 
             </select>
         </div>

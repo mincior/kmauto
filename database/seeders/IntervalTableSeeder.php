@@ -107,7 +107,7 @@ class IntervalTableSeeder extends Seeder
                 ],
 
                 [
-                    'id' => 21, 'month_id' => 6, 'data_inceput' => '2023-03-31', 'data_sfarsit' => '2023-04-03', 'interval' => '31.03 - 03.04', 'select' => 1, 'inchis' => 1, 
+                    'id' => 21, 'month_id' => 6, 'data_inceput' => '2023-03-31', 'data_sfarsit' => '2023-04-03', 'interval' => '31.03 - 03.04', 'select' => 1, 'inchis' => 0, 
                 ],
 
                 [
@@ -119,11 +119,11 @@ class IntervalTableSeeder extends Seeder
                 ],
 
                 [
-                    'id' => 24, 'month_id' => 6, 'data_inceput' => '2023-04-21', 'data_sfarsit' => '2023-04-24', 'interval' => '21 - 24.04', 'select' => 0, 'inchis' => 0,  
+                    'id' => 24, 'month_id' => 6, 'data_inceput' => '2023-04-21', 'data_sfarsit' => '2023-04-24', 'interval' => '21 - 24.04', 'select' => 0, 'inchis' => 1,  
                 ],
 
                 [
-                    'id' => 25, 'month_id' => 6, 'data_inceput' => '2023-04-28', 'data_sfarsit' => '2023-05-01', 'interval' => '28.04 - 01.05', 'select' => 0, 'inchis' => 0,  
+                    'id' => 25, 'month_id' => 6, 'data_inceput' => '2023-04-28', 'data_sfarsit' => '2023-05-01', 'interval' => '28.04 - 01.05', 'select' => 0, 'inchis' => 1,  
                 ],
 
             )
