@@ -44,10 +44,14 @@ class MonthTableSeeder extends Seeder
                 ],
 
                 [
-                    'id' => 5, 'data_raportarii' => '2023-04-01', 'anul_luna' => 'martie 2023','select' => 1,'inchisa' => 0,
+                    'id' => 5, 'data_raportarii' => '2023-04-01', 'anul_luna' => 'martie 2023','select' => 0,'inchisa' => 1,
+                ],
+
+                [
+                    'id' => 6, 'data_raportarii' => '2023-05-01', 'anul_luna' => 'aprilie 2023','select' => 1,'inchisa' => 0,
                 ],
 
             )
-        )->count(5)->create();
+        )->count(6)->create();
     }
 }
