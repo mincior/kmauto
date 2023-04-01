@@ -4,8 +4,8 @@
 //Aduce intervalele selectate si selecteaza pe primul
 //incarca intervalele lunii si selecteaza pe primul
 let url = window.location.origin + '/back/general/get-month-intervals' + '/' + $("#month_select").val() //
-let mon =     JSON.stringify($("#month_select").data('months'));
-console.log(mon);
+// let mon =     JSON.stringify($("#month_select").data('months'));
+// console.log(mon);
 axios.get(url) //ajax http request
     .then(function (res) {
         //sterge intervalele din select pentru a le aduce pe cele ale lunii selectate
@@ -47,6 +47,7 @@ $("#month_select").change(function () { //Atentie, la selectare nu se aduc inter
 		}
 	});
 });
+
 //cand se selecteaza intervalul se salveaza in intervale campul select dupa care se da refresh la pagina
 $("#interval_select").change(function () { 
     let month_id = $("#month_select").val();

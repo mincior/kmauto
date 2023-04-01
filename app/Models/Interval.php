@@ -18,6 +18,8 @@ class Interval extends Model
 		'data_inceput', 
 		'data_sfarsit', 
 		'interval', 
+		'select', 
+		'inchis', 
 		'month_id', 
 		//End craft placeholder #1
         

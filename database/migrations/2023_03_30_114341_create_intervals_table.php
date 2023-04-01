@@ -22,6 +22,7 @@ class CreateIntervalsTable extends Migration
 			$table->date('data_sfarsit');
 			$table->string('interval');
 			$table->boolean('select')->default(0);
+			$table->boolean('inchis')->default(0);
 			$table->bigInteger('month_id')->unsigned()->index()->nullable();
 			$table->foreign('month_id')->references('id')->on('months');		
 		//End craft placeholder #2

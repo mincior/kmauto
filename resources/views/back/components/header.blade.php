@@ -1,6 +1,6 @@
 <?php
     $current_month = date_create(date("Y-m-d"));
-    $current_day = 4;//intval(date("d"));
+    $current_day = intval(date("d"));
     $current_month = date_create(date("Y-m"));
     $numarZileLunaAnterioara = intval(\App\Models\Setting::where('nume', 'numarZileLunaAnterioara')->first()->valoare);
     if($current_day<$numarZileLunaAnterioara){
@@ -8,12 +8,12 @@
     }
     $current_month = date_format($current_month,"Y-m-d");
     $months = \App\Models\Month::Select()->orderBy('data_raportarii','DESC')->take(5)->get();
-    //$selectedMonthId = \App\Models\Month::where('select', 1)->first()->id;
+    $selectedMonth_id = \App\Models\Month::where('select', 1)->first()->id;
     $lunaCurentaEsteInchisa = \App\Models\Month::where('select', 1)->first()->inchisa;
+    $intervalulCurentEsteInchis = \App\Models\Interval::where('month_id', $selectedMonth_id)->where('select', 1)->first()->inchis;
     $mm= json_encode($months);//test pentru transmitere array catre javascript (JSON.strignify)
-    //dd($current_month, $lunaCurentaEsteInchisa);
 ?>
-<nav class="navbar navbar-dark {{$lunaCurentaEsteInchisa == 0 ? 'bg-success' : 'bg-danger'}} fixed-top d-print-none" id="my-nav-bar">
+<nav class="navbar navbar-dark {{$lunaCurentaEsteInchisa == 0 ? ($intervalulCurentEsteInchis == 0 ? 'bg-success' : 'bg-info') : 'bg-danger'}} fixed-top d-print-none" id="my-nav-bar">
     <div class=" container-fluid"  id="myli">
         {{-- left --}}
             <div>
