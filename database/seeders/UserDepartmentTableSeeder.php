@@ -3,10 +3,11 @@
 namespace Database\Seeders;
 
 use App\Models\DepartmentUser;
+use App\Models\UserDepartment;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 
-class DepartmentUserTableSeeder extends Seeder
+class UserDepartmentTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -25,7 +26,7 @@ class DepartmentUserTableSeeder extends Seeder
      */
     private function generate()
     {
-        $users = DepartmentUser::factory()->state(
+        $users = UserDepartment::factory()->state(
             new Sequence(
                 [
                     'id' => 1, 'department_id' => 11, 'user_id' => 1, 'observatii' => ''

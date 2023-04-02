@@ -16,7 +16,7 @@ class CreateDepartmentUsersTable extends Migration
         Schema::create('department_users', function (Blueprint $table) {
             $table->bigIncrements('id');
             //Begin craft placeholder #1
-            $table->string('observatii', 200);
+            $table->string('observatii');
 			$table->date('data')->nullable();
 			$table->bigInteger('interval_id')->unsigned()->index()->nullable();
 			$table->foreign('interval_id')->references('id')->on('intervals');

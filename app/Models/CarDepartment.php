@@ -10,7 +10,9 @@ class CarDepartment extends Model
 {
 use HasFactory, CarDepartmentRelationships;
     protected $fillable = [
-		'department_id',
-		'car_id'
+		'observatii', 
+		'department_id', 
+		'car_id', 
+		'interval_id', 
 	];
 }

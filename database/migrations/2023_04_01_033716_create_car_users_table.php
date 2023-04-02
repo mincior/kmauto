@@ -16,6 +16,7 @@ class CreateCarUsersTable extends Migration
         Schema::create('car_users', function (Blueprint $table) {
             $table->bigIncrements('id');
             //Begin craft placeholder #1
+            $table->string('observatii');
 			$table->bigInteger('interval_id')->unsigned()->index()->nullable();
 			$table->foreign('interval_id')->references('id')->on('intervals');
 			$table->bigInteger('user_id')->unsigned()->index()->nullable();

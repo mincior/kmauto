@@ -1,8 +1,10 @@
 <?php
 
 namespace App\Models;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Query\Builder;
 
-trait DepartmentUserRelationships
+trait UserDepartmentRelationships
 {
 	//Begin craft placeholder #1
 	public function interval(){

@@ -11,7 +11,9 @@ class CarUser extends Model
 	use CarUserRelationships;
 
     protected $fillable = [
-		'user_id',
-		'car_id'
+		'observatii', 
+		'user_id', 
+		'car_id', 
+		'interval_id', 
 	];
 }

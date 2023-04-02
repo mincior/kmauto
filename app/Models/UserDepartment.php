@@ -5,23 +5,22 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Kmlog extends Model
+class UserDepartment extends Model
 {
-    use HasFactory, KmlogRelationships;
+    use HasFactory,  UserDepartmentRelationships;
             /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
     protected $fillable = [
-      'km', 
-      'picture', 
-      'status', 
-      'observations', 
-      'interval_id', 
-      'user_id', 
-      'car_id', 
-          
+        //Begin craft placeholder #1
+		'observatii', 
+		'department_id', 
+		'user_id', 
+		'interval_id', 
+		//End craft placeholder #1
+        
     ];
 
 }

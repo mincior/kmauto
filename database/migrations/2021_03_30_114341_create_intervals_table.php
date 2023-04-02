@@ -27,7 +27,6 @@ class CreateIntervalsTable extends Migration
 			$table->foreign('month_id')->references('id')->on('months');		
 		//End craft placeholder #2
             $table->timestamps();
-            $table->timestamp('deleted_at')->nullable();
         });
     }
 

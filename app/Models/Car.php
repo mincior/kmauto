@@ -18,8 +18,8 @@ class Car extends Model
       'consum_mediu', 
       'carburant', 
       'activ', 
+      'observatii', 
       'type_id', 
-      'user_id', 
       'brand_id', 
           
     ];

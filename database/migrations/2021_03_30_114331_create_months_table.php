@@ -24,7 +24,6 @@ class CreateMonthsTable extends Migration
 			$table->boolean('inchisa')->default(0);		
 		//End craft placeholder #2
             $table->timestamps();
-            $table->timestamp('deleted_at')->nullable();
         });
     }
 

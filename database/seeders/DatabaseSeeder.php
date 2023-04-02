@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
         $this->call(TypesTableSeeder::class);
         $this->call(CarsTableSeeder::class);
         $this->call(CarDepartmentTableSeeder::class);
-        $this->call(DepartmentUserTableSeeder::class);
+        $this->call(UserDepartmentTableSeeder::class);
         $this->call(MonthTableSeeder::class);
         $this->call(IntervalTableSeeder::class);
         $this->call(SettingsTableSeeder::class);

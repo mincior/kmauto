@@ -17,6 +17,7 @@ class Setting extends Model
         //Begin craft placeholder #1
 		'nume', 
 		'valoare', 
+		'interval_id', 
 		//End craft placeholder #1
         
     ];
