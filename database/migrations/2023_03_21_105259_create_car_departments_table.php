@@ -17,7 +17,6 @@ class CreateCarDepartmentsTable extends Migration
             $table->bigIncrements('id');
             //Begin craft placeholder #1
             $table->string('observatii');
-			$table->date('data')->nullable();
 			$table->bigInteger('interval_id')->unsigned()->index()->nullable();
 			$table->foreign('interval_id')->references('id')->on('intervals');
 			$table->bigInteger('department_id')->unsigned()->index()->nullable();

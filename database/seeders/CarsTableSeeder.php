@@ -462,7 +462,7 @@ class CarsTableSeeder extends Seeder
                 ],
                 
             )            
-        )->count(150)->create();
+        )->count(143)->create();
         
                 
 

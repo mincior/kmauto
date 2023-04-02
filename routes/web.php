@@ -10,6 +10,7 @@ use App\Http\Controllers\Back\BrandController;
 use App\Http\Controllers\Back\GeneralController;
 use App\Http\Controllers\Back\CustomerController;
 use App\Http\Controllers\Back\DeveloperController;
+use App\Http\Controllers\Back\DepartmentController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Auth::routes();
@@ -51,13 +52,11 @@ Route::middleware('auth')->group(function () {
         /* ---------------------------------------- */
         // Cars
         Route::controller(CarController::class)->group(function () {
-            Route::get('/cars/get-department-users/{department_id}','getDepartmentUsers')->name('get-department-users');
-            Route::get('/cars/get-department-cars/{department_id}','getDepartmentCars')->name('get-department-cars');
             Route::delete('/cars/massDestroy', 'massDestroy')->name('cars.massDestroy');
             Route::resource('/cars', CarController::class)->except(['destroy']);
         });
         /* ---------------------------------------- */
-        // Cars
+        // Brand
         Route::controller(BrandController::class)->group(function () {
             Route::get('/brands/get-brand-types/{brand_id}','getBrandTypes')->name('get-brand-types');
             Route::delete('/brands/massDestroy', 'massDestroy')->name('brands.massDestroy');
@@ -69,5 +68,12 @@ Route::middleware('auth')->group(function () {
             Route::delete('/types/massDestroy', 'massDestroy')->name('types.massDestroy');
             Route::resource('/types', TypeController::class)->except(['destroy']);
         });
-    });
+         // Departments
+        Route::controller(DepartmentController::class)->group(function () {
+            Route::get('/departments/get-cars/{department_id}','getCars')->name('get-cars');
+            Route::get('/departments/get-users/{department_id}','getUsers')->name('get-users');
+            Route::delete('/departments/massDestroy', 'massDestroy')->name('departments.massDestroy');
+            Route::resource('/departments', DepartmentController::class)->except(['destroy']);
+        });
+   });
 });

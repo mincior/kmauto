@@ -14,13 +14,14 @@ $("#department_select").change(function () {
 
 //incarca utilizatorii filialei
 function get_department_users( department_id, user_id) {
-	let url = window.location.origin + '/back/cars/get-department-users' + '/' + department_id
+	let url = window.location.origin + '/back/departments/get-users' + '/' + department_id
 	//ajax http request
 	axios.get(url)
 		.then(function (res) {
 			//sterge utilizatorii din select pentru a le aduce pe cele ale filialei selectate
 			$("#user_select").empty();
 			//afla lungimea vectorului cu masini pentru a le itera
+			console.log(res.data);
 			var len = res.data.length;
 			//itereaza vectorul cu masini
 				$("#user_select").append("<option value='0'>Alege...</option>");

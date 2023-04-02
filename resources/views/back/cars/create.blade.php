@@ -26,7 +26,7 @@
                         <label for="numar" class="col-md-2 col-form-label">Numar :</label>
 
                         <div class="col-md-3">
-                            <input id="numar" name="numar" type="text" class="form-control @error('numar') is-invalid @enderror" value="{{ old('numar') }}" onkeyup="this.value = this.value.toUpperCase();">
+                            <input id="numar" name="numar" type="text" class="form-control @error('numar') is-invalid @enderror" value="{{ old('numar') }}" onkeyup="prelNumar(this);">
 
                             @error('numar')
                             <span class="invalid-feedback" role="alert">{{ $message }}</span>
@@ -99,11 +99,14 @@
                     </div>
 
 
+                    {{-- <div class="autocomplete" style="width:300px;">
+                        <input id="myInput" type="text" name="myCountry" placeholder="Country">
+                    </div> --}}
 
                     <div class="row mb-2">
                         <label for="consum_mediu" class="col-md-2 col-form-label">Consum mediu :</label>
 
-                        <div class="col-md-2">
+                        <div class="col-md-2 autocomplete">
                             <input id="consum_mediu" name="consum_mediu" type="text" class="form-control @error('consum_mediu') is-invalid @enderror" value="{{ old('consum_mediu') }}">
 
                             @error('consum_mediu')
@@ -176,16 +179,27 @@
 @endsection
 
 @section('scripts')
-
 <script src="{{ asset('js/me/get_department_users.js') }}"></script>
 <script src="{{ asset('js/me/get_brand_types.js') }}"></script>
+
+{{-- autocompletare casete text cu valori dintr-un array --}}
+<script src="{{ asset('js/me/autocomplete.js') }}"></script>
+
 <script>
+    //autocompletare pentru consumuri medii
+    var consumuri_medii = ["9","11","6.5","12"];
+    autocomplete(document.getElementById("consum_mediu"), consumuri_medii);
+
+    //cand se completeaza numarul masinii scrie cu litere mari si inlocuieste spatiul cu liniuta
+    function prelNumar(el){
+        let up = el.value.toUpperCase();//scrie cu litere mari
+        el.value = up.replace(" ", "-");//inlocuieste spatiul cu liniuta
+        }
+
     jQuery(document).ready(function($) {
         $('#numar').focus();
         $('.my-select2').select2();
-        $('#my-nav-bar').addClass('d-none');//ascunde bara de navigare cand sunt pe create car
-        
     });
 </script>
-@endsection
 
+@endsection

@@ -212,16 +212,14 @@
                         },
                     },
                     {
-                        /*data: 'id',
+                        data: 'id',
                         render: function(data, type, row, meta) {
-                            if ( typeof row.userdepartments[0] === "undefined"){
+                            if ( typeof row.users[0] === "undefined"){
                                 return '';
                             }else{
-                                return row.userdepartments[0].name;
+                                return row.users[0].name;
                             }
-                        },*/
-                        data: 'user_id',
-                        name: 'user_id',
+                        },
                     },
                     {
                         data: 'activ',

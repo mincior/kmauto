@@ -3,12 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class CarUser extends Model
 
 
 {
-	use CarUserRelationships;
+	use HasFactory, CarUserRelationships;
 
     protected $fillable = [
 		'observatii', 
