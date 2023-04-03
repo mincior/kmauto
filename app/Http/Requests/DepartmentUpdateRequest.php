@@ -25,31 +25,6 @@ class DepartmentUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'department_last_name' => [
-            //     'nullable',
-            //     'required_without_all:department_first_name,company_name',
-            //     'string',
-            //     'max:50',
-            // ],
-            // 'department_first_name' => [
-            //     'nullable',
-            //     'required_without_all:department_last_name,company_name',
-            //     'string',
-            //     'max:50',
-            // ],
-            // 'company_name' => [
-            //     'nullable',
-            //     'required_without_all:department_last_name,department_first_name',
-            //     'string',
-            //     'max:50',
-            // ],
-            // 'email' => [
-            //     'nullable',
-            //     'string',
-            //     'email',
-            //     'max:191',
-            //     Rule::unique('departments', 'email')->whereNull('deleted_at')->ignore($this->department),
-            // ],
         ];
     }
 }

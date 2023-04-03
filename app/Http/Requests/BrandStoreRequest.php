@@ -24,31 +24,6 @@ class BrandStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'brand_last_name' => [
-            //     'nullable',
-            //     'required_without_all:brand_first_name,company_name',
-            //     'string',
-            //     'max:50',
-            // ],
-            // 'brand_first_name' => [
-            //     'nullable',
-            //     'required_without_all:brand_last_name,company_name',
-            //     'string',
-            //     'max:50',
-            // ],
-            // 'company_name' => [
-            //     'nullable',
-            //     'required_without_all:brand_last_name,brand_first_name',
-            //     'string',
-            //     'max:50',
-            // ],
-            // 'email' => [
-            //     'nullable',
-            //     'string',
-            //     'email',
-            //     'max:191',
-            //     'unique:brands',
-            // ],
         ];
     }
 }

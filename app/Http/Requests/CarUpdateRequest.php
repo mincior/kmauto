@@ -25,31 +25,6 @@ class CarUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'car_last_name' => [
-            //     'nullable',
-            //     'required_without_all:car_first_name,company_name',
-            //     'string',
-            //     'max:50',
-            // ],
-            // 'car_first_name' => [
-            //     'nullable',
-            //     'required_without_all:car_last_name,company_name',
-            //     'string',
-            //     'max:50',
-            // ],
-            // 'company_name' => [
-            //     'nullable',
-            //     'required_without_all:car_last_name,car_first_name',
-            //     'string',
-            //     'max:50',
-            // ],
-            // 'email' => [
-            //     'nullable',
-            //     'string',
-            //     'email',
-            //     'max:191',
-            //     Rule::unique('cars', 'email')->whereNull('deleted_at')->ignore($this->car),
-            // ],
         ];
     }
 }

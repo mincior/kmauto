@@ -38,7 +38,7 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/js/i18n/nl.min.js"></script>
 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/6.0.0/bootbox.min.js"></script>
-
+    <script type="text/javascript" src="{{ asset('js/me/autocomplete.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/custom.js') }}"></script>
 </head>
 

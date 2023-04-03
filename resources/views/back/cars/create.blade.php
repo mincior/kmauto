@@ -13,7 +13,7 @@
             <div class="card mb-3">
                 <div class="card-header">
                     <div class="row">
-                        <div class="col">Masini - adaugare</div>
+                        <div id="myToolTip" class="col">Masini - adaugare</div>
 
                         <div class="col fs-5 text-end">
                             <img src="{{ asset('img/icons/person.png') }}" />
@@ -26,7 +26,7 @@
                         <label for="numar" class="col-md-2 col-form-label">Numar :</label>
 
                         <div class="col-md-3">
-                            <input id="numar" name="numar" type="text" class="form-control @error('numar') is-invalid @enderror" value="{{ old('numar') }}" onkeyup="prelNumar(this);">
+                            <input autocomplete="on" id="numar" name="numar" type="text" class="form-control @error('numar') is-invalid @enderror" value="{{ old('numar') }}" onkeyup="prelNumar(this);">
 
                             @error('numar')
                             <span class="invalid-feedback" role="alert">{{ $message }}</span>
@@ -108,10 +108,13 @@
 
                         <div class="col-md-2 autocomplete">
                             <input id="consum_mediu" name="consum_mediu" type="text" class="form-control @error('consum_mediu') is-invalid @enderror" value="{{ old('consum_mediu') }}">
-
+    
                             @error('consum_mediu')
                             <span class="invalid-feedback" role="alert">{{ $message }}</span>
                             @enderror
+                        </div>
+                        <div class="col col-md-1">
+                            <button id="save_fuel" class="btn btn-primary text-white btn-sm" tabindex="-1" onclick="event.preventDefault(); salveazaConsumuriMedii();">Salveaza</button>
                         </div>
                     </div>
 
@@ -183,23 +186,6 @@
 <script src="{{ asset('js/me/get_brand_types.js') }}"></script>
 
 {{-- autocompletare casete text cu valori dintr-un array --}}
-<script src="{{ asset('js/me/autocomplete.js') }}"></script>
-
-<script>
-    //autocompletare pentru consumuri medii
-    var consumuri_medii = ["9","11","6.5","12"];
-    autocomplete(document.getElementById("consum_mediu"), consumuri_medii);
-
-    //cand se completeaza numarul masinii scrie cu litere mari si inlocuieste spatiul cu liniuta
-    function prelNumar(el){
-        let up = el.value.toUpperCase();//scrie cu litere mari
-        el.value = up.replace(" ", "-");//inlocuieste spatiul cu liniuta
-        }
-
-    jQuery(document).ready(function($) {
-        $('#numar').focus();
-        $('.my-select2').select2();
-    });
-</script>
+<script src="{{ asset('js/me/create_car.js') }}"></script>
 
 @endsection
