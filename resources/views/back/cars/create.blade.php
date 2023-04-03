@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-<form id="myForm" method="POST" action="{{ route('back.customers.store') }}" enctype="multipart/form-data" wire:submit.prevent="savePersonalData" onkeydown="return event.key != 'Enter';">
+<form id="myForm" method="POST" action="{{ route('back.cars.store') }}" enctype="multipart/form-data" wire:submit.prevent="savePersonalData" onkeydown="return event.key != 'Enter';">
     @csrf
 
     <div class="row">
