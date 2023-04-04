@@ -30,7 +30,7 @@ class CarStoreRequest extends FormRequest
                 'max:15',
             ],
             'consum_mediu' => [
-                'decimal:1',
+                'numeric',
             ],
             'carburant' => [
                 'string',

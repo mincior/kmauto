@@ -54,8 +54,8 @@ class CarController extends Controller
     {
         $departments = Department::select('id', 'name')->orderBy('name')->get();
         $brands = Brand::select('id', 'name')->orderBy('name')->get();
-        //$users = User::select('id', 'name')->orderBy('name')->get();
-        return view('back.cars.create', compact('departments', 'brands'));
+        $users = User::select('id', 'name')->orderBy('name')->get();
+        return view('back.cars.create', compact('departments', 'brands', 'users'));
     }
 
 
@@ -64,7 +64,6 @@ class CarController extends Controller
         //In request avem campurile necesare (proprietatea name din html)
         //In CarStoreRequest se face validarea
         $data = $request->all();
-
         //scoate un numar de forma B-87-CLT din (B87CLT, B-87CLT, B#$%$%$87(*&^%^&*(cLt)), etc. )
         $data['numar'] = AppHelper::prelucrare_numar_masina($data['numar']); 
         

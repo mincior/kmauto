@@ -8,9 +8,12 @@
 <?php
     $selectedMonth = \App\Models\Month::where('select', 1)->first();
     $selectedInterval = \App\Models\Interval::where('month_id', $selectedMonth->id)->where('select', 1)->first();
+
 ?>
 <form id="myForm" method="POST" action="{{ route('back.cars.store') }}" enctype="multipart/form-data" wire:submit.prevent="savePersonalData" onkeydown="return event.key != 'Enter';">
     @csrf
+    <h1>{{$selectedInterval->id}}</h1>
+
     <input type="hidden" name="selected_interval" value="{{$selectedInterval->id}}">
     <div class="row">
         <div class="col-12">
@@ -45,7 +48,7 @@
                         <div class="col-md-4">
                             <select name="department_id" id="department_select" data-deptid="1" data-userid="1"  class="form-select">
                                 <option value="">Alege ...</option>
-                                @foreach ($departments as $department)
+                                @foreach ($departments as $key=>$department)
                                     <option value="{{ $department['id'] }}">{{ $department['name'] }}</option>
                                 @endforeach
                             </select>
@@ -61,10 +64,10 @@
                         <div class="col-md-4">
                             <select name="user_id" id="user_select" class="form-select my-select2">
                                 <option value="0">Choose ...</option>
-                                {{-- @foreach ($users as $user)
+                                @foreach ($users as $user)
 
                                 <option value="{{ $user['id'] }}">{{ $user['name'] }}</option>
-                                @endforeach --}}
+                                @endforeach
                             </select>
                             @error('user_id')
                             <span class="invalid-feedback" role="alert">{{ $message }}</span>
@@ -128,8 +131,8 @@
                         <div class="col-md-3">
                             <select name="carburant" id="carburant_select" class="form-select" style="width:auto">
                                 <option value="">Alege ...</option>
-                                <option value="benzina">Benzina</option>
-                                <option value="motorina">Motorina</option>
+                                <option   {{ old('carburant') == "benzina" ? "selected" : "" }}  value="benzina">Benzina</option>
+                                <option   {{ old('carburant') == "motorina"? "selected" : "" }}  value="motorina">Motorina</option>
                             </select>
                         </div>
                     </div>
@@ -139,8 +142,8 @@
                         <div class="col-md-3">
                             <select name="activ" id="activ_select" class="form-select">
                                 <option value="">Alege ...</option>
-                                <option value="1">Da</option>
-                                <option value="0">Nu</option>
+                                <option  {{ old('activ') == "1"? "selected" : "" }}  value="1">Da</option>
+                                <option  {{ old('activ') == "0"? "selected" : "" }}  value="0">Nu</option>
                             </select>
                         </div>
                     </div>
