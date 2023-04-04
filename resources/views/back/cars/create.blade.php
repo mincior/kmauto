@@ -8,12 +8,11 @@
 <?php
     $selectedMonth = \App\Models\Month::where('select', 1)->first();
     $selectedInterval = \App\Models\Interval::where('month_id', $selectedMonth->id)->where('select', 1)->first();
-
+    $users = @\App\Models\Department::with('users')->where('id', '=', (old('department_id')))->get()[0]['users'];
+    $types = @\App\Models\Brand::with('types')->where('id', '=', (old('brand_id')))->get()[0]['types'];
 ?>
 <form id="myForm" method="POST" action="{{ route('back.cars.store') }}" enctype="multipart/form-data" wire:submit.prevent="savePersonalData" onkeydown="return event.key != 'Enter';">
     @csrf
-    <h1>{{$selectedInterval->id}}</h1>
-
     <input type="hidden" name="selected_interval" value="{{$selectedInterval->id}}">
     <div class="row">
         <div class="col-12">
@@ -48,8 +47,8 @@
                         <div class="col-md-4">
                             <select name="department_id" id="department_select" data-deptid="1" data-userid="1"  class="form-select">
                                 <option value="">Alege ...</option>
-                                @foreach ($departments as $key=>$department)
-                                    <option value="{{ $department['id'] }}">{{ $department['name'] }}</option>
+                                @foreach ($departments as $department)
+                                    <option {{ old('department_id') ==  $department['id']  ? "selected" : "" }}  value="{{ $department['id'] }}">{{ $department['name'] }}</option>
                                 @endforeach
                             </select>
                             @error('department_id')
@@ -64,10 +63,12 @@
                         <div class="col-md-4">
                             <select name="user_id" id="user_select" class="form-select my-select2">
                                 <option value="0">Choose ...</option>
-                                @foreach ($users as $user)
-
-                                <option value="{{ $user['id'] }}">{{ $user['name'] }}</option>
-                                @endforeach
+                                @if (old('department_id')){
+                                    @foreach ($users as $user)
+                                        <option {{ old('user_id') == $user['id']? "selected" : "" }}  value="{{ $user['id'] }}">{{ $user['name'] }}</option>
+                                    @endforeach
+                                }
+                                @endif
                             </select>
                             @error('user_id')
                             <span class="invalid-feedback" role="alert">{{ $message }}</span>
@@ -83,7 +84,7 @@
                             <select name="brand_id" id="brand_select" class="form-select" data-brandid="1" data-typeid="1">
                                 <option value="">Alege ...</option>
                                 @foreach ($brands as $brand)
-                                <option value="{{ $brand['id'] }}">{{ $brand['name'] }}</option>
+                                <option  {{ old('brand_id') ==  $brand['id']  ? "selected" : "" }} value="{{ $brand['id'] }}">{{ $brand['name'] }}</option>
                                 @endforeach
                             </select>
                             @error('brand_id')
@@ -98,6 +99,12 @@
                         <div class="col-md-3">
                             <select name="type_id" id="type_select" class="form-select">
                                 <option value="">Alege ...</option>
+                                @if (old('brand_id')){
+                                    @foreach ($types as $type)
+                                        <option {{ old('type_id') == $type['id']? "selected" : "" }}  value="{{ $type['id'] }}">{{ $type['name'] }}</option>
+                                    @endforeach
+                                }
+                                @endif
                             </select>
                             @error('type_id')
                             <span class="invalid-feedback" role="alert">{{ $message }}</span>
