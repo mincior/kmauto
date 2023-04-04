@@ -5,9 +5,13 @@
 @endsection
 
 @section('content')
+<?php
+    $selectedMonth = \App\Models\Month::where('select', 1)->first();
+    $selectedInterval = \App\Models\Interval::where('month_id', $selectedMonth->id)->where('select', 1)->first();
+?>
 <form id="myForm" method="POST" action="{{ route('back.cars.store') }}" enctype="multipart/form-data" wire:submit.prevent="savePersonalData" onkeydown="return event.key != 'Enter';">
     @csrf
-
+    <input type="hidden" name="selected_interval" value="{{$selectedInterval->id}}">
     <div class="row">
         <div class="col-12">
             <div class="card mb-3">
@@ -124,8 +128,8 @@
                         <div class="col-md-3">
                             <select name="carburant" id="carburant_select" class="form-select" style="width:auto">
                                 <option value="">Alege ...</option>
-                                <option value="1">Benzina</option>
-                                <option value="2">Motorina</option>
+                                <option value="benzina">Benzina</option>
+                                <option value="motorina">Motorina</option>
                             </select>
                         </div>
                     </div>
@@ -145,7 +149,7 @@
                 <div class="card-footer">
                     <div class="row">
                         <div class="col">
-                            <a class="btn btn-secondary text-white btn-sm" href="{{ route('back.customers.index') }}" role=" button" tabindex="-1">
+                            <a class="btn btn-secondary text-white btn-sm" href="{{ route('back.cars.index') }}" role=" button" tabindex="-1">
                                 <i class="bi bi-arrow-left-short"></i>
                             </a>
                         </div>

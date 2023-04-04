@@ -8,10 +8,10 @@ trait UserRelationships
 {
 	//Begin craft placeholder #1
 	public function cars_kmlog(){
-		return $this->belongsToMany('App\\Models\\Car', 'Kmlog')->withPivot('km', 'picture', 'status', 'observations', 'interval_id', 'user_id', 'car_id');
+		return $this->belongsToMany('App\\Models\\Car', 'Kmlog')->withPivot('km', 'picture', 'status', 'observatii', 'interval_id', 'user_id', 'car_id');
 	}
 	public function departments(){
-		return $this->belongsToMany('App\\Models\\Department', 'UserDepartment')->withPivot('observatii', 'department_id', 'user_id');
+		return $this->belongsToMany('App\\Models\\Department', 'UserDepartment')->withPivot('observatii','interval_id', 'department_id', 'user_id');
 	}
 	public function cars(){
 		return $this->belongsToMany('App\\Models\\Car', 'CarUser')->withPivot('observatii', 'user_id', 'car_id');

@@ -21,7 +21,6 @@ class Car extends Model
       'observatii', 
       'type_id', 
       'brand_id', 
-          
     ];
 
 }

@@ -185,11 +185,23 @@
                     },
                     {
                         data: 'brand_id',
-                        name: 'brand_id',
+                        render: function(data, type, row, meta) {
+                            if ( typeof row.brand === "undefined"){
+                                return '';
+                            }else{
+                                return row.brand.name;
+                            }
+                        },
                     },
                     {
                         data: 'type_id',
-                        name: 'type_id',
+                        render: function(data, type, row, meta) {
+                            if ( typeof row.type === "undefined"){
+                                return '';
+                            }else{
+                                return row.type.name;
+                            }
+                        },
                     },
                     {
                         data: 'consum_mediu',

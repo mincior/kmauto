@@ -18,7 +18,7 @@ class CreateUserDepartmentsTable extends Migration
         //Begin craft placeholder #2
 		Schema::create('user_departments', function (Blueprint $table) {
 			$table->id();
-			$table->string('observatii');
+            $table->string('observatii')->nullable();
 			$table->bigInteger('department_id')->unsigned()->index()->nullable();
 			$table->foreign('department_id')->references('id')->on('departments');
 			$table->bigInteger('user_id')->unsigned()->index()->nullable();

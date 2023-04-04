@@ -16,7 +16,7 @@ class CreateCarDepartmentsTable extends Migration
         Schema::create('car_departments', function (Blueprint $table) {
             $table->bigIncrements('id');
             //Begin craft placeholder #1
-            $table->string('observatii');
+            $table->string('observatii')->nullable();
 			$table->bigInteger('interval_id')->unsigned()->index()->nullable();
 			$table->foreign('interval_id')->references('id')->on('intervals');
 			$table->bigInteger('department_id')->unsigned()->index()->nullable();

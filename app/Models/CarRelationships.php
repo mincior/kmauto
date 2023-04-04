@@ -10,7 +10,7 @@ trait CarRelationships
 	use HasRelationships ;
 	//Begin craft placeholder #1
 	public function kmlog_users(){
-		return $this->belongsToMany('App\\Models\\User', 'Kmlog')->withPivot('km', 'picture', 'status', 'observations', 'interval_id', 'user_id', 'car_id');
+		return $this->belongsToMany('App\\Models\\User', 'Kmlog')->withPivot('km', 'picture', 'status', 'observatii', 'interval_id', 'user_id', 'car_id');
 	}
 
 	public function type(){
@@ -18,11 +18,11 @@ trait CarRelationships
 	}
 
 	public function departments(){
-		return $this->belongsToMany('App\\Models\\Department', 'App\\Models\\CarDepartment')->withPivot('observatii', 'department_id', 'car_id');
+		return $this->belongsToMany('App\\Models\\Department', 'App\\Models\\CarDepartment')->withPivot('observatii', 'interval_id','department_id', 'car_id');
 	}
 
 	public function users(){
-		return $this->belongsToMany('App\\Models\\User', 'App\\Models\\CarUser')->withPivot('observatii', 'user_id', 'car_id');
+		return $this->belongsToMany('App\\Models\\User', 'App\\Models\\CarUser')->withPivot('observatii', 'interval_id', 'user_id', 'car_id');
 	}
 
 	//experimental deep relations
