@@ -8,6 +8,6 @@ trait CarUserRelationships
 	public function interval(){
 		return $this->belongsTo('App\\Models\\Interval');
 	}
-
+	public $timestamps = false;
 	//End craft placeholder #1
 }

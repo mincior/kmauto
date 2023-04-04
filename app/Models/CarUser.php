@@ -17,4 +17,5 @@ class CarUser extends Model
 		'car_id', 
 		'interval_id', 
 	];
+	public $timestamps = false;
 }

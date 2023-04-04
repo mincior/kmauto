@@ -23,7 +23,6 @@ class CreateSettingsTable extends Migration
 			$table->bigInteger('interval_id')->unsigned()->index()->nullable();
 			$table->foreign('interval_id')->references('id')->on('intervals');		
 		//End craft placeholder #2
-            $table->timestamps();
         });
     }
 

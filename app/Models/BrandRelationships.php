@@ -13,6 +13,6 @@ trait BrandRelationships
 	public function car(){
 		return $this->hasOne('App\\Models\\Car');
 	}
-
+	public $timestamps = false;
 	//End craft placeholder #1
 }

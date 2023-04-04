@@ -30,7 +30,7 @@
                         <label for="numar" class="col-md-2 col-form-label">Numar :</label>
 
                         <div class="col-md-3">
-                            <input autocomplete="on" id="numar" name="numar" type="text" class="form-control @error('numar') is-invalid @enderror" value="{{ old('numar') }}" onkeyup="prelNumar(this);">
+                            <input autocomplete="on" id="numar" name="numar" type="text" class="form-control @error('numar') is-invalid @enderror" value="{{ old('numar') }}" onkeyup="prelucrare_numar_masina(this);">
 
                             @error('numar')
                             <span class="invalid-feedback" role="alert">{{ $message }}</span>

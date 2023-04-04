@@ -22,5 +22,6 @@ class Car extends Model
       'type_id', 
       'brand_id', 
     ];
+    public $timestamps = false;
 
 }

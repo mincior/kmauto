@@ -24,7 +24,6 @@ class CreateCarUsersTable extends Migration
 			$table->bigInteger('car_id')->unsigned()->index()->nullable();
 			$table->foreign('car_id')->references('id')->on('cars');
 			//End craft placeholder #1
-            $table->timestamps();
         });
     }
 

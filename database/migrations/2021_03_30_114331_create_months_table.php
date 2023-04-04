@@ -23,7 +23,6 @@ class CreateMonthsTable extends Migration
 			$table->boolean('select')->default(0);
 			$table->boolean('inchisa')->default(0);		
 		//End craft placeholder #2
-            $table->timestamps();
         });
     }
 

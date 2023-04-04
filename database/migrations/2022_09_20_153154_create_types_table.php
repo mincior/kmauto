@@ -22,7 +22,6 @@ class CreateTypesTable extends Migration
 			$table->bigInteger('brand_id')->unsigned()->index()->nullable();
 			$table->foreign('brand_id')->references('id')->on('brands');		
 		//End craft placeholder #2
-            $table->timestamps();
         });
     }
 

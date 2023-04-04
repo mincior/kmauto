@@ -49,7 +49,7 @@ axios.get(url)
 autocomplete(document.getElementById("consum_mediu"), consumuri_medii);
 
 //cand se completeaza numarul masinii scrie cu litere mari si inlocuieste spatiul cu liniuta
-function prelNumar(el){
+function prelucrare_numar_masina(el){
 	let up = el.value.toUpperCase();//scrie cu litere mari
 	el.value = up.replace(" ", "-");//inlocuieste spatiul cu liniuta
 	}

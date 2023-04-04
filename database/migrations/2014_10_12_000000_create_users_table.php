@@ -24,7 +24,6 @@ return new class extends Migration
             $table->boolean('is_admin', 1)->default(0);
 			$table->string('calificativ', 250)->nullable();
             $table->rememberToken();
-            $table->timestamps();
         });
     }
 

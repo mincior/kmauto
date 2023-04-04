@@ -25,7 +25,6 @@ class CreateCarDepartmentsTable extends Migration
 			$table->foreign('car_id')->references('id')->on('cars');
 
 			//End craft placeholder #1
-            $table->timestamps();
         });
     }
 

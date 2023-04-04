@@ -23,5 +23,4 @@ class Kmlog extends Model
       'car_id', 
           
     ];
-
 }

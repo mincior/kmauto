@@ -28,8 +28,8 @@ class CreateKmlogsTable extends Migration
 			$table->foreign('user_id')->references('id')->on('users');
 			$table->bigInteger('car_id')->unsigned()->index()->nullable();
 			$table->foreign('car_id')->references('id')->on('cars');		
-		//End craft placeholder #2
             $table->timestamps();
+		//End craft placeholder #2
         });
     }
 

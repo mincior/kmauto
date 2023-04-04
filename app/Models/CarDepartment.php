@@ -15,4 +15,5 @@ use HasFactory, CarDepartmentRelationships;
 		'car_id', 
 		'interval_id', 
 	];
+	public $timestamps = false;
 }

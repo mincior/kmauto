@@ -18,7 +18,7 @@ class CreateCarsTable extends Migration
         //Begin craft placeholder #2
 		Schema::create('cars', function (Blueprint $table) {
 			$table->id();
-			$table->string('numar');
+			$table->string('numar')->unique();
 			$table->decimal('consum_mediu', 5, 2);
 			$table->string('carburant')->default('benzina')->commnet('motorina/benzina');
 			$table->boolean('activ', 1)->default('1');
@@ -28,7 +28,6 @@ class CreateCarsTable extends Migration
 			$table->bigInteger('brand_id')->unsigned()->index()->nullable();
 			$table->foreign('brand_id')->references('id')->on('brands');		
 		//End craft placeholder #2
-            $table->timestamps();
         });
     }
 

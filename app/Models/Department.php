@@ -19,5 +19,5 @@ class Department extends Model
         'responsabil',
     ];
 
-
+    public $timestamps = false;
 }

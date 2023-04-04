@@ -21,9 +21,7 @@ class CarController extends Controller
 {
 
     public function index(Request $request)
-    {   $string = "B-47-kmH";
-        $rez = AppHelper::prelNumar($string);
-        dd($rez);
+    {   
         if ($request->ajax()) {          
             // $cars = Car::with('brand','departments','type', 'user')->get();
             //     dd($cars[0]);
@@ -38,7 +36,7 @@ class CarController extends Controller
                 // ->editColumn('type_id', function ($row) {
                 //     return $row->type->name;
                 // })
-                // ->editColumn('user_id', function ($row) {
+                // ->editColumn('$data['user_id']', function ($row) {
                 //     return @$row->user->name;
                 //     // dd($row);
                 //     // if (is_null($row->user->name)){
@@ -64,15 +62,18 @@ class CarController extends Controller
     public function store(CarStoreRequest $request)
     {
         //In request avem campurile necesare (proprietatea name din html)
-        //In CarStoreRequest se face validarea, care acum nu exista.
+        //In CarStoreRequest se face validarea
         $data = $request->all();
-        $user_id =  $data['user_id'];
-        $selectedInterval =  $data['selected_interval'];
-        //$numar_masina_prelucrat = prelNumar($data['numar']);
-        //dd($numar_masina_prelucrat);
-        $sinc = Car::create($data)->users()->syncWithPivotValues([$user_id],  ['interval_id' => intval($selectedInterval), 'created_at' => date("Y/m/d h:n:s"), 'updated_at' => date("Y/m/d h:n:s")]);
-        //$pivot = $car->users()->syncWithoutDetaching([$user_id]);//nu completeaza si pivotul
-        //pune o inregistrare in tabelul pivot CarUser in care pune intervalul si user-id
+
+        //scoate un numar de forma B-87-CLT din (B87CLT, B-87CLT, B#$%$%$87(*&^%^&*(cLt)), etc. )
+        $data['numar'] = AppHelper::prelucrare_numar_masina($data['numar']); 
+        
+        //scrie masina noua 
+        $car = Car::create($data);
+
+        //scrie id-urile in tabelele pivot precum si intervalul curent (momentul crearii)
+        $car->users()->syncWithPivotValues([$data['user_id']],  ['interval_id' => intval($data['selected_interval'])]);
+        $car->departments()->syncWithPivotValues([$data['department_id']],  ['interval_id' => intval($data['selected_interval'])]);
 
         $notification = [
             "type" => "success",

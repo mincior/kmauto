@@ -26,8 +26,6 @@ class CreateUserDepartmentsTable extends Migration
 			$table->bigInteger('interval_id')->unsigned()->index()->nullable();
 			$table->foreign('interval_id')->references('id')->on('intervals');		
 		//End craft placeholder #2
-            $table->timestamps();
-            $table->timestamp('deleted_at')->nullable();
         });
     }
 

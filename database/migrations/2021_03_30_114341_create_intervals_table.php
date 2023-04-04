@@ -26,7 +26,6 @@ class CreateIntervalsTable extends Migration
 		    $table->bigInteger('month_id')->unsigned()->index()->nullable();
 			$table->foreign('month_id')->references('id')->on('months');		
 		//End craft placeholder #2
-            $table->timestamps();
         });
     }
 
