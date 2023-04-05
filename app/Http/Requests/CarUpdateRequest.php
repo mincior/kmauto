@@ -25,6 +25,33 @@ class CarUpdateRequest extends FormRequest
     public function rules()
     {
         return [
+            'numar' => [
+                'string',
+                'max:15',
+                Rule::unique('cars', 'numar')->ignore($this->car),
+            ],
+            'consum_mediu' => [
+                'numeric',
+            ],
+            'carburant' => [
+                'string',
+                'max:10',
+            ],
+            'observatii' => [
+                'nullable',
+                'string',
+                'max:255',
+            ],
+            'brand_id' => [
+                'nullable',
+                'integer',
+                // 'exists:brands',
+            ],
+            'type_id' => [
+                'nullable',
+                'integer',
+                // 'exists:types',
+            ],
         ];
     }
 }

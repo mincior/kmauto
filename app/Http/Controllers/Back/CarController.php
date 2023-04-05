@@ -6,10 +6,14 @@ use App\Models\Car;
 use App\Models\Type;
 use App\Models\User;
 use App\Models\Brand;
+use App\Models\Month;
+use App\Models\CarUser;
 use App\Models\Country;
-use App\MyHelpers\AppHelper;
+use App\Models\Interval;
 use App\Models\Department;
+use App\MyHelpers\AppHelper;
 use Illuminate\Http\Request;
+use App\Models\CarDepartment;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CarStoreRequest;
@@ -52,10 +56,13 @@ class CarController extends Controller
 
     public function create()
     {
+        $selectedMonth = Month::where('select', 1)->first();
+        $selectedInterval = Interval::where('month_id', $selectedMonth->id)->where('select', 1)->first();
+    
         $departments = Department::select('id', 'name')->orderBy('name')->get();
         $brands = Brand::select('id', 'name')->orderBy('name')->get();
         // $users = User::select('id', 'name')->orderBy('name')->get();
-        return view('back.cars.create', compact('departments', 'brands'));
+        return view('back.cars.create', compact('departments', 'brands'))->with('selectedMonth', $selectedMonth)->with('selectedInterval', $selectedInterval);
     }
 
 
@@ -92,9 +99,31 @@ class CarController extends Controller
 
     public function edit(Car $car)
     {
-        $countries = Country::where('is_eu', 1)->orderBy('name', 'asc')->get();
+        $selectedMonth = Month::where('select', 1)->first();
+        $selectedInterval = Interval::where('month_id', $selectedMonth->id)->where('select', 1)->first();
 
-        return view('back.cars.edit', compact('car'))->with(compact('countries'));
+        $departments = Department::select('id', 'name')->orderBy('name')->get();
+        $dep_id = CarDepartment::select('department_id', 'interval_id', 'car_id')
+            ->where('car_id', $car->id)
+            ->where('interval_id', '<=', $selectedInterval->id)
+            ->orderBy('interval_id', 'desc')
+            ->first()['department_id'];
+        $users = Department::with('users')->where('id', '=', $dep_id)->get()[0]['users'];
+        $usr_id = CarUser::select('user_id', 'interval_id', 'car_id')
+            ->where('car_id', $car->id)
+            ->where('interval_id', '<=', $selectedInterval->id)
+            ->orderBy('interval_id', 'desc')
+            ->first()['user_id'];
+        $brands = Brand::select('id', 'name')->orderBy('name')->get();
+        $types = Type::where('brand_id', '=', $car->brand_id)->get();
+
+        return view('back.cars.edit', compact('car'))
+        ->with(compact('departments', 'users','brands', 'types'))
+        ->with('dep_id', $dep_id)
+        ->with('usr_id', $usr_id)
+        ->with('selectedMonth', $selectedMonth)
+        ->with('selectedInterval', $selectedInterval);
+        //return view('back.customers.edit', compact('customer'))->with(compact('countries'));
     }
 
     public function update(CarUpdateRequest $request, Car $car)

@@ -6,8 +6,6 @@
 
 @section('content')
 <?php
-    $selectedMonth = \App\Models\Month::where('select', 1)->first();
-    $selectedInterval = \App\Models\Interval::where('month_id', $selectedMonth->id)->where('select', 1)->first();
     $users = @\App\Models\Department::with('users')->where('id', '=', (old('department_id')))->get()[0]['users'];
     $types = @\App\Models\Brand::with('types')->where('id', '=', (old('brand_id')))->get()[0]['types'];
 ?>
