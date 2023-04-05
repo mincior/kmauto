@@ -70,7 +70,7 @@
                                 }
                                 @else{
                                     @foreach ($users as $user)
-                                        <option {{ $usr_id == $user['id']? "selected" : "" }}  value="{{ $user['id'] }}">{{ $user['name'] }}</option>
+                                        <option {{ $usr_id == $user['id']? "selected" : "" }}  value="{{ $user['id']}}">{{ $user['name'] }}</option>
                                     @endforeach
                     
                                 }
@@ -161,8 +161,8 @@
                         <div class="col-md-3">
                             <select name="activ" id="activ_select" class="form-select">
                                 <option value="">Alege ...</option>
-                                <option   {{ (old('activ') ?   (old('activ') == 1) : ($car->activ == 1)) ? "selected" : "" }}  value=1>Da</option>
-                                <option   {{ (old('activ') ?   (old('activ') == 0) : ($car->activ == 0)) ? "selected" : "" }}  value=0>Nu</option>
+                                <option   {{ (old('activ') ?   (old('activ') == "1") : ($car->activ == 1)) ? "selected" : "" }}  value="1">Da</option>
+                                <option   {{ (old('activ') ?   (old('activ') == "0") : ($car->activ == 0)) ? "selected" : "" }}  value="0">Nu</option>
                             </select>
                         </div>
                     </div>

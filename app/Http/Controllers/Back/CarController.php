@@ -92,9 +92,25 @@ class CarController extends Controller
 
     public function show(Car $car)
     {
-        $countries = Country::where('is_eu', 1)->orderBy('name', 'asc')->get();
+        $data=[];
+        $data1=[];
+        $selectedMonth = Month::where('select', 1)->first();
+        $selectedInterval = Interval::where('month_id', $selectedMonth->id)->where('select', 1)->first();
+        $brand_name = Brand::where('id', $car->brand_id)->first()->name;
+        $type_name = Type::where('id', $car->type_id)->first()->name;
+        $user_id = CarUser::where('car_id', $car->id)->where('interval_id', '<=', $selectedInterval->id)->first()->user_id;
+        $user_name = User::where('id', $user_id)->first()->name;
+        $department_id = CarDepartment::where('car_id', $car->id)->where('interval_id', '<=', $selectedInterval->id)->first()->department_id;
+        $department_name = Department::where('id', $department_id)->first()->name;
+        $data['selectedMonth'] = $selectedMonth->id;
+        $data['selectedInterval'] = $selectedInterval->id;
+        $data['brand_name'] = $brand_name;
+        $data['type_name'] = $type_name;
+        $merged_data['user_name'] = $user_name;
+        $merged_data['department_name'] = $department_name;
 
-        return view('back.cars.show', compact('car'))->with(compact('countries'));
+
+        return view('back.cars.show', $data, $merged_data)->with(compact('car'));
     }
 
     public function edit(Car $car)
@@ -109,7 +125,10 @@ class CarController extends Controller
             ->orderBy('interval_id', 'desc')
             ->first()['department_id'];
         $users = Department::with('users')->where('id', '=', $dep_id)->get()[0]['users'];
-        $usr_id = CarUser::select('user_id', 'interval_id', 'car_id')
+
+        //usr_id = o masina poate sa nu aiba un user alocat (nici userul o masina) 
+        //de aceea s-a pus @CarUser... sa nu dea eroare daca $usr_id este null
+        $usr_id = @CarUser::select('user_id', 'interval_id', 'car_id')
             ->where('car_id', $car->id)
             ->where('interval_id', '<=', $selectedInterval->id)
             ->orderBy('interval_id', 'desc')
@@ -123,17 +142,27 @@ class CarController extends Controller
         ->with('usr_id', $usr_id)
         ->with('selectedMonth', $selectedMonth)
         ->with('selectedInterval', $selectedInterval);
-        //return view('back.customers.edit', compact('customer'))->with(compact('countries'));
     }
 
     public function update(CarUpdateRequest $request, Car $car)
     {
-        $car->update($request->all());
+        //In request avem campurile necesare (proprietatea name din html)
+        //In CarStoreRequest se face validarea
+        $data = $request->all();
+        //scoate un numar de forma B-87-CLT din (B87CLT, B-87CLT, B#$%$%$87(*&^%^&*(cLt)), etc. )
+        $data['numar'] = AppHelper::prelucrare_numar_masina($data['numar']); 
+        
+        //scrie masina noua 
+        $car->update($data);
+
+        //scrie id-urile in tabelele pivot precum si intervalul curent (momentul crearii)
+        $car->users()->syncWithPivotValues([$data['user_id']],  ['interval_id' => intval($data['selected_interval'])]);
+        $car->departments()->syncWithPivotValues([$data['department_id']],  ['interval_id' => intval($data['selected_interval'])]);
 
         $notification = [
             "type" => "success",
-            "title" => 'Edit ...',
-            "message" => 'Item updated.',
+            "title" => 'Modificare ...',
+            "message" => 'Masina a fost modificata cu succes!',
         ];
 
         return redirect()->route('back.cars.index')->with('notification', $notification);
