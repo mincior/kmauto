@@ -121,22 +121,22 @@
 
                     if (ids.length === 0) {
                         bootbox.alert({
-                            title: 'Error ...',
-                            message: 'Nothing slected'
+                            title: 'Eroare ...',
+                            message: 'Nimic selectat'
                         });
                         return
                     }
 
                     bootbox.confirm({
-                        title: 'Delete item(s) ...',
-                        message: "Esti sigur?",
+                        title: 'Stergeti masinile selectate? Atentie. Se vor sterge doar acele masini care nu au inregistari in kmlog',
+                        message: "Sunteti sigur?",
                         buttons: {
                             confirm: {
-                                label: 'Yes',
+                                label: 'Da',
                                 className: 'btn-sm btn-primary'
                             },
                             cancel: {
-                                label: 'No',
+                                label: 'Nu',
                                 className: 'btn-sm btn-secondary'
                             }
                         },
@@ -154,8 +154,8 @@
 
                                         showToast({
                                             type: 'success',
-                                            title: 'Delete ...',
-                                            message: 'Randul este sters.',
+                                            title: 'Stergere ...',
+                                            message: 'Masina/masinile selectate au fost sterse!',
                                         });
                                     }
                                 });
@@ -300,7 +300,6 @@
                 bootbox.confirm({
                     title: 'Edit ...',
                     message: MyItem(id, key, value),
-                    size: 'xl',
                     onEscape: true,
                     backdrop: true,
                     buttons: {
@@ -329,41 +328,26 @@
                 var aRow = oTable.row('#' + id).data();
 
                 if (value == 1) {
-                    from = '1';
-                    to = '0';
+                    from = 'Da';
+                    to = 'Nu';
                 } else {
-                    from = '0';
-                    to = '1';
+                    from = 'Nu';
+                    to = 'Da';
                 }
 
                 var strHTML = '';
                 strHTML += '<table class="table table-bordered table-sm mytable">';
                 strHTML += '<thead class="table-success">';
                 strHTML +=
-                    '<tr><th class="text-center">ID</th><th>Numar</th><th>Brand</th><th>Model</th><th class="text-center">Send activ ?</th></tr>';
+                    '<tr><th>Numar</th><th class="text-center">Activ ?</th></tr>';
                 strHTML += '</thead>';
                 strHTML += '<tbody>';
                 strHTML += '<tr>';
-                strHTML += '<td class="text-center">' + aRow['id'].toString() + '</td>';
                 strHTML += '<td>';
                 if (aRow['numar'] == null) {
                     strHTML += '&nbsp;';
                 } else {
                     strHTML += aRow['numar'];
-                }
-                strHTML += '</td>';
-                strHTML += '<td>';
-                if (aRow['brand'] == null) {
-                    strHTML += '&nbsp;';
-                } else {
-                    strHTML += aRow['brand'];
-                }
-                strHTML += '</td>';
-                strHTML += '<td>';
-                if (aRow['model'] == null) {
-                    strHTML += '&nbsp;';
-                } else {
-                    strHTML += aRow['type'];
                 }
                 strHTML += '</td>';
                 strHTML += '<td class="text-center">';

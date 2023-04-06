@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Back;
 
+use Countries;
 use App\Models\Car;
+use App\Models\Fuel;
 use App\Models\Type;
 use App\Models\User;
 use App\Models\Brand;
+use App\Models\Kmlog;
 use App\Models\Month;
 use App\Models\CarUser;
 use App\Models\Country;
@@ -23,13 +26,28 @@ use Yajra\DataTables\Facades\DataTables;
 
 class CarController extends Controller
 {
+        /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function autoComplete(Request $request)
+    {
+        
+        $res = Fuel::select("valoare")
+                ->where("valoare","LIKE","%{$request->term}%")
+                ->get();  
+        return response()->json($res);
+    }
 
     public function index(Request $request)
-    {   
-        if ($request->ajax()) {          
+    {
+
+        
+        if ($request->ajax()) {
             // $cars = Car::with('brand','departments','type', 'user')->get();
             //     dd($cars[0]);
-            $cars = Car::with('brand','type', 'departments', 'users')->select(sprintf('%s.*', (new Car)->getTable()))->orderBy('id', 'desc');
+            $cars = Car::with('brand', 'type', 'departments', 'users')->select(sprintf('%s.*', (new Car)->getTable()))->orderBy('id', 'desc');
             return DataTables::of($cars)
                 ->addColumn('DT_RowId', function ($row) {
                     return $row->id;
@@ -58,7 +76,7 @@ class CarController extends Controller
     {
         $selectedMonth = Month::where('select', 1)->first();
         $selectedInterval = Interval::where('month_id', $selectedMonth->id)->where('select', 1)->first();
-    
+
         $departments = Department::select('id', 'name')->orderBy('name')->get();
         $brands = Brand::select('id', 'name')->orderBy('name')->get();
         // $users = User::select('id', 'name')->orderBy('name')->get();
@@ -72,13 +90,13 @@ class CarController extends Controller
         //In CarStoreRequest se face validarea
         $data = $request->all();
         //scoate un numar de forma B-87-CLT din (B87CLT, B-87CLT, B#$%$%$87(*&^%^&*(cLt)), etc. )
-        $data['numar'] = AppHelper::prelucrare_numar_masina($data['numar']); 
-        
+        $data['numar'] = AppHelper::prelucrare_numar_masina($data['numar']);
+
         //scrie masina noua 
         $car = Car::create($data);
 
         //scrie id-urile in tabelele pivot precum si intervalul curent (momentul crearii)
-        $car->users()->syncWithPivotValues([$data['user_id']],  ['interval_id' => intval($data['selected_interval'])]);
+        @$car->users()->syncWithPivotValues([$data['user_id']],  ['interval_id' => intval($data['selected_interval'])]);
         $car->departments()->syncWithPivotValues([$data['department_id']],  ['interval_id' => intval($data['selected_interval'])]);
 
         $notification = [
@@ -92,14 +110,14 @@ class CarController extends Controller
 
     public function show(Car $car)
     {
-        $data=[];
-        $data1=[];
+        $data = [];
+        $data1 = [];
         $selectedMonth = Month::where('select', 1)->first();
         $selectedInterval = Interval::where('month_id', $selectedMonth->id)->where('select', 1)->first();
         $brand_name = Brand::where('id', $car->brand_id)->first()->name;
         $type_name = Type::where('id', $car->type_id)->first()->name;
-        $user_id = CarUser::where('car_id', $car->id)->where('interval_id', '<=', $selectedInterval->id)->first()->user_id;
-        $user_name = User::where('id', $user_id)->first()->name;
+        $user_id = @CarUser::where('car_id', $car->id)->where('interval_id', '<=', $selectedInterval->id)->first()->user_id;
+        $user_name = @User::where('id', $user_id)->first()->name;
         $department_id = CarDepartment::where('car_id', $car->id)->where('interval_id', '<=', $selectedInterval->id)->first()->department_id;
         $department_name = Department::where('id', $department_id)->first()->name;
         $data['selectedMonth'] = $selectedMonth->id;
@@ -137,11 +155,11 @@ class CarController extends Controller
         $types = Type::where('brand_id', '=', $car->brand_id)->get();
 
         return view('back.cars.edit', compact('car'))
-        ->with(compact('departments', 'users','brands', 'types'))
-        ->with('dep_id', $dep_id)
-        ->with('usr_id', $usr_id)
-        ->with('selectedMonth', $selectedMonth)
-        ->with('selectedInterval', $selectedInterval);
+            ->with(compact('departments', 'users', 'brands', 'types'))
+            ->with('dep_id', $dep_id)
+            ->with('usr_id', $usr_id)
+            ->with('selectedMonth', $selectedMonth)
+            ->with('selectedInterval', $selectedInterval);
     }
 
     public function update(CarUpdateRequest $request, Car $car)
@@ -150,8 +168,8 @@ class CarController extends Controller
         //In CarStoreRequest se face validarea
         $data = $request->all();
         //scoate un numar de forma B-87-CLT din (B87CLT, B-87CLT, B#$%$%$87(*&^%^&*(cLt)), etc. )
-        $data['numar'] = AppHelper::prelucrare_numar_masina($data['numar']); 
-        
+        $data['numar'] = AppHelper::prelucrare_numar_masina($data['numar']);
+
         //scrie masina noua 
         $car->update($data);
 
@@ -170,8 +188,16 @@ class CarController extends Controller
 
     public function massDestroy(Request $request)
     {
-        Car::whereIn('id', request('ids'))->delete();
-
+        $car_for_delete_ids = $request->ids;
+        foreach ($car_for_delete_ids as $id) {
+            $kmlog = Kmlog::where('car_id', $id)->first();
+            if ($kmlog == null) {//masina se poate sterge
+                //dar mai intai se sterg legaturile din tabelele pivot
+                CarUser::where('car_id', $id)->delete();
+                CarDepartment::where('car_id', $id)->delete();
+                Car::where('id', $id)->delete();
+            }
+        }
         return response()->noContent();
     }
 }

@@ -14,7 +14,7 @@ $("#brand_select").change(function () {
 
 //incarca masinile filialei
 function get_brand_types( brand_id, type_id) {
-	let url = window.location.origin + '/back/types/get-brand-types' + '/' + brand_id
+	let url = siteUrl + '/back/types/get-brand-types' + '/' + brand_id
 	//ajax http request
 	axios.get(url)
 		.then(function (res) {

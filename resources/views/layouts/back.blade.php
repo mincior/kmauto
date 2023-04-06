@@ -24,9 +24,16 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-print-css/css/bootstrap-print.min.css" media="print" />
 
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}" />
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     @yield('styles')
 
     <!-- JS -->
+
+    <script type="text/javascript">
+        var siteUrl = "{{ url('/') }}";
+    </script>
+
     <script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
@@ -38,7 +45,10 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/js/i18n/nl.min.js"></script>
 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/6.0.0/bootbox.min.js"></script>
-    <script type="text/javascript" src="{{ asset('js/me/autocomplete.js') }}"></script>
+
+
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
     <script type="text/javascript" src="{{ asset('js/custom.js') }}"></script>
 </head>
 

@@ -9,10 +9,10 @@
     $users = @\App\Models\Department::with('users')->where('id', '=', (old('department_id')))->get()[0]['users'];
     $types = @\App\Models\Brand::with('types')->where('id', '=', (old('brand_id')))->get()[0]['types'];
 ?>
-<form id="myForm" method="POST" action="{{ route('back.cars.store') }}" enctype="multipart/form-data" wire:submit.prevent="savePersonalData" onkeydown="return event.key != 'Enter';">
+<form id="myForm" method="POST" action="{{ route('back.cars.store') }}" enctype="multipart/form-data" >
     @csrf
     <input type="hidden" name="selected_interval" value="{{$selectedInterval->id}}">
-    <div class="row">
+    <div class="container mt-4">
         <div class="col-12">
             <div class="card mb-3">
                 <div class="card-header">
@@ -125,11 +125,11 @@
                             <span class="invalid-feedback" role="alert">{{ $message }}</span>
                             @enderror
                         </div>
-                        <div class="col col-md-1">
-                            <button id="save_fuel" class="btn btn-primary text-white btn-sm" tabindex="-1" onclick="event.preventDefault(); salveazaConsumuriMedii();">Salveaza</button>
-                        </div>
+<div class="col col-md-1">
+    <button id="save_fuel" class="btn btn-primary text-white btn-sm" tabindex="-1" onclick="event.preventDefault(); salveazaConsumuriMedii();">Salveaza</button>
+</div>
                     </div>
-
+                                    
                     <div class="row mb-2">
                         <label for="carburant" class="col-md-2 col-form-label">Carburant :</label>
 
@@ -162,9 +162,9 @@
                             </a>
                         </div>
 
-                        <div class="col text-end">
-                            <button type="submit" class="btn btn-primary text-white btn-sm" tabindex="-1">Salveaza</button>
-                        </div>
+<div class="col text-end">
+    <button type="submit" class="btn btn-primary text-white btn-sm" tabindex="-1">Salveaza</button>
+</div>
                     </div>
                 </div>
             </div>
@@ -190,6 +190,8 @@
             </div>
         </div>
     </div>
+      
+
 </form>
 @endsection
 
@@ -199,5 +201,6 @@
 
 {{-- autocompletare casete text cu valori dintr-un array --}}
 <script src="{{ asset('js/me/create_car.js') }}"></script>
-
+<script>
+</script>
 @endsection

@@ -21,7 +21,6 @@ Route::middleware('auth')->group(function () {
     Route::prefix('front')->as('front.')->group(function () {
         // Nothing here yet
     });
-
     // Backend routes
     Route::prefix('back')->as('back.')->group(function () {
         // General routines
@@ -53,6 +52,7 @@ Route::middleware('auth')->group(function () {
         /* ---------------------------------------- */
         // Cars
         Route::controller(CarController::class)->group(function () {
+            Route::get('/cars/autocomplete',  'autoComplete')->name('autoComplete');
             Route::delete('/cars/massDestroy', 'massDestroy')->name('cars.massDestroy');
             Route::resource('/cars', CarController::class)->except(['destroy']);
         });

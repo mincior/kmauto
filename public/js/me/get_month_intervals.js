@@ -3,7 +3,7 @@
 //astfel ca aici va sosi in $("#month_select").val() id-ul lunii selectate
 //Aduce intervalele selectate si selecteaza pe primul
 //incarca intervalele lunii si selecteaza pe primul
-let url = window.location.origin + '/back/general/get-month-intervals' + '/' + $("#month_select").val() //
+let url = siteUrl + '/back/general/get-month-intervals' + '/' + $("#month_select").val() //
 // let mon =     JSON.stringify($("#month_select").data('months'));
 // console.log(mon);
 axios.get(url) //ajax http request
@@ -34,7 +34,7 @@ axios.get(url) //ajax http request
 //cand se selecteaza luna se salveaza in months campul select dupa care se da refresh la pagina
 $("#month_select").change(function () { //Atentie, la selectare nu se aduc intervalele ci doar se scrie campul select din months
 	let month_id = $(this).val();
-	let url = window.location.origin + '/back/general/setValueMonthSelect'
+	let url = siteUrl + '/back/general/setValueMonthSelect'
 	$.ajax({
 		method: 'POST',
 		url: url,
@@ -52,7 +52,7 @@ $("#month_select").change(function () { //Atentie, la selectare nu se aduc inter
 $("#interval_select").change(function () { 
     let month_id = $("#month_select").val();
     let interval_id = $(this).val();
-    let url = window.location.origin + '/back/general/setValueIntervalSelect'
+    let url = siteUrl + '/back/general/setValueIntervalSelect'
     $.ajax({
         method: 'POST',
         url: url,

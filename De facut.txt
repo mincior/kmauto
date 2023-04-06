@@ -1,5 +1,0 @@
-Validarile sunt fictive
-Atentie. Daca da o eroare la validare in pagina, nu sunt completate toate campurile (nu se retin) daca nu salveaza.
-	Am folosit <option   {{ old('carburant') == "benzina" ? "selected" : "" }} value=... si am rezolvat pentru selecturile care nu au javascript
-	De gasit o cale de a executa javascript cand se revine din eroare pentru a simula selectia intr-un select pentru a completa alt select copil
-	

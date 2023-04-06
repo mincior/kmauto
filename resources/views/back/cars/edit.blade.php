@@ -14,8 +14,8 @@
     @csrf
     @method('PUT')
     <input type="hidden" name="selected_interval" value="{{$selectedInterval->id}}">
-    <div class="row">
-        <div class="col-12">
+    <div class="container mt-4">
+        <div class="col">
             <div class="card mb-3">
                 <div class="card-header">
                     <div class="row">
@@ -185,24 +185,6 @@
 
         </div>
 
-        <div class="col-12">
-            <div class="card mb-3">
-                <div class="card-header bg-info text-white">
-                    <div class="row">
-                        <div class="col">Help</div>
-
-                        <div class="col fs-5 text-end"><i class="bi bi-question"></i></div>
-                    </div>
-                </div>
-
-                <div class="card-body">
-                    <ul>
-                        <li>Specify the values.</li>
-                        <li>Click the <strong>Send</strong> button to save.</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
     </div>
 </form>
 @endsection
