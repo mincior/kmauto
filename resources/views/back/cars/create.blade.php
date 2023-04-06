@@ -9,7 +9,7 @@
     $users = @\App\Models\Department::with('users')->where('id', '=', (old('department_id')))->get()[0]['users'];
     $types = @\App\Models\Brand::with('types')->where('id', '=', (old('brand_id')))->get()[0]['types'];
 ?>
-<form id="myForm" method="POST" action="{{ route('back.cars.store') }}" enctype="multipart/form-data" >
+<form id="myForm" method="POST" action="{{ route('back.users.store') }}" enctype="multipart/form-data" >
     @csrf
     <input type="hidden" name="selected_interval" value="{{$selectedInterval->id}}">
     <div class="container mt-4">
@@ -131,7 +131,7 @@
                     </div>
                                     
                     <div class="row mb-2">
-                        <label for="carburant" class="col-md-2 col-form-label">Carburant :</label>
+                        <label for="carburant" class="col-md-2 col-form-label">Userburant :</label>
 
                         <div class="col-md-3">
                             <select name="carburant" id="carburant_select" class="form-select" style="width:auto">
@@ -157,7 +157,7 @@
                 <div class="card-footer">
                     <div class="row">
                         <div class="col">
-                            <a class="btn btn-secondary text-white btn-sm" href="{{ route('back.cars.index') }}" role=" button" tabindex="-1">
+                            <a class="btn btn-secondary text-white btn-sm" href="{{ route('back.users.index') }}" role=" button" tabindex="-1">
                                 <i class="bi bi-arrow-left-short"></i>
                             </a>
                         </div>
@@ -200,7 +200,7 @@
 <script src="{{ asset('js/me/get_brand_types.js') }}"></script>
 
 {{-- autocompletare casete text cu valori dintr-un array --}}
-<script src="{{ asset('js/me/create_car.js') }}"></script>
+<script src="{{ asset('js/me/create_user.js') }}"></script>
 <script>
 </script>
 @endsection

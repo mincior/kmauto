@@ -174,6 +174,7 @@
                 columns: [{
                         data: 'id',
                         name: 'id',
+                        searchable: false,
                         className: 'text-left',
                         render: function(data, type, row, meta) {
                             return data.toString();
@@ -242,7 +243,7 @@
                             if (data == 1) {
                                 return 'Da&nbsp;';
                             } else {
-                                return 'Nu&nbsp;';
+                                return '';
                             }
                         },
                     }

@@ -6,7 +6,7 @@
 
 @section('content')
     <div class="card">
-        <div class="card-header d-print-none">
+        <div class="card-header">
             <div class="row">
                 <div class="col">Users</div>
 
@@ -27,14 +27,9 @@
                 <thead class="table-success">
                     <tr>
                         <th scope="col" width="4%">ID</th>
-                        <th scope="col">Nume</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Telefon</th>
-                        <th scope="col">Limita km</th>
-                        <th scope="col">Observatii</th>
-                        <th scope="col">Calificativ</th>
-                        <th scope="col">Is admin</th>
-                        <th scope="col" class="text-danger">Activ ?</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">E-mail</th>
+                        <th scope="col" class="text-danger">Developer ?</th>
                     </tr>
                 </thead>
             </table>
@@ -49,7 +44,6 @@
 
     <script type="text/javascript">
         $(function() {
-
             /* ------------------------------------------------------------------------ */
             let createButton = {
                 className: 'btn-success',
@@ -61,22 +55,6 @@
                 }
             }
             dtButtonsCenter.push(createButton)
-
-            let showButton = {
-                extend: 'selectedSingle',
-                className: 'btn-secondary selectOne',
-                text: '<i class="bi bi-eye"></i>',
-                titleAttr: 'Show',
-                enabled: false,
-                action: function(e, dt, node, config) {
-                    const id = dt.row({
-                        selected: true
-                    }).data().id;
-
-                    document.location.href = '{{ route('back.users.show', 'id') }}'.replace("id", id);
-                }
-            }
-            dtButtonsCenter.push(showButton)
 
             let editButton = {
                 extend: 'selectedSingle',
@@ -97,7 +75,7 @@
             let clearButton = {
                 className: 'btn-secondary',
                 text: '<i class="bi bi-arrow-counterclockwise"></i>',
-                titleAttr: 'Remove filter and sort',
+                titleAttr: 'Reset filter and sort',
                 action: function(e, dt, node, config) {
                     dt.state.clear();
                     window.location.reload();
@@ -121,22 +99,22 @@
 
                     if (ids.length === 0) {
                         bootbox.alert({
-                            title: 'Eroare ...',
-                            message: 'Nimic selectat'
+                            title: 'Error ...',
+                            message: 'Nothing selected'
                         });
                         return
                     }
 
                     bootbox.confirm({
-                        title: 'Stergeti utilizatorii selectati? Atentie. Se vor sterge doar acei utilizatori care nu au inregistari in kmlog',
-                        message: "Sunteti sigur?",
+                        title: 'Delete item(s) ...',
+                        message: "Esti sigur?",
                         buttons: {
                             confirm: {
-                                label: 'Da',
+                                label: 'Yes',
                                 className: 'btn-sm btn-primary'
                             },
                             cancel: {
-                                label: 'Nu',
+                                label: 'No',
                                 className: 'btn-sm btn-secondary'
                             }
                         },
@@ -154,8 +132,8 @@
 
                                         showToast({
                                             type: 'success',
-                                            title: 'Stergere ...',
-                                            message: 'Masina/utilizatorii selectati au fost stersi!',
+                                            title: 'Delete ...',
+                                            message: 'The selection has been deleted.',
                                         });
                                     }
                                 });
@@ -174,10 +152,9 @@
                 columns: [{
                         data: 'id',
                         name: 'id',
-                        searchable: false,
-                        className: 'text-left',
+                        className: 'text-center',
                         render: function(data, type, row, meta) {
-                            return data.toString();
+                            return data.toString().padStart(5, '0');
                         }
                     },
                     {
@@ -187,60 +164,37 @@
                     {
                         data: 'email',
                         name: 'email',
-                    },
-                    {
-                        data: 'telefon',
-                        name: 'telefon',
-                    },
-                    {
-                        data: 'limita_km',
-                        name: 'limita_km',
-                        className: 'text-center',
-                        width: '2'
-                    },
-                    {
-                        data: 'observatii',
-                        name: 'observatii',
-                    },
-                    {
-                        data: 'calificativ',
-                        name: 'calificativ',
+                        sortable: false,
+                        render: function(data, type, row, meta) {
+                            if (data) {
+                                return '<a a href="mailto:' + data +
+                                    '?SUBJECT=MyApplication - User">' +
+                                    data + '</a>';
+                            } else {
+                                return '';
+                            }
+                        }
                     },
                     {
                         data: 'is_admin',
                         name: 'is_admin',
                         searchable: false,
-                        className: "text-center no-select",
+                        className: "text-center no-select toggleIsDeveloper",
                         render: function(data, type, row, meta) {
                             if (data == 1) {
-                                return 'Da&nbsp;';
+                                return '<i class="bi bi-check-lg"></i>';
                             } else {
-                                return '';
+                                return '&nbsp;';
                             }
                         },
                     },
-                    {
-                        data: 'activ',
-                        name: 'activ',
-                        searchable: false,
-                        className: "text-center no-select toggleSendActiv",
-                        render: function(data, type, row, meta) {
-                            if (data == 1) {
-                                return 'Da&nbsp;';
-                            } else {
-                                return '';
-                            }
-                        },
-                    }
                 ],
                 select: {
                     selector: 'td:not(.no-select)',
                 },
                 ordering: true,
                 order: [
-                    [1, "asc"],
-                    [2, "asc"],
-                    [3, "asc"],
+                    [1, 'asc']
                 ],
                 preDrawCallback: function(settings) {
                     oTable.columns.adjust();
@@ -277,63 +231,76 @@
             /* ------------------------------------------------------------------------ */
             /* DATATABLE - CELL - Action					   						    */
             /* ------------------------------------------------------------------------ */
-            $('#sqltable tbody').on('click', 'td.toggleSendActiv', function() {
-                var table = 'users';
-                var id = oTable.row($(this).closest("tr")).data().DT_RowId;
-                var key = 'activ';
+            $('#sqltable tbody').on('click', 'td.toggleIsDeveloper', function() {
+                const table = 'users';
+                const id = oTable.row($(this).closest("tr")).data().DT_RowId;
+                const key = 'is_admin';
                 var value = oTable.cell(this).data();
 
-                bootbox.confirm({
-                    title: 'Edit ...',
-                    message: MyItem(id, key, value),
-                    onEscape: true,
-                    backdrop: true,
-                    buttons: {
-                        confirm: {
-                            label: 'Yes',
-                            className: 'btn-success'
+                if (id == 1) {
+                    bootbox.dialog({
+                        title: "Edit ...",
+                        message: "This record is read-only.",
+                        onEscape: true,
+                        backdrop: true,
+                    });
+                } else {
+                    bootbox.confirm({
+                        title: 'Edit ...',
+                        message: MyItem(id, key, value),
+                        size: 'xl',
+                        onEscape: true,
+                        backdrop: true,
+                        buttons: {
+                            confirm: {
+                                label: 'Yes',
+                                className: 'btn-success'
+                            },
+                            cancel: {
+                                label: 'No',
+                                className: 'btn-secondary'
+                            }
                         },
-                        cancel: {
-                            label: 'No',
-                            className: 'btn-secondary'
-                        }
-                    },
-                    callback: function(confirmed) {
-                        if (confirmed) {
-                            value = value == 0 ? 1 : 0;
+                        callback: function(confirmed) {
+                            if (confirmed) {
+                                value = value == 0 ? 1 : 0;
 
-                            setValue(table, id, key, value);
+                                setValue(table, id, key, value);
+                            }
                         }
-                    }
-                });
+                    });
+                }
             });
             /* ------------------------------------------------------------------------ */
-            /* FUNCTIONS - MyItem, setValue         			            		    */
+            /* FUNCTIONS - MyItem, setValue                     					    */
             /* ------------------------------------------------------------------------ */
             function MyItem(id, key, value) {
                 var aRow = oTable.row('#' + id).data();
 
                 if (value == 1) {
-                    from = 'Da';
-                    to = 'Nu';
+                    from = '1';
+                    to = '0';
                 } else {
-                    from = 'Nu';
-                    to = 'Da';
+                    from = '0';
+                    to = '1';
                 }
 
                 var strHTML = '';
                 strHTML += '<table class="table table-bordered table-sm mytable">';
                 strHTML += '<thead class="table-success">';
-                strHTML +=
-                    '<tr><th>Nume</th><th class="text-center">Activ ?</th></tr>';
+                strHTML += '<tr><th class="text-center">ID</th><th>Name</th><th>E-mail</th><th>Developer ?</th></tr>';
                 strHTML += '</thead>';
                 strHTML += '<tbody>';
                 strHTML += '<tr>';
+                strHTML += '<td class="text-center">' + aRow['id'].toString() + '</td>';
                 strHTML += '<td>';
-                if (aRow['name'] == null) {
-                    strHTML += '&nbsp;';
-                } else {
+                if (aRow['name']) {
                     strHTML += aRow['name'];
+                }
+                strHTML += '</td>';
+                strHTML += '<td>';
+                if (aRow['email']) {
+                    strHTML += aRow['email'];
                 }
                 strHTML += '</td>';
                 strHTML += '<td class="text-center">';
@@ -342,7 +309,7 @@
                 strHTML += '</tr>';
                 strHTML += '</tbody>';
                 strHTML += '</table>';
-                strHTML += '<div>Esti sigur ca vrei sa modifici randul de mai sus?</div>';
+                strHTML += '<div>Esti sigur you want to edit the item(s) above?</div>';
                 return strHTML;
             };
             /* ------------------------------------------- */

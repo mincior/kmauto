@@ -17,14 +17,17 @@ class DepartmentController extends Controller
 {
     public function getUsers($department_id)
     {
+        
+        //trebuie rezolvat sa returneze userii functie de interval Se pune ->where('interval_id', '>=' , $interval_id) dar trebuie adus $interval_id
         $users = Department::with('users')->where('id', '=', $department_id)->get()[0]['users'];
         return $users;
     }
 
     public function getCars($department_id)
     {
-        $users = Department::with('cars')->where('id', '=', $department_id)->get();
-        return $users;
+        //trebuie rezolvat sa returneze masinile functie de interval
+        $cars = Department::with('cars')->where('id', '=', $department_id)->get()[0]['cars'];
+        return $cars;
     }
 
     public function index(Request $request)

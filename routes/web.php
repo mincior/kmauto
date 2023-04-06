@@ -41,7 +41,7 @@ Route::middleware('auth')->group(function () {
         // Users
         Route::controller(UserController::class)->group(function () {
             Route::delete('/users/massDestroy', 'massDestroy')->name('users.massDestroy');
-            Route::resource('/users', UserController::class)->except(['show', 'destroy']);
+            Route::resource('/users', UserController::class)->except([ 'destroy']);
         });
         /* ---------------------------------------- */
         // Customers

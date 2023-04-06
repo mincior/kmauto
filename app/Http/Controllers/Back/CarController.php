@@ -11,7 +11,6 @@ use App\Models\Brand;
 use App\Models\Kmlog;
 use App\Models\Month;
 use App\Models\CarUser;
-use App\Models\Country;
 use App\Models\Interval;
 use App\Models\Department;
 use App\MyHelpers\AppHelper;
@@ -79,7 +78,6 @@ class CarController extends Controller
 
         $departments = Department::select('id', 'name')->orderBy('name')->get();
         $brands = Brand::select('id', 'name')->orderBy('name')->get();
-        // $users = User::select('id', 'name')->orderBy('name')->get();
         return view('back.cars.create', compact('departments', 'brands'))->with('selectedMonth', $selectedMonth)->with('selectedInterval', $selectedInterval);
     }
 
@@ -116,9 +114,9 @@ class CarController extends Controller
         $selectedInterval = Interval::where('month_id', $selectedMonth->id)->where('select', 1)->first();
         $brand_name = Brand::where('id', $car->brand_id)->first()->name;
         $type_name = Type::where('id', $car->type_id)->first()->name;
-        $user_id = @CarUser::where('car_id', $car->id)->where('interval_id', '<=', $selectedInterval->id)->first()->user_id;
+        $user_id = @CarUser::where('car_id', $car->id)->where('interval_id', '>=', $selectedInterval->id)->first()->user_id;
         $user_name = @User::where('id', $user_id)->first()->name;
-        $department_id = CarDepartment::where('car_id', $car->id)->where('interval_id', '<=', $selectedInterval->id)->first()->department_id;
+        $department_id = CarDepartment::where('car_id', $car->id)->where('interval_id', '>=', $selectedInterval->id)->first()->department_id;
         $department_name = Department::where('id', $department_id)->first()->name;
         $data['selectedMonth'] = $selectedMonth->id;
         $data['selectedInterval'] = $selectedInterval->id;
@@ -139,7 +137,7 @@ class CarController extends Controller
         $departments = Department::select('id', 'name')->orderBy('name')->get();
         $dep_id = CarDepartment::select('department_id', 'interval_id', 'car_id')
             ->where('car_id', $car->id)
-            ->where('interval_id', '<=', $selectedInterval->id)
+            ->where('interval_id', '>=', $selectedInterval->id)
             ->orderBy('interval_id', 'desc')
             ->first()['department_id'];
         $users = Department::with('users')->where('id', '=', $dep_id)->get()[0]['users'];
@@ -148,7 +146,7 @@ class CarController extends Controller
         //de aceea s-a pus @CarUser... sa nu dea eroare daca $usr_id este null
         $usr_id = @CarUser::select('user_id', 'interval_id', 'car_id')
             ->where('car_id', $car->id)
-            ->where('interval_id', '<=', $selectedInterval->id)
+            ->where('interval_id', '>=', $selectedInterval->id)
             ->orderBy('interval_id', 'desc')
             ->first()['user_id'];
         $brands = Brand::select('id', 'name')->orderBy('name')->get();

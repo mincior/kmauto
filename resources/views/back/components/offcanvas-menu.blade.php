@@ -10,7 +10,7 @@
     <hr class="narrow">
 
     <!-- developer -->
-    @can('developer')
+    @can('is_admin')
         <li class="nav-item">
             <a class="nav-link disabled" aria-current="page" href="/">Administration</a>
         </li>
