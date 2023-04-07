@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\Brand;
 use App\Models\Kmlog;
 use App\Models\Month;
+use App\Models\CarDep;
 use App\Models\CarUser;
 use App\Models\Interval;
 use App\Models\Department;
@@ -44,7 +45,39 @@ class CarController extends Controller
 
         
         if ($request->ajax()) {
-            $cars = Car::with('brand', 'type', 'departments', 'users')->select(sprintf('%s.*', (new Car)->getTable()))->orderBy('id', 'desc');
+            //pentru a returna in $cars filiala de care apartine fiecare masina la intervalul selectat
+            //se prelucreaza separat departments. Normal ar fi fost sa se puna si departments in lista with
+            //dar nu am fi putut asocia corect masina cu filiala si intervalul
+            $selectedMonth = Month::where('select', 1)->first();
+            $selectedInterval = Interval::where('month_id', $selectedMonth->id)->where('select', 1)->first();
+
+            //mai intai se pregateste $cars cu brand, type si users
+            $cars =Car:: with('brand', 'type', 'users')->select(sprintf('%s.*', (new Car)->getTable()))->orderBy('id', 'desc')->get();
+
+            //se gaseste ultima asociere intre masini si filiale pentru intervalul $selectedInterval
+            $sql = " DISTINCT car_id, LAST_VALUE(department_id) OVER (PARTITION BY car_id ORDER BY interval_id RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING ) last_department_id";
+            $res = DB::table('car_deps')
+            ->selectRaw($sql)
+            ->where('interval_id','<=', $selectedInterval->id)
+            ->get();
+            $results = json_decode($res, true);
+            //in $results avem un array ce tine car_id si last_department_id
+            
+            //vom transforma car_id in key iar last_department_id in val in $arr_cars
+            $arr_cars = [];
+            foreach($results as $key=>$result){
+                $arr_cars[$result['car_id']] = $result['last_department_id'];
+            }
+            
+            //in cars avem deja brand, type si users acum luam fiecare masina si-i adaugam si departamentul 
+            //asociat la momentul intervalului selectat
+            foreach ($cars as $car){
+                $department = Department::where('id', $arr_cars[$car->id])->get();
+                $car['departments'] = $department;
+            }
+
+            //Data tables poate functiona si pe eloquent si pe query normal dar si pe collection
+            // (cazul de fata, adica s-a aplicat get() pe query si s-a obtinut o colectie)
             return DataTables::of($cars)
                 ->addColumn('DT_RowId', function ($row) {
                     return $row->id;
