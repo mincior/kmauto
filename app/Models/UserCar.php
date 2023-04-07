@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class CarUser extends Model
+class UserCar extends Model
 
 
 {
-	use HasFactory, CarUserRelationships;
+	use HasFactory, UserCarRelationships;
 
     protected $fillable = [
 		'observatii', 

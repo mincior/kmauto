@@ -28,11 +28,13 @@
                     <tr>
                         <th scope="col" width="4%">ID</th>
                         <th scope="col">Nume</th>
+                        <th scope="col">Masina</th>
                         <th scope="col">Email</th>
                         <th scope="col">Telefon</th>
                         <th scope="col">Limita km</th>
                         <th scope="col">Observatii</th>
                         <th scope="col">Calificativ</th>
+                        <th scope="col">Filiala</th>
                         <th scope="col">Is admin</th>
                         <th scope="col" class="text-danger">Activ ?</th>
                     </tr>
@@ -185,18 +187,31 @@
                         name: 'name',
                     },
                     {
+                        data: 'id',
+                        render: function(data, type, row, meta) {
+                            if ( typeof row.cars[0] === "undefined"){
+                                return '';
+                            }else{
+                                return row.cars[0].numar;
+                            }
+                        },
+                        width: '80',
+
+                    },
+                    {
                         data: 'email',
                         name: 'email',
                     },
                     {
                         data: 'telefon',
                         name: 'telefon',
+                        width: '60',
                     },
                     {
                         data: 'limita_km',
                         name: 'limita_km',
                         className: 'text-center',
-                        width: '2'
+                        width: 30,
                     },
                     {
                         data: 'observatii',
@@ -205,6 +220,18 @@
                     {
                         data: 'calificativ',
                         name: 'calificativ',
+                    },
+                    {
+                        data: 'id',
+                        render: function(data, type, row, meta) {
+                            if ( typeof row.departments[0] === "undefined"){
+                                return '';
+                            }else{
+                                return row.departments[0].name;
+                            }
+                        },
+                        width: '100',
+
                     },
                     {
                         data: 'is_admin',

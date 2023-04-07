@@ -15,7 +15,7 @@ use App\Models\Interval;
 use App\Models\Department;
 use App\MyHelpers\AppHelper;
 use Illuminate\Http\Request;
-use App\Models\CarDep;
+use App\Models\CarDepartment;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CarStoreRequest;
@@ -44,8 +44,6 @@ class CarController extends Controller
 
         
         if ($request->ajax()) {
-            // $cars = Car::with('brand','departments','type', 'user')->get();
-            //     dd($cars[0]);
             $cars = Car::with('brand', 'type', 'departments', 'users')->select(sprintf('%s.*', (new Car)->getTable()))->orderBy('id', 'desc');
             return DataTables::of($cars)
                 ->addColumn('DT_RowId', function ($row) {
@@ -116,7 +114,7 @@ class CarController extends Controller
         $type_name = Type::where('id', $car->type_id)->first()->name;
         $user_id = @CarUser::where('car_id', $car->id)->where('interval_id', '>=', $selectedInterval->id)->first()->user_id;
         $user_name = @User::where('id', $user_id)->first()->name;
-        $department_id = CarDep::where('car_id', $car->id)->where('interval_id', '>=', $selectedInterval->id)->first()->department_id;
+        $department_id = CarDepartment::where('car_id', $car->id)->where('interval_id', '>=', $selectedInterval->id)->first()->department_id;
         $department_name = Department::where('id', $department_id)->first()->name;
         $data['selectedMonth'] = $selectedMonth->id;
         $data['selectedInterval'] = $selectedInterval->id;
@@ -135,7 +133,7 @@ class CarController extends Controller
         $selectedInterval = Interval::where('month_id', $selectedMonth->id)->where('select', 1)->first();
 
         $departments = Department::select('id', 'name')->orderBy('name')->get();
-        $dep_id = CarDep::select('department_id', 'interval_id', 'car_id')
+        $dep_id = CarDepartment::select('department_id', 'interval_id', 'car_id')
             ->where('car_id', $car->id)
             ->where('interval_id', '>=', $selectedInterval->id)
             ->orderBy('interval_id', 'desc')
@@ -192,7 +190,7 @@ class CarController extends Controller
             if ($kmlog == null) {//masina se poate sterge
                 //dar mai intai se sterg legaturile din tabelele pivot
                 CarUser::where('car_id', $id)->delete();
-                CarDep::where('car_id', $id)->delete();
+                CarDepartment::where('car_id', $id)->delete();
                 Car::where('id', $id)->delete();
             }
         }

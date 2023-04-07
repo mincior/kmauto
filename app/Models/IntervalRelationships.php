@@ -7,8 +7,8 @@ use Illuminate\Database\Query\Builder;
 trait IntervalRelationships
 {
 	//Begin craft placeholder #1
-	public function carUsers(){
-		return $this->hasMany('App\\Models\\CarUser');
+	public function userCars(){
+		return $this->hasMany('App\\Models\\UserCar');
 	}
 	public function kmlogs(){
 		return $this->hasMany('App\\Models\\Kmlog');

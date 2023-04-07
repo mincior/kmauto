@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCarUsersTable extends Migration
+class CreateUserCarsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateCarUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('car_users', function (Blueprint $table) {
+        Schema::create('user_cars', function (Blueprint $table) {
             $table->bigIncrements('id');
             //Begin craft placeholder #1
             $table->string('observatii')->nullable();
@@ -34,6 +34,6 @@ class CreateCarUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('car_users');
+        Schema::dropIfExists('user_cars');
     }
 }

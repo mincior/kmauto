@@ -32,28 +32,28 @@ class UserDepTableSeeder extends Seeder
                     'id' => 1, 'department_id' => 11, 'interval_id' => 1 , 'user_id' => 1, 'observatii' => ''
                 ],
                 [
-                    'id' => 2, 'department_id' => 7, 'interval_id' => 2 , 'user_id' => 2, 'observatii' => ''
+                    'id' => 2, 'department_id' => 7, 'interval_id' => 1 , 'user_id' => 2, 'observatii' => ''
                 ],
                 [
-                    'id' => 3, 'department_id' => 8, 'interval_id' => 3 , 'user_id' => 3, 'observatii' => 'Este plecat din firma cu data de 14 feb'
+                    'id' => 3, 'department_id' => 8, 'interval_id' => 1 , 'user_id' => 3, 'observatii' => 'Este plecat din firma cu data de 14 feb'
                 ],
                 [
-                    'id' => 4, 'department_id' => 16, 'interval_id' => 4 , 'user_id' => 4, 'observatii' => ''
+                    'id' => 4, 'department_id' => 16, 'interval_id' => 1 , 'user_id' => 4, 'observatii' => ''
                 ],
                 [
-                    'id' => 5, 'department_id' => 3, 'interval_id' => 2 , 'user_id' => 5, 'observatii' => ''
+                    'id' => 5, 'department_id' => 3, 'interval_id' => 1 , 'user_id' => 5, 'observatii' => ''
                 ],
                 [
                     'id' => 6, 'department_id' => 16, 'interval_id' => 1 , 'user_id' => 6, 'observatii' => ''
                 ],
                 [
-                    'id' => 7, 'department_id' => 1, 'interval_id' =>2 , 'user_id' => 7, 'observatii' => ''
+                    'id' => 7, 'department_id' => 1, 'interval_id' => 1 , 'user_id' => 7, 'observatii' => ''
                 ],
                 [
                     'id' => 8, 'department_id' => 16, 'interval_id' => 1 , 'user_id' => 8, 'observatii' => ''
                 ],
                 [
-                    'id' => 9, 'department_id' => 11, 'interval_id' => 2 , 'user_id' => 9, 'observatii' => ''
+                    'id' => 9, 'department_id' => 11, 'interval_id' => 1 , 'user_id' => 9, 'observatii' => ''
                 ],
                 [
                     'id' => 10, 'department_id' => 12, 'interval_id' => 1 , 'user_id' => 10, 'observatii' => 'Pleaca cu 1 martie'
@@ -62,7 +62,7 @@ class UserDepTableSeeder extends Seeder
                     'id' => 11, 'department_id' => 16, 'interval_id' => 1 , 'user_id' => 11, 'observatii' => ''
                 ],
                 [
-                    'id' => 12, 'department_id' => 15, 'interval_id' => 2 , 'user_id' => 12, 'observatii' => ''
+                    'id' => 12, 'department_id' => 15, 'interval_id' => 1 , 'user_id' => 12, 'observatii' => ''
                 ],
                 [
                     'id' => 13, 'department_id' => 1, 'interval_id' => 1 , 'user_id' => 13, 'observatii' => ''
@@ -71,10 +71,10 @@ class UserDepTableSeeder extends Seeder
                     'id' => 14, 'department_id' => 1, 'interval_id' => 1 , 'user_id' => 14, 'observatii' => ''
                 ],
                 [
-                    'id' => 15, 'department_id' => 1, 'interval_id' => 3 , 'user_id' => 15, 'observatii' => ''
+                    'id' => 15, 'department_id' => 1, 'interval_id' => 1 , 'user_id' => 15, 'observatii' => ''
                 ],
                 [
-                    'id' => 16, 'department_id' => 12, 'interval_id' => 2 , 'user_id' => 16, 'observatii' => ''
+                    'id' => 16, 'department_id' => 12, 'interval_id' => 1 , 'user_id' => 16, 'observatii' => ''
                 ],
                 [
                     'id' => 17, 'department_id' => 3, 'interval_id' => 1 , 'user_id' => 17, 'observatii' => ''
@@ -83,7 +83,7 @@ class UserDepTableSeeder extends Seeder
                     'id' => 18, 'department_id' => 13, 'interval_id' => 1 , 'user_id' => 18, 'observatii' => 'Pricepe g'
                 ],
                 [
-                    'id' => 19, 'department_id' => 1, 'interval_id' => 3 , 'user_id' => 19, 'observatii' => ''
+                    'id' => 19, 'department_id' => 1, 'interval_id' => 1 , 'user_id' => 19, 'observatii' => ''
                 ],
                 [
                     'id' => 20, 'department_id' => 1, 'interval_id' => 1 , 'user_id' => 20, 'observatii' => ''
@@ -92,25 +92,25 @@ class UserDepTableSeeder extends Seeder
                     'id' => 21, 'department_id' => 5, 'interval_id' => 1 , 'user_id' => 21, 'observatii' => ''
                 ],
                 [
-                    'id' => 22, 'department_id' => 1, 'interval_id' => 4 , 'user_id' => 22, 'observatii' => ''
+                    'id' => 22, 'department_id' => 1, 'interval_id' => 1 , 'user_id' => 22, 'observatii' => ''
                 ],
                 [
-                    'id' => 23, 'department_id' => 11, 'interval_id' => 4 , 'user_id' => 23, 'observatii' => ''
+                    'id' => 23, 'department_id' => 11, 'interval_id' => 1 , 'user_id' => 23, 'observatii' => ''
                 ],
                 [
-                    'id' => 24, 'department_id' => 4, 'interval_id' => 4 , 'user_id' => 24, 'observatii' => ''
+                    'id' => 24, 'department_id' => 4, 'interval_id' => 1 , 'user_id' => 24, 'observatii' => ''
                 ],
                 [
                     'id' => 25, 'department_id' => 13, 'interval_id' => 1 , 'user_id' => 25, 'observatii' => ''
                 ],
                 [
-                    'id' => 26, 'department_id' => 16, 'interval_id' => 3 , 'user_id' => 26, 'observatii' => ''
+                    'id' => 26, 'department_id' => 16, 'interval_id' => 1 , 'user_id' => 26, 'observatii' => ''
                 ],
                 [
-                    'id' => 27, 'department_id' => 14, 'interval_id' => 2 , 'user_id' => 27, 'observatii' => 'Sef filiala Otopeni'
+                    'id' => 27, 'department_id' => 14, 'interval_id' => 1 , 'user_id' => 27, 'observatii' => 'Sef filiala Otopeni'
                 ],
                 [
-                    'id' => 28, 'department_id' => 10, 'interval_id' => 2 , 'user_id' => 28, 'observatii' => ''
+                    'id' => 28, 'department_id' => 10, 'interval_id' => 1 , 'user_id' => 28, 'observatii' => ''
                 ],
                 [
                     'id' => 29, 'department_id' => 5, 'interval_id' => 1 , 'user_id' => 29, 'observatii' => ''
@@ -122,10 +122,10 @@ class UserDepTableSeeder extends Seeder
                     'id' => 31, 'department_id' => 16, 'interval_id' => 1 , 'user_id' => 31, 'observatii' => ''
                 ],
                 [
-                    'id' => 32, 'department_id' => 9, 'interval_id' => 3 , 'user_id' => 32, 'observatii' => ''
+                    'id' => 32, 'department_id' => 9, 'interval_id' => 1 , 'user_id' => 32, 'observatii' => ''
                 ],
                 [
-                    'id' => 33, 'department_id' => 9, 'interval_id' => 4 , 'user_id' => 33, 'observatii' => ''
+                    'id' => 33, 'department_id' => 9, 'interval_id' => 1 , 'user_id' => 33, 'observatii' => ''
                 ],
                 [
                     'id' => 34, 'department_id' => 5, 'interval_id' => 1 , 'user_id' => 34, 'observatii' => ''

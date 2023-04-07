@@ -6,10 +6,11 @@
 
 @section('content')
 <?php
-    $users = @\App\Models\Department::with('users')->where('id', '=', (old('department_id')))->get()[0]['users'];
+    //$users = @\App\Models\Department::with('users')->where('id', '=', (old('department_id')))->get()[0]['users'];
+    $users = @\App\Http\Controllers\Back\DepartmentController::getUsers(old('department_id'));
     $types = @\App\Models\Brand::with('types')->where('id', '=', (old('brand_id')))->get()[0]['types'];
 ?>
-<form id="myForm" method="POST" action="{{ route('back.users.store') }}" enctype="multipart/form-data" >
+<form id="myForm" method="POST" action="{{ route('back.cars.store') }}" enctype="multipart/form-data" >
     @csrf
     <input type="hidden" name="selected_interval" value="{{$selectedInterval->id}}">
     <div class="container mt-4">

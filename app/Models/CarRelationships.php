@@ -16,13 +16,20 @@ trait CarRelationships
 	public function type(){
 		return $this->belongsTo('App\\Models\\Type');
 	}
+	public function users_calculate(){
+		return $this->belongsToMany('App\\Models\\User', 'car_user')->withPivot('user_id', 'car_id');
+	}
 
 	public function departments(){
 		return $this->belongsToMany('App\\Models\\Department', 'App\\Models\\CarDep')->withPivot('observatii', 'interval_id','department_id', 'car_id');
 	}
 
 	public function users(){
-		return $this->belongsToMany('App\\Models\\User', 'App\\Models\\CarUser')->withPivot('observatii', 'interval_id', 'user_id', 'car_id');
+		return $this->belongsToMany('App\\Models\\User', 'App\\Models\\UserCar')->withPivot('observatii', 'interval_id', 'user_id', 'car_id');
+	}
+	
+	public function departments_calculate(){
+		return $this->belongsToMany('App\\Models\\Department', 'car_department')->withPivot('department_id', 'car_id');
 	}
 
 	//experimental deep relations

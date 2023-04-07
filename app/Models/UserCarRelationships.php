@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-trait CarUserRelationships
+trait UserCarRelationships
 {
 	//Begin craft placeholder #1
 	public function interval(){

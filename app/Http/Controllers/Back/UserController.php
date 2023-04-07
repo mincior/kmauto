@@ -7,7 +7,7 @@ use App\Models\Fuel;
 use App\Models\User;
 use App\Models\Kmlog;
 use App\Models\Month;
-use App\Models\CarUser;
+use App\Models\UserCar;
 use App\Models\Interval;
 use App\Models\Department;
 use App\MyHelpers\AppHelper;
@@ -91,7 +91,7 @@ class UserController extends Controller
         $data1 = [];
         $selectedMonth = Month::where('select', 1)->first();
         $selectedInterval = Interval::where('month_id', $selectedMonth->id)->where('select', 1)->first();
-        $user_id = @CarUser::where('user_id', $user->id)->where('interval_id', '>=', $selectedInterval->id)->first()->user_id;
+        $user_id = @UserCar::where('user_id', $user->id)->where('interval_id', '>=', $selectedInterval->id)->first()->user_id;
         $user_name = @User::where('id', $user_id)->first()->name;
         $department_id = UserDep::where('user_id', $user->id)->where('interval_id', '>=', $selectedInterval->id)->first()->department_id;
         $department_name = Department::where('id', $department_id)->first()->name;
@@ -119,7 +119,7 @@ class UserController extends Controller
 
         //usr_id = o masina poate sa nu aiba un user alocat (nici userul o masina) 
         //de aceea s-a pus @UserUser... sa nu dea eroare daca $usr_id este null
-        $usr_id = @CarUser::select('car_id', 'interval_id', 'user_id')
+        $usr_id = @UserCar::select('car_id', 'interval_id', 'user_id')
             ->where('user_id', $user->id)
             ->where('interval_id', '>=', $selectedInterval->id)
             ->orderBy('interval_id', 'desc')
@@ -164,7 +164,7 @@ class UserController extends Controller
             $kmlog = Kmlog::where('user_id', $id)->first();
             if ($kmlog == null) {//masina se poate sterge
                 //dar mai intai se sterg legaturile din tabelele pivot
-                CarUser::where('user_id', $id)->delete();
+                UserCar::where('user_id', $id)->delete();
                 UserDep::where('user_id', $id)->delete();
                 User::where('id', $id)->delete();
             }

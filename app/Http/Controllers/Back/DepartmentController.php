@@ -3,30 +3,59 @@
 namespace App\Http\Controllers\Back;
 
 use App\Models\Car;
+use App\Models\User;
 use App\Models\Brand;
+use App\Models\Month;
 use App\Models\Country;
+use App\Models\Interval;
 use App\Models\Department;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Yajra\DataTables\Facades\DataTables;
 use App\Http\Requests\DepartmentStoreRequest;
 use App\Http\Requests\DepartmentUpdateRequest;
-use Yajra\DataTables\Facades\DataTables;
 
 class DepartmentController extends Controller
 {
-    public function getUsers($department_id)
+    public static function getUsers($department_id)
     {
         
-        //trebuie rezolvat sa returneze userii functie de interval Se pune ->where('interval_id', '>=' , $interval_id) dar trebuie adus $interval_id
-        $users = Department::with('users')->where('id', '=', $department_id)->get()[0]['users'];
+        //masinile se returneaza functie de interval
+		$selectedMonth = Month::where('select', 1)->first();
+        $selectedInterval = Interval::where('month_id', $selectedMonth->id)->where('select', 1)->first();
+		$sql = " DISTINCT user_id, LAST_VALUE(department_id) OVER (PARTITION BY user_id ORDER BY interval_id RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING ) last_department_id";
+		$res = DB::table('user_deps')
+        ->selectRaw($sql)
+        ->where('interval_id','<=', $selectedInterval->id)
+        ->where('department_id', $department_id)
+        ->get();
+        $results = json_decode($res, true);
+        $arr_users = [];
+        foreach($results as $key=>$result){
+            $arr_users[$key] = $result['user_id'];
+        }
+        $users = User::wherein('id', $arr_users)->get();
         return $users;
     }
 
-    public function getCars($department_id)
+    public static function getCars($department_id)
     {
-        //trebuie rezolvat sa returneze masinile functie de interval
-        $cars = Department::with('cars')->where('id', '=', $department_id)->get()[0]['cars'];
+        //masinile se returneaza functie de interval
+		$selectedMonth = Month::where('select', 1)->first();
+        $selectedInterval = Interval::where('month_id', $selectedMonth->id)->where('select', 1)->first();
+		$sql = " DISTINCT car_id, LAST_VALUE(department_id) OVER (PARTITION BY car_id ORDER BY interval_id RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING ) last_department_id";
+		$res = DB::table('car_deps')
+        ->selectRaw($sql)
+        ->where('interval_id','<=', $selectedInterval->id)
+        ->where('department_id', $department_id)
+        ->get();
+        $results = json_decode($res, true);
+        $arr_cars = [];
+        foreach($results as $key=>$result){
+            $arr_cars[$key] = $result['car_id'];
+        }
+        $cars = Car::wherein('id', $arr_cars)->get();
         return $cars;
     }
 

@@ -2,12 +2,12 @@
 
 namespace Database\Seeders;
 
-use App\Models\CarUser;
+use App\Models\UserCar;
 use App\Models\CarDep;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 
-class CarUserTableSeeder extends Seeder
+class UserCarTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -26,7 +26,7 @@ class CarUserTableSeeder extends Seeder
      */
     private function generate()
     {
-        $users = CarUser::factory()->state(
+        $users = UserCar::factory()->state(
             new Sequence(
                 [
                     'id' => 1, 'observatii' => '', 'user_id' => 1, 'car_id' => 1,
