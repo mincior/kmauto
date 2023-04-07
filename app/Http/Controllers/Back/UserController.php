@@ -12,7 +12,7 @@ use App\Models\Interval;
 use App\Models\Department;
 use App\MyHelpers\AppHelper;
 use Illuminate\Http\Request;
-use App\Models\UserDepartment;
+use App\Models\UserDep;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserStoreRequest;
@@ -93,7 +93,7 @@ class UserController extends Controller
         $selectedInterval = Interval::where('month_id', $selectedMonth->id)->where('select', 1)->first();
         $user_id = @CarUser::where('user_id', $user->id)->where('interval_id', '>=', $selectedInterval->id)->first()->user_id;
         $user_name = @User::where('id', $user_id)->first()->name;
-        $department_id = UserDepartment::where('user_id', $user->id)->where('interval_id', '>=', $selectedInterval->id)->first()->department_id;
+        $department_id = UserDep::where('user_id', $user->id)->where('interval_id', '>=', $selectedInterval->id)->first()->department_id;
         $department_name = Department::where('id', $department_id)->first()->name;
         $data['selectedMonth'] = $selectedMonth->id;
         $data['selectedInterval'] = $selectedInterval->id;
@@ -110,7 +110,7 @@ class UserController extends Controller
         $selectedInterval = Interval::where('month_id', $selectedMonth->id)->where('select', 1)->first();
 
         $departments = Department::select('id', 'name')->orderBy('name')->get();
-        $dep_id = UserDepartment::select('department_id', 'interval_id', 'user_id')
+        $dep_id = UserDep::select('department_id', 'interval_id', 'user_id')
             ->where('user_id', $user->id)
             ->where('interval_id', '>=', $selectedInterval->id)
             ->orderBy('interval_id', 'desc')
@@ -165,7 +165,7 @@ class UserController extends Controller
             if ($kmlog == null) {//masina se poate sterge
                 //dar mai intai se sterg legaturile din tabelele pivot
                 CarUser::where('user_id', $id)->delete();
-                UserDepartment::where('user_id', $id)->delete();
+                UserDep::where('user_id', $id)->delete();
                 User::where('id', $id)->delete();
             }
         }

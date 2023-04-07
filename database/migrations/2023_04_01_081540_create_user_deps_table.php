@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 //Begin craft placeholder #1
-class CreateUserDepartmentsTable extends Migration
+class CreateUserDepsTable extends Migration
 //End craft placeholder #1
 {
     /**
@@ -16,7 +16,7 @@ class CreateUserDepartmentsTable extends Migration
     public function up()
     {
         //Begin craft placeholder #2
-		Schema::create('user_departments', function (Blueprint $table) {
+		Schema::create('user_deps', function (Blueprint $table) {
 			$table->id();
             $table->string('observatii')->nullable();
 			$table->bigInteger('department_id')->unsigned()->index()->nullable();
@@ -37,7 +37,7 @@ class CreateUserDepartmentsTable extends Migration
     public function down()
     {
     //Begin craft placeholder #3
-	Schema::dropIfExists('user_departments');
+	Schema::dropIfExists('user_deps');
 	//End craft placeholder #3
     }
 }

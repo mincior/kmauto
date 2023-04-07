@@ -14,13 +14,13 @@ trait IntervalRelationships
 		return $this->hasMany('App\\Models\\Kmlog');
 	}
 	public function userDepartments(){
-		return $this->hasMany('App\\Models\\UserDepartment');
+		return $this->hasMany('App\\Models\\UserDep');
 	}
 	public function settings(){
 		return $this->hasMany('App\\Models\\Setting');
 	}
 	public function carDepartments(){
-		return $this->hasMany('App\\Models\\CarDepartment');
+		return $this->hasMany('App\\Models\\CarDep');
 	}
 	public function month(){
 		return $this->belongsTo('App\\Models\\Month');

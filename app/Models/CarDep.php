@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class CarDepartment extends Model
+class CarDep extends Model
 
 {
-use HasFactory, CarDepartmentRelationships;
+use HasFactory, CarDepRelationships;
     protected $fillable = [
 		'observatii', 
 		'department_id', 

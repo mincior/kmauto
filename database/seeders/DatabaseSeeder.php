@@ -20,8 +20,8 @@ class DatabaseSeeder extends Seeder
         $this->call(BrandsTableSeeder::class);
         $this->call(TypesTableSeeder::class);
         $this->call(CarsTableSeeder::class);
-        $this->call(CarDepartmentTableSeeder::class);
-        $this->call(UserDepartmentTableSeeder::class);
+        $this->call(CarDepTableSeeder::class);
+        $this->call(UserDepTableSeeder::class);
         $this->call(SettingsTableSeeder::class);
         $this->call(CarUserTableSeeder::class);
         $this->call(FuelsTableSeeder::class);

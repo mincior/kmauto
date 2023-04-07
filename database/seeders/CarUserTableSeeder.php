@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\CarUser;
-use App\Models\CarDepartment;
+use App\Models\CarDep;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 

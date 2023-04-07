@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\CarDepartment;
+use App\Models\CarDep;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 
-class CarDepartmentTableSeeder extends Seeder
+class CarDepTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -25,7 +25,7 @@ class CarDepartmentTableSeeder extends Seeder
      */
     private function generate()
     {
-        $users = CarDepartment::factory()->state(
+        $users = CarDep::factory()->state(
             new Sequence(
                 [
                     'id' => 1, 'department_id' => '1', 'interval_id' => 1 , 'car_id' => 1, 'observatii' => 'aa',
@@ -48,7 +48,7 @@ class CarDepartmentTableSeeder extends Seeder
                 ],
                 
                 [
-                    'id' => 6, 'department_id' => '9', 'interval_id' => 2 , 'car_id' => 6, 'observatii' => '',
+                    'id' => 6, 'department_id' => '9', 'interval_id' => 1 , 'car_id' => 6, 'observatii' => '',
                 ],
                 
                 [
@@ -56,7 +56,7 @@ class CarDepartmentTableSeeder extends Seeder
                 ],
                 
                 [
-                    'id' => 8, 'department_id' => '1', 'interval_id' => 2 , 'car_id' => 8, 'observatii' => '',
+                    'id' => 8, 'department_id' => '1', 'interval_id' => 1 , 'car_id' => 8, 'observatii' => '',
                 ],
                 
                 [
@@ -68,7 +68,7 @@ class CarDepartmentTableSeeder extends Seeder
                 ],
                 
                 [
-                    'id' => 11, 'department_id' => '3', 'interval_id' => 2 , 'car_id' => 11, 'observatii' => '',
+                    'id' => 11, 'department_id' => '3', 'interval_id' => 1 , 'car_id' => 11, 'observatii' => '',
                 ],
                 
                 [
@@ -88,7 +88,7 @@ class CarDepartmentTableSeeder extends Seeder
                 ],
                 
                 [
-                    'id' => 16, 'department_id' => '3', 'interval_id' => 2 , 'car_id' => 16, 'observatii' => '',
+                    'id' => 16, 'department_id' => '3', 'interval_id' => 1 , 'car_id' => 16, 'observatii' => '',
                 ],
                 
                 [
@@ -100,7 +100,7 @@ class CarDepartmentTableSeeder extends Seeder
                 ],
                 
                 [
-                    'id' => 19, 'department_id' => '16', 'interval_id' => 3 , 'car_id' => 19, 'observatii' => '',
+                    'id' => 19, 'department_id' => '16', 'interval_id' => 1 , 'car_id' => 19, 'observatii' => '',
                 ],
                 
                 [
@@ -112,7 +112,7 @@ class CarDepartmentTableSeeder extends Seeder
                 ],
                 
                 [
-                    'id' => 22, 'department_id' => '16', 'interval_id' => 3 , 'car_id' => 22, 'observatii' => '',
+                    'id' => 22, 'department_id' => '16', 'interval_id' => 1 , 'car_id' => 22, 'observatii' => '',
                 ],
                 
                 [
@@ -124,7 +124,7 @@ class CarDepartmentTableSeeder extends Seeder
                 ],
                 
                 [
-                    'id' => 25, 'department_id' => '14', 'interval_id' => 4 , 'car_id' => 25, 'observatii' => '',
+                    'id' => 25, 'department_id' => '14', 'interval_id' => 1 , 'car_id' => 25, 'observatii' => '',
                 ],
                 
                 [
@@ -140,11 +140,11 @@ class CarDepartmentTableSeeder extends Seeder
                 ],
                 
                 [
-                    'id' => 29, 'department_id' => '16', 'interval_id' => 4 , 'car_id' => 29, 'observatii' => '',
+                    'id' => 29, 'department_id' => '16', 'interval_id' => 1 , 'car_id' => 29, 'observatii' => '',
                 ],
                 
                 [
-                    'id' => 30, 'department_id' => '1', 'interval_id' => 4 , 'car_id' => 30, 'observatii' => '',
+                    'id' => 30, 'department_id' => '1', 'interval_id' => 1 , 'car_id' => 30, 'observatii' => '',
                 ],
                 
                 [
@@ -152,11 +152,11 @@ class CarDepartmentTableSeeder extends Seeder
                 ],
                 
                 [
-                    'id' => 32, 'department_id' => '1', 'interval_id' => 4 , 'car_id' => 32, 'observatii' => '',
+                    'id' => 32, 'department_id' => '1', 'interval_id' => 1 , 'car_id' => 32, 'observatii' => '',
                 ],
                 
                 [
-                    'id' => 33, 'department_id' => '4', 'interval_id' => 4 , 'car_id' => 33, 'observatii' => '',
+                    'id' => 33, 'department_id' => '4', 'interval_id' => 1 , 'car_id' => 33, 'observatii' => '',
                 ],
                 
                 [
