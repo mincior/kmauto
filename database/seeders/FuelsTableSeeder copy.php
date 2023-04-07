@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Setting;
+use App\Models\Fuel;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 
-class SettingsTableSeeder extends Seeder
+class FuelsTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -25,21 +25,23 @@ class SettingsTableSeeder extends Seeder
      */
     private function generate()
     {
-        $users = Setting::factory()->state(
+        $users = Fuel::factory()->state(
             new Sequence(
                 [
-                    'nume' => 'numarZileLunaAnterioara',
-                    'valoare' => '10',
-                    'interval_id' => 1,
+                    'valoare' => 6.5,
                 ],
                 [
-                    'nume' => 'butonSelectat',
-                    'valoare' => 'users',
-                    'interval_id' => 1,
+                    'valoare' => 9,
+                ],
+                [
+                    'valoare' => 11,
+                ],
+                [
+                    'valoare' => 12,
                 ],
                 
             )            
-        )->count(2)->create();
+        )->count(4)->create();
         
                 
 

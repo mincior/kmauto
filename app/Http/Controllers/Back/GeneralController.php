@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Back;
 
 use App\Models\Month;
+use App\Models\Setting;
 use App\Models\Interval;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -54,7 +55,13 @@ class GeneralController extends Controller
         
         return response()->noContent();
     }
-   public function getMonthIntervals($month_id)
+
+    public function setButonSelectat(Request $request){
+        $query= Setting::where('nume', "butonSelectat")->update(array('valoare' => $request->valoare));
+
+    }
+
+    public function getMonthIntervals($month_id)
     {
         //returneaza toate intervalele lunii selectate
         $intervale = Interval::Select('id', 'interval', 'select')->where('month_id', '=', $month_id)->get()->toArray();

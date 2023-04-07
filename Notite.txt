@@ -1,0 +1,5 @@
+Cand se afiseaza filiala in Car si User pe index, trebuie sa aduc filiala la intervalul specificat.
+	Asa cum e acum nu tine seama de interval.
+
+Pe create in Car si User pot aduce toate filialele ca sa aleg din ele dar in Edit si Show
+	aduc toate filialele dar selectul trebuie luat din pivot

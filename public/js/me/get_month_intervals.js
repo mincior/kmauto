@@ -50,6 +50,7 @@ $("#month_select").change(function () { //Atentie, la selectare nu se aduc inter
 
 //cand se selecteaza intervalul se salveaza in intervale campul select dupa care se da refresh la pagina
 $("#interval_select").change(function () { 
+
     let month_id = $("#month_select").val();
     let interval_id = $(this).val();
     let url = siteUrl + '/back/general/setValueIntervalSelect'
@@ -67,3 +68,19 @@ $("#interval_select").change(function () {
     });
 });
 
+function change_button(el, valoare) {
+
+    let url = siteUrl + '/back/general/setButonSelectat'
+    $.ajax({
+        method: 'POST',
+        url: url,
+        data: {
+            valoare: valoare,
+        },
+        success: function (response) {
+
+        }
+    });
+}
+
+    

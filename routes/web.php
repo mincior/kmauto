@@ -29,6 +29,7 @@ Route::middleware('auth')->group(function () {
             Route::post('/general/setValueDB', 'setValueDB')->name('general.setValueDB');
             Route::post('/general/setValueMonthSelect', 'setValueMonthSelect')->name('general.setValueMonthSelect');
             Route::post('/general/setValueIntervalSelect', 'setValueIntervalSelect')->name('general.setValueIntervalSelect');
+            Route::post('/general/setButonSelectat', 'setButonSelectat')->name('general.setButonSelectat');
             Route::get('/general/getDatatablesHelp', 'getDatatablesHelp')->name('general.getDatatablesHelp');
         });
         /* ---------------------------------------- */

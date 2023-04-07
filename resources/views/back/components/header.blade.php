@@ -16,6 +16,7 @@ $lunaCurentaEsteInchisa = \App\Models\Month::where('select', 1)->first()->inchis
 $intervalulCurentEsteInchis = \App\Models\Interval::where('month_id', $selectedMonth_id)
     ->where('select', 1)
     ->first()->inchis;
+$session = \App\Models\Setting::where('nume', 'butonSelectat')->first()->valoare;
 $mm = json_encode($months); //test pentru transmitere array catre javascript (JSON.strignify)
 ?>
 {{-- pune culoarea barei de navigare de sus in functie de luna si intervalul selectat. O luna daca este inchisa bara va fi rosie. Daca este deschisa 
@@ -29,32 +30,35 @@ $mm = json_encode($months); //test pentru transmitere array catre javascript (JS
                 data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" tabindex="-1" title="Menu">
                 <i class="bi bi-list"></i>
             </button>
-            <a class="btn btn-lg btn-success text-white me-1" href="/" title="Home" role="button"
-                tabindex="-1">
+            <a class="btn btn-lg {{ ($session == 'home' ? 'btn-light' : 'btn-outline-dark') }} me-1" href="/" title="Home" role="button"
+                tabindex="-1" onclick="change_button(this, 'home')">
                 <i class="bi bi-house-fill"></i>
             </a>
-            {{-- <div class="btn-group me-1" role="group">
-                <a class="btn btn-lg btn-outline-dark" href="" title="Filiale" role="button" tabindex="-1">
-                    <img src="{{ asset('img/buttons/stock-025-wit.png') }}" class="img-fluid" />
+            <div class="btn-group me-1" role="group">
+                <a class="btn btn-lg {{ ($session == 'filiale' ? 'btn-light' : 'btn-outline-dark') }}" 
+                href="" title="Filiale" role="button" tabindex="-1" onclick="change_button(this, 'filiale')">
+                    <img src="{{ asset('img/buttons/categorisatie-030.png') }}" class="img-fluid" />
                 </a>
-                <a class="btn btn-lg btn-outline-dark" href="" title="Km log" role="button" tabindex="-1">
-                    <img src="{{ asset('img/buttons/delivery-025-wit.png') }}" class="img-fluid" />
+                <a class="btn btn-lg {{ ($session == 'kmlog' ? 'btn-light' : 'btn-outline-dark') }}" 
+                href="" title="Km log" role="button" tabindex="-1" onclick="change_button(this, 'kmlog')">
+                    <img src="{{ asset('img/buttons/delivery-030.png') }}" class="img-fluid" />
                 </a>
-                <a class="btn btn-lg btn-outline-dark" href="" title="Orders (not implemented yet)" role="button" tabindex="-1">
-                    <img src="{{ asset('img/buttons/reorder-025-wit.png') }}" class="img-fluid" />
+                <a class="btn btn-lg {{ ($session == 'orders' ? 'btn-light' : 'btn-outline-dark') }}" 
+                href="" title="Orders (not implemented yet)" role="button" tabindex="-1" onclick="change_button(this, 'orders')">
+                    <img src="{{ asset('img/buttons/stock-030.png') }}" class="img-fluid" />
                 </a>
-            </div> --}}
+            </div>
         </div>
         {{-- center --}}
         <div>
             <div class="btn-group me-1" role="group">
-                <a class="btn btn-lg btn-outline-dark" href="{{ route('back.users.index') }}" title="Utilizatori"
-                    role="button" tabindex="-1">
+                <a class="btn btn-lg {{ ($session == 'users' ? 'btn-light' : 'btn-outline-dark') }}" id="user-button" href="{{ route('back.users.index') }}" title="Utilizatori"
+                    role="button" tabindex="-1" onclick="change_button(this, 'users')">
                     {{-- <img src="{{ asset('img/buttons/persons-025-wit.png') }}" class="img-fluid" /> --}}
                     <img src="{{ asset('img/icons/person.png') }}" class="img-fluid" />
                 </a>
-                <a class="btn btn-lg btn-light" id="car-button" href="{{ route('back.cars.index') }}" title="Masini"
-                    role="button" tabindex="-1">
+                <a class="btn btn-lg {{ ($session == 'cars' ? 'btn-light' : 'btn-outline-dark') }}" id="car-button" href="{{ route('back.cars.index') }}" title="Masini"
+                    role="button" tabindex="-1" onclick="change_button(this, 'cars')">
                     <img src="{{ asset('img/buttons/car.png') }}" class="img-fluid" />
                 </a>
             </div>
