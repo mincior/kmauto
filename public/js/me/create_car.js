@@ -1,36 +1,36 @@
-function salveazaConsumuriMedii(){
+function salveazaConsumuriMedii() {
 	let valoare = $('#consum_mediu').val();
-	if (valoare) {	
-		let url =  siteUrl + '/back/fuels/save-fuels' 
-	var consumuri_medii = [];
+	if (valoare) {
+		let url = siteUrl + '/back/fuels/save-fuels'
+		var consumuri_medii = [];
 
-	bootbox.confirm({
-		title: 'Adaugare consum mediu',
-		message: 'Salvati noua valoare in baza de date?',
-		buttons: {
-			confirm: {
-				label: 'Da',
-				className: 'btn-success'
+		bootbox.confirm({
+			title: 'Adaugare consum mediu',
+			message: 'Salvati noua valoare in baza de date?',
+			buttons: {
+				confirm: {
+					label: 'Da',
+					className: 'btn-success'
+				},
+				cancel: {
+					label: 'Nu',
+					className: 'btn-danger'
+				}
 			},
-			cancel: {
-				label: 'Nu',
-				className: 'btn-danger'
+			callback: function (confirmed) {
+				if (confirmed) {
+					axios.post(url, { valoare: valoare })
+						.then(function (response) {
+							if (response.data == 'Valoarea exista deja.') {
+								bootbox.alert(response.data);
+							}
+						})
+				}
 			}
-		},
-		callback: function (confirmed) {
-			if (confirmed) {
-			axios.post(url, {valoare: valoare})
-				.then(function (response) {
-					if(response.data == 'Valoarea exista deja.'){
-						bootbox.alert(response.data);
-					}
-				})
-			}
-		}
-	});   
-		
+		});
+
 	}
- 
+
 }
 
 // //autocompletare pentru consumuri medii
@@ -49,34 +49,33 @@ function salveazaConsumuriMedii(){
 // autocomplete(document.getElementById("consum_mediu"), consumuri_medii);
 
 //cand se completeaza numarul masinii scrie cu litere mari si inlocuieste spatiul cu liniuta
-function prelucrare_numar_masina(el){
+function prelucrare_numar_masina(el) {
 	let up = el.value.toUpperCase();//scrie cu litere mari
 	el.value = up.replace(" ", "-");//inlocuieste spatiul cu liniuta
-	}
+}
 
-jQuery(document).ready(function($) {
+jQuery(document).ready(function ($) {
 	$('#numar').focus();
 	$('.my-select2').select2();
 	$('#my-nav-bar').addClass('d-none');//ascunde bara de navigare cand sunt pe create car
-	$( "#consum_mediu" ).autocomplete({
+	$("#consum_mediu").autocomplete({
 		source: function (request, response) {
-		  $.ajax({
-		  url: siteUrl + '/back/cars/' +"autocomplete",
-		  data: {
-				  term : request.term
-		   },
-		  dataType: "json",
-		  success: function(data){
-			  var resp = $.map(data, function (obj) {
-				  return obj.valoare;
-			 }); 
+			$.ajax({
+				url: siteUrl + '/back/cars/' + "autocomplete",
+				data: {
+					term: request.term
+				},
+				dataType: "json",
+				success: function (data) {
+					var resp = $.map(data, function (obj) {
+						return obj.valoare;
+					});
 
-		   console.log(resp);
-			response(resp);
-		  }
-	  });
-  },
-  minLength: 1
-});
-
+					console.log(resp);
+					response(resp);
+				}
+			});
+		},
+		minLength: 1
+	});
 });

@@ -200,8 +200,7 @@
 <script src="{{ asset('js/me/get_department_users.js') }}"></script>
 <script src="{{ asset('js/me/get_brand_types.js') }}"></script>
 
-{{-- autocompletare casete text cu valori dintr-un array --}}
-<script src="{{ asset('js/me/create_user.js') }}"></script>
+<script src="{{ asset('js/me/create_car.js') }}"></script>
 <script>
 </script>
 @endsection
