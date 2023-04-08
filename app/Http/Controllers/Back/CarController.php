@@ -4,16 +4,17 @@ namespace App\Http\Controllers\Back;
 
 use Countries;
 use App\Models\Car;
-use App\Models\Fuel;
 use App\Models\Type;
 use App\Models\User;
 use App\Models\Brand;
 use App\Models\Kmlog;
 use App\Models\Month;
 use App\Models\CarDep;
+use App\Models\CarFuel;
 use App\Models\CarUser;
 use App\Models\Interval;
 use App\Models\Department;
+use App\Models\Availablecar;
 use App\MyHelpers\AppHelper;
 use Illuminate\Http\Request;
 use App\Models\CarDepartment;
@@ -34,7 +35,7 @@ class CarController extends Controller
     public function autoComplete(Request $request)
     {
         
-        $res = Fuel::select("id")
+        $res = CarFuel::select("id")
                 ->where("id","LIKE","%{$request->term}%")
                 ->get();  
         return response()->json($res);
@@ -48,62 +49,20 @@ class CarController extends Controller
             //pentru a returna in $cars filiala de care apartine fiecare masina la intervalul selectat
             //se prelucreaza separat departments. Normal ar fi fost sa se puna si departments in lista with
             //dar nu am fi putut asocia corect masina cu filiala si intervalul
-            $selectedMonth = Month::where('select', 1)->first();
-            $selectedInterval = Interval::where('month_id', $selectedMonth->id)->where('select', 1)->first();
-
-            //mai intai se pregateste $cars cu brand, type si users
             $cars =Car:: with('brand', 'type')->select(sprintf('%s.*', (new Car)->getTable()))->orderBy('id', 'desc')->get();
 
-            //se gaseste ultima asociere intre masini si filiale pentru intervalul $selectedInterval
-            $sql = " DISTINCT car_id, LAST_VALUE(department_id) OVER (PARTITION BY car_id ORDER BY interval_id RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING ) last_department_id";
-            $res = DB::table('car_deps')
-            ->selectRaw($sql)
-            ->where('interval_id','<=', $selectedInterval->id)
-            ->get();
-            $results = json_decode($res, true);
-            //in $results avem un array ce tine car_id si last_department_id
-            
-            //vom transforma car_id in key iar last_department_id in val in $arr_cars_with_departments
-            $arr_cars_with_departments = [];
-            foreach($results as $key=>$result){
-                $arr_cars_with_departments[$result['car_id']] = $result['last_department_id'];
-            }
-            
-            //se gaseste ultima asociere intre masini si utilizatori pentru intervalul $selectedInterval
-            $sql = " DISTINCT car_id, LAST_VALUE(user_id) OVER (PARTITION BY car_id ORDER BY interval_id RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING ) last_user_id";
-            $res = DB::table('user_cars')
-            ->selectRaw($sql)
-            ->where('interval_id','<=', $selectedInterval->id)
-            ->get();
-            $results = json_decode($res, true);
-            //in $results avem un array ce tine car_id si last_user_id
-            
-            //vom transforma car_id in 'key' iar last_user_id in 'val' in $arr_cars_with_users
-            $arr_cars_with_users = [];
-            foreach($results as $key=>$result){
-               $arr_cars_with_users[$result['car_id']] = $result['last_user_id'];
-            }
-            
-            //se gaseste ultima asociere intre masini si utilizatori pentru intervalul $selectedInterval
-            $sql = " DISTINCT car_id, LAST_VALUE(id) OVER (PARTITION BY car_id ORDER BY interval_id RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING ) last_id";
-            $res = DB::table('fuels')
-            ->selectRaw($sql)
-            ->where('interval_id','<=', $selectedInterval->id)
-            ->get();
-            $results = json_decode($res, true);
-            //in $results avem un array ce tine car_id si last_id
-            //vom transforma car_id in 'key' iar last_id in 'val' in $arr_cars_with_fuels
-            $arr_cars_with_fuels= [];
-            foreach($results as $key=>$result){
-               $arr_cars_with_fuels[$result['car_id']] = $result['last_id'];
-            }
-            
-            //in cars avem deja brand si type acum luam fiecare masina si-i adaugam departamentul, userul si consumul mediu (fuel)
-            //asociate la momentul intervalului selectat
+            $arr_cars_with_departments = AppHelper::retur_ultima_valoare_array('car_id', 'department_id', 'car_deps');
+            $arr_cars_with_users = AppHelper::retur_ultima_valoare_array('car_id', 'user_id', 'user_cars');
+            $arr_cars_with_car_fuels = AppHelper::retur_ultima_valoare_array('car_id', 'id', 'car_fuels');
+            $arr_cars_with_car_activ = AppHelper::retur_ultima_valoare_array('car_id', 'id', 'availablecars');
+
+            //in cars avem deja brand si type acum luam fiecare masina si-i adaugam departamentul, userul, consumul mediu (car_fuel)
+            //si activ,  asociate la momentul intervalului selectat
             foreach ($cars as $car){
                  @$car['departments'] = Department::where('id', $arr_cars_with_departments[$car->id])->get();
                  @$car['users'] = User::where('id', $arr_cars_with_users[$car->id])->get();
-                 @$car['fuels'] = Fuel::where('id', $arr_cars_with_fuels[$car->id])->get();
+                 @$car['car_fuels'] = CarFuel::where('id', $arr_cars_with_car_fuels[$car->id])->get();
+                 @$car['activ'] = Availablecar::where('id', $arr_cars_with_car_activ[$car->id])->get();
             }
             //Data tables poate functiona si pe eloquent si pe query normal dar si pe collection
             // (cazul de fata, adica s-a aplicat get() pe query si s-a obtinut o colectie)

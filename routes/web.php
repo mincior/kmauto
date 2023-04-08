@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Back\CarController;
-use App\Http\Controllers\Back\FuelController;
+use App\Http\Controllers\Back\CarFuelController;
 use App\Http\Controllers\Back\TypeController;
 use App\Http\Controllers\Back\UserController;
 use App\Http\Controllers\Back\BrandController;
@@ -77,10 +77,10 @@ Route::middleware('auth')->group(function () {
             Route::delete('/departments/massDestroy', 'massDestroy')->name('departments.massDestroy');
             Route::resource('/departments', DepartmentController::class)->except(['destroy']);
         });
-         // Fuels
-         Route::controller(FuelController::class)->group(function () {
-            Route::get('/fuels/get-fuels','getFuels')->name('get-fuels');
-            Route::post('/fuels/save-fuels','saveFuels')->name('save-fuels');
+         // CarFuels
+         Route::controller(CarFuelController::class)->group(function () {
+            Route::get('/car_fuels/get-car_fuels','getCarFuels')->name('get-car_fuels');
+            Route::post('/car_fuels/save-car_fuels','saveCarFuels')->name('save-car_fuels');
         });
    });
 });

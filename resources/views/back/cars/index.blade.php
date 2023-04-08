@@ -34,7 +34,7 @@
                         <th scope="col">Carburant</th>
                         <th scope="col">Filiala</th>
                         <th scope="col">Utilizator</th>
-                        <th scope="col" class="text-danger">Activ ?</th>
+                        <th scope="col">Activ</th>
                     </tr>
                 </thead>
             </table>
@@ -207,10 +207,10 @@
                     {
                         data: 'id',
                         render: function(data, type, row, meta) {
-                            if ( typeof row.fuels[0] === "undefined"){
+                            if ( typeof row.car_fuels[0] === "undefined"){
                                 return '';
                             }else{
-                                return row.fuels[0].valoare;
+                                return row.car_fuels[0].valoare;
                             }
                         },
                         width: '2'
@@ -241,15 +241,12 @@
                         },
                     },
                     {
-                        data: 'activ',
-                        name: 'activ',
-                        searchable: false,
-                        className: "text-center no-select toggleSendActiv",
+                        data: 'id',
                         render: function(data, type, row, meta) {
-                            if (data == 1) {
-                                return 'Da&nbsp;';
-                            } else {
+                            if ( typeof row.activ[0] === "undefined"){
                                 return '';
+                            }else{
+                                return row.activ[0].valoare == 1 ? 'Da': 'Nu';
                             }
                         },
                     }
@@ -295,96 +292,6 @@
                 oTable.buttons('.selectOne').enable(selectedRows === 1);
                 oTable.buttons('.selectMultiple').enable(selectedRows > 0);
             });
-            /* ------------------------------------------------------------------------ */
-            /* DATATABLE - CELL - Action					   						    */
-            /* ------------------------------------------------------------------------ */
-            $('#sqltable tbody').on('click', 'td.toggleSendActiv', function() {
-                var table = 'cars';
-                var id = oTable.row($(this).closest("tr")).data().DT_RowId;
-                var key = 'activ';
-                var value = oTable.cell(this).data();
-
-                bootbox.confirm({
-                    title: 'Edit ...',
-                    message: MyItem(id, key, value),
-                    onEscape: true,
-                    backdrop: true,
-                    buttons: {
-                        confirm: {
-                            label: 'Yes',
-                            className: 'btn-success'
-                        },
-                        cancel: {
-                            label: 'No',
-                            className: 'btn-secondary'
-                        }
-                    },
-                    callback: function(confirmed) {
-                        if (confirmed) {
-                            value = value == 0 ? 1 : 0;
-
-                            setValue(table, id, key, value);
-                        }
-                    }
-                });
-            });
-            /* ------------------------------------------------------------------------ */
-            /* FUNCTIONS - MyItem, setValue         			            		    */
-            /* ------------------------------------------------------------------------ */
-            function MyItem(id, key, value) {
-                var aRow = oTable.row('#' + id).data();
-
-                if (value == 1) {
-                    from = 'Da';
-                    to = 'Nu';
-                } else {
-                    from = 'Nu';
-                    to = 'Da';
-                }
-
-                var strHTML = '';
-                strHTML += '<table class="table table-bordered table-sm mytable">';
-                strHTML += '<thead class="table-success">';
-                strHTML +=
-                    '<tr><th>Numar</th><th class="text-center">Activ ?</th></tr>';
-                strHTML += '</thead>';
-                strHTML += '<tbody>';
-                strHTML += '<tr>';
-                strHTML += '<td>';
-                if (aRow['numar'] == null) {
-                    strHTML += '&nbsp;';
-                } else {
-                    strHTML += aRow['numar'];
-                }
-                strHTML += '</td>';
-                strHTML += '<td class="text-center">';
-                strHTML += from + ' <i class="bi bi-arrow-right"></i> ' + to;
-                strHTML += '</td>';
-                strHTML += '</tr>';
-                strHTML += '</tbody>';
-                strHTML += '</table>';
-                strHTML += '<div>Esti sigur ca vrei sa modifici randul de mai sus?</div>';
-                return strHTML;
-            };
-            /* ------------------------------------------- */
-            function setValue(table, id, key, value) {
-                $.ajax({
-                    method: 'POST',
-                    url: "{{ route('back.general.setValueDB') }}",
-                    data: {
-                        table: table,
-                        id: id,
-                        key: key,
-                        value: value,
-                    },
-                    success: function(response) {
-                        oTable.rows(id).invalidate().draw(false);
-
-                        showToast(response);
-                    }
-                });
-            };
-            /* ------------------------------------------------------------------------ */
         });
     </script>
 @endsection

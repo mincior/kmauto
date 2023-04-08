@@ -2,31 +2,31 @@
 
 namespace App\Http\Controllers\Back;
 
-use App\Models\Fuel;
+use App\Models\CarFuel;
 use App\Models\Brand;
 use App\Models\Country;
 use App\Models\Department;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\FuelStoreRequest;
-use App\Http\Requests\FuelUpdateRequest;
+use App\Http\Requests\CarFuelStoreRequest;
+use App\Http\Requests\CarFuelUpdateRequest;
 use Yajra\DataTables\Facades\DataTables;
 
-class FuelController extends Controller
+class CarFuelController extends Controller
 {
-    public function getFuels() 
+    public function getCarFuels() 
     {
-        $fuels = Fuel::select("id", "valoare")->get()->toArray();
-        return $fuels;
+        $car_fuels = CarFuel::select("id", "valoare")->get()->toArray();
+        return $car_fuels;
     }
 
-    public function saveFuels(Request $request) 
+    public function saveCarFuels(Request $request) 
     {
         $valoare =$request->all();
-        $exista = @Fuel::where('valoare', $valoare)->first()->valoare;
+        $exista = @CarFuel::where('valoare', $valoare)->first()->valoare;
         if(!(is_null($exista) == false)){
-            Fuel::create($valoare);
+            CarFuel::create($valoare);
             return 'Consum mediu salvat.';
         }else{
             return 'Valoarea exista deja.';
@@ -37,7 +37,7 @@ class FuelController extends Controller
     // public function index(Request $request)
     // {
     //     if ($request->ajax()) {          
-    //         $types = Fuel::with(['brand', 'type', 'department'])->select(sprintf('%s.*', (new Fuel)->getTable()));
+    //         $types = CarFuel::with(['brand', 'type', 'department'])->select(sprintf('%s.*', (new CarFuel)->getTable()));
     //         return DataTables::of($types)
     //             ->addColumn('DT_RowId', function ($row) {
     //                 return $row->id;
@@ -63,9 +63,9 @@ class FuelController extends Controller
     //     return view('back.types.create', compact('departments', 'brands'));
     // }
 
-    // public function store(FuelStoreRequest $request)
+    // public function store(CarFuelStoreRequest $request)
     // {
-    //     $type = Fuel::create($request->all());
+    //     $type = CarFuel::create($request->all());
 
     //     $notification = [
     //         "type" => "success",
@@ -76,21 +76,21 @@ class FuelController extends Controller
     //     return redirect()->route('back.types.index')->with('notification', $notification);
     // }
 
-    // public function show(Fuel $type)
+    // public function show(CarFuel $type)
     // {
     //     $countries = Country::where('is_eu', 1)->orderBy('name', 'asc')->get();
 
     //     return view('back.types.show', compact('type'))->with(compact('countries'));
     // }
 
-    // public function edit(Fuel $type)
+    // public function edit(CarFuel $type)
     // {
     //     $countries = Country::where('is_eu', 1)->orderBy('name', 'asc')->get();
 
     //     return view('back.types.edit', compact('type'))->with(compact('countries'));
     // }
 
-    // public function update(FuelUpdateRequest $request, Fuel $type)
+    // public function update(CarFuelUpdateRequest $request, CarFuel $type)
     // {
     //     $type->update($request->all());
 
@@ -105,7 +105,7 @@ class FuelController extends Controller
 
     // public function massDestroy(Request $request)
     // {
-    //     Fuel::whereIn('id', request('ids'))->delete();
+    //     CarFuel::whereIn('id', request('ids'))->delete();
 
     //     return response()->noContent();
     // }

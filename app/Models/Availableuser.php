@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Fuel extends Model
+class Availableuser extends Model
 {
-    use HasFactory,  FuelRelationships;
+    use HasFactory,  AvailableuserRelationships;
             /**
      * The attributes that are mass assignable.
      *
@@ -16,10 +16,11 @@ class Fuel extends Model
     protected $fillable = [
         //Begin craft placeholder #1
 		'valoare', 
-		'car_id', 
 		'interval_id', 
+		'user_id', 
 		//End craft placeholder #1
         
     ];
     public $timestamps = false;
+
 }

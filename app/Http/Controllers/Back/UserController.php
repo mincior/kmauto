@@ -3,16 +3,20 @@
 namespace App\Http\Controllers\Back;
 
 use Countries;
-use App\Models\Fuel;
+use App\Models\Car;
 use App\Models\User;
 use App\Models\Kmlog;
 use App\Models\Month;
+use App\Models\CarFuel;
 use App\Models\UserCar;
+use App\Models\UserDep;
 use App\Models\Interval;
+use App\Models\UserPhone;
 use App\Models\Department;
+use App\Models\UserKmlimit;
 use App\MyHelpers\AppHelper;
 use Illuminate\Http\Request;
-use App\Models\UserDep;
+use App\Models\Availableuser;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserStoreRequest;
@@ -26,7 +30,24 @@ class UserController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $users = User::with( 'departments', 'cars')->select(sprintf('%s.*', (new User)->getTable()))->orderBy('id', 'desc');
+            //with( 'departments', 'cars')->
+            $users = User::select(sprintf('%s.*', (new User)->getTable()))->orderBy('id', 'desc')->get();
+            $arr_users_with_departments = AppHelper::retur_ultima_valoare_array('user_id', 'department_id', 'user_deps');
+            $arr_users_with_cars = AppHelper::retur_ultima_valoare_array('user_id', 'car_id', 'user_cars');
+            $arr_users_with_user_activ = AppHelper::retur_ultima_valoare_array('user_id', 'id', 'availableusers');
+            $arr_users_with_user_phone = AppHelper::retur_ultima_valoare_array('user_id', 'id', 'user_phones');
+            $arr_users_with_user_limita_km = AppHelper::retur_ultima_valoare_array('user_id', 'id', 'user_kmlimits');
+
+
+                        //in cars avem deja brand si type acum luam fiecare masina si-i adaugam departamentul, userul si consumul mediu (car_fuel)
+            //asociate la momentul intervalului selectat
+            foreach ($users as $user){
+                @$user['departments'] = Department::where('id', $arr_users_with_departments[$user->id])->get();
+                @$user['cars'] = Car::where('id', $arr_users_with_cars[$user->id])->get();
+                @$user['activ'] = Availableuser::where('id', $arr_users_with_user_activ[$user->id])->get();
+                @$user['phones'] = UserPhone::where('id', $arr_users_with_user_phone[$user->id])->get();
+                @$user['kmlimits'] = UserKmlimit::where('id', $arr_users_with_user_limita_km[$user->id])->get();
+           }
             return DataTables::of($users)
                 ->addColumn('DT_RowId', function ($row) {
                     return $row->id;

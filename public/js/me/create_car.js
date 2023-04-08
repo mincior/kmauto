@@ -1,7 +1,7 @@
 function salveazaConsumuriMedii() {
 	let valoare = $('#consum_mediu').val();
 	if (valoare) {
-		let url = siteUrl + '/back/fuels/save-fuels'
+		let url = siteUrl + '/back/car_fuels/save-car_fuels'
 		var consumuri_medii = [];
 
 		bootbox.confirm({
@@ -34,7 +34,7 @@ function salveazaConsumuriMedii() {
 }
 
 // //autocompletare pentru consumuri medii
-// let url = siteUrl + '/back/fuels/get-fuels' 
+// let url = siteUrl + '/back/car_fuels/get-car_fuels' 
 // var consumuri_medii = [];
 // axios.get(url)
 // .then(function (res) {

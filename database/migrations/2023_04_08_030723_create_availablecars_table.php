@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 //Begin craft placeholder #1
-class CreateFuelsTable extends Migration
+class CreateAvailablecarsTable extends Migration
 //End craft placeholder #1
 {
     /**
@@ -16,13 +16,13 @@ class CreateFuelsTable extends Migration
     public function up()
     {
         //Begin craft placeholder #2
-		Schema::create('fuels', function (Blueprint $table) {
+		Schema::create('availablecars', function (Blueprint $table) {
 			$table->id();
-			$table->string('valoare');		
-			$table->bigInteger('car_id')->unsigned()->index()->nullable();
-			$table->foreign('car_id')->references('id')->on('cars');
+			$table->boolean('valoare')->default('1');
 			$table->bigInteger('interval_id')->unsigned()->index()->nullable();
-			$table->foreign('interval_id')->references('id')->on('intervals');		
+			$table->foreign('interval_id')->references('id')->on('intervals');
+			$table->bigInteger('car_id')->unsigned()->index()->nullable();
+			$table->foreign('car_id')->references('id')->on('cars');		
 		//End craft placeholder #2
         });
     }
@@ -35,7 +35,7 @@ class CreateFuelsTable extends Migration
     public function down()
     {
     //Begin craft placeholder #3
-	Schema::dropIfExists('fuels');
+	Schema::dropIfExists('availablecars');
 	//End craft placeholder #3
     }
 }

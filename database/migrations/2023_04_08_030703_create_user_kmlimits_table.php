@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 //Begin craft placeholder #1
-class CreateCarsTable extends Migration
+class CreateUserKmlimitsTable extends Migration
 //End craft placeholder #1
 {
     /**
@@ -16,15 +16,13 @@ class CreateCarsTable extends Migration
     public function up()
     {
         //Begin craft placeholder #2
-		Schema::create('cars', function (Blueprint $table) {
+		Schema::create('user_kmlimits', function (Blueprint $table) {
 			$table->id();
-			$table->string('numar')->unique();
-			$table->string('carburant')->default('benzina')->commnet('motorina/benzina');
-			$table->string('observatii')->nullable();
-			$table->bigInteger('type_id')->unsigned()->index()->nullable();
-			$table->foreign('type_id')->references('id')->on('types');
-			$table->bigInteger('brand_id')->unsigned()->index()->nullable();
-			$table->foreign('brand_id')->references('id')->on('brands');		
+			$table->integer('valoare')->default(20);
+			$table->bigInteger('interval_id')->unsigned()->index()->nullable();
+			$table->foreign('interval_id')->references('id')->on('intervals');
+			$table->bigInteger('user_id')->unsigned()->index()->nullable();
+			$table->foreign('user_id')->references('id')->on('users');		
 		//End craft placeholder #2
         });
     }
@@ -37,7 +35,7 @@ class CreateCarsTable extends Migration
     public function down()
     {
     //Begin craft placeholder #3
-	Schema::dropIfExists('cars');
+	Schema::dropIfExists('user_kmlimits');
 	//End craft placeholder #3
     }
 }
