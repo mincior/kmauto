@@ -52,7 +52,7 @@ class CarController extends Controller
             $selectedInterval = Interval::where('month_id', $selectedMonth->id)->where('select', 1)->first();
 
             //mai intai se pregateste $cars cu brand, type si users
-            $cars =Car:: with('brand', 'type', 'users')->select(sprintf('%s.*', (new Car)->getTable()))->orderBy('id', 'desc')->get();
+            $cars =Car:: with('brand', 'type')->select(sprintf('%s.*', (new Car)->getTable()))->orderBy('id', 'desc')->get();
 
             //se gaseste ultima asociere intre masini si filiale pentru intervalul $selectedInterval
             $sql = " DISTINCT car_id, LAST_VALUE(department_id) OVER (PARTITION BY car_id ORDER BY interval_id RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING ) last_department_id";
@@ -63,19 +63,33 @@ class CarController extends Controller
             $results = json_decode($res, true);
             //in $results avem un array ce tine car_id si last_department_id
             
-            //vom transforma car_id in key iar last_department_id in val in $arr_cars
-            $arr_cars = [];
+            //vom transforma car_id in key iar last_department_id in val in $arr_cars_with_departments
+            $arr_cars_with_departments = [];
             foreach($results as $key=>$result){
-                $arr_cars[$result['car_id']] = $result['last_department_id'];
+                $arr_cars_with_departments[$result['car_id']] = $result['last_department_id'];
             }
             
-            //in cars avem deja brand, type si users acum luam fiecare masina si-i adaugam si departamentul 
-            //asociat la momentul intervalului selectat
-            foreach ($cars as $car){
-                $department = Department::where('id', $arr_cars[$car->id])->get();
-                $car['departments'] = $department;
+            //se gaseste ultima asociere intre masini si utilizatori pentru intervalul $selectedInterval
+            $sql = " DISTINCT car_id, LAST_VALUE(user_id) OVER (PARTITION BY car_id ORDER BY interval_id RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING ) last_user_id";
+            $res = DB::table('user_cars')
+            ->selectRaw($sql)
+            ->where('interval_id','<=', $selectedInterval->id)
+            ->get();
+            $results = json_decode($res, true);
+            //in $results avem un array ce tine car_id si last_user_id
+            
+            //vom transforma car_id in 'key' iar last_user_id in 'val' in $arr_cars_with_users
+            $arr_cars_with_users = [];
+            foreach($results as $key=>$result){
+               $arr_cars_with_users[$result['car_id']] = $result['last_user_id'];
             }
-
+            
+            //in cars avem deja brand si type acum luam fiecare masina si-i adaugam departamentul si userul
+            //asociate la momentul intervalului selectat
+            foreach ($cars as $car){
+                 @$car['departments'] = Department::where('id', $arr_cars_with_departments[$car->id])->get();
+                 @$car['users'] = User::where('id', $arr_cars_with_users[$car->id])->get();
+            }
             //Data tables poate functiona si pe eloquent si pe query normal dar si pe collection
             // (cazul de fata, adica s-a aplicat get() pe query si s-a obtinut o colectie)
             return DataTables::of($cars)
