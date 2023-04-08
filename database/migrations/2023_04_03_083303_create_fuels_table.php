@@ -19,6 +19,10 @@ class CreateFuelsTable extends Migration
 		Schema::create('fuels', function (Blueprint $table) {
 			$table->id();
 			$table->string('valoare');		
+			$table->bigInteger('car_id')->unsigned()->index()->nullable();
+			$table->foreign('car_id')->references('id')->on('cars');
+			$table->bigInteger('interval_id')->unsigned()->index()->nullable();
+			$table->foreign('interval_id')->references('id')->on('intervals');		
 		//End craft placeholder #2
         });
     }

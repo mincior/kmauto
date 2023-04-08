@@ -34,8 +34,8 @@ class CarController extends Controller
     public function autoComplete(Request $request)
     {
         
-        $res = Fuel::select("valoare")
-                ->where("valoare","LIKE","%{$request->term}%")
+        $res = Fuel::select("id")
+                ->where("id","LIKE","%{$request->term}%")
                 ->get();  
         return response()->json($res);
     }
@@ -84,11 +84,26 @@ class CarController extends Controller
                $arr_cars_with_users[$result['car_id']] = $result['last_user_id'];
             }
             
-            //in cars avem deja brand si type acum luam fiecare masina si-i adaugam departamentul si userul
+            //se gaseste ultima asociere intre masini si utilizatori pentru intervalul $selectedInterval
+            $sql = " DISTINCT car_id, LAST_VALUE(id) OVER (PARTITION BY car_id ORDER BY interval_id RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING ) last_id";
+            $res = DB::table('fuels')
+            ->selectRaw($sql)
+            ->where('interval_id','<=', $selectedInterval->id)
+            ->get();
+            $results = json_decode($res, true);
+            //in $results avem un array ce tine car_id si last_id
+            //vom transforma car_id in 'key' iar last_id in 'val' in $arr_cars_with_fuels
+            $arr_cars_with_fuels= [];
+            foreach($results as $key=>$result){
+               $arr_cars_with_fuels[$result['car_id']] = $result['last_id'];
+            }
+            
+            //in cars avem deja brand si type acum luam fiecare masina si-i adaugam departamentul, userul si consumul mediu (fuel)
             //asociate la momentul intervalului selectat
             foreach ($cars as $car){
                  @$car['departments'] = Department::where('id', $arr_cars_with_departments[$car->id])->get();
                  @$car['users'] = User::where('id', $arr_cars_with_users[$car->id])->get();
+                 @$car['fuels'] = Fuel::where('id', $arr_cars_with_fuels[$car->id])->get();
             }
             //Data tables poate functiona si pe eloquent si pe query normal dar si pe collection
             // (cazul de fata, adica s-a aplicat get() pe query si s-a obtinut o colectie)

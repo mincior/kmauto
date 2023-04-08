@@ -205,8 +205,14 @@
                         },
                     },
                     {
-                        data: 'consum_mediu',
-                        name: 'consum_mediu',
+                        data: 'id',
+                        render: function(data, type, row, meta) {
+                            if ( typeof row.fuels[0] === "undefined"){
+                                return '';
+                            }else{
+                                return row.fuels[0].valoare;
+                            }
+                        },
                         width: '2'
                     },
                     {

@@ -29,15 +29,23 @@ class FuelsTableSeeder extends Seeder
             new Sequence(
                 [
                     'valoare' => 6.5,
+                    'car_id' => 140,
+                    'interval_id' => 1,
                 ],
                 [
                     'valoare' => 9,
+                    'car_id' => 139,
+                    'interval_id' => 1,
                 ],
                 [
                     'valoare' => 11,
+                    'car_id' => 138,
+                    'interval_id' => 1,
                 ],
                 [
                     'valoare' => 12,
+                    'car_id' => 143,
+                    'interval_id' => 1,
                 ],
                 
             )            

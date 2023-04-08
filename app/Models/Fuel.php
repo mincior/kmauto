@@ -16,6 +16,8 @@ class Fuel extends Model
     protected $fillable = [
         //Begin craft placeholder #1
 		'valoare', 
+		'car_id', 
+		'interval_id', 
 		//End craft placeholder #1
         
     ];

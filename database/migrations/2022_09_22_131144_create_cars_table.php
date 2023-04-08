@@ -19,7 +19,6 @@ class CreateCarsTable extends Migration
 		Schema::create('cars', function (Blueprint $table) {
 			$table->id();
 			$table->string('numar')->unique();
-			$table->decimal('consum_mediu', 5, 2);
 			$table->string('carburant')->default('benzina')->commnet('motorina/benzina');
 			$table->boolean('activ', 1)->default('1');
 			$table->string('observatii')->nullable();

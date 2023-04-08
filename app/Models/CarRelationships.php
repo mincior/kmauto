@@ -19,14 +19,14 @@ trait CarRelationships
 	public function users_calculate(){
 		return $this->belongsToMany('App\\Models\\User', 'car_user')->withPivot('user_id', 'car_id');
 	}
+//users si departments se construiesc in controller pentru ca trebuie sa tina seama de intervalul curent
+	// public function departments(){
+	// 	return $this->belongsToMany('App\\Models\\Department', 'App\\Models\\CarDep')->withPivot('observatii', 'interval_id','department_id', 'car_id');
+	// }
 
-	public function departments(){
-		return $this->belongsToMany('App\\Models\\Department', 'App\\Models\\CarDep')->withPivot('observatii', 'interval_id','department_id', 'car_id');
-	}
-
-	public function users(){
-		return $this->belongsToMany('App\\Models\\User', 'App\\Models\\UserCar')->withPivot('observatii', 'interval_id', 'user_id', 'car_id');
-	}
+	// public function users(){
+	// 	return $this->belongsToMany('App\\Models\\User', 'App\\Models\\UserCar')->withPivot('observatii', 'interval_id', 'user_id', 'car_id');
+	// }
 	
 	public function departments_calculate(){
 		return $this->belongsToMany('App\\Models\\Department', 'car_department')->withPivot('department_id', 'car_id');
@@ -41,6 +41,10 @@ trait CarRelationships
 	
 	public function brand(){
 		return $this->belongsTo('App\\Models\\Brand');
+	}
+	
+	public function fuels(){
+		return $this->hasMany('App\\Models\\Fuel');
 	}
 
 	//End craft placeholder #1

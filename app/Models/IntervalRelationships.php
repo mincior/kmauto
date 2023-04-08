@@ -25,6 +25,9 @@ trait IntervalRelationships
 	public function month(){
 		return $this->belongsTo('App\\Models\\Month');
 	}
+	public function fuels(){
+		return $this->hasMany('App\\Models\\Fuel');
+	}
 
 	//End craft placeholder #1
 }
