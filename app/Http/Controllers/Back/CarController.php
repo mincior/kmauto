@@ -51,10 +51,10 @@ class CarController extends Controller
             //dar nu am fi putut asocia corect masina cu filiala si intervalul
             $cars =Car:: with('brand', 'type')->select(sprintf('%s.*', (new Car)->getTable()))->orderBy('id', 'desc')->get();
 
-            $arr_cars_with_departments = AppHelper::retur_ultima_valoare_array('car_id', 'department_id', 'car_deps');
-            $arr_cars_with_users = AppHelper::retur_ultima_valoare_array('car_id', 'user_id', 'user_cars');
-            $arr_cars_with_car_fuels = AppHelper::retur_ultima_valoare_array('car_id', 'id', 'car_fuels');
-            $arr_cars_with_car_activ = AppHelper::retur_ultima_valoare_array('car_id', 'id', 'availablecars');
+            $arr_cars_with_departments = AppHelper::get_last_target_values_array('car_id', 'department_id', 'car_deps');
+            $arr_cars_with_users = AppHelper::get_last_target_values_array('car_id', 'user_id', 'user_cars');
+            $arr_cars_with_car_fuels = AppHelper::get_last_target_values_array('car_id', 'id', 'car_fuels');
+            $arr_cars_with_car_activ = AppHelper::get_last_target_values_array('car_id', 'id', 'availablecars');
 
             //in cars avem deja brand si type acum luam fiecare masina si-i adaugam departamentul, userul, consumul mediu (car_fuel)
             //si activ,  asociate la momentul intervalului selectat
