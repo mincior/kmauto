@@ -13,7 +13,7 @@
 <form id="myForm" method="POST" action="{{ route('back.users.update', [$user->id])  }}" enctype="multipart/form-data" wire:submit.prevent="savePersonalData" onkeydown="return event.key != 'Enter';">
     @csrf
     @method('PUT')
-    <input type="hidden" name="selected_interval" value="{{$selectedInterval->id}}">
+    <input type="hidden" name="selected_interval" value="{{$selectedInterval}}">
     <div class="container mt-4">
         <div class="col">
             <div class="card mb-3">

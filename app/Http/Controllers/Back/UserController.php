@@ -30,17 +30,17 @@ class UserController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            //with( 'departments', 'cars')->
+            $selectedInterval = config('global.selected_interval');
             $users = User::select(sprintf('%s.*', (new User)->getTable()))->orderBy('id', 'desc')->get();
 
-            $arr_users_with_departments = AppHelper::get_last_target_values_array('user_id', 'department_id', 'user_deps');
-            $arr_users_with_cars = AppHelper::get_last_target_values_array('user_id', 'car_id', 'user_cars');
-            $arr_users_with_user_activ = AppHelper::get_last_target_values_array('user_id', 'id', 'availableusers');
-            $arr_users_with_user_phones = AppHelper::get_last_target_values_array('user_id', 'id', 'user_phones');
-            $arr_users_with_user_kmlimits = AppHelper::get_last_target_values_array('user_id', 'id', 'user_kmlimits');
+            $arr_users_with_departments = AppHelper::get_last_target_values_array('user_id', 'department_id', 'user_deps', $selectedInterval);
+            $arr_users_with_cars = AppHelper::get_last_target_values_array('user_id', 'car_id', 'user_cars', $selectedInterval);
+            $arr_users_with_user_activ = AppHelper::get_last_target_values_array('user_id', 'id', 'availableusers', $selectedInterval);
+            $arr_users_with_user_phones = AppHelper::get_last_target_values_array('user_id', 'id', 'user_phones', $selectedInterval);
+            $arr_users_with_user_kmlimits = AppHelper::get_last_target_values_array('user_id', 'id', 'user_kmlimits', $selectedInterval);
 
 
-                        //in cars avem deja brand si type acum luam fiecare masina si-i adaugam departamentul, userul si consumul mediu (car_fuel)
+            //in cars avem deja brand si type acum luam fiecare masina si-i adaugam departamentul, userul si consumul mediu (car_fuel)
             //asociate la momentul intervalului selectat
             foreach ($users as $user){
                 @$user['departments'] = Department::where('id', $arr_users_with_departments[$user->id])->get();
@@ -75,11 +75,10 @@ class UserController extends Controller
 
     public function create()
     {
-        $selectedMonth = Month::where('select', 1)->first();
-        $selectedInterval = Interval::where('month_id', $selectedMonth->id)->where('select', 1)->first();
+        $selectedInterval = config('global.selected_interval');
 
         $departments = Department::select('id', 'name')->orderBy('name')->get();
-        return view('back.users.create', compact('departments'))->with('selectedMonth', $selectedMonth)->with('selectedInterval', $selectedInterval);
+        return view('back.users.create', compact('departments'))->with('selectedInterval', $selectedInterval);
     }
 
 
@@ -111,14 +110,12 @@ class UserController extends Controller
     {
         $data = [];
         $data1 = [];
-        $selectedMonth = Month::where('select', 1)->first();
-        $selectedInterval = Interval::where('month_id', $selectedMonth->id)->where('select', 1)->first();
-        $user_id = @UserCar::where('user_id', $user->id)->where('interval_id', '>=', $selectedInterval->id)->first()->user_id;
+        $selectedInterval = config('global.selected_interval');
+        $user_id = @UserCar::where('user_id', $user->id)->where('interval_id', '>=', $selectedInterval)->first()->user_id;
         $user_name = @User::where('id', $user_id)->first()->name;
-        $department_id = UserDep::where('user_id', $user->id)->where('interval_id', '>=', $selectedInterval->id)->first()->department_id;
+        $department_id = UserDep::where('user_id', $user->id)->where('interval_id', '>=', $selectedInterval)->first()->department_id;
         $department_name = Department::where('id', $department_id)->first()->name;
-        $data['selectedMonth'] = $selectedMonth->id;
-        $data['selectedInterval'] = $selectedInterval->id;
+        $data['selectedInterval'] = $selectedInterval;
         $merged_data['user_name'] = $user_name;
         $merged_data['department_name'] = $department_name;
 
@@ -128,13 +125,12 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
-        $selectedMonth = Month::where('select', 1)->first();
-        $selectedInterval = Interval::where('month_id', $selectedMonth->id)->where('select', 1)->first();
+        $selectedInterval = config('global.selected_interval');
 
         $departments = Department::select('id', 'name')->orderBy('name')->get();
         $dep_id = UserDep::select('department_id', 'interval_id', 'user_id')
             ->where('user_id', $user->id)
-            ->where('interval_id', '>=', $selectedInterval->id)
+            ->where('interval_id', '>=', $selectedInterval)
             ->orderBy('interval_id', 'desc')
             ->first()['department_id'];
         $users = Department::with('users')->where('id', '=', $dep_id)->get()[0]['users'];
@@ -143,7 +139,7 @@ class UserController extends Controller
         //de aceea s-a pus @UserUser... sa nu dea eroare daca $usr_id este null
         $usr_id = @UserCar::select('car_id', 'interval_id', 'user_id')
             ->where('user_id', $user->id)
-            ->where('interval_id', '>=', $selectedInterval->id)
+            ->where('interval_id', '>=', $selectedInterval)
             ->orderBy('interval_id', 'desc')
             ->first()['user_id'];
 
@@ -151,7 +147,6 @@ class UserController extends Controller
             ->with(compact('departments', 'users', 'brands', 'types'))
             ->with('dep_id', $dep_id)
             ->with('usr_id', $usr_id)
-            ->with('selectedMonth', $selectedMonth)
             ->with('selectedInterval', $selectedInterval);
     }
 

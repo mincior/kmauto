@@ -9,15 +9,27 @@ use Illuminate\Support\Facades\DB;
 
 class AppHelper
 {
-	public static function get_last_target_values_array($source_id, $target_id, $pivot_table_name)
+	/**
+	 * Returneaza un array de id-uri sursa 
+	 * pentru ultima valoare a id-urilor target a intervalului selectat
+	 * Daca primeste si un filtru de tip Sql il executa.
+	 * @param [type] $source_id
+	 * @param [type] $target_id
+	 * @param [type] $pivot_table_name
+	 * @param [type] $selectedInterval
+	 * @param string $whereRaw
+	 * @return void
+	 */
+	public static function get_last_target_values_array($source_id, $target_id, $pivot_table_name, $selectedInterval, $whereRaw = '' )
 	{
-		$selectedMonth = Month::where('select', 1)->first();
-		$selectedInterval = Interval::where('month_id', $selectedMonth->id)->where('select', 1)->first();
 
 		$sql = " DISTINCT $source_id, LAST_VALUE($target_id) OVER (PARTITION BY $source_id ORDER BY interval_id RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING ) last_id";
 		$res = DB::table($pivot_table_name)
-			->selectRaw($sql)
-			->where('interval_id', '<=', $selectedInterval->id)
+			->selectRaw($sql);
+		if ($whereRaw){
+			$res = $res->whereRaw($whereRaw);
+		}
+		$res = $res->where('interval_id', '<=', $selectedInterval)
 			->get();
 		$results = json_decode($res, true);
 

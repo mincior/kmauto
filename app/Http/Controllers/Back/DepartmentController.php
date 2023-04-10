@@ -9,6 +9,7 @@ use App\Models\Month;
 use App\Models\Country;
 use App\Models\Interval;
 use App\Models\Department;
+use App\MyHelpers\AppHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -20,43 +21,24 @@ class DepartmentController extends Controller
 {
     public static function getUsers($department_id)
     {
-        
-        //masinile se returneaza functie de interval
-		$selectedMonth = Month::where('select', 1)->first();
-        $selectedInterval = Interval::where('month_id', $selectedMonth->id)->where('select', 1)->first();
-		$sql = " DISTINCT user_id, LAST_VALUE(department_id) OVER (PARTITION BY user_id ORDER BY interval_id RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING ) last_department_id";
-		$res = DB::table('user_deps')
-        ->selectRaw($sql)
-        ->where('interval_id','<=', $selectedInterval->id)
-        ->where('department_id', $department_id)
-        ->get();
-        $results = json_decode($res, true);
-        $arr_users = [];
-        foreach($results as $key=>$result){
-            $arr_users[$key] = $result['user_id'];
+        if(!($department_id == null)){
+            $selectedInterval = config('global.selected_interval');
+            
+            $users_id = AppHelper::get_last_target_values_array('user_id', 'department_id', 'user_deps', $selectedInterval, "department_id = $department_id" );
+            $users = User::whereIn('id', $users_id)->get();
+            return $users;
         }
-        $users = User::wherein('id', $arr_users)->get();
-        return $users;
     }
 
     public static function getCars($department_id)
     {
-        //masinile se returneaza functie de interval
-		$selectedMonth = Month::where('select', 1)->first();
-        $selectedInterval = Interval::where('month_id', $selectedMonth->id)->where('select', 1)->first();
-		$sql = " DISTINCT car_id, LAST_VALUE(department_id) OVER (PARTITION BY car_id ORDER BY interval_id RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING ) last_department_id";
-		$res = DB::table('car_deps')
-        ->selectRaw($sql)
-        ->where('interval_id','<=', $selectedInterval->id)
-        ->where('department_id', $department_id)
-        ->get();
-        $results = json_decode($res, true);
-        $arr_cars = [];
-        foreach($results as $key=>$result){
-            $arr_cars[$key] = $result['car_id'];
+        if(!($department_id == null)){
+            $selectedInterval = config('global.selected_interval');
+
+            $cars_id = AppHelper::get_last_target_values_array('car_id', 'department_id', 'car_deps', $selectedInterval, "department_id = $department_id" );
+            $cars = Car::whereIn('id', $cars_id)->get();
+            return $cars;
         }
-        $cars = Car::wherein('id', $arr_cars)->get();
-        return $cars;
     }
 
     public function index(Request $request)

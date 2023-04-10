@@ -36,7 +36,7 @@
                         <th scope="col">Calificativ</th>
                         <th scope="col">Filiala</th>
                         <th scope="col">Is admin</th>
-                        <th scope="col" class="text-danger">Activ ?</th>
+                        <th scope="col">Activ</th>
                     </tr>
                 </thead>
             </table>

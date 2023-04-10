@@ -10,7 +10,7 @@
     ?>
     <form id="myForm" method="POST" action="{{ route('back.cars.store') }}" enctype="multipart/form-data">
         @csrf
-        <input type="hidden" name="selected_interval" value="{{ $selectedInterval->id }}">
+        <input type="hidden" name="selected_interval" value="{{ $selectedInterval }}">
         <div class="container mt-4">
             <div class="col-12">
                 <div class="card mb-3">

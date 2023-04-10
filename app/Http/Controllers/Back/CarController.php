@@ -12,6 +12,7 @@ use App\Models\Month;
 use App\Models\CarDep;
 use App\Models\CarFuel;
 use App\Models\CarUser;
+use App\Models\UserCar;
 use App\Models\Interval;
 use App\Models\Department;
 use App\Models\Availablecar;
@@ -21,6 +22,7 @@ use App\Models\CarDepartment;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CarStoreRequest;
+use Illuminate\Support\Facades\Config;
 use App\Http\Requests\CarUpdateRequest;
 use Illuminate\Support\Facades\Response;
 use Yajra\DataTables\Facades\DataTables;
@@ -35,9 +37,9 @@ class CarController extends Controller
     public function autoComplete(Request $request)
     {
         
-        $res = CarFuel::select("id")
-                ->where("id","LIKE","%{$request->term}%")
-                ->get();  
+        $res = CarFuel::select("valoare")
+                ->where("valoare","LIKE","%{$request->term}%")
+                ->get()->toArray();  
         return response()->json($res);
     }
 
@@ -46,15 +48,13 @@ class CarController extends Controller
 
         
         if ($request->ajax()) {
-            //pentru a returna in $cars filiala de care apartine fiecare masina la intervalul selectat
-            //se prelucreaza separat departments. Normal ar fi fost sa se puna si departments in lista with
-            //dar nu am fi putut asocia corect masina cu filiala si intervalul
+            $selectedInterval = config('global.selected_interval');
             $cars =Car:: with('brand', 'type')->select(sprintf('%s.*', (new Car)->getTable()))->orderBy('id', 'desc')->get();
 
-            $arr_cars_with_departments = AppHelper::get_last_target_values_array('car_id', 'department_id', 'car_deps');
-            $arr_cars_with_users = AppHelper::get_last_target_values_array('car_id', 'user_id', 'user_cars');
-            $arr_cars_with_car_fuels = AppHelper::get_last_target_values_array('car_id', 'id', 'car_fuels');
-            $arr_cars_with_car_activ = AppHelper::get_last_target_values_array('car_id', 'id', 'availablecars');
+            $arr_cars_with_departments = AppHelper::get_last_target_values_array('car_id', 'department_id', 'car_deps', $selectedInterval);
+            $arr_cars_with_users = AppHelper::get_last_target_values_array('car_id', 'user_id', 'user_cars', $selectedInterval);
+            $arr_cars_with_car_fuels = AppHelper::get_last_target_values_array('car_id', 'id', 'car_fuels', $selectedInterval);
+            $arr_cars_with_car_activ = AppHelper::get_last_target_values_array('car_id', 'id', 'availablecars', $selectedInterval);
 
             //in cars avem deja brand si type acum luam fiecare masina si-i adaugam departamentul, userul, consumul mediu (car_fuel)
             //si activ,  asociate la momentul intervalului selectat
@@ -92,20 +92,23 @@ class CarController extends Controller
 
     public function create()
     {
-        $selectedMonth = Month::where('select', 1)->first();
-        $selectedInterval = Interval::where('month_id', $selectedMonth->id)->where('select', 1)->first();
+        $selectedInterval = config('global.selected_interval');
 
         $departments = Department::select('id', 'name')->orderBy('name')->get();
         $brands = Brand::select('id', 'name')->orderBy('name')->get();
-        return view('back.cars.create', compact('departments', 'brands'))->with('selectedMonth', $selectedMonth)->with('selectedInterval', $selectedInterval);
+        return view('back.cars.create', compact('departments', 'brands'))->with('selectedInterval', $selectedInterval);
     }
-
 
     public function store(CarStoreRequest $request)
     {
+        $selectedMonth =config('global.selected_month');
+        $selectedInterval = config('global.selected_interval');
         //In request avem campurile necesare (proprietatea name din html)
         //In CarStoreRequest se face validarea
         $data = $request->all();
+        //config('global.current.month')
+        // Config::set('global.current.month', 34);
+          //dd( $selectedMonth, $selectedInterval);
         //scoate un numar de forma B-87-CLT din (B87CLT, B-87CLT, B#$%$%$87(*&^%^&*(cLt)), etc. )
         $data['numar'] = AppHelper::prelucrare_numar_masina($data['numar']);
 
@@ -128,17 +131,15 @@ class CarController extends Controller
     public function show(Car $car)
     {
         $data = [];
-        $data1 = [];
-        $selectedMonth = Month::where('select', 1)->first();
-        $selectedInterval = Interval::where('month_id', $selectedMonth->id)->where('select', 1)->first();
+        $selectedInterval = config('global.selected_interval');
+
         $brand_name = Brand::where('id', $car->brand_id)->first()->name;
         $type_name = Type::where('id', $car->type_id)->first()->name;
-        $user_id = @CarUser::where('car_id', $car->id)->where('interval_id', '>=', $selectedInterval->id)->first()->user_id;
+        $user_id = @UserCar::where('car_id', $car->id)->where('interval_id', '>=', $selectedInterval)->first()->user_id;
         $user_name = @User::where('id', $user_id)->first()->name;
-        $department_id = CarDepartment::where('car_id', $car->id)->where('interval_id', '>=', $selectedInterval->id)->first()->department_id;
+        $department_id = CarDep::where('car_id', $car->id)->where('interval_id', '>=', $selectedInterval)->first()->department_id;
         $department_name = Department::where('id', $department_id)->first()->name;
-        $data['selectedMonth'] = $selectedMonth->id;
-        $data['selectedInterval'] = $selectedInterval->id;
+        $data['selectedInterval'] = $selectedInterval;
         $data['brand_name'] = $brand_name;
         $data['type_name'] = $type_name;
         $merged_data['user_name'] = $user_name;
@@ -150,22 +151,21 @@ class CarController extends Controller
 
     public function edit(Car $car)
     {
-        $selectedMonth = Month::where('select', 1)->first();
-        $selectedInterval = Interval::where('month_id', $selectedMonth->id)->where('select', 1)->first();
+        $selectedInterval = config('global.selected_interval');
 
         $departments = Department::select('id', 'name')->orderBy('name')->get();
-        $dep_id = CarDepartment::select('department_id', 'interval_id', 'car_id')
+        $dep_id = CarDep::select('department_id', 'interval_id', 'car_id')
             ->where('car_id', $car->id)
-            ->where('interval_id', '>=', $selectedInterval->id)
+            ->where('interval_id', '>=', $selectedInterval)
             ->orderBy('interval_id', 'desc')
             ->first()['department_id'];
         $users = Department::with('users')->where('id', '=', $dep_id)->get()[0]['users'];
 
         //usr_id = o masina poate sa nu aiba un user alocat (nici userul o masina) 
         //de aceea s-a pus @CarUser... sa nu dea eroare daca $usr_id este null
-        $usr_id = @CarUser::select('user_id', 'interval_id', 'car_id')
+        $usr_id = @UserCar::select('user_id', 'interval_id', 'car_id')
             ->where('car_id', $car->id)
-            ->where('interval_id', '>=', $selectedInterval->id)
+            ->where('interval_id', '>=', $selectedInterval)
             ->orderBy('interval_id', 'desc')
             ->first()['user_id'];
         $brands = Brand::select('id', 'name')->orderBy('name')->get();
@@ -175,7 +175,6 @@ class CarController extends Controller
             ->with(compact('departments', 'users', 'brands', 'types'))
             ->with('dep_id', $dep_id)
             ->with('usr_id', $usr_id)
-            ->with('selectedMonth', $selectedMonth)
             ->with('selectedInterval', $selectedInterval);
     }
 

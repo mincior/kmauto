@@ -33,21 +33,6 @@ function salveazaConsumuriMedii() {
 
 }
 
-// //autocompletare pentru consumuri medii
-// let url = siteUrl + '/back/car_fuels/get-car_fuels' 
-// var consumuri_medii = [];
-// axios.get(url)
-// .then(function (res) {
-// 	var len = res.data.length;
-// 	for (var i = 0; i < len; i++)
-// 	{
-// 		var id = res.data[i]['id'];
-// 		var numar = res.data[i]['valoare'];
-// 		consumuri_medii[i] = numar;
-// 		}
-// })
-// autocomplete(document.getElementById("consum_mediu"), consumuri_medii);
-
 //cand se completeaza numarul masinii scrie cu litere mari si inlocuieste spatiul cu liniuta
 function prelucrare_numar_masina(el) {
 	let up = el.value.toUpperCase();//scrie cu litere mari

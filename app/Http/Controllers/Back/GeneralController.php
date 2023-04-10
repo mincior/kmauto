@@ -8,6 +8,8 @@ use App\Models\Interval;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Session;
 
@@ -42,6 +44,10 @@ class GeneralController extends Controller
 
         //si seteaza selectul doar pentru luna month_id
         $query= Month::where('id', $request->month_id)->update(array('select' => 1));
+
+        //scrie o singura data luna selectata in config
+        $interval_selectat= Interval::where('month_id', $request->month_id)->where('select', 1)->first()->id;
+        File::put( env('APP_PATH', '/var/www/kmauto') . '/config/global.php', "<?php return ['selected_month' => $request->month_id, 'selected_interval' => $interval_selectat];");
         return response()->noContent();
     }
 
@@ -53,6 +59,8 @@ class GeneralController extends Controller
         //si seteaza selectul doar pentru intervalul selectat al lunii selectate
         $query= Interval::where('month_id', $request->month_id)->where('id', $request->interval_id)->update(array('select' => 1));
         
+        //scrie o singura data intervalul selectat in config
+        File::put( env('APP_PATH', '/var/www/kmauto') . '/config/global.php', "<?php return ['selected_month' => $request->month_id, 'selected_interval' => $request->interval_id];");
         return response()->noContent();
     }
 
