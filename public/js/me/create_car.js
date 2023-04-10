@@ -1,37 +1,3 @@
-function salveazaConsumuriMedii() {
-	let valoare = $('#consum_mediu').val();
-	if (valoare) {
-		let url = siteUrl + '/back/car_fuels/save-car_fuels'
-		var consumuri_medii = [];
-
-		bootbox.confirm({
-			title: 'Adaugare consum mediu',
-			message: 'Salvati noua valoare in baza de date?',
-			buttons: {
-				confirm: {
-					label: 'Da',
-					className: 'btn-success'
-				},
-				cancel: {
-					label: 'Nu',
-					className: 'btn-danger'
-				}
-			},
-			callback: function (confirmed) {
-				if (confirmed) {
-					axios.post(url, { valoare: valoare })
-						.then(function (response) {
-							if (response.data == 'Valoarea exista deja.') {
-								bootbox.alert(response.data);
-							}
-						})
-				}
-			}
-		});
-
-	}
-
-}
 
 //cand se completeaza numarul masinii scrie cu litere mari si inlocuieste spatiul cu liniuta
 function prelucrare_numar_masina(el) {

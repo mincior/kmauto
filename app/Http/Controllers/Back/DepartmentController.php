@@ -83,16 +83,12 @@ class DepartmentController extends Controller
 
     public function show(Department $department)
     {
-        $countries = Country::where('is_eu', 1)->orderBy('name', 'asc')->get();
 
-        return view('back.departments.show', compact('department'))->with(compact('countries'));
     }
 
     public function edit(Department $department)
     {
-        $countries = Country::where('is_eu', 1)->orderBy('name', 'asc')->get();
 
-        return view('back.departments.edit', compact('department'))->with(compact('countries'));
     }
 
     public function update(DepartmentUpdateRequest $request, Department $department)

@@ -1,1 +1,1 @@
-<?php return ['selected_month' => 4, 'selected_interval' => 13];
+<?php return ['selected_month' => 6, 'selected_interval' => 21];

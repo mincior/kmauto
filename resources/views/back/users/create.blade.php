@@ -6,11 +6,10 @@
 
 @section('content')
     <?php
-    $users = @\App\Http\Controllers\Back\DepartmentController::getUsers(old('department_id'));
+    $cars = @\App\Http\Controllers\Back\DepartmentController::getCars(old('department_id'));
     ?>
-    <form id="myForm" method="POST" action="{{ route('back.cars.store') }}" enctype="multipart/form-data">
+    <form id="myForm" method="POST" action="{{ route('back.users.store') }}" enctype="multipart/form-data">
         @csrf
-        <input type="hidden" name="selected_interval" value="{{ $selectedInterval }}">
         <div class="container mt-4">
             <div class="col-12">
                 <div class="card mb-3">
@@ -97,7 +96,7 @@
                             <label for="telefon" class="col-md-2 col-form-label">Telefon :</label>
 
                             <div class="col-md-3">
-                                <input autocomplete="on" id="telefon" telefon="telefon" type="text"
+                                <input autocomplete="on" id="telefon" name="telefon" type="text"
                                     class="form-control @error('telefon') is-invalid @enderror"
                                     value="{{ old('telefon') }}">
 
@@ -108,14 +107,14 @@
                         </div>
 
                         <div class="row mb-2">
-                            <label for="limita_km" class="col-md-2 col-form-label">Limita km :</label>
+                            <label for="kmlimit" class="col-md-2 col-form-label">Limita km :</label>
 
                             <div class="col-md-3">
-                                <input autocomplete="on" id="limita_km" limita_km="limita_km" type="text"
-                                    class="form-control @error('limita_km') is-invalid @enderror"
-                                    value="{{ old('limita_km') }}">
+                                <input autocomplete="on" id="kmlimit" name="kmlimit" type="text"
+                                    class="form-control @error('kmlimit') is-invalid @enderror"
+                                    value="{{ old('kmlimit') }}">
 
-                                @error('limita_km')
+                                @error('kmlimit')
                                     <span class="invalid-feedback" role="alert">{{ $message }}</span>
                                 @enderror
                             </div>
@@ -124,7 +123,7 @@
                             <label for="observatii" class="col-md-2 col-form-label">Observatii :</label>
 
                             <div class="col-md-6">
-                                <input autocomplete="on" id="observatii" observatii="observatii" type="text"
+                                <input autocomplete="on" id="observatii" name="observatii" type="text"
                                     class="form-control @error('observatii') is-invalid @enderror"
                                     value="{{ old('observatii') }}">
 
@@ -159,7 +158,7 @@
                             <label for="calificativ" class="col-md-2 col-form-label">Calificativ :</label>
 
                             <div class="col-md-3">
-                                <input autocomplete="on" id="calificativ" calificativ="calificativ" type="text"
+                                <input autocomplete="on" id="calificativ" name="calificativ" type="text"
                                     class="form-control @error('calificativ') is-invalid @enderror"
                                     value="{{ old('calificativ') }}">
 
@@ -175,7 +174,7 @@
                 <div class="card-footer">
                     <div class="row">
                         <div class="col">
-                            <a class="btn btn-secondary text-white btn-sm" href="{{ route('back.cars.index') }}"
+                            <a class="btn btn-secondary text-white btn-sm" href="{{ route('back.users.index') }}"
                                 role=" button" tabindex="-1">
                                 <i class="bi bi-arrow-left-short"></i>
                             </a>

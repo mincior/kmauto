@@ -6,13 +6,11 @@
 
 @section('content')
 <?php
-    //$users = @\App\Models\Department::with('users')->where('id', '=', (old('department_id')))->get()[0]['users'];
     $users = @\App\Http\Controllers\Back\DepartmentController::getUsers(old('department_id'));
     $types = @\App\Models\Brand::with('types')->where('id', '=', (old('brand_id')))->get()[0]['types'];
 ?>
 <form id="myForm" method="POST" action="{{ route('back.cars.store') }}" enctype="multipart/form-data" >
     @csrf
-    <input type="hidden" name="selected_interval" value="{{$selectedInterval}}">
     <div class="container mt-4">
         <div class="col-12">
             <div class="card mb-3">
@@ -121,13 +119,10 @@
                             <span class="invalid-feedback" role="alert">{{ $message }}</span>
                             @enderror
                         </div>
-<div class="col col-md-1">
-    <button id="save_car_fuel" class="btn btn-primary text-white btn-sm" tabindex="-1" onclick="event.preventDefault(); salveazaConsumuriMedii();">Salveaza</button>
-</div>
                     </div>
                                     
                     <div class="row mb-2">
-                        <label for="carburant" class="col-md-2 col-form-label">Userburant :</label>
+                        <label for="carburant" class="col-md-2 col-form-label">Carburant :</label>
 
                         <div class="col-md-3">
                             <select name="carburant" id="carburant_select" class="form-select" style="width:auto">
@@ -148,12 +143,24 @@
                             </select>
                         </div>
                     </div>
+                    <div class="row mb-2">
+                        <label for="observatii" class="col-md-2 col-form-label">Observatii :</label>
+
+                        <div class="col-md-3">
+                            <input autocomplete="on" id="observatii" name="observatii" type="text" class="form-control @error('observatii') is-invalid @enderror" value="{{ old('observatii') }}" onkeyup="prelucrare_observatii_masina(this);">
+
+                            @error('observatii')
+                            <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+
                 </div>
 
                 <div class="card-footer">
                     <div class="row">
                         <div class="col">
-                            <a class="btn btn-secondary text-white btn-sm" href="{{ route('back.users.index') }}" role=" button" tabindex="-1">
+                            <a class="btn btn-secondary text-white btn-sm" href="{{ route('back.cars.index') }}" role=" button" tabindex="-1">
                                 <i class="bi bi-arrow-left-short"></i>
                             </a>
                         </div>
@@ -167,24 +174,6 @@
 
         </div>
 
-        <div class="col-12">
-            <div class="card mb-3">
-                <div class="card-header bg-info text-white">
-                    <div class="row">
-                        <div class="col">Help</div>
-
-                        <div class="col fs-5 text-end"><i class="bi bi-question"></i></div>
-                    </div>
-                </div>
-
-                <div class="card-body">
-                    <ul>
-                        <li>Specify the values.</li>
-                        <li>Click the <strong>Send</strong> button to save.</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
     </div>
       
 

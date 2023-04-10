@@ -80,7 +80,6 @@ Route::middleware('auth')->group(function () {
          // CarFuels
          Route::controller(CarFuelController::class)->group(function () {
             Route::get('/car_fuels/get-car_fuels','getCarFuels')->name('get-car_fuels');
-            Route::post('/car_fuels/save-car_fuels','saveCarFuels')->name('save-car_fuels');
         });
    });
 });

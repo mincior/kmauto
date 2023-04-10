@@ -21,19 +21,6 @@ class CarFuelController extends Controller
         return $car_fuels;
     }
 
-    public function saveCarFuels(Request $request) 
-    {
-        $valoare =$request->all();
-        $exista = @CarFuel::where('valoare', $valoare)->first()->valoare;
-        if(!(is_null($exista) == false)){
-            CarFuel::create($valoare);
-            return 'Consum mediu salvat.';
-        }else{
-            return 'Valoarea exista deja.';
-            
-        }
-    }
-
     // public function index(Request $request)
     // {
     //     if ($request->ajax()) {          

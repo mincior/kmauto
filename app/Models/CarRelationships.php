@@ -19,7 +19,8 @@ trait CarRelationships
 	public function users_calculate(){
 		return $this->belongsToMany('App\\Models\\User', 'car_user')->withPivot('user_id', 'car_id');
 	}
-//users si departments se construiesc in controller pentru ca trebuie sa tina seama de intervalul curent
+	//users si departments se construiesc in controller pentru ca trebuie sa tina seama de intervalul curent
+	// //totusi la create sunt utile
 	// public function departments(){
 	// 	return $this->belongsToMany('App\\Models\\Department', 'App\\Models\\CarDep')->withPivot('observatii', 'interval_id','department_id', 'car_id');
 	// }

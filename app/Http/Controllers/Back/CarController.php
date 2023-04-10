@@ -11,7 +11,6 @@ use App\Models\Kmlog;
 use App\Models\Month;
 use App\Models\CarDep;
 use App\Models\CarFuel;
-use App\Models\CarUser;
 use App\Models\UserCar;
 use App\Models\Interval;
 use App\Models\Department;
@@ -101,24 +100,26 @@ class CarController extends Controller
 
     public function store(CarStoreRequest $request)
     {
-        $selectedMonth =config('global.selected_month');
         $selectedInterval = config('global.selected_interval');
-        //In request avem campurile necesare (proprietatea name din html)
-        //In CarStoreRequest se face validarea
         $data = $request->all();
-        //config('global.current.month')
-        // Config::set('global.current.month', 34);
-          //dd( $selectedMonth, $selectedInterval);
-        //scoate un numar de forma B-87-CLT din (B87CLT, B-87CLT, B#$%$%$87(*&^%^&*(cLt)), etc. )
+        $consum_mediu = intval($data['consum_mediu']);
+        $activ = intval($data['activ']);
+        $user_id = intval($data['user_id']);
+        $department_id = intval($data['department_id']);
+        unset($data['consum_mediu']);
+        unset($data['activ']);
+        unset($data['user_id']);
+        unset($data['department_id']);
         $data['numar'] = AppHelper::prelucrare_numar_masina($data['numar']);
-
-        //scrie masina noua 
         $car = Car::create($data);
-
-        //scrie id-urile in tabelele pivot precum si intervalul curent (momentul crearii)
-        @$car->users()->syncWithPivotValues([$data['user_id']],  ['interval_id' => intval($data['selected_interval'])]);
-        $car->departments()->syncWithPivotValues([$data['department_id']],  ['interval_id' => intval($data['selected_interval'])]);
-
+        if ($car->id){//daca s-a creat masina
+            //aduaga departamentul, userul - optional, consumul mediu si activ in tabelele pivot
+            CarDep::create(['department_id' => $department_id, 'car_id' => $car->id, 'interval_id' => $selectedInterval]);
+            if($user_id !== 0) UserCar::create(['user_id' => $user_id, 'car_id' => $car->id, 'interval_id' => $selectedInterval]);
+            CarFuel::create(['valoare' => $consum_mediu, 'car_id' => $car->id, 'interval_id' => $selectedInterval]);
+            Availablecar::create(['valoare' => $activ, 'car_id' => $car->id, 'interval_id' => $selectedInterval]);
+        }
+        
         $notification = [
             "type" => "success",
             "title" => 'Adaugare ...',
@@ -162,7 +163,7 @@ class CarController extends Controller
         $users = Department::with('users')->where('id', '=', $dep_id)->get()[0]['users'];
 
         //usr_id = o masina poate sa nu aiba un user alocat (nici userul o masina) 
-        //de aceea s-a pus @CarUser... sa nu dea eroare daca $usr_id este null
+        //de aceea s-a pus @UserCar... sa nu dea eroare daca $usr_id este null
         $usr_id = @UserCar::select('user_id', 'interval_id', 'car_id')
             ->where('car_id', $car->id)
             ->where('interval_id', '>=', $selectedInterval)
@@ -209,8 +210,14 @@ class CarController extends Controller
             $kmlog = Kmlog::where('car_id', $id)->first();
             if ($kmlog == null) {//masina se poate sterge
                 //dar mai intai se sterg legaturile din tabelele pivot
-                CarUser::where('car_id', $id)->delete();
-                CarDepartment::where('car_id', $id)->delete();
+                UserCar::where('car_id', $id)->delete();
+                CarDep::where('car_id', $id)->delete();
+                Availablecar::where('car_id', $id)->delete();
+                CarFuel::where('car_id', $id)->delete();
+
+                //ar fi trebuit sa sterg si KmLog dar nu aici. Nu pot sterge o masina daca are inregistrari in Kmlog
+                //De aceea stergerile din Kmlog se fac separat si numai daca este cazul.
+                //si acum se sterge masina
                 Car::where('id', $id)->delete();
             }
         }

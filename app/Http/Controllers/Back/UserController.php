@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserStoreRequest;
 use App\Http\Requests\UserUpdateRequest;
+use Database\Factories\UserKmlimitFactory;
 use Illuminate\Support\Facades\Response;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -84,19 +85,29 @@ class UserController extends Controller
 
     public function store(UserStoreRequest $request)
     {
-        //In request avem campurile necesare (proprietatea name din html)
-        //In UserStoreRequest se face validarea
+       $selectedInterval = config('global.selected_interval');
         $data = $request->all();
-        //scoate un numar de forma B-87-CLT din (B87CLT, B-87CLT, B#$%$%$87(*&^%^&*(cLt)), etc. )
-        $data['numar'] = AppHelper::prelucrare_numar_masina($data['numar']);
+        $activ = intval($data['activ']);
+        $car_id = intval($data['car_id']);
+        $department_id = intval($data['department_id']);
+        $kmlimit = intval($data['kmlimit']);
+        $telefon = intval($data['telefon']);
+        unset($data['telefon']);
+        unset($data['activ']);
+        unset($data['car_id']);
+        unset($data['department_id']);
+        unset($data['kmlimit']);
+        $data['name'] = ucwords($data['name']);
 
-        //scrie masina noua 
         $user = User::create($data);
-
-        //scrie id-urile in tabelele pivot precum si intervalul curent (momentul crearii)
-        @$user->cars()->syncWithPivotValues([$data['car_id']],  ['interval_id' => intval($data['selected_interval'])]);
-        $user->departments()->syncWithPivotValues([$data['department_id']],  ['interval_id' => intval($data['selected_interval'])]);
-
+        if ($user->id){//daca s-a creat userul
+            //aduaga departamentul, userul - optional, consumul mediu si activ in tabelele pivot
+            UserDep::create(['department_id' => $department_id, 'user_id' => $user->id, 'interval_id' => $selectedInterval]);
+            UserPhone::create(['valoare' => $telefon, 'user_id' => $user->id, 'interval_id' => $selectedInterval]);
+            UserKmlimit::create(['valoare' => $kmlimit, 'user_id' => $user->id, 'interval_id' => $selectedInterval]);
+            if($car_id !== 0) UserCar::create(['car_id' => $car_id, 'user_id' => $user->id, 'interval_id' => $selectedInterval]);
+            Availableuser::create(['valoare' => $activ, 'user_id' => $user->id, 'interval_id' => $selectedInterval]);
+        }
         $notification = [
             "type" => "success",
             "title" => 'Adaugare ...',
@@ -183,6 +194,13 @@ class UserController extends Controller
                 //dar mai intai se sterg legaturile din tabelele pivot
                 UserCar::where('user_id', $id)->delete();
                 UserDep::where('user_id', $id)->delete();
+                UserPhone::where('user_id', $id)->delete();
+                UserKmlimit::where('user_id', $id)->delete();
+                Availableuser::where('user_id', $id)->delete();
+
+                //Ar fi trebuit sa sterg si Kmlog aici Nu pot sterge un user daca are inregistrari in kmlog
+                //De aceea stergerile din Kmlog se fac separat si numai daca este cazul.
+                //si acum se sterge userul
                 User::where('id', $id)->delete();
             }
         }
