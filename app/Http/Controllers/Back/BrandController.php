@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Back;
 
 use App\Models\Type;
 use App\Models\Brand;
-use App\Models\Country;
 use App\Models\Department;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -18,13 +17,10 @@ class BrandController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {          
-            $brands = Brand::with([ 'type'])->select(sprintf('%s.*', (new Brand)->getTable()));
+            $brands = Brand::select(sprintf('%s.*', (new Brand)->getTable()));
             return DataTables::of($brands)
                 ->addColumn('DT_RowId', function ($row) {
                     return $row->id;
-                })
-                ->editColumn('type_id', function ($row) {
-                    return $row->type->name;
                 })
                 ->toJson();
         }
@@ -46,7 +42,7 @@ class BrandController extends Controller
 
     public function store(BrandStoreRequest $request)
     {
-        $crand = Brand::create($request->all());
+        $brand = Brand::create($request->all());
 
         $notification = [
             "type" => "success",
@@ -57,23 +53,19 @@ class BrandController extends Controller
         return redirect()->route('back.brands.index')->with('notification', $notification);
     }
 
-    public function show(Brand $crand)
+    public function show(Brand $brand)
     {
-        $countries = Country::where('is_eu', 1)->orderBy('name', 'asc')->get();
-
-        return view('back.brands.show', compact('crand'))->with(compact('countries'));
+        return view('back.brands.show', compact('brand'));
     }
 
-    public function edit(Brand $crand)
+    public function edit(Brand $brand)
     {
-        $countries = Country::where('is_eu', 1)->orderBy('name', 'asc')->get();
-
-        return view('back.brands.edit', compact('crand'))->with(compact('countries'));
+        return view('back.brands.edit', compact('brand'));
     }
 
-    public function update(BrandUpdateRequest $request, Brand $crand)
+    public function update(BrandUpdateRequest $request, Brand $brand)
     {
-        $crand->update($request->all());
+        $brand->update($request->all());
 
         $notification = [
             "type" => "success",

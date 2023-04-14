@@ -1,7 +1,7 @@
 @extends('layouts.back')
 
 @section('title')
-&vert; Masini
+&vert; Masini 
 @endsection
 
 @section('content')
