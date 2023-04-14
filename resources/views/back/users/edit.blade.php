@@ -15,7 +15,6 @@
         wire:submit.prevent="savePersonalData" onkeydown="return event.key != 'Enter';">
         @csrf
         @method('PUT')
-        <input type="hidden" name="selected_interval" value="{{ $selectedInterval }}">
         <div class="container mt-4">
             <div class="col">
                 <div class="card mb-3">
@@ -46,7 +45,7 @@
                             <label for="email" class="col-md-2 col-form-label">Email :</label>
 
                             <div class="col-md-3">
-                                <input autocomplete="on" id="email" email="email" type="text"
+                                <input autocomplete="on" id="email" name="email" type="text"
                                     class="form-control @error('email') is-invalid @enderror" value="{{ old('email') ? old('email') : $user->email }}">
 
                                 @error('email')
@@ -149,7 +148,7 @@
                             <label for="observatii" class="col-md-2 col-form-label">Observatii :</label>
 
                             <div class="col-md-3">
-                                <input autocomplete="on" id="observatii" observatii="observatii" type="text"
+                                <input autocomplete="on" id="observatii" name="observatii" type="text"
                                     class="form-control @error('observatii') is-invalid @enderror"
                                     value="{{old('observatii') ? old('observatii') : $user->observatii }}">
 
@@ -163,7 +162,7 @@
                             <label for="calificativ" class="col-md-2 col-form-label">Calificativ :</label>
 
                             <div class="col-md-3">
-                                <input autocomplete="on" id="calificativ" calificativ="calificativ" type="text"
+                                <input autocomplete="on" id="calificativ" name="calificativ" type="text"
                                     class="form-control @error('calificativ') is-invalid @enderror"
                                     value="{{ old('calificativ') ? old('calificativ') : $user->calificativ }}">
 

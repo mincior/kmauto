@@ -169,21 +169,101 @@ class UserController extends Controller
 
     public function update(UserUpdateRequest $request, User $user)
     {
-        //In request avem campurile necesare (proprietatea name din html)
-        //In UserStoreRequest se face validarea
+        $selectedInterval = config('global.selected_interval');
         $data = $request->all();
+        $activ = intval($data['activ']);
+        $car_id = intval($data['car_id']);
+        $department_id = intval($data['department_id']);
+        $kmlimit = intval($data['kmlimit']);
+        $telefon = $data['telefon'];
 
-        //scrie masina noua 
-        $user->update($data);
+        unset($data['activ']);
+        unset($data['car_id']);
+        unset($data['department_id']);
+        unset($data['kmlimit']);
+        unset($data['telefon']);
+        $succes = $user->update($data);
+        if ($succes){
+            if (!$department_id == 0) {
+                $rec = UserDep::where('department_id', $department_id)->where('user_id', $user->id)->where('interval_id', '<=', $selectedInterval)->orderby('interval_id', 'Desc')->first();
+                if (!is_null($rec)) {
+                    if ($rec->department_id !== $department_id) { //s-a schimbat departamentul.
+                        if ($rec->interval_id == $selectedInterval) { //s-a schimbat doar departamentul in intervalul curent
+                            $rec->update('department_id', $department_id);
+                        } else { // Creaza o noua inregistrare cu noul department_id dar cu intervalul curent
+                            UserDep::create(['department_id' => $department_id, 'user_id' => $user->id, 'interval_id' => $selectedInterval]);
+                        }
+                    }
+                } else {
+                    UserDep::create(['department_id' => $department_id, 'user_id' => $user->id, 'interval_id' => $selectedInterval]);
+                }
+            }
 
-        //scrie id-urile in tabelele pivot precum si intervalul curent (momentul crearii)
-        $user->cars()->syncWithPivotValues([$data['car_id']],  ['interval_id' => intval($data['selected_interval'])]);
-        $user->departments()->syncWithPivotValues([$data['department_id']],  ['interval_id' => intval($data['selected_interval'])]);
+            if ($car_id !== 0) {
+                $rec = UserCar::where('user_id', $user->id)->where('car_id', $car_id)->where('interval_id', '<=', $selectedInterval)->orderby('interval_id', 'Desc')->first();
+                if (!is_null($rec)) {
+                    if ($rec->car_id !== $car_id) { //s-a schimbat masina.
+                        if ($rec->interval_id == $selectedInterval) { //s-a schimbat doar departamentul in intervalul curent
+                            $rec->update('car_id', $car_id);
+                        } else { // Creaza o noua inregistrare cu noul car_id dar cu intervalul curent
+                            UserCar::create(['user_id' => $user->id, 'car_id' => $car_id, 'interval_id' => $selectedInterval]);
+                        }
+                    }
+                } else { //userul nu exista deloc
+                    UserCar::create(['user_id' => $user->id, 'car_id' => $car_id, 'interval_id' => $selectedInterval]);
+                }
+            }
+
+            $rec = Availableuser::where('valoare', $activ)->where('user_id', $user->id)->where('interval_id', '<=', $selectedInterval)->orderby('interval_id', 'Desc')->first();
+            if (!is_null($rec)) {
+                if ($rec->valoare !== $activ) { //s-a schimbat consumul_mediu.
+                    if ($rec->interval_id == $selectedInterval) { //s-a schimbat doar consumul_mediu in intervalul curent
+                        $rec->update('valoare', $activ);
+                    } else { // Creaza o noua inregistrare cu noul valoare dar cu intervalul curent
+                        Availableuser::create(['valoare' => $activ, 'user_id' => $user->id, 'interval_id' => $selectedInterval]);
+                    }
+                }
+            } else { //consumul_mediu nu exista deloc
+                Availableuser::create(['valoare' => $activ, 'user_id' => $user->id, 'interval_id' => $selectedInterval]);
+            }
+
+            if ($telefon !== 0) {
+                $rec = UserPhone::where('valoare', $telefon)->where('user_id', $user->id)->where('interval_id', '<=', $selectedInterval)->orderby('interval_id', 'Desc')->first();
+                if (!is_null($rec)) {
+                    if ($rec->valoare !== $telefon) { //s-a schimbat consumul_mediu.
+                        if ($rec->interval_id == $selectedInterval) { //s-a schimbat doar consumul_mediu in intervalul curent
+                            $rec->update('valoare', $telefon);
+                        } else { // Creaza o noua inregistrare cu noul valoare dar cu intervalul curent
+                            UserPhone::create(['valoare' => $telefon, 'user_id' => $user->id, 'interval_id' => $selectedInterval]);
+                        }
+                    }
+                } else { //consumul_mediu nu exista deloc
+                    UserPhone::create(['valoare' => $telefon, 'user_id' => $user->id, 'interval_id' => $selectedInterval]);
+                }
+            }
+
+            if ($kmlimit !== 0) {
+                $rec = UserKmlimit::where('valoare', $kmlimit)->where('user_id', $user->id)->where('interval_id', '<=', $selectedInterval)->orderby('interval_id', 'Desc')->first();
+                if (!is_null($rec)) {
+                    if ($rec->valoare !== $kmlimit) { //s-a schimbat consumul_mediu.
+                        if ($rec->interval_id == $selectedInterval) { //s-a schimbat doar consumul_mediu in intervalul curent
+                            $rec->update('valoare', $kmlimit);
+                        } else { // Creaza o noua inregistrare cu noul valoare dar cu intervalul curent
+                            UserKmlimit::create(['valoare' => $kmlimit, 'user_id' => $user->id, 'interval_id' => $selectedInterval]);
+                        }
+                    }
+                } else { //consumul_mediu nu exista deloc
+                    UserKmlimit::create(['valoare' => $kmlimit, 'user_id' => $user->id, 'interval_id' => $selectedInterval]);
+                }
+            }
+
+
+        }
 
         $notification = [
             "type" => "success",
             "title" => 'Modificare ...',
-            "message" => 'Masina a fost modificata cu succes!',
+            "message" => 'Utilizatorul a fost modificat cu succes!',
         ];
 
         return redirect()->route('back.users.index')->with('notification', $notification);
