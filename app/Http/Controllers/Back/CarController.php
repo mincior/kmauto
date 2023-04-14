@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\Config;
 use App\Http\Requests\CarUpdateRequest;
 use Illuminate\Support\Facades\Response;
 use Yajra\DataTables\Facades\DataTables;
+use App\Http\Controllers\Back\DepartmentController;
 
 class CarController extends Controller
 {
@@ -167,7 +168,8 @@ class CarController extends Controller
             ->orderBy('interval_id', 'desc')
             ->first()['department_id'];
         //dd($dep_id);
-        $users = @Department::with('users')->where('id', '=', $dep_id)->get()[0]['users'];
+        // $users = @Department::with('users')->where('id', '=', $dep_id)->get()[0]['users'];
+        $users = @DepartmentController::getUsers($dep_id);
 
         //usr_id = o masina poate sa nu aiba un user alocat (nici userul o masina) 
         //de aceea s-a pus @UserCar... sa nu dea eroare daca $user_id este null

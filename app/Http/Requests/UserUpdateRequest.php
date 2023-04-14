@@ -31,11 +31,10 @@ class UserUpdateRequest extends FormRequest
                 'max:101',
             ],
             'email' => [
-                'required',
                 'string',
                 'email',
                 'max:191',
-                Rule::unique('users', 'email')->whereNull('deleted_at')->ignore($this->user),
+                Rule::unique('users', 'email')->ignore($this->user),
             ],
             'is_admin' => [
                 'required',

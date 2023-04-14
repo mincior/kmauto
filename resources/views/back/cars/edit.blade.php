@@ -7,7 +7,7 @@
 @section('content')
 <?php
     //folosite la memorarea introducerii la eroare pentru a nu introduce din nou aceleasi valori
-    $old_users = @\App\Models\Department::with('users')->where('id', '=', (old('department_id')))->get()[0]['users'];
+    $old_users = @\App\Http\Controllers\Back\DepartmentController::getUsers(old('department_id'));
     $old_types = @\App\Models\Brand::with('types')->where('id', '=', (old('brand_id')))->get()[0]['types'];
 ?>
 <form id="myForm" method="POST" action="{{ route('back.cars.update', [$car->id])  }}" enctype="multipart/form-data" wire:submit.prevent="savePersonalData" onkeydown="return event.key != 'Enter';">
@@ -31,7 +31,7 @@
                         <label for="numar" class="col-md-2 col-form-label">Numar :</label>
 
                         <div class="col-md-3">
-                            <input autocomplete="on" id="numar" name="numar" type="text" class="form-control @error('numar') is-invalid @enderror" value="{{ $car->numar }}" onkeyup="prelucrare_numar_masina(this);">
+                            <input autocomplete="on" id="numar" name="numar" type="text" class="form-control @error('numar') is-invalid @enderror" value="{{ old('numar') ? old('numar') : $car->numar }}" onkeyup="prelucrare_numar_masina(this);">
 
                             @error('numar')
                             <span class="invalid-feedback" role="alert">{{ $message }}</span>
@@ -195,6 +195,6 @@
 <script src="{{ asset('js/me/get_brand_types.js') }}"></script>
 
 {{-- autocompletare casete text cu valori dintr-un array --}}
-<script src="{{ asset('js/me/create_car.js') }}"></script>
+<script src="{{ asset('js/me/create_or_update_car.js') }}"></script>
 
 @endsection

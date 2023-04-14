@@ -29,7 +29,7 @@
                         <label for="numar" class="col-md-2 col-form-label">Numar :</label>
 
                         <div class="col-md-3">
-                            <input autocomplete="on" id="numar" name="numar" type="text" class="form-control @error('numar') is-invalid @enderror" value="{{ old('numar') }}" onkeyup="prelucrare_numar_masina(this);">
+                            <input autocomplete="on" id="numar" name="numar" type="text" class="form-control @error('numar') is-invalid @enderror" value="{{ old('numar') ? old('numar') : $car->numar }}" onkeyup="prelucrare_numar_masina(this);">
 
                             @error('numar')
                             <span class="invalid-feedback" role="alert">{{ $message }}</span>
@@ -183,8 +183,7 @@
 @section('scripts')
 <script src="{{ asset('js/me/get_department_users.js') }}"></script>
 <script src="{{ asset('js/me/get_brand_types.js') }}"></script>
-
-<script src="{{ asset('js/me/create_car.js') }}"></script>
+<script src="{{ asset('js/me/create_or_update_car.js') }}"></script>
 <script>
 </script>
 @endsection

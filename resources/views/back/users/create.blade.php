@@ -125,7 +125,7 @@
                             <div class="col-md-6">
                                 <input autocomplete="on" id="observatii" name="observatii" type="text"
                                     class="form-control @error('observatii') is-invalid @enderror"
-                                    value="{{ old('observatii') }}">
+                                    value="{{old('observatii') ? old('observatii') : $user->observatii }}">
 
                                 @error('observatii')
                                     <span class="invalid-feedback" role="alert">{{ $message }}</span>
@@ -144,6 +144,19 @@
                             </div>
                         </div>
                         <div class="row mb-2">
+                            <label for="calificativ" class="col-md-2 col-form-label">Calificativ :</label>
+
+                            <div class="col-md-3">
+                                <input autocomplete="on" id="calificativ" name="calificativ" type="text"
+                                    class="form-control @error('calificativ') is-invalid @enderror"
+                                    value="{{ old('calificativ') ? old('calificativ') : $user->calificativ }}">
+
+                                @error('calificativ')
+                                    <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="row mb-2">
                             <label for="is_admin" class="col-md-2 col-form-label">Este admin :</label>
 
                             <div class="col-md-3">
@@ -152,19 +165,6 @@
                                     <option {{ old('is_admin') == '1' ? 'selected' : '' }} value="1">Da</option>
                                     <option {{ old('is_admin') == '0' ? '' : 'selected' }} value="0">Nu</option>
                                 </select>
-                            </div>
-                        </div>
-                        <div class="row mb-2">
-                            <label for="calificativ" class="col-md-2 col-form-label">Calificativ :</label>
-
-                            <div class="col-md-3">
-                                <input autocomplete="on" id="calificativ" name="calificativ" type="text"
-                                    class="form-control @error('calificativ') is-invalid @enderror"
-                                    value="{{ old('calificativ') }}">
-
-                                @error('calificativ')
-                                    <span class="invalid-feedback" role="alert">{{ $message }}</span>
-                                @enderror
                             </div>
                         </div>
 

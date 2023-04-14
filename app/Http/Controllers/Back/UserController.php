@@ -33,7 +33,6 @@ class UserController extends Controller
         if ($request->ajax()) {
             $selectedInterval = config('global.selected_interval');
             $users = User::select(sprintf('%s.*', (new User)->getTable()))->orderBy('id', 'desc')->get();
-
             $arr_users_with_departments = AppHelper::get_last_target_values_array('user_id', 'department_id', 'user_deps', $selectedInterval);
             $arr_users_with_cars = AppHelper::get_last_target_values_array('user_id', 'car_id', 'user_cars', $selectedInterval);
             $arr_users_with_user_activ = AppHelper::get_last_target_values_array('user_id', 'id', 'availableusers', $selectedInterval);
@@ -144,8 +143,11 @@ class UserController extends Controller
             ->where('interval_id', '<=', $selectedInterval)
             ->orderBy('interval_id', 'desc')
             ->first()['department_id'];
-        $cars = @Department::with('cars')->where('id', '=', $dep_id)->get()[0]['cars'];
+        // $cars = @Department::with('cars')->where('id', '=', $dep_id)->get()[0]['cars'];
+        $cars = @DepartmentController::getCars($dep_id);
         $activ = @Availableuser::where('user_id', $user->id)->where('interval_id', '<=', $selectedInterval)->orderby('interval_id', 'Desc')->first()->valoare;
+        $telefon = @UserPhone::where('user_id', $user->id)->where('interval_id', '<=', $selectedInterval)->orderby('interval_id', 'Desc')->first()->valoare;
+        $kmlimit = @UserKmlimit::where('user_id', $user->id)->where('interval_id', '<=', $selectedInterval)->orderby('interval_id', 'Desc')->first()->valoare;
 
         //usr_id = o masina poate sa nu aiba un user alocat (nici userul o masina) 
         //de aceea s-a pus @UserUser... sa nu dea eroare daca $usr_id este null
@@ -160,6 +162,8 @@ class UserController extends Controller
             ->with('dep_id', $dep_id)
             ->with('car_id', $car_id)
             ->with('activ', $activ)
+            ->with('telefon', $telefon)
+            ->with('kmlimit', $kmlimit)
             ->with('selectedInterval', $selectedInterval);
     }
 
@@ -168,8 +172,6 @@ class UserController extends Controller
         //In request avem campurile necesare (proprietatea name din html)
         //In UserStoreRequest se face validarea
         $data = $request->all();
-        //scoate un numar de forma B-87-CLT din (B87CLT, B-87CLT, B#$%$%$87(*&^%^&*(cLt)), etc. )
-        $data['numar'] = AppHelper::prelucrare_numar_masina($data['numar']);
 
         //scrie masina noua 
         $user->update($data);
