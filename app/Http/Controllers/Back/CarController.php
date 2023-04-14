@@ -136,9 +136,9 @@ class CarController extends Controller
 
         $brand_name = Brand::where('id', $car->brand_id)->first()->name;
         $type_name = Type::where('id', $car->type_id)->first()->name;
-        $user_id = @UserCar::where('car_id', $car->id)->where('interval_id', '>=', $selectedInterval)->first()->user_id;
+        $user_id = @UserCar::where('car_id', $car->id)->where('interval_id', '<=', $selectedInterval)->orderBy('interval_id', 'desc')->first()->user_id;
         $user_name = @User::where('id', $user_id)->first()->name;
-        $department_id = CarDep::where('car_id', $car->id)->where('interval_id', '>=', $selectedInterval)->first()->department_id;
+        $department_id = CarDep::where('car_id', $car->id)->where('interval_id', '<=', $selectedInterval)->orderBy('interval_id', 'desc')->first()->department_id;
         $department_name = Department::where('id', $department_id)->first()->name;
         $data['selectedInterval'] = $selectedInterval;
         $data['brand_name'] = $brand_name;
@@ -163,25 +163,30 @@ class CarController extends Controller
         $departments = Department::select('id', 'name')->orderBy('name')->get();
         $dep_id = @CarDep::select('department_id', 'interval_id', 'car_id')
             ->where('car_id', $car->id)
-            ->where('interval_id', '>=', $selectedInterval)
+            ->where('interval_id', '<=', $selectedInterval)
             ->orderBy('interval_id', 'desc')
             ->first()['department_id'];
+        //dd($dep_id);
         $users = @Department::with('users')->where('id', '=', $dep_id)->get()[0]['users'];
 
         //usr_id = o masina poate sa nu aiba un user alocat (nici userul o masina) 
-        //de aceea s-a pus @UserCar... sa nu dea eroare daca $usr_id este null
-        $usr_id = @UserCar::select('user_id', 'interval_id', 'car_id')
+        //de aceea s-a pus @UserCar... sa nu dea eroare daca $user_id este null
+        $user_id = @UserCar::select('user_id', 'interval_id', 'car_id')
             ->where('car_id', $car->id)
-            ->where('interval_id', '>=', $selectedInterval)
+            ->where('interval_id', '<=', $selectedInterval)
             ->orderBy('interval_id', 'desc')
             ->first()['user_id'];
+        $activ = @Availablecar::where('car_id', $car->id)->where('interval_id', '<=', $selectedInterval)->orderby('interval_id', 'Desc')->first()->valoare;
+        $consum_mediu = @CarFuel::where('car_id', $car->id)->where('interval_id', '<=', $selectedInterval)->orderby('interval_id', 'Desc')->first()->valoare;
         $brands = Brand::select('id', 'name')->orderBy('name')->get();
         $types = Type::where('brand_id', '=', $car->brand_id)->get();
-
+        // dd($car->id, $dep_id, $user_id,  $activ, $consum_mediu);
         return view('back.cars.edit', compact('car'))
             ->with(compact('departments', 'users', 'brands', 'types'))
             ->with('dep_id', $dep_id)
-            ->with('usr_id', $usr_id)
+            ->with('usr_id', $user_id)
+            ->with('activ', $activ)
+            ->with('consum_mediu', $consum_mediu)
             ->with('selectedInterval', $selectedInterval);
     }
 
@@ -206,7 +211,7 @@ class CarController extends Controller
             //proceseaza tabelele pivot
             //toate masinile sunt asignate unui departament atunci cand sunt create. Se verifica departamentul ultimului interval si daca difera de cel actual, il schimba
             if (!$department_id == 0) {
-                $rec = CarDep::where('department_id', $department_id)->where('car_id', $car->id)->orderby('interval_id', 'Desc')->first();
+                $rec = CarDep::where('department_id', $department_id)->where('car_id', $car->id)->where('interval_id', '<=', $selectedInterval)->orderby('interval_id', 'Desc')->first();
                 if (!is_null($rec)) {
                     if ($rec->department_id !== $department_id) { //s-a schimbat departamentul.
                         if ($rec->interval_id == $selectedInterval) { //s-a schimbat doar departamentul in intervalul curent
@@ -221,7 +226,7 @@ class CarController extends Controller
             }
 
             if ($user_id !== 0) {
-                $rec = UserCar::where('user_id', $user_id)->where('car_id', $car->id)->orderby('interval_id', 'Desc')->first();
+                $rec = UserCar::where('user_id', $user_id)->where('car_id', $car->id)->where('interval_id', '<=', $selectedInterval)->orderby('interval_id', 'Desc')->first();
                 if (!is_null($rec)) {
                     if ($rec->user_id !== $user_id) { //s-a schimbat userul.
                         if ($rec->interval_id == $selectedInterval) { //s-a schimbat doar departamentul in intervalul curent
@@ -236,7 +241,7 @@ class CarController extends Controller
             }
 
             if ($consum_mediu !== 0) {
-                $rec = CarFuel::where('valoare', $consum_mediu)->where('car_id', $car->id)->orderby('interval_id', 'Desc')->first();
+                $rec = CarFuel::where('valoare', $consum_mediu)->where('car_id', $car->id)->where('interval_id', '<=', $selectedInterval)->orderby('interval_id', 'Desc')->first();
                 if (!is_null($rec)) {
                     if ($rec->valoare !== $consum_mediu) { //s-a schimbat consumul_mediu.
                         if ($rec->interval_id == $selectedInterval) { //s-a schimbat doar consumul_mediu in intervalul curent
@@ -250,7 +255,7 @@ class CarController extends Controller
                 }
             }
 
-            $rec = Availablecar::where('valoare', $activ)->where('car_id', $car->id)->orderby('interval_id', 'Desc')->first();
+            $rec = Availablecar::where('valoare', $activ)->where('car_id', $car->id)->where('interval_id', '<=', $selectedInterval)->orderby('interval_id', 'Desc')->first();
             if (!is_null($rec)) {
                 if ($rec->valoare !== $activ) { //s-a schimbat consumul_mediu.
                     if ($rec->interval_id == $selectedInterval) { //s-a schimbat doar consumul_mediu in intervalul curent

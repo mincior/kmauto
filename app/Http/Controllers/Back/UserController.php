@@ -122,9 +122,9 @@ class UserController extends Controller
         $data = [];
         $data1 = [];
         $selectedInterval = config('global.selected_interval');
-        $user_id = @UserCar::where('user_id', $user->id)->where('interval_id', '>=', $selectedInterval)->first()->user_id;
+        $user_id = @UserCar::where('user_id', $user->id)->where('interval_id', '<=', $selectedInterval)->orderBy('interval_id', 'desc')->first()->user_id;
         $user_name = @User::where('id', $user_id)->first()->name;
-        $department_id = UserDep::where('user_id', $user->id)->where('interval_id', '>=', $selectedInterval)->first()->department_id;
+        $department_id = UserDep::where('user_id', $user->id)->where('interval_id', '<=', $selectedInterval)->first()->orderBy('interval_id', 'desc')->department_id;
         $department_name = Department::where('id', $department_id)->first()->name;
         $data['selectedInterval'] = $selectedInterval;
         $merged_data['user_name'] = $user_name;
@@ -139,25 +139,27 @@ class UserController extends Controller
         $selectedInterval = config('global.selected_interval');
 
         $departments = Department::select('id', 'name')->orderBy('name')->get();
-        $dep_id = UserDep::select('department_id', 'interval_id', 'user_id')
+        $dep_id = @UserDep::select('department_id', 'interval_id', 'user_id')
             ->where('user_id', $user->id)
-            ->where('interval_id', '>=', $selectedInterval)
+            ->where('interval_id', '<=', $selectedInterval)
             ->orderBy('interval_id', 'desc')
             ->first()['department_id'];
-        $users = Department::with('users')->where('id', '=', $dep_id)->get()[0]['users'];
+        $cars = @Department::with('cars')->where('id', '=', $dep_id)->get()[0]['cars'];
+        $activ = @Availableuser::where('user_id', $user->id)->where('interval_id', '<=', $selectedInterval)->orderby('interval_id', 'Desc')->first()->valoare;
 
         //usr_id = o masina poate sa nu aiba un user alocat (nici userul o masina) 
         //de aceea s-a pus @UserUser... sa nu dea eroare daca $usr_id este null
-        $usr_id = @UserCar::select('car_id', 'interval_id', 'user_id')
+        $car_id = @UserCar::select('car_id', 'interval_id', 'user_id')
             ->where('user_id', $user->id)
-            ->where('interval_id', '>=', $selectedInterval)
+            ->where('interval_id', '<=', $selectedInterval)
             ->orderBy('interval_id', 'desc')
-            ->first()['user_id'];
+            ->first()['car_id'];
 
         return view('back.users.edit', compact('user'))
-            ->with(compact('departments', 'users', 'brands', 'types'))
+            ->with(compact('departments', 'cars'))
             ->with('dep_id', $dep_id)
-            ->with('usr_id', $usr_id)
+            ->with('car_id', $car_id)
+            ->with('activ', $activ)
             ->with('selectedInterval', $selectedInterval);
     }
 

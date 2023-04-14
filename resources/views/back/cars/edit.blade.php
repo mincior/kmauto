@@ -1,7 +1,7 @@
 @extends('layouts.back')
 
 @section('title')
-&vert; Customer
+&vert; Masini
 @endsection
 
 @section('content')
@@ -21,7 +21,7 @@
                         <div id="myToolTip" class="col">Masini - modificare</div>
 
                         <div class="col fs-5 text-end">
-                            <img src="{{ asset('img/icons/person.png') }}" />
+                            <img src="{{ asset('img/icons/car.png') }}" />
                         </div>
                     </div>
                 </div>
@@ -134,15 +134,15 @@
                         <label for="consum_mediu" class="col-md-2 col-form-label">Consum mediu :</label>
 
                         <div class="col-md-2 autocomplete">
-                            <input id="consum_mediu" name="consum_mediu" type="text" class="form-control @error('consum_mediu') is-invalid @enderror" value="{{ old('consum_mediu') ? old('consum_mediu') : $car->consum_mediu}}">
+                            <input id="consum_mediu" name="consum_mediu" type="text" class="form-control @error('consum_mediu') is-invalid @enderror" value="{{ old('consum_mediu') ? old('consum_mediu') : $consum_mediu}}">
 
                             @error('consum_mediu')
                             <span class="invalid-feedback" role="alert">{{ $message }}</span>
                             @enderror
                         </div>
-                        <div class="col col-md-1">
+                        {{-- <div class="col col-md-1">
                             <button id="save_car_fuel" class="btn btn-primary text-white btn-sm" tabindex="-1" onclick="event.preventDefault(); salveazaConsumuriMedii();">Salveaza</button>
-                        </div>
+                        </div> --}}
                     </div>
 
                     <div class="row mb-2">
@@ -162,8 +162,8 @@
                         <div class="col-md-3">
                             <select name="activ" id="activ_select" class="form-select">
                                 <option value="">Alege ...</option>
-                                <option   {{ (old('activ') ?   (old('activ') == "1") : ($car->activ == 1)) ? "selected" : "" }}  value="1">Da</option>
-                                <option   {{ (old('activ') ?   (old('activ') == "0") : ($car->activ == 0)) ? "selected" : "" }}  value="0">Nu</option>
+                                <option   {{ (old('activ') ?   (old('activ') == "1") : ($activ == 1)) ? "selected" : "" }}  value="1">Da</option>
+                                <option   {{ (old('activ') ?   (old('activ') == "0") : ($activ == 0)) ? "selected" : "" }}  value="0">Nu</option>
                             </select>
                         </div>
                     </div>
