@@ -121,12 +121,19 @@ class UserController extends Controller
         $data = [];
         $data1 = [];
         $selectedInterval = config('global.selected_interval');
-        $user_id = @UserCar::where('user_id', $user->id)->where('interval_id', '<=', $selectedInterval)->orderBy('interval_id', 'desc')->first()->user_id;
-        $user_name = @User::where('id', $user_id)->first()->name;
-        $department_id = UserDep::where('user_id', $user->id)->where('interval_id', '<=', $selectedInterval)->first()->orderBy('interval_id', 'desc')->department_id;
+        $car_id = @UserCar::where('user_id', $user->id)->where('interval_id', '<=', $selectedInterval)->orderBy('interval_id', 'desc')->first()->car_id;
+        $numar = @Car::where('id', $car_id)->first()->numar;
+        $department_id = @UserDep::where('user_id', $user->id)->where('interval_id', '<=', $selectedInterval)->orderBy('interval_id', 'desc')->first()->department_id;
+        $department_name = Department::where('id', $department_id)->first()->name;
+        $telefon= @UserPhone::where('user_id', $user->id)->where('interval_id', '<=', $selectedInterval)->orderBy('interval_id', 'desc')->first()->valoare;
+        $kmlimit= @UserKmlimit::where('user_id', $user->id)->where('interval_id', '<=', $selectedInterval)->orderBy('interval_id', 'desc')->first()->valoare;
+        $activ= @Availableuser::where('user_id', $user->id)->where('interval_id', '<=', $selectedInterval)->orderBy('interval_id', 'desc')->first()->valoare;
         $department_name = Department::where('id', $department_id)->first()->name;
         $data['selectedInterval'] = $selectedInterval;
-        $merged_data['user_name'] = $user_name;
+        $merged_data['numar'] = $numar;
+        $merged_data['telefon'] = $telefon;
+        $merged_data['kmlimit'] = $kmlimit;
+        $merged_data['activ'] = $activ;
         $merged_data['department_name'] = $department_name;
 
 
@@ -142,7 +149,7 @@ class UserController extends Controller
             ->where('user_id', $user->id)
             ->where('interval_id', '<=', $selectedInterval)
             ->orderBy('interval_id', 'desc')
-            ->first()['department_id'];
+            ->first()->department_id;
         // $cars = @Department::with('cars')->where('id', '=', $dep_id)->get()[0]['cars'];
         $cars = @DepartmentController::getCars($dep_id);
         $activ = @Availableuser::where('user_id', $user->id)->where('interval_id', '<=', $selectedInterval)->orderby('interval_id', 'Desc')->first()->valoare;
@@ -155,7 +162,7 @@ class UserController extends Controller
             ->where('user_id', $user->id)
             ->where('interval_id', '<=', $selectedInterval)
             ->orderBy('interval_id', 'desc')
-            ->first()['car_id'];
+            ->first()->car_id;
 
         return view('back.users.edit', compact('user'))
             ->with(compact('departments', 'cars'))

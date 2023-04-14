@@ -26,6 +26,14 @@
 
                 <div class="card-body">
                     <div class="row mb-2">
+                        <label for="department_name" class="col-md-3 col-form-label">Filiala :</label>
+
+                        <div class="col-md-8">
+                            <input id="department_name" name="department_name" type="text" readonly
+                                class="form-control-plaintext" value="{{ $department_name }}">
+                        </div>
+                    </div>
+                    <div class="row mb-2">
                         <label for="user_name" class="col-md-3 col-form-label">Utilizator :</label>
 
                         <div class="col-md-8">
@@ -34,14 +42,6 @@
                         </div>
                     </div>
 
-                    <div class="row mb-2">
-                        <label for="department_name" class="col-md-3 col-form-label">Filiala :</label>
-
-                        <div class="col-md-8">
-                            <input id="department_name" name="department_name" type="text" readonly
-                                class="form-control-plaintext" value="{{ $department_name }}">
-                        </div>
-                    </div>
                     <hr class="narrow" />
 
                     <div class="row mb-2">
@@ -81,7 +81,7 @@
 
                         <div class="col-md-3">
                             <input id="activ" name="consum_mediu" type="text" readonly class="form-control-plaintext"
-                                value="{{ $car->consum_mediu }} litri/100km">
+                                value="{{ $consum_mediu }} litri/100km">
                         </div>
                         <label for="activ" class="col-md-3 col-form-label">
                             Activ:

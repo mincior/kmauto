@@ -141,10 +141,12 @@ class CarController extends Controller
         $user_name = @User::where('id', $user_id)->first()->name;
         $department_id = CarDep::where('car_id', $car->id)->where('interval_id', '<=', $selectedInterval)->orderBy('interval_id', 'desc')->first()->department_id;
         $department_name = Department::where('id', $department_id)->first()->name;
+        $consum_mediu= @CarFuel::where('car_id', $car->id)->where('interval_id', '<=', $selectedInterval)->orderBy('interval_id', 'desc')->first()->valoare;
         $data['selectedInterval'] = $selectedInterval;
         $data['brand_name'] = $brand_name;
         $data['type_name'] = $type_name;
         $merged_data['user_name'] = $user_name;
+        $merged_data['consum_mediu'] = $consum_mediu;
         $merged_data['department_name'] = $department_name;
 
 
@@ -166,7 +168,7 @@ class CarController extends Controller
             ->where('car_id', $car->id)
             ->where('interval_id', '<=', $selectedInterval)
             ->orderBy('interval_id', 'desc')
-            ->first()['department_id'];
+            ->first()->department_id;
         //dd($dep_id);
         // $users = @Department::with('users')->where('id', '=', $dep_id)->get()[0]['users'];
         $users = @DepartmentController::getUsers($dep_id);
@@ -177,7 +179,7 @@ class CarController extends Controller
             ->where('car_id', $car->id)
             ->where('interval_id', '<=', $selectedInterval)
             ->orderBy('interval_id', 'desc')
-            ->first()['user_id'];
+            ->first()->user_id;
         $activ = @Availablecar::where('car_id', $car->id)->where('interval_id', '<=', $selectedInterval)->orderby('interval_id', 'Desc')->first()->valoare;
         $consum_mediu = @CarFuel::where('car_id', $car->id)->where('interval_id', '<=', $selectedInterval)->orderby('interval_id', 'Desc')->first()->valoare;
         $brands = Brand::select('id', 'name')->orderBy('name')->get();

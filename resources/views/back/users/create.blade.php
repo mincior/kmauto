@@ -29,7 +29,7 @@
 
                             <div class="col-md-3">
                                 <input autocomplete="on" id="name" name="name" type="text"
-                                    class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}">
+                                    class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}" onkeyup="prelucrare_nume_utilizator(this);">
 
                                 @error('name')
                                     <span class="invalid-feedback" role="alert">{{ $message }}</span>
@@ -125,7 +125,7 @@
                             <div class="col-md-6">
                                 <input autocomplete="on" id="observatii" name="observatii" type="text"
                                     class="form-control @error('observatii') is-invalid @enderror"
-                                    value="{{old('observatii') ? old('observatii') : $user->observatii }}">
+                                    value="{{ old('observatii') }}">
 
                                 @error('observatii')
                                     <span class="invalid-feedback" role="alert">{{ $message }}</span>
@@ -149,7 +149,7 @@
                             <div class="col-md-3">
                                 <input autocomplete="on" id="calificativ" name="calificativ" type="text"
                                     class="form-control @error('calificativ') is-invalid @enderror"
-                                    value="{{ old('calificativ') ? old('calificativ') : $user->calificativ }}">
+                                    value="{{ old('calificativ')  }}">
 
                                 @error('calificativ')
                                     <span class="invalid-feedback" role="alert">{{ $message }}</span>
@@ -196,5 +196,5 @@
 
 @section('scripts')
     <script src="{{ asset('js/me/get_department_cars.js') }}"></script>
-    <script src="{{ asset('js/me/get_brand_types.js') }}"></script>
+    <script src="{{ asset('js/me/create_or_update_user.js') }}"></script>
 @endsection
