@@ -15,8 +15,8 @@
     @method('PUT')
     <div class="container mt-4">
         <div class="col">
-            <div class="brandd mb-3">
-                <div class="brandd-header">
+            <div class="card mb-3">
+                <div class="card-header">
                     <div class="row">
                         <div id="myToolTip" class="col">Masini - modificare marca</div>
 
@@ -26,7 +26,7 @@
                     </div>
                 </div>
 
-                <div class="brandd-body">
+                <div class="card-body">
                     <div class="row mb-2">
                         <label for="name" class="col-md-2 col-form-label"> :</label>
 
@@ -41,7 +41,7 @@
 
 
 
-                <div class="brandd-footer">
+                <div class="card-footer">
                     <div class="row">
                         <div class="col">
                             <a class="btn btn-secondary text-white btn-sm" href="{{ route('back.brands.index') }}" role=" button" tabindex="-1">

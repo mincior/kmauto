@@ -60,8 +60,10 @@ class TypeController extends Controller
     }
 
     public function edit(Type $type)
-    {   $type->with('brand');
-        return view('back.types.edit', compact('type'));
+    {   
+        $brands = Brand::get();
+        $type->with('brand');
+        return view('back.types.edit', compact('type'))->with(compact('brands'));
     }
 
     public function update(TypeUpdateRequest $request, Type $type)

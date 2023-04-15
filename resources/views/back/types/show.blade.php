@@ -9,8 +9,8 @@
 @section('content')
     <div class="container mt-4">
         <div class="col-12">
-            <div class="typed mb-3">
-                <div class="typed-header">
+            <div class="card mb-3">
+                <div class="card-header">
                     <div class="row">
                         <div class="col">Marca: </div>
 

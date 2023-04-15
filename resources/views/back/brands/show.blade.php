@@ -9,8 +9,8 @@
 @section('content')
     <div class="container mt-4">
         <div class="col-12">
-            <div class="brandd mb-3">
-                <div class="brandd-header">
+            <div class="card mb-3">
+                <div class="card-header">
                     <div class="row">
                         <div class="col">Marca: </div>
 
@@ -26,7 +26,7 @@
 
             </div>
 
-            <div class="brandd-footer">
+            <div class="card-footer">
                 <div class="row">
                     <div class="col">
                         <a class="btn btn-secondary text-white btn-sm" href="{{ route('back.brands.index') }}" role=" button"

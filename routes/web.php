@@ -4,12 +4,14 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Back\CarController;
-use App\Http\Controllers\Back\CarFuelController;
 use App\Http\Controllers\Back\TypeController;
 use App\Http\Controllers\Back\UserController;
 use App\Http\Controllers\Back\BrandController;
+use App\Http\Controllers\Back\MonthController;
+use App\Http\Controllers\Back\CarFuelController;
 use App\Http\Controllers\Back\GeneralController;
 use App\Http\Controllers\Back\CustomerController;
+use App\Http\Controllers\Back\IntervalController;
 use App\Http\Controllers\Back\DeveloperController;
 use App\Http\Controllers\Back\DepartmentController;
 
@@ -69,6 +71,18 @@ Route::middleware('auth')->group(function () {
         Route::controller(TypeController::class)->group(function () {
             Route::delete('/types/massDestroy', 'massDestroy')->name('types.massDestroy');
             Route::resource('/types', TypeController::class)->except(['destroy']);
+        });
+        // Brand
+        Route::controller(MonthController::class)->group(function () {
+            Route::get('/months/get-month-intervals/{month_id}','getMonthIntervals')->name('get-month-intervals');
+            Route::delete('/months/massDestroy', 'massDestroy')->name('months.massDestroy');
+            Route::resource('/months', MonthController::class)->except(['destroy']);
+        });
+        /* ---------------------------------------- */
+        // Intervals
+        Route::controller(IntervalController::class)->group(function () {
+            Route::delete('/intervals/massDestroy', 'massDestroy')->name('intervals.massDestroy');
+            Route::resource('/intervals', IntervalController::class)->except(['destroy']);
         });
          // Departments
          Route::controller(DepartmentController::class)->group(function () {

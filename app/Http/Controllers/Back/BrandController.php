@@ -29,8 +29,7 @@ class BrandController extends Controller
 
     public function create()
     {
-        $brands = Brand::select('id', 'name')->orderBy('name')->get();
-        return view('back.brands.create', compact( 'brands'));
+        return view('back.brands.create');
     }
 
 
