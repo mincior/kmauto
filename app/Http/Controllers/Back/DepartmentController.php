@@ -44,16 +44,10 @@ class DepartmentController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $departments = Department::with(['brand', 'department', 'department'])->select(sprintf('%s.*', (new Department)->getTable()));
+            $departments = Department::select(sprintf('%s.*', (new Department)->getTable()));
             return DataTables::of($departments)
                 ->addColumn('DT_RowId', function ($row) {
                     return $row->id;
-                })
-                ->editColumn('brand_id', function ($row) {
-                    return $row->brand->name;
-                })
-                ->editColumn('department_id', function ($row) {
-                    return $row->department->name;
                 })
                 ->toJson();
         }
@@ -62,9 +56,7 @@ class DepartmentController extends Controller
 
     public function create()
     {
-        $departments = Department::select('id', 'name')->orderBy('name')->get();
-        $brands = Brand::select('id', 'name')->orderBy('name')->get();
-        return view('back.departments.create', compact('departments', 'brands'));
+        return view('back.departments.create');
     }
 
 
@@ -73,7 +65,7 @@ class DepartmentController extends Controller
         $department = Department::create($request->all());
 
         $notification = [
-            "department" => "success",
+            "type" => "success",
             "title" => 'Add ...',
             "message" => 'Item added.',
         ];
@@ -83,11 +75,13 @@ class DepartmentController extends Controller
 
     public function show(Department $department)
     {
+        return view('back.departments.show', compact('department'));
 
     }
 
     public function edit(Department $department)
     {
+        return view('back.departments.edit', compact('department'));
 
     }
 
@@ -96,7 +90,7 @@ class DepartmentController extends Controller
         $department->update($request->all());
 
         $notification = [
-            "department" => "success",
+            "type" => "success",
             "title" => 'Edit ...',
             "message" => 'Item updated.',
         ];

@@ -1,7 +1,7 @@
 @extends('layouts.back')
 
 @section('title')
-    &vert; Customer
+    &vert; Utilizatori
 @endsection
 
 @section('content')

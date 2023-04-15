@@ -26,6 +26,7 @@
                 </li>
                 <li><a class="dropdown-item" href="{{ route('back.brands.index') }}">Masini - marca</a></li>
                 <li><a class="dropdown-item" href="{{ route('back.types.index') }}">Masini - model</a></li>
+                <li><a class="dropdown-item" href="{{ route('back.departments.index') }}">Filiale</a></li>
                 <li><a class="dropdown-item" href="{{ route('back.developer.impressum') }}">Impressum</a></li>
                 <li><a class="dropdown-item" href="{{ route('back.developer.session') }}">Session</a></li>
             </ul>

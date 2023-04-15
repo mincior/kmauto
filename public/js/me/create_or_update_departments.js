@@ -1,5 +1,5 @@
 
-function prelucrare_nume_utilizator(el) {
+function prelucrare_nume_filiala(el) {
 	const str = el.value;
 	const arr = str.split(" ");
 	for (var i = 0; i < arr.length; i++) {
