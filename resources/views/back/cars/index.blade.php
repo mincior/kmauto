@@ -216,9 +216,14 @@
                         width: '2'
                     },
                     {
-                        data: 'carburant',
-                        name: 'carburant',
-                        className: 'text-center',
+                        data: 'id',
+                        render: function(data, type, row, meta) {
+                            if ( typeof row.fuel === "undefined"){
+                                return '';
+                            }else{
+                                return row.fuel.name;
+                            }
+                        },
                     },
                     {
                         data: 'id',

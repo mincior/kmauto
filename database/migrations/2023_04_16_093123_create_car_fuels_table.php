@@ -18,7 +18,7 @@ class CreateCarFuelsTable extends Migration
         //Begin craft placeholder #2
 		Schema::create('car_fuels', function (Blueprint $table) {
 			$table->id();
-			$table->string('observatii');
+			$table->string('observatii')->nullable();
 			$table->double('valoare', 5, 1);
 			$table->bigInteger('interval_id')->unsigned()->index()->nullable();
 			$table->foreign('interval_id')->references('id')->on('intervals');

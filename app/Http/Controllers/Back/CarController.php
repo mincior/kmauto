@@ -4,13 +4,13 @@ namespace App\Http\Controllers\Back;
 
 use Countries;
 use App\Models\Car;
+use App\Models\Fuel;
 use App\Models\Type;
 use App\Models\User;
 use App\Models\Brand;
 use App\Models\Kmlog;
 use App\Models\Month;
 use App\Models\CarDep;
-use App\Models\CarConsumption;
 use App\Models\UserCar;
 use App\Models\Interval;
 use App\Models\Department;
@@ -18,6 +18,7 @@ use App\Models\Availablecar;
 use App\MyHelpers\AppHelper;
 use Illuminate\Http\Request;
 use App\Models\CarDepartment;
+use App\Models\CarConsumption;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CarStoreRequest;
@@ -49,8 +50,7 @@ class CarController extends Controller
 
         if ($request->ajax()) {
             $selectedInterval = config('global.selected_interval');
-            $cars = Car::with('brand', 'type')->select(sprintf('%s.*', (new Car)->getTable()))->orderBy('id', 'desc')->get();
-
+            $cars = Car::with('fuel', 'brand', 'type')->select(sprintf('%s.*', (new Car)->getTable()))->orderBy('id', 'desc')->get();
             $arr_cars_with_departments = AppHelper::get_last_target_values_array('car_id', 'department_id', 'car_deps', $selectedInterval);
             $arr_cars_with_users = AppHelper::get_last_target_values_array('car_id', 'user_id', 'user_cars', $selectedInterval);
             $arr_cars_with_car_consumptions = AppHelper::get_last_target_values_array('car_id', 'id', 'car_consumptions', $selectedInterval);
@@ -96,7 +96,8 @@ class CarController extends Controller
 
         $departments = Department::select('id', 'name')->orderBy('name')->get();
         $brands = Brand::select('id', 'name')->orderBy('name')->get();
-        return view('back.cars.create', compact('departments', 'brands'))->with('selectedInterval', $selectedInterval);
+        $fuels = Fuel::select('id', 'name')->orderBy('name')->get();
+        return view('back.cars.create', compact('departments', 'brands', 'fuels'))->with('selectedInterval', $selectedInterval);
     }
 
     public function store(CarStoreRequest $request)
@@ -136,7 +137,9 @@ class CarController extends Controller
         $selectedInterval = config('global.selected_interval');
 
         $brand_name = Brand::where('id', $car->brand_id)->first()->name;
+        $fuel_name = Fuel::where('id', $car->fuel_id)->first()->name;
         $type_name = Type::where('id', $car->type_id)->first()->name;
+        $activ= @Availablecar::where('car_id', $car->id)->where('interval_id', '<=', $selectedInterval)->orderBy('interval_id', 'desc')->first()->valoare;
         $user_id = @UserCar::where('car_id', $car->id)->where('interval_id', '<=', $selectedInterval)->orderBy('interval_id', 'desc')->first()->user_id;
         $user_name = @User::where('id', $user_id)->first()->name;
         $department_id = CarDep::where('car_id', $car->id)->where('interval_id', '<=', $selectedInterval)->orderBy('interval_id', 'desc')->first()->department_id;
@@ -144,7 +147,9 @@ class CarController extends Controller
         $consum_mediu= @CarConsumption::where('car_id', $car->id)->where('interval_id', '<=', $selectedInterval)->orderBy('interval_id', 'desc')->first()->valoare;
         $data['selectedInterval'] = $selectedInterval;
         $data['brand_name'] = $brand_name;
+        $data['fuel_name'] = $fuel_name;
         $data['type_name'] = $type_name;
+        $data['activ'] = $activ;
         $merged_data['user_name'] = $user_name;
         $merged_data['consum_mediu'] = $consum_mediu;
         $merged_data['department_name'] = $department_name;
@@ -183,10 +188,11 @@ class CarController extends Controller
         $activ = @Availablecar::where('car_id', $car->id)->where('interval_id', '<=', $selectedInterval)->orderby('interval_id', 'Desc')->first()->valoare;
         $consum_mediu = @CarConsumption::where('car_id', $car->id)->where('interval_id', '<=', $selectedInterval)->orderby('interval_id', 'Desc')->first()->valoare;
         $brands = Brand::select('id', 'name')->orderBy('name')->get();
+        $fuels = Fuel::select('id', 'name')->orderBy('name')->get();
         $types = Type::where('brand_id', '=', $car->brand_id)->get();
         // dd($car->id, $dep_id, $user_id,  $activ, $consum_mediu);
         return view('back.cars.edit', compact('car'))
-            ->with(compact('departments', 'users', 'brands', 'types'))
+            ->with(compact('departments', 'users', 'brands', 'types', 'fuels'))
             ->with('dep_id', $dep_id)
             ->with('usr_id', $user_id)
             ->with('activ', $activ)

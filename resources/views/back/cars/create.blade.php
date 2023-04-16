@@ -6,6 +6,7 @@
 
 @section('content')
 <?php
+    //daca prin javascript e nevoie de un tabel copil, avem nevoie de o lista din care sa selectam valoarea veche a id-ului.
     $users = @\App\Http\Controllers\Back\DepartmentController::getUsers(old('department_id'));
     $types = @\App\Models\Brand::with('types')->where('id', '=', (old('brand_id')))->get()[0]['types'];
 ?>
@@ -122,16 +123,21 @@
                     </div>
                                     
                     <div class="row mb-2">
-                        <label for="carburant" class="col-md-2 col-form-label">Carburant :</label>
+                        <label for="fuel_id" class="col-md-2 col-form-label">Combustibil :</label>
 
                         <div class="col-md-3">
-                            <select name="carburant" id="carburant_select" class="form-select" style="width:auto">
+                            <select name="fuel_id" id="fuel_select" class="form-select" data-fuelid="1" data-typeid="1">
                                 <option value="">Alege ...</option>
-                                <option   {{ old('carburant') == "benzina" ? "selected" : "" }}  value="benzina">Benzina</option>
-                                <option   {{ old('carburant') == "motorina"? "selected" : "" }}  value="motorina">Motorina</option>
+                                @foreach ($fuels as $fuel)
+                                <option  {{ old('fuel_id') ==  $fuel['id']  ? "selected" : "" }} value="{{ $fuel['id'] }}">{{ $fuel['name'] }}</option>
+                                @endforeach
                             </select>
+                            @error('fuel_id')
+                            <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
+
                     <div class="row mb-2">
                         <label for="activ" class="col-md-2 col-form-label">Activ :</label>
 

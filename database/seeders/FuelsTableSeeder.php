@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\CarFuel;
+use App\Models\Fuel;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 
-class CarFuelsTableSeeder extends Seeder
+class FuelsTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -25,27 +25,23 @@ class CarFuelsTableSeeder extends Seeder
      */
     private function generate()
     {
-        $users = CarFuel::factory()->state(
+        $users = Fuel::factory()->state(
             new Sequence(
                 [
                     'name' => 'benzina',
-                    'fuel_id' => 1,
-                    'interval_id' => 1,
+                    'id' => 1,
                 ],
                 [
-                    'valoare' => 9.4,
-                    'fuel_id' => 2,
-                    'interval_id' => 1,
+                    'name' => 'motorina',
+                    'id' => 2,
                 ],
                 [
-                    'valoare' => 8.8,
-                    'fuel_id' => 3,
-                    'interval_id' => 1,
+                    'name' => 'gaz',
+                    'id' => 3,
                 ],
                 [
-                    'valoare' => 124,
-                    'fuel_id' => 4,
-                    'interval_id' => 1,
+                    'name' => 'electric',
+                    'id' => 4,
                 ],
                 
             )            

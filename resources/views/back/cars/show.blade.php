@@ -70,7 +70,7 @@
 
                         <div class="col-md-6">
                             <input id="combustibil" name="combustibil" type="text" readonly
-                                class="form-control-plaintext" value="{{ $car->carburant }}">
+                                class="form-control-plaintext" value="{{ $fuel_name }}">
                         </div>
 
                     </div>
@@ -88,7 +88,7 @@
                         </label>
                         <div class="col-md-2">
                             <input id="activ" name="activ" type="text" readonly class="form-control-plaintext"
-                                value="{{ $car->activ == 1 ? 'Da' : 'Nu' }} ">
+                                value="{{ $activ == 1 ? 'Da' : 'Nu' }} ">
                         </div>
                     </div>
                 </div>

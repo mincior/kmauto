@@ -44,6 +44,10 @@ trait CarRelationships
 		return $this->belongsTo('App\\Models\\Brand');
 	}
 	
+	public function fuel(){
+		return $this->belongsTo('App\\Models\\Fuel');
+	}
+
 	public function car_consumptions(){
 		return $this->hasMany('App\\Models\\CarConsumption');
 	}
