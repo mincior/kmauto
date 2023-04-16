@@ -1,131 +1,84 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Back;
 
+use App\Models\Type;
 use App\Models\Fuel;
 use App\Models\Department;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\FuelStoreRequest;
+use App\Http\Requests\FuelUpdateRequest;
+use Yajra\DataTables\Facades\DataTables;
 
 class FuelController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    function __construct()
+    public function index(Request $request)
     {
-        // set permission
-        $this->middleware('permission:fuel-list|fuel-create|fuel-edit|fuel-delete', ['only' => ['index', 'show']]);
-        $this->middleware('permission:fuel-create', ['only' => ['create', 'store']]);
-        $this->middleware('permission:fuel-edit', ['only' => ['edit', 'update']]);
-        $this->middleware('permission:fuel-delete', ['only' => ['destroy']]);
+        if ($request->ajax()) {   
+            $fuels = Fuel::select(sprintf('%s.*', (new Fuel)->getTable()));
+            return DataTables::of($fuels)
+                ->addColumn('DT_RowId', function ($row) {
+                    return $row->id;
+                })
+                ->toJson();
+        }
+        return view('back.fuels.index');
     }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-
-    public function index()
-    {
-        $fuels = Fuel::all();
-        return view('fuels.index', compact('fuels'))->with('i');
-    }
-
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
 
     public function create()
     {
-        return view('fuels.create');
+        return view('back.fuels.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+
+    public function getFuelTypes($fuel_id)
     {
-
-        $request->validate([
-
-        ]);
-
-        $input = $request->all();
-
-
-        Fuel::create($input);
-
-        return redirect()->route('fuels.index')->with('success', 'Fuel created successfully.');
+        $fuels = Type::select("id", "name")->where('fuel_id', '=', $fuel_id)->get()->toArray();
+        return $fuels;
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Fuel  $fuel
-     * @return \Illuminate\Http\Response
-     */
+    public function store(FuelStoreRequest $request)
+    {
+        $fuel = Fuel::create($request->all());
+
+        $notification = [
+            "type" => "success",
+            "title" => 'Add ...',
+            "message" => 'Item added.',
+        ];
+
+        return redirect()->route('back.fuels.index')->with('notification', $notification);
+    }
 
     public function show(Fuel $fuel)
     {
-        return view('fuels.show', compact('fuel'));
+        return view('back.fuels.show', compact('fuel'));
     }
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Fuel  $fuel
-     * @return \Illuminate\Http\Response
-     */
 
     public function edit(Fuel $fuel)
     {
-        return view('fuels.edit', compact('fuel'));
+        return view('back.fuels.edit', compact('fuel'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Fuel  $fuel
-     * @return \Illuminate\Http\Response
-     */
-
-    public function update(Request $request, Fuel $fuel)
+    public function update(FuelUpdateRequest $request, Fuel $fuel)
     {
-        $request->validate([
+        $fuel->update($request->all());
 
-        ]);
+        $notification = [
+            "type" => "success",
+            "title" => 'Edit ...',
+            "message" => 'Item updated.',
+        ];
 
-        $input = $request->all();
-        $fuel->update($input);
-
-        return redirect()->route('fuels.index')->with('success', 'Fuel updated successfully');
+        return redirect()->route('back.fuels.index')->with('notification', $notification);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Fuel  $fuel
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Fuel $fuel)
+    public function massDestroy(Request $request)
     {
-        $fuel->delete();
-        return redirect()->route('fuels.index')->with('success', 'Fuel sters cu succes');
+        Fuel::whereIn('id', request('ids'))->delete();
+
+        return response()->noContent();
     }
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Fuel  $fuel
-     * @return \Illuminate\Http\Response
-     */
 }

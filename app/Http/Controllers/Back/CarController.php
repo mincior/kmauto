@@ -216,7 +216,6 @@ class CarController extends Controller
         $succes = $car->update($data);
         // $car->users()->syncWithPivotValues([$data['user_id']],  ['interval_id' => intval($data['selected_interval'])]);
         // $car->departments()->syncWithPivotValues([$data['department_id']],  ['interval_id' => intval($data['selected_interval'])]);
-
         if ($succes) { //daca s-a modificat masina
             //proceseaza tabelele pivot
             //toate masinile sunt asignate unui departament atunci cand sunt create. Se verifica departamentul ultimului interval si daca difera de cel actual, il schimba

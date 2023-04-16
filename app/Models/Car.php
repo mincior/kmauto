@@ -15,13 +15,11 @@ class Car extends Model
      */
     protected $fillable = [
       'numar', 
-      'consum_mediu', 
-      'carburant', 
-      'activ', 
       'observatii', 
       'type_id', 
+      'fuel_id', 
       'brand_id', 
-    ];
+      ];
     public $timestamps = false;
 
 }

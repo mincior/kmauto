@@ -25,8 +25,6 @@ class CreateFuelPricesTable extends Migration
 			$table->bigInteger('fuel_id')->unsigned()->index()->nullable();
 			$table->foreign('fuel_id')->references('id')->on('fuels');		
 		//End craft placeholder #2
-            $table->timestamps();
-            $table->timestamp('deleted_at')->nullable();
         });
     }
 

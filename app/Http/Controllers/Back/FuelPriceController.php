@@ -2,34 +2,42 @@
 
 namespace App\Http\Controllers\Back;
 
+use App\Models\Fuel;
 use App\Models\Type;
+use App\Models\Month;
+use App\Models\Interval;
 use App\Models\FuelPrice;
 use App\Models\Department;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Yajra\DataTables\Facades\DataTables;
 use App\Http\Requests\FuelPriceStoreRequest;
 use App\Http\Requests\FuelPriceUpdateRequest;
-use Yajra\DataTables\Facades\DataTables;
 
 class FuelPriceController extends Controller
 {
     public function index(Request $request)
     {
-        if ($request->ajax()) {          
-            $fuel_prices = FuelPrice::select(sprintf('%s.*', (new FuelPrice)->getTable()));
+        if ($request->ajax()) {    
+            $fuel_prices = FuelPrice::with('fuel', 'interval')->select(sprintf('%s.*', (new FuelPrice)->getTable()))->get();
+            //adauga luna intervalului
+            foreach($fuel_prices as $fuel_price){
+                @$fuel_price['month'] = Month::where('id', Interval::where('id', $fuel_price->interval_id)->first()->month_id)->first()->anul_luna;
+            }
             return DataTables::of($fuel_prices)
                 ->addColumn('DT_RowId', function ($row) {
                     return $row->id;
                 })
                 ->toJson();
         }
-        return view('back.fuels.index');
+        return view('back.fuel_prices.index');
     }
 
     public function create()
     {
-        return view('back.fuels.create');
+        $fuels = Fuel::get();
+        return view('back.fuel_prices.create', compact('fuels'));
     }
 
 

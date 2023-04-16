@@ -2,18 +2,20 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Back\FuelController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Back\CarController;
 use App\Http\Controllers\Back\TypeController;
 use App\Http\Controllers\Back\UserController;
 use App\Http\Controllers\Back\BrandController;
 use App\Http\Controllers\Back\MonthController;
-use App\Http\Controllers\Back\CarConsumptionController;
 use App\Http\Controllers\Back\GeneralController;
 use App\Http\Controllers\Back\CustomerController;
 use App\Http\Controllers\Back\IntervalController;
 use App\Http\Controllers\Back\DeveloperController;
+use App\Http\Controllers\Back\FuelPriceController;
 use App\Http\Controllers\Back\DepartmentController;
+use App\Http\Controllers\Back\CarConsumptionController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Auth::routes();
@@ -65,6 +67,18 @@ Route::middleware('auth')->group(function () {
             Route::get('/brands/get-brand-types/{brand_id}','getBrandTypes')->name('get-brand-types');
             Route::delete('/brands/massDestroy', 'massDestroy')->name('brands.massDestroy');
             Route::resource('/brands', BrandController::class)->except(['destroy']);
+        });
+        /* ---------------------------------------- */
+        // Fuel
+        Route::controller(FuelController::class)->group(function () {
+            Route::delete('/fuels/massDestroy', 'massDestroy')->name('fuels.massDestroy');
+            Route::resource('/fuels', FuelController::class)->except(['destroy']);
+        });
+        /* ---------------------------------------- */
+        // FuelPrice
+        Route::controller(FuelPriceController::class)->group(function () {
+            Route::delete('/fuel-prices/massDestroy', 'massDestroy')->name('fuel-prices.massDestroy');
+            Route::resource('/fuel-prices', FuelPriceController::class)->except(['destroy']);
         });
         /* ---------------------------------------- */
         // Types

@@ -29,6 +29,8 @@
                 <li><a class="dropdown-item" href="{{ route('back.departments.index') }}">Filiale</a></li>
                 <li><a class="dropdown-item" href="{{ route('back.months.index') }}">Luni</a></li>
                 <li><a class="dropdown-item" href="{{ route('back.intervals.index') }}">Intervale</a></li>
+                <li><a class="dropdown-item" href="{{ route('back.fuels.index') }}">Tipuri combustibil</a></li>
+                <li><a class="dropdown-item" href="{{ route('back.fuel-prices.index') }}">Preturi combustibil</a></li>
                 <li><a class="dropdown-item" href="{{ route('back.developer.impressum') }}">Impressum</a></li>
                 <li><a class="dropdown-item" href="{{ route('back.developer.session') }}">Session</a></li>
             </ul>
