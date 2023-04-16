@@ -30,7 +30,7 @@ class DatabaseSeeder extends Seeder
         $this->call(AvailableusersTableSeeder::class);
         $this->call(UserKmlimitsTableSeeder::class);
         $this->call(UserPhonesTableSeeder::class);
-        $this->call(CarFuelsTableSeeder::class);
+        $this->call(FuelPricesTableSeeder::class);
        
     }
 }

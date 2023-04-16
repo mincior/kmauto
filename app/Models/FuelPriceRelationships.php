@@ -4,7 +4,7 @@ namespace App\Models;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Query\Builder;
 
-trait CarFuelRelationships
+trait FuelPriceRelationships
 {
 	//Begin craft placeholder #1
 

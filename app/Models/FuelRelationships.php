@@ -8,7 +8,7 @@ trait FuelRelationships
 {
 	//Begin craft placeholder #1
 	public function intervals(){
-		return $this->belongsToMany('App\\Models\\Interval', 'App\\Models\\CarFuel')->withPivot('observatii', 'valoare', 'interval_id', 'fuel_id');
+		return $this->belongsToMany('App\\Models\\Interval', 'App\\Models\\FuelPrice')->withPivot('observatii', 'valoare', 'interval_id', 'fuel_id');
 	}
 	public function car(){
 		return $this->hasOne('App\\Models\\Car');

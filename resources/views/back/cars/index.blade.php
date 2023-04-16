@@ -261,9 +261,7 @@
                 },
                 ordering: true,
                 order: [
-                    [1, "asc"],
-                    [2, "asc"],
-                    [3, "asc"],
+                    [0, "desc"],
                 ],
                 preDrawCallback: function(settings) {
                     oTable.columns.adjust();

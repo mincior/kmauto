@@ -196,7 +196,7 @@ class UserController extends Controller
                 if (!is_null($rec)) {
                     if ($rec->department_id !== $department_id) { //s-a schimbat departamentul.
                         if ($rec->interval_id == $selectedInterval) { //s-a schimbat doar departamentul in intervalul curent
-                            $rec->update('department_id', $department_id);
+                            $rec->update(['department_id', $department_id]);
                         } else { // Creaza o noua inregistrare cu noul department_id dar cu intervalul curent
                             UserDep::create(['department_id' => $department_id, 'user_id' => $user->id, 'interval_id' => $selectedInterval]);
                         }
@@ -211,7 +211,7 @@ class UserController extends Controller
                 if (!is_null($rec)) {
                     if ($rec->car_id !== $car_id) { //s-a schimbat masina.
                         if ($rec->interval_id == $selectedInterval) { //s-a schimbat doar departamentul in intervalul curent
-                            $rec->update('car_id', $car_id);
+                            $rec->update(['car_id', $car_id]);
                         } else { // Creaza o noua inregistrare cu noul car_id dar cu intervalul curent
                             UserCar::create(['user_id' => $user->id, 'car_id' => $car_id, 'interval_id' => $selectedInterval]);
                         }
@@ -225,7 +225,7 @@ class UserController extends Controller
             if (!is_null($rec)) {
                 if ($rec->valoare !== $activ) { //s-a schimbat consumul_mediu.
                     if ($rec->interval_id == $selectedInterval) { //s-a schimbat doar consumul_mediu in intervalul curent
-                        $rec->update('valoare', $activ);
+                        $rec->update(['valoare', $activ]);
                     } else { // Creaza o noua inregistrare cu noul valoare dar cu intervalul curent
                         Availableuser::create(['valoare' => $activ, 'user_id' => $user->id, 'interval_id' => $selectedInterval]);
                     }
@@ -239,7 +239,7 @@ class UserController extends Controller
                 if (!is_null($rec)) {
                     if ($rec->valoare !== $telefon) { //s-a schimbat consumul_mediu.
                         if ($rec->interval_id == $selectedInterval) { //s-a schimbat doar consumul_mediu in intervalul curent
-                            $rec->update('valoare', $telefon);
+                            $rec->update(['valoare', $telefon]);
                         } else { // Creaza o noua inregistrare cu noul valoare dar cu intervalul curent
                             UserPhone::create(['valoare' => $telefon, 'user_id' => $user->id, 'interval_id' => $selectedInterval]);
                         }
@@ -254,7 +254,7 @@ class UserController extends Controller
                 if (!is_null($rec)) {
                     if ($rec->valoare !== $kmlimit) { //s-a schimbat consumul_mediu.
                         if ($rec->interval_id == $selectedInterval) { //s-a schimbat doar consumul_mediu in intervalul curent
-                            $rec->update('valoare', $kmlimit);
+                            $rec->update(['valoare', $kmlimit]);
                         } else { // Creaza o noua inregistrare cu noul valoare dar cu intervalul curent
                             UserKmlimit::create(['valoare' => $kmlimit, 'user_id' => $user->id, 'interval_id' => $selectedInterval]);
                         }
