@@ -207,10 +207,10 @@
                     {
                         data: 'id',
                         render: function(data, type, row, meta) {
-                            if ( typeof row.car_fuels[0] === "undefined"){
+                            if ( typeof row.car_consumptions[0] === "undefined"){
                                 return '';
                             }else{
-                                return row.car_fuels[0].valoare;
+                                return row.car_consumptions[0].valoare;
                             }
                         },
                         width: '2'

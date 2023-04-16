@@ -7,7 +7,7 @@ use App\Models\Car;
 use App\Models\User;
 use App\Models\Kmlog;
 use App\Models\Month;
-use App\Models\CarFuel;
+use App\Models\CarConsumption;
 use App\Models\UserCar;
 use App\Models\UserDep;
 use App\Models\Interval;
@@ -40,7 +40,7 @@ class UserController extends Controller
             $arr_users_with_user_kmlimits = AppHelper::get_last_target_values_array('user_id', 'id', 'user_kmlimits', $selectedInterval);
 
 
-            //in cars avem deja brand si type acum luam fiecare masina si-i adaugam departamentul, userul si consumul mediu (car_fuel)
+            //in cars avem deja brand si type acum luam fiecare masina si-i adaugam departamentul, userul si consumul mediu (car_consumption)
             //asociate la momentul intervalului selectat
             foreach ($users as $user){
                 @$user['departments'] = Department::where('id', $arr_users_with_departments[$user->id])->get();

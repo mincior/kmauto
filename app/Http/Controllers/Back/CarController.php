@@ -10,7 +10,7 @@ use App\Models\Brand;
 use App\Models\Kmlog;
 use App\Models\Month;
 use App\Models\CarDep;
-use App\Models\CarFuel;
+use App\Models\CarConsumption;
 use App\Models\UserCar;
 use App\Models\Interval;
 use App\Models\Department;
@@ -37,7 +37,7 @@ class CarController extends Controller
     public function autoComplete(Request $request)
     {
 
-        $res = CarFuel::select("valoare")
+        $res = CarConsumption::select("valoare")
             ->where("valoare", "LIKE", "%{$request->term}%")
             ->get()->toArray();
         return response()->json($res);
@@ -53,15 +53,15 @@ class CarController extends Controller
 
             $arr_cars_with_departments = AppHelper::get_last_target_values_array('car_id', 'department_id', 'car_deps', $selectedInterval);
             $arr_cars_with_users = AppHelper::get_last_target_values_array('car_id', 'user_id', 'user_cars', $selectedInterval);
-            $arr_cars_with_car_fuels = AppHelper::get_last_target_values_array('car_id', 'id', 'car_fuels', $selectedInterval);
+            $arr_cars_with_car_consumptions = AppHelper::get_last_target_values_array('car_id', 'id', 'car_consumptions', $selectedInterval);
             $arr_cars_with_car_activ = AppHelper::get_last_target_values_array('car_id', 'id', 'availablecars', $selectedInterval);
 
-            //in cars avem deja brand si type acum luam fiecare masina si-i adaugam departamentul, userul, consumul mediu (car_fuel)
+            //in cars avem deja brand si type acum luam fiecare masina si-i adaugam departamentul, userul, consumul mediu (car_consumption)
             //si activ,  asociate la momentul intervalului selectat
             foreach ($cars as $car) {
                 @$car['departments'] = Department::where('id', $arr_cars_with_departments[$car->id])->get();
                 @$car['users'] = User::where('id', $arr_cars_with_users[$car->id])->get();
-                @$car['car_fuels'] = CarFuel::where('id', $arr_cars_with_car_fuels[$car->id])->get();
+                @$car['car_consumptions'] = CarConsumption::where('id', $arr_cars_with_car_consumptions[$car->id])->get();
                 @$car['activ'] = Availablecar::where('id', $arr_cars_with_car_activ[$car->id])->get();
             }
             //Data tables poate functiona si pe eloquent si pe query normal dar si pe collection
@@ -117,7 +117,7 @@ class CarController extends Controller
             //aduaga departamentul, userul - optional, consumul mediu si activ in tabelele pivot
             CarDep::create(['department_id' => $department_id, 'car_id' => $car->id, 'interval_id' => $selectedInterval]);
             if ($user_id !== 0) UserCar::create(['user_id' => $user_id, 'car_id' => $car->id, 'interval_id' => $selectedInterval]);
-            CarFuel::create(['valoare' => $consum_mediu, 'car_id' => $car->id, 'interval_id' => $selectedInterval]);
+            CarConsumption::create(['valoare' => $consum_mediu, 'car_id' => $car->id, 'interval_id' => $selectedInterval]);
             Availablecar::create(['valoare' => $activ, 'car_id' => $car->id, 'interval_id' => $selectedInterval]);
         }
 
@@ -141,7 +141,7 @@ class CarController extends Controller
         $user_name = @User::where('id', $user_id)->first()->name;
         $department_id = CarDep::where('car_id', $car->id)->where('interval_id', '<=', $selectedInterval)->orderBy('interval_id', 'desc')->first()->department_id;
         $department_name = Department::where('id', $department_id)->first()->name;
-        $consum_mediu= @CarFuel::where('car_id', $car->id)->where('interval_id', '<=', $selectedInterval)->orderBy('interval_id', 'desc')->first()->valoare;
+        $consum_mediu= @CarConsumption::where('car_id', $car->id)->where('interval_id', '<=', $selectedInterval)->orderBy('interval_id', 'desc')->first()->valoare;
         $data['selectedInterval'] = $selectedInterval;
         $data['brand_name'] = $brand_name;
         $data['type_name'] = $type_name;
@@ -181,7 +181,7 @@ class CarController extends Controller
             ->orderBy('interval_id', 'desc')
             ->first()->user_id;
         $activ = @Availablecar::where('car_id', $car->id)->where('interval_id', '<=', $selectedInterval)->orderby('interval_id', 'Desc')->first()->valoare;
-        $consum_mediu = @CarFuel::where('car_id', $car->id)->where('interval_id', '<=', $selectedInterval)->orderby('interval_id', 'Desc')->first()->valoare;
+        $consum_mediu = @CarConsumption::where('car_id', $car->id)->where('interval_id', '<=', $selectedInterval)->orderby('interval_id', 'Desc')->first()->valoare;
         $brands = Brand::select('id', 'name')->orderBy('name')->get();
         $types = Type::where('brand_id', '=', $car->brand_id)->get();
         // dd($car->id, $dep_id, $user_id,  $activ, $consum_mediu);
@@ -245,17 +245,17 @@ class CarController extends Controller
             }
 
             if ($consum_mediu !== 0) {
-                $rec = CarFuel::where('valoare', $consum_mediu)->where('car_id', $car->id)->where('interval_id', '<=', $selectedInterval)->orderby('interval_id', 'Desc')->first();
+                $rec = CarConsumption::where('valoare', $consum_mediu)->where('car_id', $car->id)->where('interval_id', '<=', $selectedInterval)->orderby('interval_id', 'Desc')->first();
                 if (!is_null($rec)) {
                     if ($rec->valoare !== $consum_mediu) { //s-a schimbat consumul_mediu.
                         if ($rec->interval_id == $selectedInterval) { //s-a schimbat doar consumul_mediu in intervalul curent
                             $rec->update('valoare', $consum_mediu);
                         } else { // Creaza o noua inregistrare cu noul valoare dar cu intervalul curent
-                            CarFuel::create(['valoare' => $consum_mediu, 'car_id' => $car->id, 'interval_id' => $selectedInterval]);
+                            CarConsumption::create(['valoare' => $consum_mediu, 'car_id' => $car->id, 'interval_id' => $selectedInterval]);
                         }
                     }
                 } else { //consumul_mediu nu exista deloc
-                    CarFuel::create(['valoare' => $consum_mediu, 'car_id' => $car->id, 'interval_id' => $selectedInterval]);
+                    CarConsumption::create(['valoare' => $consum_mediu, 'car_id' => $car->id, 'interval_id' => $selectedInterval]);
                 }
             }
 
@@ -292,7 +292,7 @@ class CarController extends Controller
                 UserCar::where('car_id', $id)->delete();
                 CarDep::where('car_id', $id)->delete();
                 Availablecar::where('car_id', $id)->delete();
-                CarFuel::where('car_id', $id)->delete();
+                CarConsumption::where('car_id', $id)->delete();
 
                 //ar fi trebuit sa sterg si KmLog dar nu aici. Nu pot sterge o masina daca are inregistrari in Kmlog
                 //De aceea stergerile din Kmlog se fac separat si numai daca este cazul.

@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 //Begin craft placeholder #1
-class CreateCarFuelsTable extends Migration
+class CreateCarConsumptionsTable extends Migration
 //End craft placeholder #1
 {
     /**
@@ -16,7 +16,7 @@ class CreateCarFuelsTable extends Migration
     public function up()
     {
         //Begin craft placeholder #2
-		Schema::create('car_fuels', function (Blueprint $table) {
+		Schema::create('car_consumptions', function (Blueprint $table) {
 			$table->id();
 			$table->string('valoare');		
 			$table->bigInteger('car_id')->unsigned()->index()->nullable();
@@ -35,7 +35,7 @@ class CreateCarFuelsTable extends Migration
     public function down()
     {
     //Begin craft placeholder #3
-	Schema::dropIfExists('car_fuels');
+	Schema::dropIfExists('car_consumptions');
 	//End craft placeholder #3
     }
 }

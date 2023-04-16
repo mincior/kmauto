@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CarFuel;
+use App\Models\Fuel;
 use App\Models\Department;
 use Illuminate\Http\Request;
 
 
-class CarFuelController extends Controller
+class FuelController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,10 +17,10 @@ class CarFuelController extends Controller
     function __construct()
     {
         // set permission
-        $this->middleware('permission:carFuel-list|carFuel-create|carFuel-edit|carFuel-delete', ['only' => ['index', 'show']]);
-        $this->middleware('permission:carFuel-create', ['only' => ['create', 'store']]);
-        $this->middleware('permission:carFuel-edit', ['only' => ['edit', 'update']]);
-        $this->middleware('permission:carFuel-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:fuel-list|fuel-create|fuel-edit|fuel-delete', ['only' => ['index', 'show']]);
+        $this->middleware('permission:fuel-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:fuel-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:fuel-delete', ['only' => ['destroy']]);
     }
 
     /**
@@ -31,8 +31,8 @@ class CarFuelController extends Controller
 
     public function index()
     {
-        $carFuels = CarFuel::all();
-        return view('carFuels.index', compact('carFuels'))->with('i');
+        $fuels = Fuel::all();
+        return view('fuels.index', compact('fuels'))->with('i');
     }
 
 
@@ -44,7 +44,7 @@ class CarFuelController extends Controller
 
     public function create()
     {
-        return view('carFuels.create');
+        return view('fuels.create');
     }
 
     /**
@@ -63,69 +63,69 @@ class CarFuelController extends Controller
         $input = $request->all();
 
 
-        CarFuel::create($input);
+        Fuel::create($input);
 
-        return redirect()->route('carFuels.index')->with('success', 'CarFuel created successfully.');
+        return redirect()->route('fuels.index')->with('success', 'Fuel created successfully.');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\CarFuel  $carFuel
+     * @param  \App\Fuel  $fuel
      * @return \Illuminate\Http\Response
      */
 
-    public function show(CarFuel $carFuel)
+    public function show(Fuel $fuel)
     {
-        return view('carFuels.show', compact('carFuel'));
+        return view('fuels.show', compact('fuel'));
     }
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\CarFuel  $carFuel
+     * @param  \App\Fuel  $fuel
      * @return \Illuminate\Http\Response
      */
 
-    public function edit(CarFuel $carFuel)
+    public function edit(Fuel $fuel)
     {
-        return view('carFuels.edit', compact('carFuel'));
+        return view('fuels.edit', compact('fuel'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\CarFuel  $carFuel
+     * @param  \App\Fuel  $fuel
      * @return \Illuminate\Http\Response
      */
 
-    public function update(Request $request, CarFuel $carFuel)
+    public function update(Request $request, Fuel $fuel)
     {
         $request->validate([
 
         ]);
 
         $input = $request->all();
-        $carFuel->update($input);
+        $fuel->update($input);
 
-        return redirect()->route('carFuels.index')->with('success', 'CarFuel updated successfully');
+        return redirect()->route('fuels.index')->with('success', 'Fuel updated successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\CarFuel  $carFuel
+     * @param  \App\Fuel  $fuel
      * @return \Illuminate\Http\Response
      */
-    public function destroy(CarFuel $carFuel)
+    public function destroy(Fuel $fuel)
     {
-        $carFuel->delete();
-        return redirect()->route('carFuels.index')->with('success', 'CarFuel sters cu succes');
+        $fuel->delete();
+        return redirect()->route('fuels.index')->with('success', 'Fuel sters cu succes');
     }
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\CarFuel  $carFuel
+     * @param  \App\Fuel  $fuel
      * @return \Illuminate\Http\Response
      */
 }

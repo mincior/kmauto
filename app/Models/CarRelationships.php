@@ -44,8 +44,8 @@ trait CarRelationships
 		return $this->belongsTo('App\\Models\\Brand');
 	}
 	
-	public function car_fuels(){
-		return $this->hasMany('App\\Models\\CarFuel');
+	public function car_consumptions(){
+		return $this->hasMany('App\\Models\\CarConsumption');
 	}
 
 	//End craft placeholder #1

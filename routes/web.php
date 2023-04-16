@@ -8,7 +8,7 @@ use App\Http\Controllers\Back\TypeController;
 use App\Http\Controllers\Back\UserController;
 use App\Http\Controllers\Back\BrandController;
 use App\Http\Controllers\Back\MonthController;
-use App\Http\Controllers\Back\CarFuelController;
+use App\Http\Controllers\Back\CarConsumptionController;
 use App\Http\Controllers\Back\GeneralController;
 use App\Http\Controllers\Back\CustomerController;
 use App\Http\Controllers\Back\IntervalController;
@@ -91,9 +91,9 @@ Route::middleware('auth')->group(function () {
             Route::delete('/departments/massDestroy', 'massDestroy')->name('departments.massDestroy');
             Route::resource('/departments', DepartmentController::class)->except(['destroy']);
         });
-         // CarFuels
-         Route::controller(CarFuelController::class)->group(function () {
-            Route::get('/car_fuels/get-car_fuels','getCarFuels')->name('get-car_fuels');
+         // CarConsumptions
+         Route::controller(CarConsumptionController::class)->group(function () {
+            Route::get('/car_consumptions/get-car_consumptions','getCarConsumptions')->name('get-car_consumptions');
         });
    });
 });

@@ -28,7 +28,7 @@ class CarFuelsTableSeeder extends Seeder
         $users = CarFuel::factory()->state(
             new Sequence(
                 [
-                    'valoare' => 6.5,
+                    'name' => 'benzina',
                     'fuel_id' => 1,
                     'interval_id' => 1,
                 ],

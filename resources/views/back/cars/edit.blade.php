@@ -141,7 +141,7 @@
                             @enderror
                         </div>
                         {{-- <div class="col col-md-1">
-                            <button id="save_car_fuel" class="btn btn-primary text-white btn-sm" tabindex="-1" onclick="event.preventDefault(); salveazaConsumuriMedii();">Salveaza</button>
+                            <button id="save_car_consumption" class="btn btn-primary text-white btn-sm" tabindex="-1" onclick="event.preventDefault(); salveazaConsumuriMedii();">Salveaza</button>
                         </div> --}}
                     </div>
 
