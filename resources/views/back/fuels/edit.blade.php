@@ -58,10 +58,10 @@
 @endsection
 
 @section('scripts')
-<script src="{{ asset('js/me/get_department_users.js') }}"></script>
-<script src="{{ asset('js/me/get_fuel_types.js') }}"></script>
-
-{{-- autocompletare casete text cu valori dintr-un array --}}
-<script src="{{ asset('js/me/create_or_update_fuel.js') }}"></script>
-
+<script> 
+jQuery(document).ready(function ($) {
+	$('#name').focus();
+	$('#my-nav-bar').addClass('d-none');//ascunde bara de navigare cand sunt pe create car
+});
+</script>
 @endsection
