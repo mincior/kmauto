@@ -1,11 +1,11 @@
 @extends('layouts.back')
 
 @section('title')
-&vert; Masini marca
+&vert; Combustibili
 @endsection
 
 @section('content')
-<form id="myForm" method="POST" action="{{ route('back.fuel-prices.update', [$fuel-price->id])  }}" enctype="multipart/form-data" wire:submit.prevent="savePersonalData" onkeydown="return event.key != 'Enter';">
+<form id="myForm" method="POST" action="{{ route('back.fuel-prices.update', [$fuel_price->id])  }}" enctype="multipart/form-data" wire:submit.prevent="savePersonalData" onkeydown="return event.key != 'Enter';">
     @csrf
     @method('PUT')
     <div class="container mt-4">
@@ -13,7 +13,7 @@
             <div class="card mb-3">
                 <div class="card-header">
                     <div class="row">
-                        <div id="myToolTip" class="col">Masini - modificare marca</div>
+                        <div id="myToolTip" class="col">Preturi combustibili - modificare:<strong style="color: red;"> {{ $month_interval }} </strong></div>
 
                         <div class="col fs-5 text-end">
                             <img src="{{ asset('img/icons/car.png') }}" />
@@ -23,12 +23,36 @@
 
                 <div class="card-body">
                     <div class="row mb-2">
-                        <label for="name" class="col-md-2 col-form-label"> :</label>
+                        <label for="fuel_id" class="col-md-2 col-form-label">Combustibil</label>
 
                         <div class="col-md-3">
-                            <input autocomplete="on" id="name" name="name" type="text" class="form-control @error('name') is-invalid @enderror" value="{{ old('name') ? old('name') : $fuel-price->name }}" onkeyup="prelucrare_name_masina(this);">
+                            <h4>{{ old('fuel_id') ? old('fuel_id') : $fuel_name }} </h4>
 
-                            @error('name')
+                            @error('fuel_id')
+                            <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="row mb-2">
+                        <label for="valoare" class="col-md-2 col-form-label">Pret</label>
+
+                        <div class="col-md-3">
+                            <input autocomplete="on" id="valoare" name="valoare" type="text" class="form-control @error('valoare') is-invalid @enderror" value="{{ old('valoare') ? old('valoare') : $fuel_price->valoare }}">
+
+                            @error('valoare')
+                            <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="row mb-2">
+                        <label for="observatii" class="col-md-2 col-form-label">Observatii</label>
+
+                        <div class="col-md-3">
+                            <input autocomplete="on" id="observatii" name="observatii" type="text" class="form-control @error('observatii') is-invalid @enderror" value="{{ old('observatii') ? old('observatii') : $fuel_price->observatii }}" onkeyup="prelucrare_observatii_masina(this);">
+
+                            @error('observatii')
                             <span class="invalid-feedback" role="alert">{{ $message }}</span>
                             @enderror
                         </div>
@@ -58,10 +82,11 @@
 @endsection
 
 @section('scripts')
-<script src="{{ asset('js/me/get_department_users.js') }}"></script>
-<script src="{{ asset('js/me/get_fuel-price_types.js') }}"></script>
-
-{{-- autocompletare casete text cu valori dintr-un array --}}
-<script src="{{ asset('js/me/create_or_update_fuel-price.js') }}"></script>
+<script> 
+jQuery(document).ready(function ($) {
+	$('#valoare').focus();
+	$('#my-nav-bar').addClass('d-none');//ascunde bara de navigare cand sunt pe create car
+});
+</script>
 
 @endsection

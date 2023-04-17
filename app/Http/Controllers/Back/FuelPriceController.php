@@ -49,7 +49,10 @@ class FuelPriceController extends Controller
 
     public function store(FuelPriceStoreRequest $request)
     {
-        $fuel_price = FuelPrice::create($request->all());
+        $selectedInterval = config('global.selected_interval');
+        $data = $request->all();
+        $data['interval_id'] = $selectedInterval;
+        $fuel_price = FuelPrice::create($data);
 
         $notification = [
             "type" => "success",
@@ -57,30 +60,37 @@ class FuelPriceController extends Controller
             "message" => 'Item added.',
         ];
 
-        return redirect()->route('back.fuels.index')->with('notification', $notification);
+        return redirect()->route('back.fuel-prices.index')->with('notification', $notification);
     }
 
     public function show(FuelPrice $fuel_price)
     {
-        return view('back.fuels.show', compact('fuel'));
+        $fuel_name = Fuel::where('id', $fuel_price->fuel_id)->first()->name;
+        $interval = Interval::where('id', $fuel_price->interval_id)->first()->interval;
+        $month_interval = Month::where('id',  $fuel_price->interval_id)->first()->anul_luna . " : ". $interval;
+        return view('back.fuel_prices.show', compact('fuel_name', 'fuel_price', 'month_interval'));
     }
 
     public function edit(FuelPrice $fuel_price)
     {
-        return view('back.fuels.edit', compact('fuel'));
+        $fuel_name = Fuel::where('id', $fuel_price->fuel_id)->first()->name;
+        $interval = Interval::where('id', $fuel_price->interval_id)->first()->interval;
+        $month_interval = Month::where('id',  $fuel_price->interval_id)->first()->anul_luna . " : ". $interval;
+        return view('back.fuel_prices.edit', compact('fuel_name', 'fuel_price', 'month_interval'));
     }
 
     public function update(FuelPriceUpdateRequest $request, FuelPrice $fuel_price)
     {
-        $fuel_price->update($request->all());
-
+        $data= $request->all();
+        //$data['fuel_id'] = Fuel::where('name', $data['fuel_id'])->first()->id;
+        $fuel_price->update($data);
         $notification = [
             "type" => "success",
             "title" => 'Edit ...',
             "message" => 'Item updated.',
         ];
 
-        return redirect()->route('back.fuels.index')->with('notification', $notification);
+        return redirect()->route('back.fuel-prices.index')->with('notification', $notification);
     }
 
     public function massDestroy(Request $request)

@@ -194,7 +194,7 @@
                     {
                         data: 'id',
                         render: function(data, type, row, meta) {
-                            console.log(row);
+                            //console.log(row);
                             if ( typeof row.month === "undefined"){
                                 return '';
                             }else{
@@ -205,7 +205,8 @@
                     {
                         data: 'id',
                         render: function(data, type, row, meta) {
-                            if ( typeof row.interval === "undefined"){
+                            console.log (row);
+                            if ( row.interval === null){
                                 return '';
                             }else{
                                 return row.interval.interval;

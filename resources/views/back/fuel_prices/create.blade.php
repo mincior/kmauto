@@ -98,9 +98,11 @@
 
 @section('scripts')
     <script>
-    jQuery(document).ready(function ($) {
-        $('#name').focus();
-        $('#my-nav-bar').addClass('d-none');//ascunde bara de navigare cand sunt pe create car
-    });
+<script> 
+jQuery(document).ready(function ($) {
+	$('#name').focus();
+	$('#my-nav-bar').addClass('d-none');//ascunde bara de navigare cand sunt pe create car
+});
+</script>
     </script>
 @endsection
