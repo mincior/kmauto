@@ -34,7 +34,7 @@ $mm = json_encode($months); //test pentru transmitere array catre javascript (JS
                 tabindex="-1" onclick="change_button(this, 'home')">
                 <i class="bi bi-house-fill"></i>
             </a>
-            <div class="btn-group me-1" role="group">
+            {{-- <div class="btn-group me-1" role="group">
                 <a class="btn btn-lg {{ ($session == 'filiale' ? 'btn-light' : 'btn-outline-dark') }}" 
                 href="" title="Filiale" role="button" tabindex="-1" onclick="change_button(this, 'filiale')">
                     <img src="{{ asset('img/buttons/categorisatie-030.png') }}" class="img-fluid" />
@@ -47,7 +47,7 @@ $mm = json_encode($months); //test pentru transmitere array catre javascript (JS
                 href="" title="Orders (not implemented yet)" role="button" tabindex="-1" onclick="change_button(this, 'orders')">
                     <img src="{{ asset('img/buttons/stock-030.png') }}" class="img-fluid" />
                 </a>
-            </div>
+            </div> --}}
         </div>
         {{-- center --}}
         <div>
@@ -60,6 +60,10 @@ $mm = json_encode($months); //test pentru transmitere array catre javascript (JS
                 <a class="btn btn-lg {{ ($session == 'cars' ? 'btn-light' : 'btn-outline-dark') }}" id="car-button" href="{{ route('back.cars.index') }}" title="Masini"
                     role="button" tabindex="-1" onclick="change_button(this, 'cars')">
                     <img src="{{ asset('img/buttons/car.png') }}" class="img-fluid" />
+                </a>
+                <a class="btn btn-lg {{ ($session == 'kmlogs' ? 'btn-light' : 'btn-outline-dark') }}" id="kmlog-button" href="{{ route('back.kmlogs.index') }}" title="Masini"
+                    role="button" tabindex="-1" onclick="change_button(this, 'kmlogs')">
+                    <img src="{{ asset('img/buttons/delivery-030.png') }}" class="img-fluid" />
                 </a>
             </div>
 

@@ -2,12 +2,14 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Back\FuelController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Back\CarController;
+use App\Http\Controllers\Back\FuelController;
+use App\Http\Controllers\Back\StatController;
 use App\Http\Controllers\Back\TypeController;
 use App\Http\Controllers\Back\UserController;
 use App\Http\Controllers\Back\BrandController;
+use App\Http\Controllers\Back\KmlogController;
 use App\Http\Controllers\Back\MonthController;
 use App\Http\Controllers\Back\GeneralController;
 use App\Http\Controllers\Back\CustomerController;
@@ -75,6 +77,12 @@ Route::middleware('auth')->group(function () {
             Route::resource('/fuels', FuelController::class)->except(['destroy']);
         });
         /* ---------------------------------------- */
+        // Kmlog
+        Route::controller(KmlogController::class)->group(function () {
+            Route::delete('/kmlogs/massDestroy', 'massDestroy')->name('kmlogs.massDestroy');
+            Route::resource('/kmlogs', KmlogController::class)->except(['destroy']);
+        });
+        /* ---------------------------------------- */
         // FuelPrice
         Route::controller(FuelPriceController::class)->group(function () {
             Route::delete('/fuel-prices/massDestroy', 'massDestroy')->name('fuel-prices.massDestroy');
@@ -85,6 +93,11 @@ Route::middleware('auth')->group(function () {
         Route::controller(TypeController::class)->group(function () {
             Route::delete('/types/massDestroy', 'massDestroy')->name('types.massDestroy');
             Route::resource('/types', TypeController::class)->except(['destroy']);
+        });
+        // Stats
+        Route::controller(StatController::class)->group(function () {
+            Route::delete('/stats/massDestroy', 'massDestroy')->name('stats.massDestroy');
+            Route::resource('/stats', StatController::class)->except(['destroy']);
         });
         // Brand
         Route::controller(MonthController::class)->group(function () {

@@ -14,7 +14,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(UsersTableSeeder::class);
         $this->call(MonthTableSeeder::class);
-        $this->call(IntervalTableSeeder::class);
+        $this->call(IntervalsTableSeeder::class);
         $this->call(CustomersSeeder::class);
         $this->call(DepartmentsTableSeeder::class);
         $this->call(BrandsTableSeeder::class);
@@ -31,6 +31,8 @@ class DatabaseSeeder extends Seeder
         $this->call(UserKmlimitsTableSeeder::class);
         $this->call(UserPhonesTableSeeder::class);
         $this->call(FuelPricesTableSeeder::class);
+        $this->call(StatsTableSeeder::class);
+        $this->call(KmlogsTableSeeder::class);
        
     }
 }

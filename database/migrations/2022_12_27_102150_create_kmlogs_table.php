@@ -19,15 +19,17 @@ class CreateKmlogsTable extends Migration
 		Schema::create('kmlogs', function (Blueprint $table) {
 			$table->id();
 			$table->integer('km')->nullable();
-			$table->string('picture');
-			$table->string('status');
+			$table->string('picture')->nullable();
             $table->string('observatii')->nullable();
+			$table->integer('ordine')->nullable();
 			$table->bigInteger('interval_id')->unsigned()->index()->nullable();
 			$table->foreign('interval_id')->references('id')->on('intervals');
 			$table->bigInteger('user_id')->unsigned()->index()->nullable();
 			$table->foreign('user_id')->references('id')->on('users');
 			$table->bigInteger('car_id')->unsigned()->index()->nullable();
 			$table->foreign('car_id')->references('id')->on('cars');		
+			$table->bigInteger('stat_id')->unsigned()->index()->nullable();
+			$table->foreign('stat_id')->references('id')->on('stats');		
             $table->timestamps();
 		//End craft placeholder #2
         });

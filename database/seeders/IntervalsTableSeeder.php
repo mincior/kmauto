@@ -6,7 +6,7 @@ use App\Models\Interval;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 
-class IntervalTableSeeder extends Seeder
+class IntervalsTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
