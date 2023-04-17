@@ -19,5 +19,6 @@ class Fuel extends Model
 		//End craft placeholder #1
         
     ];
+    public $timestamps = false;
 
 }
