@@ -23,19 +23,23 @@
                     </div>
 
                     <div class="card-body">
-                        <div class="row mb-2">
+                        {{-- <div class="row mb-2">
                             <label for="select" class="col-md-2 col-form-label">Data raportarii :</label>
 
                             <div class="col-md-3">
-                                <input autocomplete="on" id="select" name="select" type="text"
-                                    class="form-control @error('select') is-invalid @enderror"
+                                <input data-provide="datepicker" data-date-format="yyyy-mm-dd" autocomplete="on" id="select" name="select" type="text"
+                                    class="datepicker form-control @error('select') is-invalid @enderror"
                                     value="{{ old('select')}}">
 
                                 @error('select')
                                     <span class="invalid-feedback" role="alert">{{ $message }}</span>
                                 @enderror
                             </div>
-                        </div>
+                        </div> --}}
+                        <div class="input-append date" id="dp3" data-date="12-02-2012" data-date-format="dd-mm-yyyy">
+                            <input class="span2" size="16" type="text" value="12-02-2012">
+                            <span class="add-on"><i class="icon-th"></i></span>
+                          </div>
 
                         <div class="row mb-2">
                             <label for="anul_luna" class="col-md-2 col-form-label">Anul - luna :</label>
@@ -103,9 +107,35 @@
 
 @section('scripts')
     <script>
+var startDate = new Date(2012,1,20);
+var endDate = new Date(2012,1,25);
+$('#date-start')
+    .datepicker()
+    .on('changeDate', function(ev){
+        if (ev.date.valueOf() > endDate.valueOf()){
+            $('#alert').show().find('strong').text('The start date must be before the end date.');
+        } else {
+            $('#alert').hide();
+            startDate = new Date(ev.date);
+            $('#date-start-display').text($('#date-start').data('date'));
+        }
+        $('#date-start').datepicker('hide');
+    });
+$('#date-end')
+    .datepicker()
+    .on('changeDate', function(ev){
+        if (ev.date.valueOf() < startDate.valueOf()){
+            $('#alert').show().find('strong').text('The end date must be after the start date.');
+        } else {
+            $('#alert').hide();
+            endDate = new Date(ev.date);
+            $('#date-end-display').text($('#date-end').data('date'));
+        }
+        $('#date-end').datepicker('hide');
+    });
     jQuery(document).ready(function ($) {
         $('#name').focus();
         $('#my-nav-bar').addClass('d-none');//ascunde bara de navigare cand sunt pe create car
-    });
+        $('#datepicker').datepicker('show');    });
     </script>
 @endsection
