@@ -1,17 +1,17 @@
 @extends('layouts.back')
 
 @section('title')
-    &vert; Cars
+    &vert; Km log
 @endsection
 
 @section('content')
     <div class="card">
         <div class="card-header d-print-none">
             <div class="row">
-                <div class="col">Cars</div>
+                <div class="col">Km log</div>
 
                 <div class="col fs-5 text-end">
-                    <img src="{{ asset('img/icons/car.png') }}" />
+                    <img src="{{ asset('img/icons/delivery-030.png') }}" />
                 </div>
             </div>
         </div>
@@ -32,10 +32,13 @@
                         <th scope="col">Status</th>
                         <th scope="col">Poza</th>
                         <th scope="col">Observatii</th>
+                        <th scope="col">Filiala</th>
                         <th scope="col">Masina</th>
                         <th scope="col">Utilizator</th>
                         <th scope="col">Luna</th>
                         <th scope="col">Interval</th>
+                        <th scope="col">Creat la</th>
+                        <th scope="col">Modificat la</th>
                     </tr>
                 </thead>
             </table>
@@ -216,6 +219,16 @@
                     {
                         data: 'id',
                         render: function(data, type, row, meta) {
+                            if ( typeof row.department === "undefined"){
+                                return '';
+                            }else{
+                                return row.department.name;
+                            }
+                        },
+                    },
+                    {
+                        data: 'id',
+                        render: function(data, type, row, meta) {
                             if ( typeof row.car === "undefined"){
                                 return '';
                             }else{
@@ -253,6 +266,14 @@
                                 return row.interval.interval;
                             }
                         },
+                    },
+                    {
+                        data: 'created_at',
+                        name: 'created_at',
+                    },
+                    {
+                        data: 'updated_at',
+                        name: 'updated_at',
                     },
                 ],
                 select: {

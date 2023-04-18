@@ -1,11 +1,15 @@
 @extends('layouts.back')
 
 @section('title')
-    &vert; Masini marca
+    &vert; Km log
 @endsection
 
 @section('content')
     <?php
+
+    $users = @\App\Http\Controllers\Back\DepartmentController::getUsers(old('department_id'));
+    $cars = @\App\Http\Controllers\Back\DepartmentController::getCars(old('department_id'));
+
     ?>
     <form id="myForm" method="POST" action="{{ route('back.kmlogs.store') }}" enctype="multipart/form-data">
         @csrf
@@ -14,28 +18,127 @@
                 <div class="card mb-3">
                     <div class="card-header">
                         <div class="row">
-                            <div id="myToolTip" class="col">Masini - adaugare marca</div>
+                            <div id="myToolTip" class="col">Km log - adaugare</div>
 
                             <div class="col fs-5 text-end">
-                                <img src="{{ asset('img/icons/car.png') }}" />
+                                <img src="{{ asset('img/icons/delivery-030.png') }}" />
                             </div>
                         </div>
                     </div>
 
                     <div class="card-body">
                         <div class="row mb-2">
-                            <label for="name" class="col-md-2 col-form-label">Nume :</label>
+                            <label for="km" class="col-md-2 col-form-label">Km - index</label>
 
                             <div class="col-md-3">
-                                <input autocomplete="on" id="name" name="name" type="text"
-                                    class="form-control @error('name') is-invalid @enderror"
-                                    value="{{ old('name')}}">
+                                <input autocomplete="on" id="km" name="km" type="text"
+                                    class="form-control @error('km') is-invalid @enderror"
+                                    value="{{ old('km')}}">
 
-                                @error('name')
+                                @error('km')
                                     <span class="invalid-feedback" role="alert">{{ $message }}</span>
                                 @enderror
                             </div>
                         </div>
+
+                        <div class="row mb-2">
+                            <label for="stat_id" class="col-md-2 col-form-label">Status</label>
+    
+                            <div class="col-md-4">
+                                <select name="stat_id" id="stat_select" data-deptid="1" data-userid="1"  data-carid="1"  class="form-select">
+                                    <option value="">Alege ...</option>
+                                    @foreach ($stats as $stat)
+                                        <option {{ old('stat_id') ==  $stat['id']  ? "selected" : "" }}  value="{{ $stat['id'] }}">{{ $stat['name'] }}</option>
+                                    @endforeach
+                                </select>
+                                @error('stat_id')
+                                <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="row mb-2">
+                            <label for="picture" class="col-md-2 col-form-label">Poza bord</label>
+
+                            <div class="col-md-3">
+                                <input autocomplete="on" id="picture" name="picture" type="text"
+                                    class="form-control @error('picture') is-invalid @enderror"
+                                    value="{{ old('picture')}}">
+
+                                @error('picture')
+                                    <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="row mb-2">
+                            <label for="department_id" class="col-md-2 col-form-label">Filiala</label>
+    
+                            <div class="col-md-4">
+                                <select name="department_id" id="department_select" data-deptid="1" data-userid="1"  data-carid="1"  class="form-select">
+                                    <option value="">Alege ...</option>
+                                    @foreach ($departments as $department)
+                                        <option {{ old('department_id') ==  $department['id']  ? "selected" : "" }}  value="{{ $department['id'] }}">{{ $department['name'] }}</option>
+                                    @endforeach
+                                </select>
+                                @error('department_id')
+                                <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+    
+                        <div class="row mb-2">
+                            <label for="car_id" class="col-md-2 col-form-label">Masina</label>
+    
+                            <div class="col-md-4">
+                                <select name="car_id" id="car_select" data-deptid="1" data-userid="1"  class="form-select">
+                                    <option value="">Alege ...</option>
+                                    @if (old('department_id')){
+                                        @foreach ($cars as $car)
+                                            <option {{ old('car_id') ==  $car['id']  ? "selected" : "" }}  value="{{ $car['id'] }}">{{ $car['name'] }}</option>
+                                        @endforeach
+                                    }
+                                    @endif
+                                </select>
+                                @error('car_id')
+                                <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+    
+                        <div class="row mb-2">
+                            <label for="user_id" class="col-md-2 col-form-label">Utilizatorul</label>
+    
+                            <div class="col-md-4">
+                                <select name="user_id" id="user_select" data-deptid="1" data-userid="1"  class="form-select">
+                                    <option value="">Alege ...</option>
+                                    @if (old('department_id')){
+                                        @foreach ($users as $user)
+                                            <option {{ old('user_id') ==  $user['id']  ? "selected" : "" }}  value="{{ $user['id'] }}">{{ $user['name'] }}</option>
+                                        @endforeach
+                                    }
+                                    @endif
+                                </select>
+                                @error('user_id')
+                                <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+    
+                        <div class="row mb-2">
+                            <label for="observatii" class="col-md-2 col-form-label">Observatii</label>
+
+                            <div class="col-md-5">
+                                <input autocomplete="on" id="observatii" name="observatii" type="text"
+                                    class="form-control @error('observatii') is-invalid @enderror"
+                                    value="{{ old('observatii')}}">
+
+                                @error('observatii')
+                                    <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+
 
 
 
@@ -67,6 +170,8 @@
 @endsection
 
 @section('scripts')
+    <script src="{{ asset('js/me/get_department_cars_and_users.js') }}"></script>
+
     <script>
     jQuery(document).ready(function ($) {
         $('#name').focus();

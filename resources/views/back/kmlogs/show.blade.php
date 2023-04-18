@@ -19,7 +19,7 @@
                         </div>
 
                         <div class="col fs-5 text-end">
-                            <img src="{{ asset('img/icons/car.png') }}" />
+                            <img src="{{ asset('img/icons/delivery-030.png') }}" />
                         </div>
                     </div>
                 </div>

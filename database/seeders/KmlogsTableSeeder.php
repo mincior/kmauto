@@ -37,6 +37,9 @@ class KmlogsTableSeeder extends Seeder
                     'user_id' => "1",
                     'car_id' => "1",
                     'stat_id' => "1",
+                    'department_id' => "1",
+                    'created_at' => "2023-04-01 10:14:13",
+                    'updated_at' => "2023-04-01 14:14:25",
                 ],
                 [
                     'id' => "2",
@@ -48,6 +51,9 @@ class KmlogsTableSeeder extends Seeder
                     'user_id' => "1",
                     'car_id' => "1",
                     'stat_id' => "1",
+                    'department_id' => "1",
+                    'created_at' => "2023-04-01 16:17:29",
+                    'updated_at' => "2023-04-01 14:18:29",
                 ],
                 [
                     'id' => "3",
@@ -59,6 +65,9 @@ class KmlogsTableSeeder extends Seeder
                     'user_id' => "1",
                     'car_id' => "1",
                     'stat_id' => "1",
+                    'department_id' => "1",
+                    'created_at' => "2023-03-01 13:14:23",
+                    'updated_at' => "2023-03-01 12:15:44",
                 ],
                 [
                     'id' => "4",
@@ -70,6 +79,9 @@ class KmlogsTableSeeder extends Seeder
                     'user_id' => "1",
                     'car_id' => "1",
                     'stat_id' => "1",
+                    'department_id' => "1",
+                    'created_at' => "2023-04-01 13:16:23",
+                    'updated_at' => "2023-04-01 12:17:23",
                 ],
                 [
                     'id' => "5",
@@ -81,6 +93,9 @@ class KmlogsTableSeeder extends Seeder
                     'user_id' => "1",
                     'car_id' => "1",
                     'stat_id' => "1",
+                    'department_id' => "1",
+                    'created_at' => "2023-04-01 11:12:23",
+                    'updated_at' => "2023-04-01 11:11:23",
                 ],
                 
             )            

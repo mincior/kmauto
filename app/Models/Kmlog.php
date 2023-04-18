@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Kmlog extends Model
 {
     use HasFactory, KmlogRelationships;
-            /**
+    /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
@@ -16,12 +17,17 @@ class Kmlog extends Model
     protected $fillable = [
       'km', 
       'picture', 
-      'observations', 
+      'observatii', 
       'ordine',
       'interval_id', 
       'user_id', 
       'car_id', 
-      'stat_id'
+      'stat_id',
+      'department_id',
+      'created_at', 
+      'updated_at',
       ];
+
       public $timestamps = false;
+
     }

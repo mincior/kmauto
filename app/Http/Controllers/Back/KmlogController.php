@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers\Back;
 
+use DateTime;
+use DateTimeZone;
+use App\Models\Stat;
 use App\Models\Type;
 use App\Models\Kmlog;
 use App\Models\Month;
+use DateTimeImmutable;
+use DateTimeInterface;
 use App\Models\Interval;
 use App\Models\Department;
 use Illuminate\Http\Request;
@@ -18,8 +23,15 @@ class KmlogController extends Controller
 {
     public function index(Request $request)
     {
-        if ($request->ajax()) {          
-            $kmlogs = Kmlog::with('stat', 'user', 'car', 'interval')->select(sprintf('%s.*', (new Kmlog)->getTable()))->get();
+        $datetime = new DateTime();
+        $timezone = new DateTimeZone('Europe/Bucharest');
+        $datetime->setTimezone($timezone);
+    //dd($datetime, $datetime->format('y-m-d H:i:s'));
+
+
+        if ($request->ajax()) {    
+            //aici se aduc toti userii si masinile. Asocierea nu se face in index ci in create sau update    
+            $kmlogs = Kmlog::with('stat', 'user', 'car', 'interval', 'department')->select(sprintf('%s.*', (new Kmlog)->getTable()))->get();
             foreach($kmlogs as $kmlog){
                 @$kmlog['month'] = Month::where('id', Interval::where('id', $kmlog->interval_id)->first()->month_id)->first()->anul_luna;
             }
@@ -27,15 +39,17 @@ class KmlogController extends Controller
             return DataTables::of($kmlogs)
                 ->addColumn('DT_RowId', function ($row) {
                     return $row->id;
-                })
-                ->toJson();
+                })->toJson();
         }
         return view('back.kmlogs.index');
     }
 
     public function create()
     {
-        return view('back.kmlogs.create');
+        //Aici se selecteaza mai intai departamentul urmand ca prin ajax sa se completeze lista cu masini si utilizatori
+        $departments = Department::get();
+        $stats = Stat::get();
+        return view('back.kmlogs.create', compact('departments', 'stats'));
     }
 
 
@@ -47,7 +61,18 @@ class KmlogController extends Controller
 
     public function store(KmlogStoreRequest $request)
     {
-        $kmlog = Kmlog::create($request->all());
+        $datetime = new DateTime();
+        $timezone = new DateTimeZone('Europe/Bucharest');
+        $datetime->setTimezone($timezone);
+        // dd($datetime->format('F d, Y H:i'));
+
+        $data = $request->all();
+        $data['interval_id'] =  config('global.selected_interval');
+        $data['ordine'] = 1;
+        $data['created_at']= $datetime->format('y-m-d H:i:s');
+        $data['updated_at']= $datetime->format('y-m-d H:i:s');
+        
+        $kmlog = Kmlog::create($data);
 
         $notification = [
             "type" => "success",
@@ -65,12 +90,25 @@ class KmlogController extends Controller
 
     public function edit(Kmlog $kmlog)
     {
-        return view('back.kmlogs.edit', compact('kmlog'));
+        $department_name = Department::where('id', $kmlog->department_id)->first()->name;
+        $users = DepartmentController::getUsers($kmlog->department_id);
+        $cars = DepartmentController::getCars($kmlog->department_id);
+        $stats = Stat::get();
+        return view('back.kmlogs.edit', compact('kmlog', 'users', 'cars', 'stats'))->with('department_name', $department_name);
     }
 
     public function update(KmlogUpdateRequest $request, Kmlog $kmlog)
     {
-        $kmlog->update($request->all());
+
+        $datetime = new DateTime();
+        $timezone = new DateTimeZone('Europe/Bucharest');
+        $datetime->setTimezone($timezone);
+        // dd($datetime->format('F d, Y H:i'));
+        $data = $request->all();
+        $data['interval_id'] =  config('global.selected_interval');
+        $data['ordine'] = 1;
+        $data['updated_at']= $datetime->format('y-m-d H:i:s');
+        $kmlog->update($data);
 
         $notification = [
             "type" => "success",

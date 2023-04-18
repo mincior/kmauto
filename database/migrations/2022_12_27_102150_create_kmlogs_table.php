@@ -18,7 +18,7 @@ class CreateKmlogsTable extends Migration
         //Begin craft placeholder #2
 		Schema::create('kmlogs', function (Blueprint $table) {
 			$table->id();
-			$table->integer('km')->nullable();
+			$table->bigInteger('km')->nullable();
 			$table->string('picture')->nullable();
             $table->string('observatii')->nullable();
 			$table->integer('ordine')->nullable();
@@ -30,6 +30,8 @@ class CreateKmlogsTable extends Migration
 			$table->foreign('car_id')->references('id')->on('cars');		
 			$table->bigInteger('stat_id')->unsigned()->index()->nullable();
 			$table->foreign('stat_id')->references('id')->on('stats');		
+			$table->bigInteger('department_id')->unsigned()->index()->nullable();
+			$table->foreign('department_id')->references('id')->on('departments');		
             $table->timestamps();
 		//End craft placeholder #2
         });

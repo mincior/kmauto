@@ -15,6 +15,8 @@ trait DepartmentRelationships
 	public function cars(){
 		return $this->belongsToMany('App\\Models\\Car', 'App\\Models\\CarDep')->withPivot('observatii', 'interval_id', 'department_id', 'car_id');
 	}
-
+	public function kmlog(){
+		return $this->hasOne('App\\Models\\Kmlog');
+	}
 	//End craft placeholder #1
 }
