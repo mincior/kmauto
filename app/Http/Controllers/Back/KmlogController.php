@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Back;
 
 use DateTime;
 use DateTimeZone;
+use App\Models\Car;
 use App\Models\Stat;
 use App\Models\Type;
+use App\Models\User;
 use App\Models\Kmlog;
 use App\Models\Month;
 use DateTimeImmutable;
@@ -85,7 +87,16 @@ class KmlogController extends Controller
 
     public function show(Kmlog $kmlog)
     {
-        return view('back.kmlogs.show', compact('kmlog'));
+        $department_name = Department::where('id', $kmlog->department_id)->first()->name;
+        $user_name = User::where('id', $kmlog->user_id)->first()->name;
+        $car_numar = Car::where('id', $kmlog->car_id)->first()->numar;
+        $stat_name = Stat::where('id', $kmlog->stat_id)->first()->name;
+        return view('back.kmlogs.show', compact('kmlog'))
+        ->with('department_name', $department_name)
+        ->with('user_name', $user_name)
+        ->with('car_numar', $car_numar)
+        ->with('stat_name', $stat_name)
+        ;
     }
 
     public function edit(Kmlog $kmlog)
