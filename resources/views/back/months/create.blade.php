@@ -36,7 +36,26 @@
                                 @enderror
                             </div>
                         </div>
+                        <div class="row mb-2">
+                            <label for="selectTime" class="col-md-2 col-form-label">ora :</label>
 
+                            <div class="col-md-3">
+                                <input autocomplete="on"  name="selectTime" type="time"
+                                    class="form-control @error('select') is-invalid @enderror"
+                                    value="{{ old('select')}}">
+
+                                @error('select')
+                                    <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+                        {{-- <label for="appt">Choose a time for your meeting:</label>
+
+                        <input type="time" id="appt" name="appt"
+                               min="09:00" max="18:00" required>
+                        
+                        <small>Office hours are 9am to 6pm</small> --}}
+                        
 
                         <div class="row mb-2">
                             <label for="anul_luna" class="col-md-2 col-form-label">Anul - luna :</label>
@@ -109,7 +128,6 @@
         $('#my-nav-bar').addClass('d-none');//ascunde bara de navigare cand sunt pe create car
         $(".datepicker").datepicker({
                 dateFormat: 'yy-mm-dd',
-                language: "fr",
                 // changeMonth: true,
                 // changeYear: true
 
