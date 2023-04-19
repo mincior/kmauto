@@ -101,6 +101,7 @@ Route::middleware('auth')->group(function () {
         });
         // Brand
         Route::controller(MonthController::class)->group(function () {
+            Route::post('/months/addNextMonth','addNextMonth')->name('addNextMonth');
             Route::get('/months/get-month-intervals/{month_id}','getMonthIntervals')->name('get-month-intervals');
             Route::delete('/months/massDestroy', 'massDestroy')->name('months.massDestroy');
             Route::resource('/months', MonthController::class)->except(['destroy']);

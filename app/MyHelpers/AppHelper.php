@@ -67,4 +67,11 @@ class AppHelper
 		$middle = substr($numar, $start, $stop - $start);
 		return $first . "-" . $middle . "-" . $last;
 	}
+
+	public static function leadzero($val, $poz){
+		for ($i = 0; $i< ($poz - strlen($val)) ; $i++){
+			$val = '0' . $val;
+		}
+		return $val;
+	}
 }

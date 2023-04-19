@@ -9,7 +9,6 @@ if ($current_day < $numarZileLunaAnterioara) {
 $current_month = date_format($current_month, 'Y-m-d');
 $months = \App\Models\Month::Select()
     ->orderBy('data_raportarii', 'DESC')
-    ->take(5)
     ->get();
 $selectedMonth_id = \App\Models\Month::where('select', 1)->first()->id;
 $lunaCurentaEsteInchisa = \App\Models\Month::where('select', 1)->first()->inchisa;
@@ -76,7 +75,7 @@ $mm = json_encode($months); //test pentru transmitere array catre javascript (JS
 
         {{-- right --}}
         <div class="me-1">
-            <select id="month_select" class="form-select" style="width: 110%" data-months="{{ $mm }}">
+            <select id="month_select" class="form-select" style="width: 130%" data-months="{{ $mm }}">
                 @foreach ($months as $month)
                     ;
                     <option {{ (string) $month['select'] == 1 ? 'selected' : '' }} value="{{ $month['id'] }}">

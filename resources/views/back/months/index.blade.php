@@ -47,6 +47,48 @@
         $(function() {
 
             /* ------------------------------------------------------------------------ */
+            let adaugaLunaUrmatoare = {
+                className: 'btn-success',
+                text: '++',
+                titleAttr: 'Add',
+                enabled: true,
+                url: "{{ route('back.addNextMonth') }}",
+                action: function(e, dt, node, config) {
+                    bootbox.confirm({
+                        title: 'Adaugati luna urmatoare? ',
+                        message: "Sunteti sigur?",
+                        buttons: {
+                            confirm: {
+                                label: 'Da',
+                                className: 'btn-sm btn-primary'
+                            },
+                            cancel: {
+                                label: 'Nu',
+                                className: 'btn-sm btn-secondary'
+                            }
+                        },
+                        callback: function(confirmed) {
+                            if (confirmed) {
+                                $.ajax({
+                                    method: 'POST',
+                                    url: config.url,
+                                    success: function(response) {
+                                        oTable.draw();
+
+                                        showToast({
+                                            type: 'success',
+                                            title: 'Adaugare luna urmatoare ...',
+                                            message: 'Luna urmatoare a fost adaugata!',
+                                        });
+                                    }
+                                });
+                            }
+                        }
+                    });
+                }
+            }
+            dtButtonsCenter.push(adaugaLunaUrmatoare)
+
             let createButton = {
                 className: 'btn-success',
                 text: '<i class="bi bi-plus"></i>',
@@ -233,7 +275,7 @@
                 buttons: dtButtonsRight
             });
 
-            oTable.buttons('BtnGroupLeft', null).containers().appendTo('#ToolbarLeft');
+             oTable.buttons('BtnGroupLeft', null).containers().appendTo('#ToolbarLeft');
             oTable.buttons('BtnGroupCenter', null).containers().appendTo('#ToolbarCenter');
             oTable.buttons('BtnGroupRight', null).containers().appendTo('#ToolbarRight');
             /* ------------------------------------------------------------------------ */
