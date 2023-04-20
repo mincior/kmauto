@@ -18,11 +18,7 @@ class IntervalController extends Controller
     {
         if ($request->ajax()) {          
             $intervals = Interval::with('month')->select(sprintf('%s.*', (new Interval)->getTable()));
-            return DataTables::of($intervals)
-                ->addColumn('DT_RowId', function ($row) {
-                    return $row->id;
-                })
-                ->toJson();
+            return DataTables::of($intervals)->toJson();
         }
         return view('back.intervals.index');
     }

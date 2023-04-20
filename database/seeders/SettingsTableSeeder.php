@@ -37,9 +37,14 @@ class SettingsTableSeeder extends Seeder
                     'valoare' => 'users',
                     'interval_id' => 1,
                 ],
+                [
+                    'nume' => 'monthId',
+                    'valoare' => '1',
+                    'interval_id' => 1,
+                ],
                 
             )            
-        )->count(2)->create();
+        )->count(3)->create();
         
                 
 

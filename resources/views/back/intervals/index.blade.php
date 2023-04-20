@@ -1,14 +1,14 @@
 @extends('layouts.back')
 
 @section('title')
-    &vert; Masini model
+    &vert; Intervale
 @endsection
 
 @section('content')
     <div class="card">
         <div class="card-header d-print-none">
             <div class="row">
-                <div class="col">Masini model</div>
+                <div class="col">Intervale</div>
 
                 <div class="col fs-5 text-end">
                     <img src="{{ asset('img/icons/task.png') }}" />

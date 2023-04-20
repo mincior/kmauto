@@ -36,6 +36,7 @@ Route::middleware('auth')->group(function () {
             Route::post('/general/setValueMonthSelect', 'setValueMonthSelect')->name('general.setValueMonthSelect');
             Route::post('/general/setValueIntervalSelect', 'setValueIntervalSelect')->name('general.setValueIntervalSelect');
             Route::post('/general/setButonSelectat', 'setButonSelectat')->name('general.setButonSelectat');
+            Route::post('/general/setMonthId', 'setMonthId')->name('general.setMonthId');
             Route::get('/general/getDatatablesHelp', 'getDatatablesHelp')->name('general.getDatatablesHelp');
         });
         /* ---------------------------------------- */
@@ -102,7 +103,7 @@ Route::middleware('auth')->group(function () {
         // Brand
         Route::controller(MonthController::class)->group(function () {
             Route::post('/months/addNextMonth','addNextMonth')->name('addNextMonth');
-            Route::get('/months/get-month-intervals/{month_id}','getMonthIntervals')->name('get-month-intervals');
+            Route::get('/months/getMonthIntervals','getMonthIntervals')->name('getMonthIntervals');
             Route::delete('/months/massDestroy', 'massDestroy')->name('months.massDestroy');
             Route::resource('/months', MonthController::class)->except(['destroy']);
         });

@@ -193,7 +193,7 @@
                                         showToast({
                                             type: 'success',
                                             title: 'Stergere ...',
-                                            message: 'Marca/marcile selectate au fost sterse!',
+                                            message: 'Luna/lunile selectate au fost sterse!',
                                         });
                                     }
                                 });
@@ -229,7 +229,6 @@
                     {
                         data: 'id',
                         render: function(data, type, row, meta) {
-                            console.log(row);
                             if ( typeof row.select === "undefined"){
                                 return '';
                             }else{
@@ -275,7 +274,7 @@
                 buttons: dtButtonsRight
             });
 
-             oTable.buttons('BtnGroupLeft', null).containers().appendTo('#ToolbarLeft');
+            oTable.buttons('BtnGroupLeft', null).containers().appendTo('#ToolbarLeft');
             oTable.buttons('BtnGroupCenter', null).containers().appendTo('#ToolbarCenter');
             oTable.buttons('BtnGroupRight', null).containers().appendTo('#ToolbarRight');
             /* ------------------------------------------------------------------------ */

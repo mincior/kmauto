@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Back;
 
 use App\Models\Month;
+use App\Models\Setting;
 use App\Models\Interval;
 use App\Models\Department;
 use App\MyHelpers\AppHelper;
@@ -19,13 +20,9 @@ class MonthController extends Controller
     {
         if ($request->ajax()) {
             $months = Month::select(sprintf('%s.*', (new Month)->getTable()));
-            return DataTables::of($months)
-                ->addColumn('DT_RowId', function ($row) {
-                    return $row->id;
-                })
-                ->toJson();
+            return DataTables::of($months)->toJson();
         }
-        return view('back.months.index');
+        return view('back.months.index_new');
     }
 
     public function create()
@@ -67,23 +64,11 @@ class MonthController extends Controller
             $sfarsit = '';
             $interval = '';
             for ($zi = 1; $zi <= $nr_zile_luna; $zi++) {
-                /*formeaza data in forma de array
-                "seconds" => 0
-                "minutes" => 0
-                "hours" => 0
-                "mday" => 2
-                "weekday" => 0
-                "mon" => 4
-                "year" => 2023
-                "yday" => 91
-                "weekday" => "Sunday"
-                "month" => "April"
-                */
                 $ln = strval($arr_luna['year'] . '-' .  AppHelper::leadzero(strval($arr_luna['mon']), 2) . '-' . AppHelper::leadzero(strval($zi), 2));
                 $arr_ln = [];
                 $arr_ln = getDate(strtotime($ln));
 
-                //daca sunt la inceput de luna ($start = false) si gasesc o zi intre marti si vineri
+                //pune start = true daca luna incepe cu o zi de la marti pana la vineri, altfel va sari peste zilele de samabata, duminica, luni
                 if ($start == false && ($arr_ln['weekday'] == "Monday" || $arr_ln['weekday'] == "Tuesday"  || $arr_ln['weekday'] == "Wednesday"  || $arr_ln['weekday'] == "Thursday")) {
                     $start = true;
                 }
@@ -151,10 +136,12 @@ class MonthController extends Controller
         }
     }
 
-    public function getMonthIntervals($month_id)
+    public function getMonthIntervals()
     {
-        $intervals = Interval::where('month_id', '=', $month_id)->get()->toArray();
-        return $intervals;
+        $month_id = Setting::where('nume', 'monthId')->where('interval_id', 1)->first()->valoare;
+        $intervals = Interval::where('month_id', $month_id)->select(sprintf('%s.*', (new Interval)->getTable()));
+        return DataTables::of($intervals)->toJson();
+
     }
 
     public function store(MonthStoreRequest $request)
@@ -195,6 +182,7 @@ class MonthController extends Controller
 
     public function massDestroy(Request $request)
     {
+        Interval::whereIn('month_id', request('ids'))->delete();//sterge mai intai intervalele
         Month::whereIn('id', request('ids'))->delete();
 
         return response()->noContent();

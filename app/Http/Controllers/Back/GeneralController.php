@@ -68,6 +68,10 @@ class GeneralController extends Controller
         $query= Setting::where('nume', "butonSelectat")->update(array('valoare' => $request->valoare));
 
     }
+    public function setMonthId(Request $request){
+        $query= Setting::where('nume', "monthId")->where('interval_id', 1)->update(array('valoare' => $request->valoare));
+
+    }
 
     public function getMonthIntervals($month_id)
     {
