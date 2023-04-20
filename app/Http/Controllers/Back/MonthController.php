@@ -146,6 +146,8 @@ class MonthController extends Controller
 
     public function store(MonthStoreRequest $request)
     {
+
+        //nu se foloseste
         $month = Month::create($request->all());
 
         $notification = [

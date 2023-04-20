@@ -29,7 +29,7 @@
 
                             <div class="col-md-3">
                                 <input autocomplete="on" id="data_raportarii" name="data_raportarii" type="text"
-                                    class="form-control @error('data_raportarii') is-invalid @enderror"
+                                    class="datepicker form-control @error('data_raportarii') is-invalid @enderror"
                                     value="{{ old('data_raportarii') ?  old('data_raportarii') : $month->data_raportarii}}">
 
                                 @error('data_raportarii')
@@ -107,6 +107,12 @@
     jQuery(document).ready(function ($) {
         $('#name').focus();
         $('#my-nav-bar').addClass('d-none');//ascunde bara de navigare cand sunt pe create car
+        $(".datepicker").datepicker({
+                dateFormat: 'yy-mm-01',
+                // changeMonth: true,
+                // changeYear: true
+
+            });
     });
     </script>
 @endsection

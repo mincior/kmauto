@@ -24,6 +24,16 @@ class MonthStoreRequest extends FormRequest
     public function rules()
     {
         return [
+            'data_raportarii' => [
+                'unique:months',
+                'string',
+            ],
+            'select' => [
+                'required',
+            ],
+            'inchisa' => [
+                'required',
+            ],
         ];
     }
 }

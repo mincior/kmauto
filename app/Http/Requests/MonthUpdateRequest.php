@@ -25,6 +25,16 @@ class MonthUpdateRequest extends FormRequest
     public function rules()
     {
         return [
+            'data_raportarii' => [
+                Rule::unique('months', 'data_raportarii')->ignore($this->month),
+                'string',
+            ],
+            'select' => [
+                'required',
+            ],
+            'inchisa' => [
+                'required',
+            ],
         ];
     }
 }

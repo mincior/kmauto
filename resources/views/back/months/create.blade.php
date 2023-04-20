@@ -24,19 +24,19 @@
 
                     <div class="card-body">
                         <div class="row mb-2">
-                            <label for="select" class="col-md-2 col-form-label">Data raportarii :</label>
+                            <label for="data_raportarii" class="col-md-2 col-form-label">Data raportarii :</label>
 
                             <div class="col-md-3">
-                                <input data-provide="datepicker" autocomplete="on" id="select" name="select" type="text"
-                                    class="datepicker form-control @error('select') is-invalid @enderror"
-                                    value="{{ old('select')}}">
+                                <input autocomplete="on" id="data_raportarii" name="data_raportarii" type="text"
+                                    class="datepicker form-control @error('data_raportarii') is-invalid @enderror"
+                                    value="{{ old('data_raportarii')}}" onchange="dateChange(this)">
 
-                                @error('select')
+                                @error('data_raportarii')
                                     <span class="invalid-feedback" role="alert">{{ $message }}</span>
                                 @enderror
                             </div>
                         </div>
-                        <div class="row mb-2">
+                        {{-- <div class="row mb-2">
                             <label for="selectTime" class="col-md-2 col-form-label">ora :</label>
 
                             <div class="col-md-3">
@@ -48,7 +48,7 @@
                                     <span class="invalid-feedback" role="alert">{{ $message }}</span>
                                 @enderror
                             </div>
-                        </div>                       
+                        </div>                        --}}
 
                         <div class="row mb-2">
                             <label for="anul_luna" class="col-md-2 col-form-label">Anul - luna :</label>
@@ -56,7 +56,7 @@
                             <div class="col-md-3">
                                 <input autocomplete="on" id="anul_luna" name="anul_luna" type="text"
                                     class="form-control @error('anul_luna') is-invalid @enderror"
-                                    value="{{ old('anul_luna')}}">
+                                    value="{{ old('anul_luna')}}"  readonly>
 
                                 @error('anul_luna')
                                     <span class="invalid-feedback" role="alert">{{ $message }}</span>
@@ -68,22 +68,29 @@
                             <label for="select" class="col-md-2 col-form-label">Selectata :</label>
     
                             <div class="col-md-3">
-                                <select name="select" id="select_select" class="form-select">
+                                <select name="select" id="select_select" class="form-select @error('select') is-invalid @enderror">
                                     <option value="">Alege ...</option>
                                     <option  {{ old('select') == "1"? "selected" : "" }}  value="1">Da</option>
                                     <option  {{ old('select') == "0"? "selected" : "" }}  value="0">Nu</option>
                                 </select>
+                                @error('select')
+                                    <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                                @enderror
+
                             </div>
                         </div>
                         <div class="row mb-2">
                             <label for="inchisa" class="col-md-2 col-form-label">Inchisa :</label>
     
                             <div class="col-md-3">
-                                <select name="inchisa" id="inchisa_select" class="form-select">
+                                <select name="inchisa" id="inchisa_select" class="form-select @error('inchisa') is-invalid @enderror">
                                     <option value="">Alege ...</option>
                                     <option  {{ old('inchisa') == "1"? "selected" : "" }}  value="1">Da</option>
                                     <option  {{ old('inchisa') == "0"? "selected" : "" }}  value="0">Nu</option>
                                 </select>
+                                @error('inchisa')
+                                    <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
         
@@ -120,17 +127,20 @@
         $('#name').focus();
         $('#my-nav-bar').addClass('d-none');//ascunde bara de navigare cand sunt pe create car
         $(".datepicker").datepicker({
-                dateFormat: 'yy-mm-dd',
-                // changeMonth: true,
-                // changeYear: true
-
-            });
-            $(".timepicker").timepicker({
-                timeFormat: 'h-m',
+                dateFormat: 'yy-mm-01',
                 // changeMonth: true,
                 // changeYear: true
 
             });
         });
+
+        let luni = ['ianuarie', 'februarie', 'martie', 'aprilie', 'mai', 'iunie', 'iulie', 'august', 'septembrie', 'octombrie', 'noiembrie', 'decembrie']
+        
+        function dateChange(e){
+            const data = $(e).val();
+            const v = data.split('-');
+            console.log(v[1]);
+            $('#anul_luna').val(  luni[Number(v[1])-1] +  ' ' + v[0]);
+        }
     </script>
 @endsection
