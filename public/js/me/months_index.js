@@ -1,14 +1,14 @@
-$(function() {
+$(function () {
 
-	/* ------------------------------------------------------------------------ */
+	//javascript randare tabel months
 	let url = '/back/months/addNextMonth';
 	let adaugaLunaUrmatoare = {
 		className: 'btn-success',
 		text: '++',
 		titleAttr: 'Add',
 		enabled: true,
-		url : url,
-		action: function(e, dt, node, config) {
+		url: url,
+		action: function (e, dt, node, config) {
 			bootbox.confirm({
 				title: 'Adaugati luna urmatoare? ',
 				message: "Sunteti sigur?",
@@ -22,12 +22,12 @@ $(function() {
 						className: 'btn-sm btn-secondary'
 					}
 				},
-				callback: function(confirmed) {
+				callback: function (confirmed) {
 					if (confirmed) {
 						$.ajax({
 							method: 'POST',
 							url: config.url,
-							success: function(response) {
+							success: function (response) {
 								monthOTable.draw();
 
 								showToast({
@@ -43,18 +43,18 @@ $(function() {
 		}
 	}
 	dtButtonsCenter.push(adaugaLunaUrmatoare)
-	let months_create_url =  '/back/months/create'
+	let months_create_url = '/back/months/create'
 	let monthCreateButton = {
 		className: 'btn-success',
 		text: '<i class="bi bi-plus"></i>',
 		titleAttr: 'Add',
 		enabled: true,
-		action: function(e, dt, node, config) {
+		action: function (e, dt, node, config) {
 			document.location.href = months_create_url;
 		}
 	}
 	dtButtonsCenter.push(monthCreateButton)
-	let months_show_or_edit_url =  '/back/months/'
+	let months_show_or_edit_url = '/back/months/'
 
 	let monthShowButton = {
 		extend: 'selectedSingle',
@@ -62,7 +62,7 @@ $(function() {
 		text: '<i class="bi bi-eye"></i>',
 		titleAttr: 'Show',
 		enabled: false,
-		action: function(e, dt, node, config) {
+		action: function (e, dt, node, config) {
 			const id = dt.row({
 				selected: true
 			}).data().id;
@@ -78,7 +78,7 @@ $(function() {
 		text: '<i class="bi bi-pencil"></i>',
 		titleAttr: 'Edit',
 		enabled: false,
-		action: function(e, dt, node, config) {
+		action: function (e, dt, node, config) {
 			const id = dt.row({
 				selected: true
 			}).data().id;
@@ -92,13 +92,13 @@ $(function() {
 		className: 'btn-secondary',
 		text: '<i class="bi bi-arrow-counterclockwise"></i>',
 		titleAttr: 'Remove filter and sort',
-		action: function(e, dt, node, config) {
+		action: function (e, dt, node, config) {
 			dt.state.clear();
 			window.location.reload();
 		}
 	}
 	dtButtonsRight.push(monthClearButton)
-	months_destroy_url =  "/back/months/massDestroy"
+	months_destroy_url = "/back/months/massDestroy"
 	let monthDeleteButton = {
 		extend: 'selected',
 		className: 'btn-danger selectMultiple',
@@ -106,10 +106,10 @@ $(function() {
 		titleAttr: 'Delete',
 		enabled: false,
 		url: months_destroy_url,
-		action: function(e, dt, node, config) {
+		action: function (e, dt, node, config) {
 			var ids = $.map(dt.rows({
 				selected: true
-			}).data(), function(entry) {
+			}).data(), function (entry) {
 				return entry.id;
 			});
 
@@ -134,7 +134,7 @@ $(function() {
 						className: 'btn-sm btn-secondary'
 					}
 				},
-				callback: function(confirmed) {
+				callback: function (confirmed) {
 					if (confirmed) {
 						$.ajax({
 							method: 'POST',
@@ -143,7 +143,7 @@ $(function() {
 								ids: ids,
 								_method: 'DELETE'
 							},
-							success: function(response) {
+							success: function (response) {
 								monthOTable.draw();
 
 								showToast({
@@ -160,50 +160,49 @@ $(function() {
 	}
 	dtButtonsRight.push(monthDeleteButton)
 	/* ------------------------------------------------------------------------ */
-	let month_index_url =  '/back/months';
-	// alert(month_index_url);
+	let month_index_url = '/back/months';
 	let monthDtOverrideGlobals = {
 		ajax: {
 			url: month_index_url,
-			data: function(d) {}
+			data: function (d) { }
 		},
 		columns: [{
-				data: 'id',
-				name: 'id',
-				searchable: false,
-				className: 'text-left',
-				render: function(data, type, row, meta) {
-					return data.toString();
+			data: 'id',
+			name: 'id',
+			searchable: false,
+			className: 'text-left',
+			render: function (data, type, row, meta) {
+				return data.toString();
+			}
+		},
+		{
+			data: 'data_raportarii',
+			name: 'data_raportarii',
+		},
+		{
+			data: 'anul_luna',
+			name: 'anul_luna',
+		},
+		{
+			data: 'id',
+			render: function (data, type, row, meta) {
+				if (typeof row.select === "undefined") {
+					return '';
+				} else {
+					return row.select == 1 ? 'Da' : 'Nu';
 				}
 			},
-			{
-				data: 'data_raportarii',
-				name: 'data_raportarii',
+		},
+		{
+			data: 'id',
+			render: function (data, type, row, meta) {
+				if (typeof row.inchisa === "undefined") {
+					return '';
+				} else {
+					return row.inchisa == 1 ? 'Da' : 'Nu';
+				}
 			},
-			{
-				data: 'anul_luna',
-				name: 'anul_luna',
-			},
-			{
-				data: 'id',
-				render: function(data, type, row, meta) {
-					if ( typeof row.select === "undefined"){
-						return '';
-					}else{
-						return row.select == 1 ? 'Da': 'Nu';
-					}
-				},
-			},
-			{
-				data: 'id',
-				render: function(data, type, row, meta) {
-					if ( typeof row.inchisa === "undefined"){
-						return '';
-					}else{
-						return row.inchisa == 1 ? 'Da': 'Nu';
-					}
-				},
-			},
+		},
 		],
 		select: {
 			selector: 'td:not(.no-select)',
@@ -212,7 +211,7 @@ $(function() {
 		order: [
 			[1, "asc"],
 		],
-		preDrawCallback: function(settings) {
+		preDrawCallback: function (settings) {
 			monthOTable.columns.adjust();
 		}
 	};
@@ -236,7 +235,7 @@ $(function() {
 	monthOTable.buttons('BtnGroupCenter', null).containers().appendTo('#ToolbarCenter');
 	monthOTable.buttons('BtnGroupRight', null).containers().appendTo('#ToolbarRight');
 	/* ------------------------------------------------------------------------ */
-	monthOTable.on('select deselect', function(e, dt, type, indexes) {
+	monthOTable.on('select deselect', function (e, dt, type, indexes) {
 		var selectedRows = monthOTable.rows({
 			selected: true
 		}).count();
@@ -244,20 +243,20 @@ $(function() {
 		monthOTable.buttons('.selectOne').enable(selectedRows === 1);
 		monthOTable.buttons('.selectMultiple').enable(selectedRows > 0);
 	});
-	let month_id;
-	let interval_index_url =  '/back/months/getMonthIntervals/';
-	// alert(interval_index_url);
+
+	// adauga javascript pentru randare tabel intervale
+	let interval_index_url = '/back/months/getMonthIntervals/';
 	let intervalDtOverrideGlobals = {
 		ajax: {
 			url: interval_index_url,
-			data: function(d) {}
+			data: function (d) { }
 		},
 		columns: [{
 			data: 'id',
 			name: 'id',
 			searchable: false,
 			className: 'text-left',
-			render: function(data, type, row, meta) {
+			render: function (data, type, row, meta) {
 				return data.toString();
 			}
 		},
@@ -275,48 +274,49 @@ $(function() {
 		},
 		{
 			data: 'id',
-			render: function(data, type, row, meta) {
-				if ( typeof row.select === "undefined"){
+			render: function (data, type, row, meta) {
+				if (typeof row.select === "undefined") {
 					return '';
-				}else{
-					return row.select == 1 ? 'Da': 'Nu';
+				} else {
+					return row.select == 1 ? 'Da' : 'Nu';
 				}
 			},
 		},
 		{
 			data: 'id',
-			render: function(data, type, row, meta) {
-				if ( typeof row.inchis === "undefined"){
+			render: function (data, type, row, meta) {
+				if (typeof row.inchis === "undefined") {
 					return '';
-				}else{
-					return row.inchis == 1 ? 'Da': 'Nu';
+				} else {
+					return row.inchis == 1 ? 'Da' : 'Nu';
 				}
 			},
 		},
 		{
 			data: 'id',
-			render: function(data, type, row, meta) {
-				if ( typeof row.month === "undefined"){
+			render: function (data, type, row, meta) {
+				if (typeof row.month === "undefined") {
 					return '';
-				}else{
+				} else {
 					return row.month.anul_luna;
 				}
 			},
 		},
-	],
-select: {
+		],
+		select: {
 			selector: 'td:not(.no-select)',
 		},
 		ordering: true,
 		order: [
 			[1, "asc"],
 		],
-		preDrawCallback: function(settings) {
+		preDrawCallback: function (settings) {
 			intervalOTable.columns.adjust();
 		}
 	};
-	
 	let intervalOTable = $('#intervalTable').DataTable(intervalDtOverrideGlobals);
+
+	//cand se face click in tabelul months se scrie prin ajax in tabelul Settings/monthId id-ul lunii selectate
 	var table = $('#monthTable').DataTable();
 	$('#monthTable').on('click', 'tr', function () {
 		let month_id = table.row($(this)).data().id;
@@ -325,12 +325,13 @@ select: {
 		$.ajax({
 			method: 'POST',
 			url: set_month_id_url,
-			data: {valoare: month_id},
+			data: { valoare: month_id },
 			success: function (response) {
 				console.log('succes modificare month_id');
 			}
 		});
 
+		//se reincarca datele in MonthController/GetMonthIntervals dar cu monthId citit din tabelul Settings/monthId
 		intervalOTable.draw();
 	});
 });

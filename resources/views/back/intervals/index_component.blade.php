@@ -31,4 +31,3 @@
             </table>
         </div>
     </div>
-    {{-- <script src="{{ asset('js/me/intervals_index.js') }}"></script> --}}
