@@ -184,8 +184,13 @@ class MonthController extends Controller
 
     public function massDestroy(Request $request)
     {
-        Interval::whereIn('month_id', request('ids'))->delete();//sterge mai intai intervalele
-        Month::whereIn('id', request('ids'))->delete();
+        //returneaza toate lunile selectate neinchise
+        $months = Month::where('inchisa', 0)->whereIn('id', request('ids'))->get();
+        foreach($months as $month){
+            Interval::where('month_id', $month->id)->delete();//sterge mai intai intervalele
+            $month->delete();//si apoi luna
+        }
+
 
         return response()->noContent();
     }

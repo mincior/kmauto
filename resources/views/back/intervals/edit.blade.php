@@ -94,20 +94,7 @@
                                     <option   {{ (old('select') ?   (old('select') == "0") : ($interval->select == 0)) ? "selected" : "" }}  value="0">Nu</option>
                                     </select>
                             </div>
-                        </div>
-                        <div class="row mb-2">
-                            <label for="inchisa" class="col-md-2 col-form-label">Inchis :</label>
-    
-                            <div class="col-md-3">
-                                <select name="inchisa" id="inchisa_select" class="form-select">
-                                    <option value="">Alege ...</option>
-                                    <option   {{ (old('inchis') ?   (old('inchis') == "1") : ($interval->inchis == 1)) ? "selected" : "" }}  value="1">Da</option>
-                                    <option   {{ (old('inchis') ?   (old('inchis') == "0") : ($interval->inchis == 0)) ? "selected" : "" }}  value="0">Nu</option>
-                                    </select>
-                            </div>
-                        </div>
-        
-
+                        </div>       
 
                     </div>
 

@@ -31,7 +31,6 @@
                         <th scope="col">Data sfarsit</th>
                         <th scope="col">Interval</th>
                         <th scope="col">Selectat</th>
-                        <th scope="col">Inchis</th>
                         <th scope="col">Luna</th>
                     </tr>
                 </thead>
@@ -198,16 +197,6 @@
                                 return '';
                             }else{
                                 return row.select == 1 ? 'Da': 'Nu';
-                            }
-                        },
-                    },
-                    {
-                        data: 'id',
-                        render: function(data, type, row, meta) {
-                            if ( typeof row.inchis === "undefined"){
-                                return '';
-                            }else{
-                                return row.inchis == 1 ? 'Da': 'Nu';
                             }
                         },
                     },

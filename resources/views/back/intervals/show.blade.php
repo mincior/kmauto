@@ -48,15 +48,6 @@
                         </div>
                     </div>
 
-                    <div class="row mb-2">
-                        <label for="inchis" class="col-md-3 col-form-label">Inchis :</label>
-
-                        <div class="col-md-8">
-                            <input id="inchis" name="inchis" type="text" readonly class="form-control-plaintext"
-                                value="{{ $interval->inchis == 1 ? 'Da' : 'Nu'}}">
-                        </div>
-                    </div>
-
                 </div>
 
             </div>

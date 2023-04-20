@@ -43,50 +43,50 @@ $(function () {
 		}
 	}
 	dtButtonsCenter.push(adaugaLunaUrmatoare)
-	let months_create_url = '/back/months/create'
-	let monthCreateButton = {
-		className: 'btn-success',
-		text: '<i class="bi bi-plus"></i>',
-		titleAttr: 'Add',
-		enabled: true,
-		action: function (e, dt, node, config) {
-			document.location.href = months_create_url;
-		}
-	}
-	dtButtonsCenter.push(monthCreateButton)
-	let months_show_or_edit_url = '/back/months/'
+	// let months_create_url = '/back/months/create'
+	// let monthCreateButton = {
+	// 	className: 'btn-success',
+	// 	text: '<i class="bi bi-plus"></i>',
+	// 	titleAttr: 'Add',
+	// 	enabled: true,
+	// 	action: function (e, dt, node, config) {
+	// 		document.location.href = months_create_url;
+	// 	}
+	// }
+	// dtButtonsCenter.push(monthCreateButton)
+	// let months_show_or_edit_url = '/back/months/'
 
-	let monthShowButton = {
-		extend: 'selectedSingle',
-		className: 'btn-secondary selectOne',
-		text: '<i class="bi bi-eye"></i>',
-		titleAttr: 'Show',
-		enabled: false,
-		action: function (e, dt, node, config) {
-			const id = dt.row({
-				selected: true
-			}).data().id;
+	// let monthShowButton = {
+	// 	extend: 'selectedSingle',
+	// 	className: 'btn-secondary selectOne',
+	// 	text: '<i class="bi bi-eye"></i>',
+	// 	titleAttr: 'Show',
+	// 	enabled: false,
+	// 	action: function (e, dt, node, config) {
+	// 		const id = dt.row({
+	// 			selected: true
+	// 		}).data().id;
 
-			document.location.href = months_show_or_edit_url + id;
-		}
-	}
-	dtButtonsCenter.push(monthShowButton)
+	// 		document.location.href = months_show_or_edit_url + id;
+	// 	}
+	// }
+	// dtButtonsCenter.push(monthShowButton)
 
-	let monthEditButton = {
-		extend: 'selectedSingle',
-		className: 'btn-primary selectOne',
-		text: '<i class="bi bi-pencil"></i>',
-		titleAttr: 'Edit',
-		enabled: false,
-		action: function (e, dt, node, config) {
-			const id = dt.row({
-				selected: true
-			}).data().id;
+	// let monthEditButton = {
+	// 	extend: 'selectedSingle',
+	// 	className: 'btn-primary selectOne',
+	// 	text: '<i class="bi bi-pencil"></i>',
+	// 	titleAttr: 'Edit',
+	// 	enabled: false,
+	// 	action: function (e, dt, node, config) {
+	// 		const id = dt.row({
+	// 			selected: true
+	// 		}).data().id;
 
-			document.location.href = months_show_or_edit_url + id + '/edit';
-		}
-	}
-	dtButtonsCenter.push(monthEditButton)
+	// 		document.location.href = months_show_or_edit_url + id + '/edit';
+	// 	}
+	// }
+	// dtButtonsCenter.push(monthEditButton)
 
 	let monthClearButton = {
 		className: 'btn-secondary',
@@ -98,6 +98,7 @@ $(function () {
 		}
 	}
 	dtButtonsRight.push(monthClearButton)
+
 	months_destroy_url = "/back/months/massDestroy"
 	let monthDeleteButton = {
 		extend: 'selected',
@@ -231,7 +232,7 @@ $(function () {
 		buttons: dtButtonsRight
 	});
 
-	monthOTable.buttons('BtnGroupLeft', null).containers().appendTo('#ToolbarLeft');
+	//monthOTable.buttons('BtnGroupLeft', null).containers().appendTo('#ToolbarLeft');
 	monthOTable.buttons('BtnGroupCenter', null).containers().appendTo('#ToolbarCenter');
 	monthOTable.buttons('BtnGroupRight', null).containers().appendTo('#ToolbarRight');
 	/* ------------------------------------------------------------------------ */
@@ -279,16 +280,6 @@ $(function () {
 					return '';
 				} else {
 					return row.select == 1 ? 'Da' : 'Nu';
-				}
-			},
-		},
-		{
-			data: 'id',
-			render: function (data, type, row, meta) {
-				if (typeof row.inchis === "undefined") {
-					return '';
-				} else {
-					return row.inchis == 1 ? 'Da' : 'Nu';
 				}
 			},
 		},

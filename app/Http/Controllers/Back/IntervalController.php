@@ -77,7 +77,13 @@ class IntervalController extends Controller
 
     public function massDestroy(Request $request)
     {
-        Interval::whereIn('id', request('ids'))->delete();
+        $arr_luni_neinchise = Month::where('inchisa', 0)->get()->toArray();
+        $intervals = Interval::whereIn('id', request('ids'));
+        foreach($intervals as $interval){
+            if(in_array($interval->month_id , $arr_luni_neinchise)){
+                $interval->delete();
+            }
+        }
 
         return response()->noContent();
     }

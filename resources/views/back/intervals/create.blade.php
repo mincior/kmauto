@@ -44,7 +44,7 @@
 
                             <div class="col-md-3">
                                 <input autocomplete="on" id="data_inceput" name="data_inceput" type="text"
-                                    class="form-control @error('data_inceput') is-invalid @enderror"
+                                    class="datepicker form-control @error('data_inceput') is-invalid @enderror"
                                     value="{{ old('data_inceput')}}">
 
                                 @error('data_inceput')
@@ -57,7 +57,7 @@
 
                             <div class="col-md-3">
                                 <input autocomplete="on" id="data_sfarsit" name="data_sfarsit" type="text"
-                                    class="form-control @error('data_sfarsit') is-invalid @enderror"
+                                    class="datepicker form-control @error('data_sfarsit') is-invalid @enderror"
                                     value="{{ old('data_sfarsit')}}">
 
                                 @error('data_sfarsit')
@@ -89,20 +89,7 @@
                                     <option  {{ old('select') == "0"? "selected" : "" }}  value="0">Nu</option>
                                 </select>
                             </div>
-                        </div>
-                        <div class="row mb-2">
-                            <label for="inchisa" class="col-md-2 col-form-label">Inchis :</label>
-    
-                            <div class="col-md-3">
-                                <select name="inchisa" id="inchisa_select" class="form-select">
-                                    <option value="">Alege ...</option>
-                                    <option  {{ old('inchisa') == "1"? "selected" : "" }}  value="1">Da</option>
-                                    <option  {{ old('inchisa') == "0"? "selected" : "" }}  value="0">Nu</option>
-                                </select>
-                            </div>
-                        </div>
-        
-
+                        </div>      
 
                     </div>
 
@@ -136,6 +123,18 @@
     jQuery(document).ready(function ($) {
         $('#name').focus();
         $('#my-nav-bar').addClass('d-none');//ascunde bara de navigare cand sunt pe create car
-    });
+        $(".datepicker").datepicker({
+                dateFormat: 'yy-mm-dd',
+                // changeMonth: true,
+                // changeYear: true
+            });
+            
+            function dateChange(e){
+            const data = $(e).val();
+            const v = data.split('-');
+            console.log(v[1]);
+            $('#anul_luna').val(  luni[Number(v[1])-1] +  ' ' + v[0]);
+        }
+        });
     </script>
 @endsection

@@ -24,7 +24,6 @@
                         <th scope="col">Data sfarsit</th>
                         <th scope="col">Interval</th>
                         <th scope="col">Selectat</th>
-                        <th scope="col">Inchis</th>
                         <th scope="col">Luna</th>
                     </tr>
                 </thead>
