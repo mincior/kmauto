@@ -315,7 +315,15 @@ $(function () {
 		}
 	};
 	let intervalOTable = $('#intervalTable').DataTable(intervalDtOverrideGlobals);
-
+	let IntervalCreateButton = {
+		className: 'btn-success',
+		text: '<i class="bi bi-plus"></i>',
+		titleAttr: 'Add',
+		enabled: true,
+		action: function (e, dt, node, config) {
+			document.location.href = months_create_url;
+		}
+	}
 	//cand se face click in tabelul months se scrie prin ajax in tabelul Settings/monthId id-ul lunii selectate
 	var table = $('#monthTable').DataTable();
 	$('#monthTable').on('click', 'tr', function () {
@@ -332,6 +340,7 @@ $(function () {
 		});
 
 		//se reincarca datele in MonthController/GetMonthIntervals dar cu monthId citit din tabelul Settings/monthId
+		//Atentie, doar pentru vizualizare. Exista meniul Intervale cu toate functiile (adaugare, modificare, etc.)
 		intervalOTable.draw();
 	});
 });

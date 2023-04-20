@@ -45,13 +45,13 @@ class MonthController extends Controller
         //dd(AppHelper::leadzero('2', 2));
         //extrage in format obiect(data) ultima luna din tabelul months din baza de date.
         $ultima_luna = date_create(Month::orderby('data_raportarii', 'desc')->first()->data_raportarii);
-
+        $m = date_create(Month::orderby('data_raportarii', 'desc')->first()->data_raportarii);
         //adauga la ultima luna, inca o luna
-        date_add($ultima_luna, date_interval_create_from_date_string("1 month"));
+        date_add($m, date_interval_create_from_date_string("1 month"));
         $str_luna = date_format($ultima_luna, 'Y-m-d');
         $arr_luna = getDate(strtotime($str_luna));
         $anul_luna = $luni[$arr_luna['mon'] - 1] . ' ' . strval($arr_luna['year']);
-        $data = ['data_raportarii' => $str_luna, 'anul_luna' => $anul_luna, 'inchisa' => 0];
+        $data = ['data_raportarii' => date_format($m, 'Y-m-d'), 'anul_luna' => $anul_luna, 'inchisa' => 0];
         $nr_zile_luna =  cal_days_in_month(CAL_GREGORIAN, $arr_luna['mon'], $arr_luna['year']);
 
         //itereaza zilele din noua luna pentru a afla intervalele
