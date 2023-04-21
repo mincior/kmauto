@@ -10,17 +10,18 @@ $current_month = date_format($current_month, 'Y-m-d');
 $months = \App\Models\Month::Select()
     ->orderBy('data_raportarii', 'DESC')
     ->get();
-$selectedMonth_id = \App\Models\Month::where('select', 1)->first()->id;
-$lunaCurentaEsteInchisa = \App\Models\Month::where('select', 1)->first()->inchisa;
-$intervalulCurentEsteInchis = \App\Models\Interval::where('month_id', $selectedMonth_id)
-    ->where('select', 1)
-    ->first()->inchis;
+$selectedMonth = @\App\Models\Month::where('select', 1)->first();
+if(!$selectedMonth){
+    $selectedMonth= @\App\Models\Month::orderby('id', 'desc')->first();
+}
+$selectedMonth_id = $selectedMonth->id;
+$lunaCurentaEsteInchisa = $selectedMonth->inchisa;
 $session = \App\Models\Setting::where('nume', 'butonSelectat')->first()->valoare;
 $mm = json_encode($months); //test pentru transmitere array catre javascript (JSON.strignify)
 ?>
 {{-- pune culoarea barei de navigare de sus in functie de luna si intervalul selectat. O luna daca este inchisa bara va fi rosie. Daca este deschisa 
     va fi verde daca intervalul este deschis si albastra daca nu.  --}}
-<nav class="navbar navbar-dark {{ $lunaCurentaEsteInchisa == 0 ? ($intervalulCurentEsteInchis == 0 ? 'bg-success' : 'bg-info') : 'bg-danger' }} fixed-top d-print-none"
+<nav class="navbar navbar-dark {{ $lunaCurentaEsteInchisa == 0 ? 'bg-success' : 'bg-danger' }} fixed-top d-print-none"
     id="my-nav-bar">
     <div class=" container-fluid" id="myli">
         {{-- left --}}

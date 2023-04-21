@@ -30,6 +30,14 @@ class MonthController extends Controller
         return view('back.months.create');
     }
 
+    public function inchideDeschideLuna(){
+        $month_id = Setting::where('nume', 'monthId')->where('interval_id', 1)->first()->valoare;
+        $month = Month::where('id', $month_id)->first();
+        $inchisa=$month->inchisa;
+        $month->update(['inchisa' => $inchisa == 1 ? 0 : 1]);
+        return response()->noContent();
+    }
+
     /**
      * Adauga prima luna nescrisa din viitor
      *

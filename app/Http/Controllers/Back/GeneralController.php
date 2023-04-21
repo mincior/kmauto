@@ -46,7 +46,10 @@ class GeneralController extends Controller
         $query= Month::where('id', $request->month_id)->update(array('select' => 1));
 
         //scrie o singura data luna selectata in config
-        $interval_selectat= Interval::where('month_id', $request->month_id)->where('select', 1)->first()->id;
+        $interval_selectat= @Interval::where('month_id', $request->month_id)->where('select', 1)->first()->id;
+        if(!$interval_selectat){
+            $interval_selectat= Interval::where('month_id', $request->month_id)->orderby('id', 'desc')->first()->id;
+        }
         File::put( env('APP_PATH', '/var/www/kmauto') . '/config/global.php', "<?php return ['selected_month' => $request->month_id, 'selected_interval' => $interval_selectat];");
         return response()->noContent();
     }

@@ -1,10 +1,11 @@
-$(function () {
 
+$(function () {
+	let mesaj1, mesaj2, mesaj3;
 	//javascript randare tabel months
 	let url = '/back/months/addNextMonth';
 	let adaugaLunaUrmatoare = {
 		className: 'btn-success',
-		text: '++',
+		text: 'Adauga luna',
 		titleAttr: 'Add',
 		enabled: true,
 		url: url,
@@ -43,6 +44,63 @@ $(function () {
 		}
 	}
 	dtButtonsCenter.push(adaugaLunaUrmatoare)
+	//let urlEsteLunaInchisa = '/back/months/esteLunaInchisa';
+	let urlInchideDeschideLuna = '/back/months/inchideDeschideLuna';
+	let inchideDeschideLuna = {
+		className: 'btn-info',
+		text: 'Inchide deschide',
+		titleAttr: 'Add',
+		enabled: true,
+		url: urlInchideDeschideLuna,
+		action: function (e, dt, node, config) {
+			//daca este selectat o singura luna in tabel
+			if (monthOTable.rows({ selected: true }).count() == 1) {
+				//scoate randul respectiv
+				let cellValue = getDataTableCellValue('inchisa', monthOTable.rows({ selected: true }).data());
+				mesaj1 =(cellValue == 1 ) ? 'Deschideti ' : 'Inchideti ';
+				mesaj2 =(cellValue == 1 ) ? 'Inchide ' : 'Deschide ';
+				mesaj3 = (cellValue == 1) ? 'inchisa ' : 'deschisa ';
+				
+				bootbox.confirm({
+					title: mesaj1 + 'luna? ',
+					message: "Sunteti sigur?" ,
+					buttons: {
+						confirm: {
+							label: 'Da',
+							className: 'btn-sm btn-primary'
+						},
+						cancel: {
+							label: 'Nu',
+							className: 'btn-sm btn-secondary'
+						}
+					},
+					callback: function (confirmed) {
+						if (confirmed) {
+							$.ajax({
+								method: 'POST',
+								url: config.url,
+								success: function (response) {
+									monthOTable.draw();
+									showToast({
+										type: 'success',
+										title: mesaj2 + 'luna ...',
+										message: 'Luna a fost ' + mesaj3,
+									});
+								}
+							});
+
+						}
+					}
+				});
+			} else {
+				bootbox.alert({
+					message: "Selectati o singura luna din tabel",
+				})
+			}
+
+		}
+	}
+	dtButtonsCenter.push(inchideDeschideLuna)
 	// let months_create_url = '/back/months/create'
 	// let monthCreateButton = {
 	// 	className: 'btn-success',
@@ -108,55 +166,57 @@ $(function () {
 		enabled: false,
 		url: months_destroy_url,
 		action: function (e, dt, node, config) {
-			var ids = $.map(dt.rows({
-				selected: true
-			}).data(), function (entry) {
-				return entry.id;
-			});
-
-			if (ids.length === 0) {
-				bootbox.alert({
-					title: 'Eroare ...',
-					message: 'Nimic selectat'
+			if (monthOTable.rows({ selected: true }).count() == 1) {
+				var ids = $.map(dt.rows({
+					selected: true
+				}).data(), function (entry) {
+					return entry.id;
 				});
-				return
-			}
 
-			bootbox.confirm({
-				title: 'Stergeti lunile selectate (cu tot cu intervalele lor)? ',
-				message: "Sunteti sigur?",
-				buttons: {
-					confirm: {
-						label: 'Da',
-						className: 'btn-sm btn-primary'
-					},
-					cancel: {
-						label: 'Nu',
-						className: 'btn-sm btn-secondary'
-					}
-				},
-				callback: function (confirmed) {
-					if (confirmed) {
-						$.ajax({
-							method: 'POST',
-							url: config.url,
-							data: {
-								ids: ids,
-								_method: 'DELETE'
-							},
-							success: function (response) {
-								monthOTable.draw();
-
-								showToast({
-									type: 'success',
-									title: 'Stergere ...',
-									message: 'Luna/lunile selectate au fost sterse!',
-								});
-							}
-						});
-					}
+				if (ids.length === 0) {
+					bootbox.alert({
+						title: 'Eroare ...',
+						message: 'Nimic selectat'
+					});
+					return
 				}
-			});
+
+				bootbox.confirm({
+					title: 'Stergeti lunile selectate (cu tot cu intervalele lor)? ',
+					message: "Sunteti sigur?",
+					buttons: {
+						confirm: {
+							label: 'Da',
+							className: 'btn-sm btn-primary'
+						},
+						cancel: {
+							label: 'Nu',
+							className: 'btn-sm btn-secondary'
+						}
+					},
+					callback: function (confirmed) {
+						if (confirmed) {
+							$.ajax({
+								method: 'POST',
+								url: config.url,
+								data: {
+									ids: ids,
+									_method: 'DELETE'
+								},
+								success: function (response) {
+									monthOTable.draw();
+
+									showToast({
+										type: 'success',
+										title: 'Stergere ...',
+										message: 'Luna/lunile selectate au fost sterse!',
+									});
+								}
+							});
+						}
+					}
+				});
+			}
 		}
 	}
 	dtButtonsRight.push(monthDeleteButton)
@@ -320,13 +380,11 @@ $(function () {
 	$('#monthTable').on('click', 'tr', function () {
 		let month_id = table.row($(this)).data().id;
 		let set_month_id_url = '/back/general/setMonthId';
-		console.log(month_id);
 		$.ajax({
 			method: 'POST',
 			url: set_month_id_url,
 			data: { valoare: month_id },
 			success: function (response) {
-				console.log('succes modificare month_id');
 			}
 		});
 
@@ -334,4 +392,25 @@ $(function () {
 		//Atentie, doar pentru vizualizare. Exista meniul Intervale cu toate functiile (adaugare, modificare, etc.)
 		intervalOTable.draw();
 	});
+
+	function getDataTableCellValue(cellName, object1) {
+
+		var ids = $.map(object1, function (entry) {
+			return entry[`${cellName}`];
+		});
+		// o alta varianta gasita de mine, mai complicata.
+		// function getDataTableCellValue(cellName, object1) {
+		// 	for (const [key, value] of Object.entries(object1)) {
+		// 		for (const [key1, value1] of Object.entries(value)) {
+		// 			// itereaza toate proprietatile obiectului - in cascada 
+		// 			if (`${key1}` == cellName) {//si cand ajunge la proprietatea 'cellName'
+		// 				return `${value1}`;//returneaza valoare
+		// 			}
+		// 		}
+		// 	}
+		// }
+		return ids;
+	}
+
+
 });
