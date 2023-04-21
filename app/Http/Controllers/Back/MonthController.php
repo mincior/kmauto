@@ -19,7 +19,7 @@ class MonthController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $months = Month::select(sprintf('%s.*', (new Month)->getTable()));
+            $months = Month::orderby('id', 'desc')->select(sprintf('%s.*', (new Month)->getTable()));
             return DataTables::of($months)->toJson();
         }
         return view('back.months.index_new');

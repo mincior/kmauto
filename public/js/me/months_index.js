@@ -30,12 +30,12 @@ $(function () {
 							url: config.url,
 							success: function (response) {
 								monthOTable.draw();
-
 								showToast({
 									type: 'success',
 									title: 'Adaugare luna urmatoare ...',
 									message: 'Luna urmatoare a fost adaugata!',
 								});
+								location.reload();
 							}
 						});
 					}
@@ -56,14 +56,14 @@ $(function () {
 			//daca este selectat o singura luna in tabel
 			if (monthOTable.rows({ selected: true }).count() == 1) {
 				//scoate randul respectiv
-				let cellValue = getDataTableCellValue('inchisa', monthOTable.rows({ selected: true }).data());
-				mesaj1 =(cellValue == 1 ) ? 'Deschideti ' : 'Inchideti ';
-				mesaj2 =(cellValue == 1 ) ? 'Inchide ' : 'Deschide ';
+				let cellValue = getDataTableCellValue('inchisa', monthOTable);
+				mesaj1 = (cellValue == 1) ? 'Deschideti ' : 'Inchideti ';
+				mesaj2 = (cellValue == 1) ? 'Inchide ' : 'Deschide ';
 				mesaj3 = (cellValue == 1) ? 'inchisa ' : 'deschisa ';
-				
+
 				bootbox.confirm({
 					title: mesaj1 + 'luna? ',
-					message: "Sunteti sigur?" ,
+					message: "Sunteti sigur?",
 					buttons: {
 						confirm: {
 							label: 'Da',
@@ -86,6 +86,7 @@ $(function () {
 										title: mesaj2 + 'luna ...',
 										message: 'Luna a fost ' + mesaj3,
 									});
+									location.reload();
 								}
 							});
 
@@ -166,7 +167,7 @@ $(function () {
 		enabled: false,
 		url: months_destroy_url,
 		action: function (e, dt, node, config) {
-			if (monthOTable.rows({ selected: true }).count() == 1) {
+			if (monthOTable.rows({ selected: true }).count() == 1 && getDataTableCellValue('inchisa', monthOTable) == 0) {
 				var ids = $.map(dt.rows({
 					selected: true
 				}).data(), function (entry) {
@@ -182,7 +183,7 @@ $(function () {
 				}
 
 				bootbox.confirm({
-					title: 'Stergeti lunile selectate (cu tot cu intervalele lor)? ',
+					title: 'Stergeti luna selectata (cu tot cu intervalele ei)? ',
 					message: "Sunteti sigur?",
 					buttons: {
 						confirm: {
@@ -209,13 +210,16 @@ $(function () {
 									showToast({
 										type: 'success',
 										title: 'Stergere ...',
-										message: 'Luna/lunile selectate au fost sterse!',
+										message: 'Luna selectata a fost stearsa!',
 									});
+									location.reload();
 								}
 							});
 						}
 					}
 				});
+			} else {
+				bootbox.alert('Nu puteti sterge o luna inchisa');
 			}
 		}
 	}
@@ -223,6 +227,7 @@ $(function () {
 	/* ------------------------------------------------------------------------ */
 	let month_index_url = '/back/months';
 	let monthDtOverrideGlobals = {
+		searching: false, paging: false, info: false,
 		ajax: {
 			url: month_index_url,
 			data: function (d) { }
@@ -270,7 +275,7 @@ $(function () {
 		},
 		ordering: true,
 		order: [
-			[1, "asc"],
+			[0, "desc"],
 		],
 		preDrawCallback: function (settings) {
 			monthOTable.columns.adjust();
@@ -305,76 +310,7 @@ $(function () {
 		monthOTable.buttons('.selectMultiple').enable(selectedRows > 0);
 	});
 
-	// adauga javascript pentru randare tabel intervale
-	let interval_index_url = '/back/months/getMonthIntervals/';
-	let intervalDtOverrideGlobals = {
-		ajax: {
-			url: interval_index_url,
-			data: function (d) { }
-		},
-		columns: [{
-			data: 'id',
-			name: 'id',
-			searchable: false,
-			className: 'text-left',
-			render: function (data, type, row, meta) {
-				return data.toString();
-			}
-		},
-		{
-			data: 'data_inceput',
-			name: 'data_inceput',
-		},
-		{
-			data: 'data_sfarsit',
-			name: 'data_sfarsit',
-		},
-		{
-			data: 'interval',
-			name: 'interval',
-		},
-		{
-			data: 'id',
-			render: function (data, type, row, meta) {
-				if (typeof row.select === "undefined") {
-					return '';
-				} else {
-					return row.select == 1 ? 'Da' : 'Nu';
-				}
-			},
-		},
-		{
-			data: 'id',
-			render: function (data, type, row, meta) {
-				if (typeof row.month === "undefined") {
-					return '';
-				} else {
-					return row.month.anul_luna;
-				}
-			},
-		},
-		],
-		select: {
-			selector: 'td:not(.no-select)',
-		},
-		ordering: true,
-		order: [
-			[1, "asc"],
-		],
-		preDrawCallback: function (settings) {
-			intervalOTable.columns.adjust();
-		}
-	};
-	let intervalOTable = $('#intervalTable').DataTable(intervalDtOverrideGlobals);
-	let IntervalCreateButton = {
-		className: 'btn-success',
-		text: '<i class="bi bi-plus"></i>',
-		titleAttr: 'Add',
-		enabled: true,
-		action: function (e, dt, node, config) {
-			document.location.href = months_create_url;
-		}
-	}
+
 	//cand se face click in tabelul months se scrie prin ajax in tabelul Settings/monthId id-ul lunii selectate
 	var table = $('#monthTable').DataTable();
 	$('#monthTable').on('click', 'tr', function () {
@@ -387,28 +323,79 @@ $(function () {
 			success: function (response) {
 			}
 		});
-
+		// adauga javascript pentru randare tabel intervale
+		let interval_index_url = '/back/months/getMonthIntervals/';
+		let intervalDtOverrideGlobals = {
+			searching: false, paging: false, info: false,
+			ajax: {
+				url: interval_index_url,
+				data: function (d) { }
+			},
+			columns: [{
+				data: 'id',
+				name: 'id',
+				searchable: false,
+				className: 'text-left',
+				render: function (data, type, row, meta) {
+					return data.toString();
+				}
+			},
+			{
+				data: 'data_inceput',
+				name: 'data_inceput',
+			},
+			{
+				data: 'data_sfarsit',
+				name: 'data_sfarsit',
+			},
+			{
+				data: 'interval',
+				name: 'interval',
+			},
+			{
+				data: 'id',
+				render: function (data, type, row, meta) {
+					if (typeof row.select === "undefined") {
+						return '';
+					} else {
+						return row.select == 1 ? 'Da' : 'Nu';
+					}
+				},
+			},
+			{
+				data: 'id',
+				render: function (data, type, row, meta) {
+					if (typeof row.month === "undefined") {
+						return '';
+					} else {
+						return row.month.anul_luna;
+					}
+				},
+			},
+			],
+			select: {
+				selector: 'td:not(.no-select)',
+			},
+			ordering: true,
+			order: [
+				[1, "asc"],
+			],
+			preDrawCallback: function (settings) {
+				intervalOTable.columns.adjust();
+			}
+		};
+		let intervalOTable = $('#intervalTable').DataTable(intervalDtOverrideGlobals);
 		//se reincarca datele in MonthController/GetMonthIntervals dar cu monthId citit din tabelul Settings/monthId
 		//Atentie, doar pentru vizualizare. Exista meniul Intervale cu toate functiile (adaugare, modificare, etc.)
 		intervalOTable.draw();
 	});
 
 	function getDataTableCellValue(cellName, object1) {
-
-		var ids = $.map(object1, function (entry) {
+		var ids = $.map(object1.rows({
+			selected: true
+		}).data(), function (entry) {
 			return entry[`${cellName}`];
 		});
-		// o alta varianta gasita de mine, mai complicata.
-		// function getDataTableCellValue(cellName, object1) {
-		// 	for (const [key, value] of Object.entries(object1)) {
-		// 		for (const [key1, value1] of Object.entries(value)) {
-		// 			// itereaza toate proprietatile obiectului - in cascada 
-		// 			if (`${key1}` == cellName) {//si cand ajunge la proprietatea 'cellName'
-		// 				return `${value1}`;//returneaza valoare
-		// 			}
-		// 		}
-		// 	}
-		// }
 		return ids;
 	}
 

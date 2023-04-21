@@ -45,10 +45,10 @@
             }
         },
         lengthMenu: [
-            [20, 25, 50, 75, 100, -1],
-            [20, 25, 50, 75, 100, "All"]
+            [5, 10, 50, 75, 100, -1],
+            [5, 10, 50, 75, 100, "All"]
         ],
-        pageLength: 20,
+        pageLength: 5,
         pagingType: 'full_numbers',
         mark: {
             element: 'span',
