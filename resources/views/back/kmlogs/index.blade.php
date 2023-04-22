@@ -171,6 +171,7 @@
             dtButtonsRight.push(deleteButton)
             /* ------------------------------------------------------------------------ */
             let dtOverrideGlobals = {
+                searching: false, paging: false, info: false,
                 ajax: {
                     url: "{{ route('back.kmlogs.index') }}",
                     data: function(d) {}
