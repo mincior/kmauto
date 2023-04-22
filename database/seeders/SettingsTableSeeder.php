@@ -42,9 +42,24 @@ class SettingsTableSeeder extends Seeder
                     'valoare' => '1',
                     'interval_id' => 1,
                 ],
-                
+                [
+                    'nume' => 'brandId',
+                    'valoare' => '1',
+                    'interval_id' => 1,
+                ],
+                 [
+                    'nume' => 'departmentId',
+                    'valoare' => '1',
+                    'interval_id' => 1,
+                ],
+                 [
+                    'nume' => 'filtreazaDupaDepartament',
+                    'valoare' => '1',
+                    'interval_id' => 1,
+                ],
+               
             )            
-        )->count(3)->create();
+        )->count(6)->create();
         
                 
 

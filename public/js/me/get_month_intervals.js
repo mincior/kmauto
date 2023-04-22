@@ -69,6 +69,15 @@ $("#interval_select").change(function () {
 });
 
 function change_button(el, valoare) {
+    let set_department_id_url = '/back/general/setDepartmentId';
+    $.ajax({
+        method: 'POST',
+        url: set_department_id_url,
+        data: {
+            valoare: 0
+        },
+        success: function(response) {}
+    });
 
     let url = siteUrl + '/back/general/setButonSelectat'
     $.ajax({

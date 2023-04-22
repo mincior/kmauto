@@ -4,14 +4,35 @@
     &vert; Users
 @endsection
 
+<?php
+$departments = @\App\Models\Department::get();
+?>
+
 @section('content')
     <div class="card">
         <div class="card-header d-print-none">
             <div class="row">
-                <div class="col">Users</div>
+                <div class="col"><img src="{{ asset('img/icons/persons.png') }}" /></div>
+                <div class="row mb-2">
+                    <label for="department_id" class="col-md-2 col-form-label">Filiala :</label>
+
+                    <div class="col-md-4">
+                        <select name="department_id" id="department_select" data-deptid="1" data-userid="1"
+                            class="form-select">
+                            <option value="">Alege ...</option>
+                            @foreach ($departments as $department)
+                                <option {{ old('department_id') == $department['id'] ? 'selected' : '' }}
+                                    value="{{ $department['id'] }}">{{ $department['name'] }}</option>
+                            @endforeach
+                        </select>
+                        @error('department_id')
+                            <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
 
                 <div class="col fs-5 text-end">
-                    <img src="{{ asset('img/icons/persons.png') }}" />
+
                 </div>
             </div>
         </div>
@@ -185,17 +206,21 @@
                     {
                         data: 'name',
                         name: 'name',
+                        searchable: true,
+
                     },
                     {
                         data: 'id',
                         render: function(data, type, row, meta) {
-                            if ( typeof row.cars[0] === "undefined"){
+                            if (typeof row.cars[0] === "undefined") {
                                 return '';
-                            }else{
+                            } else {
                                 return row.cars[0].numar;
                             }
                         },
                         width: '80',
+                        searchable: true,
+
 
                     },
                     {
@@ -205,43 +230,51 @@
                     {
                         data: 'id',
                         render: function(data, type, row, meta) {
-                            if ( typeof row.phones[0] === "undefined"){
+                            if (typeof row.phones[0] === "undefined") {
                                 return '';
-                            }else{
+                            } else {
                                 return row.phones[0].valoare;
                             }
                         },
                         width: '60',
+                        searchable: true,
+
                     },
                     {
                         data: 'id',
                         render: function(data, type, row, meta) {
-                            if ( typeof row.kmlimits[0] === "undefined"){
+                            if (typeof row.kmlimits[0] === "undefined") {
                                 return '';
-                            }else{
+                            } else {
                                 return row.kmlimits[0].valoare;
                             }
                         },
                         width: '00',
+                        searchable: false,
+
                     },
                     {
                         data: 'observatii',
                         name: 'observatii',
+                        searchable: false,
+
                     },
                     {
                         data: 'calificativ',
                         name: 'calificativ',
+                        searchable: false,
                     },
                     {
                         data: 'id',
                         render: function(data, type, row, meta) {
-                            if ( typeof row.departments[0] === "undefined"){
+                            if (typeof row.departments[0] === "undefined") {
                                 return '';
-                            }else{
+                            } else {
                                 return row.departments[0].name;
                             }
                         },
                         width: '100',
+                        searchable: true,
 
                     },
                     {
@@ -260,10 +293,10 @@
                     {
                         data: 'id',
                         render: function(data, type, row, meta) {
-                            if ( typeof row.activ[0] === "undefined"){
+                            if (typeof row.activ[0] === "undefined") {
                                 return '';
-                            }else{
-                                return row.activ[0].valoare == 1 ? 'Da': 'Nu';
+                            } else {
+                                return row.activ[0].valoare == 1 ? 'Da' : 'Nu';
                             }
                         },
                     }
@@ -297,7 +330,7 @@
                 buttons: dtButtonsRight
             });
 
-            oTable.buttons('BtnGroupLeft', null).containers().appendTo('#ToolbarLeft');
+            //oTable.buttons('BtnGroupLeft', null).containers().appendTo('#ToolbarLeft');
             oTable.buttons('BtnGroupCenter', null).containers().appendTo('#ToolbarCenter');
             oTable.buttons('BtnGroupRight', null).containers().appendTo('#ToolbarRight');
             /* ------------------------------------------------------------------------ */
@@ -308,6 +341,22 @@
 
                 oTable.buttons('.selectOne').enable(selectedRows === 1);
                 oTable.buttons('.selectMultiple').enable(selectedRows > 0);
+            });
+        });
+    </script>
+    <script>
+        $('#department_select').change(function() {
+            var department_id = $(this).find(":selected").val();
+            let set_department_id_url = '/back/general/setDepartmentId';
+            $.ajax({
+                method: 'POST',
+                url: set_department_id_url,
+                data: {
+                    valoare: department_id
+                },
+                success: function(response) {
+                    $('#sqltable').DataTable().draw();
+                }
             });
         });
     </script>

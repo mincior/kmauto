@@ -45,8 +45,8 @@
             }
         },
         lengthMenu: [
-            [5, 10, 50, 75, 100, -1],
-            [5, 10, 50, 75, 100, "All"]
+            [20, 30, 50, 75, 100, -1],
+            [20, 30, 50, 75, 100, "All"]
         ],
         pageLength: 5,
         pagingType: 'full_numbers',
@@ -200,6 +200,7 @@
     });
     /* -------------------------------------------------------------------------------------- */
     let dtButtonsLeft = $.extend(true, [], $.fn.dataTable.defaults.buttons);
+    let dtButtonsLeft1 =[];
     let dtButtonsCenter = [];
     let dtButtonsRight = [];
     /* -------------------------------------------------------------------------------------- */

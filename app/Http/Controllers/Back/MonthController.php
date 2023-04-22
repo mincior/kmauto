@@ -147,7 +147,7 @@ class MonthController extends Controller
     public function getMonthIntervals()
     {
         $month_id = Setting::where('nume', 'monthId')->where('interval_id', 1)->first()->valoare;
-        $intervals = Interval::where('month_id', $month_id)->select(sprintf('%s.*', (new Interval)->getTable()));
+        $intervals = Interval::with('month')->where('month_id', $month_id)->select(sprintf('%s.*', (new Interval)->getTable()));
         return DataTables::of($intervals)->toJson();
 
     }

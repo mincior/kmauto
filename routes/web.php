@@ -37,6 +37,8 @@ Route::middleware('auth')->group(function () {
             Route::post('/general/setValueIntervalSelect', 'setValueIntervalSelect')->name('general.setValueIntervalSelect');
             Route::post('/general/setButonSelectat', 'setButonSelectat')->name('general.setButonSelectat');
             Route::post('/general/setMonthId', 'setMonthId')->name('general.setMonthId');
+            Route::post('/general/setBrandId', 'setBrandId')->name('general.setBrandId');
+            Route::post('/general/setDepartmentId', 'setDepartmentId')->name('general.setDepartmentId');
             Route::get('/general/getDatatablesHelp', 'getDatatablesHelp')->name('general.getDatatablesHelp');
         });
         /* ---------------------------------------- */
@@ -49,6 +51,7 @@ Route::middleware('auth')->group(function () {
         // Users
         Route::controller(UserController::class)->group(function () {
             Route::delete('/users/massDestroy', 'massDestroy')->name('users.massDestroy');
+            Route::get('/users/getDepartmentUsers', 'getDepartmentUsers')->name('users.getDepartmentUsers');
             Route::resource('/users', UserController::class)->except([ 'destroy']);
         });
         /* ---------------------------------------- */
@@ -61,6 +64,7 @@ Route::middleware('auth')->group(function () {
         // Cars
         Route::controller(CarController::class)->group(function () {
             Route::get('/cars/autocomplete',  'autoComplete')->name('autoComplete');
+            Route::get('/cars/getDepartmentCars', 'getDepartmentCars')->name('cars.getDepartmentCars');
             Route::delete('/cars/massDestroy', 'massDestroy')->name('cars.massDestroy');
             Route::resource('/cars', CarController::class)->except(['destroy']);
         });
@@ -68,6 +72,7 @@ Route::middleware('auth')->group(function () {
         // Brand
         Route::controller(BrandController::class)->group(function () {
             Route::get('/brands/get-brand-types/{brand_id}','getBrandTypes')->name('get-brand-types');
+            Route::get('/brands/get-brand-types1','getBrandTypes1')->name('get-brand-types1');
             Route::delete('/brands/massDestroy', 'massDestroy')->name('brands.massDestroy');
             Route::resource('/brands', BrandController::class)->except(['destroy']);
         });

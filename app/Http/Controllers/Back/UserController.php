@@ -7,7 +7,7 @@ use App\Models\Car;
 use App\Models\User;
 use App\Models\Kmlog;
 use App\Models\Month;
-use App\Models\CarConsumption;
+use App\Models\Setting;
 use App\Models\UserCar;
 use App\Models\UserDep;
 use App\Models\Interval;
@@ -17,13 +17,14 @@ use App\Models\UserKmlimit;
 use App\MyHelpers\AppHelper;
 use Illuminate\Http\Request;
 use App\Models\Availableuser;
+use App\Models\CarConsumption;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserStoreRequest;
 use App\Http\Requests\UserUpdateRequest;
-use Database\Factories\UserKmlimitFactory;
 use Illuminate\Support\Facades\Response;
 use Yajra\DataTables\Facades\DataTables;
+use Database\Factories\UserKmlimitFactory;
 
 class UserController extends Controller
 {
@@ -31,7 +32,11 @@ class UserController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
+            //aici poate ajunge din trei locuri. Daca vine din butonul din bara de navigare generala va afisa toti userii
+            //daca vine din foaia Departments sau din selectul Filala din Users, va afisa doar userii filialei selectate
             $selectedInterval = config('global.selected_interval');
+            $department_id = Setting::where('nume', 'departmentId')->where('interval_id', 1)->first()->valoare;
+            $filtreazaDupaDepartament = Setting::where('nume', 'filtreazaDupaDepartament')->where('interval_id', 1)->first()->valoare;
             $users = User::select(sprintf('%s.*', (new User)->getTable()))->orderBy('id', 'desc')->get();
             $arr_users_with_departments = AppHelper::get_last_target_values_array('user_id', 'department_id', 'user_deps', $selectedInterval);
             $arr_users_with_cars = AppHelper::get_last_target_values_array('user_id', 'car_id', 'user_cars', $selectedInterval);
@@ -39,16 +44,20 @@ class UserController extends Controller
             $arr_users_with_user_phones = AppHelper::get_last_target_values_array('user_id', 'id', 'user_phones', $selectedInterval);
             $arr_users_with_user_kmlimits = AppHelper::get_last_target_values_array('user_id', 'id', 'user_kmlimits', $selectedInterval);
 
-
             //in cars avem deja brand si type acum luam fiecare masina si-i adaugam departamentul, userul si consumul mediu (car_consumption)
             //asociate la momentul intervalului selectat
-            foreach ($users as $user){
+            foreach ($users as $key=>$user){
                 @$user['departments'] = Department::where('id', $arr_users_with_departments[$user->id])->get();
                 @$user['cars'] = Car::where('id', $arr_users_with_cars[$user->id])->get();
                 @$user['activ'] = Availableuser::where('id', $arr_users_with_user_activ[$user->id])->get();
                 @$user['phones'] = UserPhone::where('id', $arr_users_with_user_phones[$user->id])->get();
                 @$user['kmlimits'] = UserKmlimit::where('id', $arr_users_with_user_kmlimits[$user->id])->get();
+                //daca filtreaza dupa departament scoate ceilalti useri
+                if( @$arr_users_with_departments[$user->id] != $department_id && $filtreazaDupaDepartament == 1){
+                    unset($users[$key]);
+                }
            }
+               
             return DataTables::of($users)
                 ->addColumn('DT_RowId', function ($row) {
                     return $row->id;
@@ -296,5 +305,12 @@ class UserController extends Controller
             }
         }
         return response()->noContent();
+    }
+    public function getDepartmentUsers(){
+        $department_id = Setting::where('nume', 'departmentId')->where('interval_id', 1)->first()->valoare;
+        $users = DepartmentController::getUsers($department_id);
+
+        return view('back.users.index', $users);
+
     }
 }

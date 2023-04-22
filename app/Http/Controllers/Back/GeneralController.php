@@ -75,6 +75,24 @@ class GeneralController extends Controller
         $query= Setting::where('nume', "monthId")->where('interval_id', 1)->update(array('valoare' => $request->valoare));
 
     }
+    public function setBrandId(Request $request){
+        $query= Setting::where('nume', "brandId")->where('interval_id', 1)->update(array('valoare' => $request->valoare));
+
+    }
+    public function setDepartmentId(Request $request){
+        if($request->valoare == "0"){
+            //daca vine din butoanele de navigare User si Car atunci pune filtreazaDupaDepartament pe 0 si in controlerele User si Car, metoda index va afisa tot
+            Setting::where('nume', "departmentId")->where('interval_id', 1)->update(array('valoare' => 1));
+            Setting::where('nume', "filtreazaDupaDepartament")->where('interval_id', 1)->update(array('valoare' => 0));
+
+        }else{
+            //daca vine din tabelul departments, unde avem doua butoane sus (User si Car) va pune filtreazaDupaDepartament pe 1 si va afisa doar User si Car pentru departamentul selectat
+            Setting::where('nume', "departmentId")->where('interval_id', 1)->update(array('valoare' => $request->valoare));
+            Setting::where('nume', "filtreazaDupaDepartament")->where('interval_id', 1)->update(array('valoare' => 1));
+
+        }
+
+    }
 
     public function getMonthIntervals($month_id)
     {

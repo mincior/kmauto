@@ -4,13 +4,14 @@ namespace App\Http\Controllers\Back;
 
 use App\Models\Type;
 use App\Models\Brand;
+use App\Models\Setting;
 use App\Models\Department;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BrandStoreRequest;
-use App\Http\Requests\BrandUpdateRequest;
 use Yajra\DataTables\Facades\DataTables;
+use App\Http\Requests\BrandUpdateRequest;
 
 class BrandController extends Controller
 {
@@ -24,7 +25,7 @@ class BrandController extends Controller
                 })
                 ->toJson();
         }
-        return view('back.brands.index');
+        return view('back.brands.index_new');
     }
 
     public function create()
@@ -38,6 +39,15 @@ class BrandController extends Controller
         $brands = Type::select("id", "name")->where('brand_id', '=', $brand_id)->get()->toArray();
         return $brands;
     }
+
+    public function getBrandTypes1()
+    {
+        $brand_id = Setting::where('nume', 'brandId')->first()->valoare;
+        $types = Type::with('brand')->where('brand_id', $brand_id)->select(sprintf('%s.*', (new Type)->getTable()));
+        return DataTables::of($types)->toJson();
+
+    }
+
 
     public function store(BrandStoreRequest $request)
     {

@@ -23,7 +23,7 @@
                 <div id="ToolbarRight"></div>
             </div>
 
-            <table id="sqltable" class="table table-bordered table-striped table-hover table-sm dataTable">
+            <table id="departmentTable" class="table table-bordered table-striped table-hover table-sm dataTable">
                 <thead class="table-success">
                     <tr>
                         <th scope="col" width="4%">ID</th>
@@ -44,6 +44,29 @@
 
     <script type="text/javascript">
         $(function() {
+            let users_create_url = '/back/users/getDepartmentUsers'
+            let userCreateButton = {
+                className: 'btn-success',
+                text: '<i class="bi bi-person-fill"></i>',
+                titleAttr: 'Add',
+                enabled: true,
+                action: function(e, dt, node, config) {
+                    document.location.href = users_create_url;
+                }
+            }
+            dtButtonsLeft1.push(userCreateButton)
+
+            let cars_create_url = '/back/cars/getDepartmentCars'
+            let carCreateButton = {
+                className: 'btn-success',
+                text: '<i class="bi bi-car-front-fill"></i>',
+                titleAttr: 'Add',
+                enabled: true,
+                action: function(e, dt, node, config) {
+                    document.location.href = cars_create_url;
+                }
+            }
+            dtButtonsLeft1.push(carCreateButton)
 
             /* ------------------------------------------------------------------------ */
             let createButton = {
@@ -145,7 +168,7 @@
                                         _method: 'DELETE'
                                     },
                                     success: function(response) {
-                                        oTable.draw();
+                                        departmentTable.draw();
 
                                         showToast({
                                             type: 'success',
@@ -196,36 +219,50 @@
                     [1, "asc"],
                 ],
                 preDrawCallback: function(settings) {
-                    oTable.columns.adjust();
+                    departmentTable.columns.adjust();
                 }
             };
             /* ------------------------------------------- */
-            let oTable = $('#sqltable').DataTable(dtOverrideGlobals);
+            let departmentTable = $('#departmentTable').DataTable(dtOverrideGlobals);
             /* ------------------------------------------------------------------------ */
-            new $.fn.dataTable.Buttons(oTable, {
+            new $.fn.dataTable.Buttons(departmentTable, {
                 name: 'BtnGroupLeft',
-                buttons: dtButtonsLeft
+                buttons: dtButtonsLeft1
             });
-            new $.fn.dataTable.Buttons(oTable, {
+            new $.fn.dataTable.Buttons(departmentTable, {
                 name: 'BtnGroupCenter',
                 buttons: dtButtonsCenter
             });
-            new $.fn.dataTable.Buttons(oTable, {
+            new $.fn.dataTable.Buttons(departmentTable, {
                 name: 'BtnGroupRight',
                 buttons: dtButtonsRight
             });
 
-            oTable.buttons('BtnGroupLeft', null).containers().appendTo('#ToolbarLeft');
-            oTable.buttons('BtnGroupCenter', null).containers().appendTo('#ToolbarCenter');
-            oTable.buttons('BtnGroupRight', null).containers().appendTo('#ToolbarRight');
+            departmentTable.buttons('BtnGroupLeft', null).containers().appendTo('#ToolbarLeft');
+            departmentTable.buttons('BtnGroupCenter', null).containers().appendTo('#ToolbarCenter');
+            departmentTable.buttons('BtnGroupRight', null).containers().appendTo('#ToolbarRight');
             /* ------------------------------------------------------------------------ */
-            oTable.on('select deselect', function(e, dt, type, indexes) {
-                var selectedRows = oTable.rows({
+            departmentTable.on('select deselect', function(e, dt, type, indexes) {
+                var selectedRows = departmentTable.rows({
                     selected: true
                 }).count();
 
-                oTable.buttons('.selectOne').enable(selectedRows === 1);
-                oTable.buttons('.selectMultiple').enable(selectedRows > 0);
+                departmentTable.buttons('.selectOne').enable(selectedRows === 1);
+                departmentTable.buttons('.selectMultiple').enable(selectedRows > 0);
+            });
+
+            var table = $('#departmentTable').DataTable();
+            $('#departmentTable').on('click', 'tr', function() {
+                let department_id = table.row($(this)).data().id;
+                let set_department_id_url = '/back/general/setDepartmentId';
+                $.ajax({
+                    method: 'POST',
+                    url: set_department_id_url,
+                    data: {
+                        valoare: department_id
+                    },
+                    success: function(response) {}
+                });
             });
         });
     </script>

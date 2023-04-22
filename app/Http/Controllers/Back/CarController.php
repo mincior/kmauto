@@ -11,6 +11,7 @@ use App\Models\Brand;
 use App\Models\Kmlog;
 use App\Models\Month;
 use App\Models\CarDep;
+use App\Models\Setting;
 use App\Models\UserCar;
 use App\Models\Interval;
 use App\Models\Department;
@@ -49,7 +50,11 @@ class CarController extends Controller
 
 
         if ($request->ajax()) {
+            //aici poate ajunge din trei locuri. Daca vine din butonul din bara de navigare generala va afisa toate masinile
+            //daca vine din foaia Departments sau din selectul Filala din Users, va afisa doar masinile filialei selectate
             $selectedInterval = config('global.selected_interval');
+            $department_id = Setting::where('nume', 'departmentId')->where('interval_id', 1)->first()->valoare;
+            $filtreazaDupaDepartament = Setting::where('nume', 'filtreazaDupaDepartament')->where('interval_id', 1)->first()->valoare;
             $cars = Car::with('fuel', 'brand', 'type')->select(sprintf('%s.*', (new Car)->getTable()))->orderBy('id', 'desc')->get();
             $arr_cars_with_departments = AppHelper::get_last_target_values_array('car_id', 'department_id', 'car_deps', $selectedInterval);
             $arr_cars_with_users = AppHelper::get_last_target_values_array('car_id', 'user_id', 'user_cars', $selectedInterval);
@@ -58,11 +63,15 @@ class CarController extends Controller
 
             //in cars avem deja brand si type acum luam fiecare masina si-i adaugam departamentul, userul, consumul mediu (car_consumption)
             //si activ,  asociate la momentul intervalului selectat
-            foreach ($cars as $car) {
+            foreach ($cars as $key=>$car) {
                 @$car['departments'] = Department::where('id', $arr_cars_with_departments[$car->id])->get();
                 @$car['users'] = User::where('id', $arr_cars_with_users[$car->id])->get();
-                @$car['car_consumptions'] = CarConsumption::where('id', $arr_cars_with_car_consumptions[$car->id])->get();
                 @$car['activ'] = Availablecar::where('id', $arr_cars_with_car_activ[$car->id])->get();
+                @$car['car_consumptions'] = CarConsumption::where('id', $arr_cars_with_car_consumptions[$car->id])->get();
+                //daca filtreaza dupa departament scoate celelalte masini
+                if( @$arr_cars_with_departments[$car->id] != $department_id && $filtreazaDupaDepartament == 1){
+                    unset($cars[$key]);
+                }
             }
             //Data tables poate functiona si pe eloquent si pe query normal dar si pe collection
             // (cazul de fata, adica s-a aplicat get() pe query si s-a obtinut o colectie)
@@ -307,4 +316,11 @@ class CarController extends Controller
         }
         return response()->noContent();
     }
+    public function getDepartmentCars(){
+        // $department_id = Setting::where('nume', 'departmentId')->where('interval_id', 1)->first()->valoare;
+        // $cars = DepartmentController::getCars($department_id);
+        return view('back.cars.index');
+
+    }
+
 }
