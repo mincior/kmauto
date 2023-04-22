@@ -310,7 +310,7 @@
                 buttons: dtButtonsRight
             });
 
-            oTable.buttons('BtnGroupLeft', null).containers().appendTo('#ToolbarLeft');
+            //oTable.buttons('BtnGroupLeft', null).containers().appendTo('#ToolbarLeft');
             oTable.buttons('BtnGroupCenter', null).containers().appendTo('#ToolbarCenter');
             oTable.buttons('BtnGroupRight', null).containers().appendTo('#ToolbarRight');
             /* ------------------------------------------------------------------------ */
