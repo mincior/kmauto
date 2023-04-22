@@ -21,7 +21,7 @@
                             <div id="myToolTip" class="col">Km log - adaugare</div>
 
                             <div class="col fs-5 text-end">
-                                <img src="{{ asset('img/icons/delivery-030.png') }}" />
+                                <img src="{{ asset('img/buttons/delivery-030.png') }}" />
                             </div>
                         </div>
                     </div>
@@ -61,7 +61,7 @@
                             <label for="picture" class="col-md-2 col-form-label">Poza bord</label>
 
                             <div class="col-md-3">
-                                <input autocomplete="on" id="picture" name="picture" type="text"
+                                <input autocomplete="on" id="picture" name="picture" type="file"
                                     class="form-control @error('picture') is-invalid @enderror"
                                     value="{{ old('picture')}}">
 

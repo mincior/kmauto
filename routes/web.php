@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ImageController;
 use App\Http\Controllers\Back\CarController;
 use App\Http\Controllers\Back\FuelController;
 use App\Http\Controllers\Back\StatController;
@@ -23,6 +24,10 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Auth::routes();
 
 Route::middleware('auth')->group(function () {
+    Route::controller(ImageController::class)->group(function(){
+        Route::get('/image-upload', 'index')->name('image.form');
+        Route::post('/upload-image', 'storeImage')->name('image.store');
+    });
     // Frontend routes
     Route::prefix('front')->as('front.')->group(function () {
         // Nothing here yet

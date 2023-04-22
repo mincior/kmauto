@@ -11,7 +11,7 @@
                 <div class="col">Km log</div>
 
                 <div class="col fs-5 text-end">
-                    <img src="{{ asset('img/icons/delivery-030.png') }}" />
+                    <img src="{{ asset('img/buttons/delivery-030.png') }}" />
                 </div>
             </div>
         </div>
@@ -201,6 +201,7 @@
                     {
                         data: 'id',
                         render: function(data, type, row, meta) {
+                            console.log(row);
                             if ( typeof row.stat === "undefined"){
                                 return '';
                             }else{
@@ -210,7 +211,13 @@
                     },
                     {
                         data: 'picture',
-                        name: 'picture',
+                        render: function(data, type, row, meta) {
+                            if ( typeof row.picture === "undefined"){
+                                return '';
+                            }else{
+                                return  row.picture ;
+                            }
+                        },
                     },
                     {
                         data: 'observatii',

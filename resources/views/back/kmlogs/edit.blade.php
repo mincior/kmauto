@@ -6,7 +6,7 @@
 
 @section('content')
     <?php
-
+    
     ?>
     <form id="myForm" method="POST" action="{{ route('back.kmlogs.update', $kmlog->id) }}" enctype="multipart/form-data">
         @csrf
@@ -19,7 +19,7 @@
                             <div id="myToolTip" class="col">Km log - modificare filiala: {{ $department_name }}</div>
 
                             <div class="col fs-5 text-end">
-                                <img src="{{ asset('img/icons/delivery-030.png') }}" />
+                                <img src="{{ asset('img/buttons/delivery-030.png') }}" />
                             </div>
                         </div>
                     </div>
@@ -31,7 +31,7 @@
                             <div class="col-md-3">
                                 <input autocomplete="on" id="km" name="km" type="text"
                                     class="form-control @error('km') is-invalid @enderror"
-                                    value="{{ old('km') ? old('km') : $kmlog->km}}">
+                                    value="{{ old('km') ? old('km') : $kmlog->km }}">
 
                                 @error('km')
                                     <span class="invalid-feedback" role="alert">{{ $message }}</span>
@@ -41,71 +41,83 @@
 
                         <div class="row mb-2">
                             <label for="stat_id" class="col-md-2 col-form-label">Status</label>
-    
+
                             <div class="col-md-4">
-                                <select name="stat_id" id="stat_select" data-deptid="1" data-userid="1"  data-carid="1"  class="form-select">
+                                <select name="stat_id" id="stat_select" data-deptid="1" data-userid="1" data-carid="1"
+                                    class="form-select">
                                     <option value="">Alege ...</option>
                                     @foreach ($stats as $stat)
-                                        <option {{ (old('stat_id') ? (old('stat_id') ==  $stat['id']) : ($stat->id == $stat['id']))  ? "selected" : "" }}  value="{{ $stat['id'] }}">{{ $stat['name'] }}</option>
+                                        <option
+                                            {{ (old('stat_id') ? old('stat_id') == $stat['id'] : $stat->id == $stat['id']) ? 'selected' : '' }}
+                                            value="{{ $stat['id'] }}">{{ $stat['name'] }}</option>
                                     @endforeach
                                 </select>
                                 @error('stat_id')
-                                <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                                    <span class="invalid-feedback" role="alert">{{ $message }}</span>
                                 @enderror
                             </div>
                         </div>
 
                         <div class="row mb-2">
                             <label for="picture" class="col-md-2 col-form-label">Poza bord</label>
+                            <div class="col-md-8">
+                                <img id="my_picture" class="img-fluid" src="/storage/pictures{{ $kmlog->picture }}">
+                            </div>
 
                             <div class="col-md-3">
-                                <input autocomplete="on" id="picture" name="picture" type="text"
+                                <input autocomplete="on" id="picture" name="picture" type="file"
                                     class="form-control @error('picture') is-invalid @enderror"
-                                    value="{{ old('picture') ? old('picture') : $kmlog->picture}}">
+                                    value="{{ old('picture') ? old('picture') : $kmlog->picture }}">
 
                                 @error('picture')
                                     <span class="invalid-feedback" role="alert">{{ $message }}</span>
                                 @enderror
                             </div>
                         </div>
-                           
+
                         <div class="row mb-2">
                             <label for="car_id" class="col-md-2 col-form-label">Masina</label>
-    
+
                             <div class="col-md-4">
-                                <select name="car_id" id="car_select" data-deptid="1" data-userid="1"  class="form-select">
+                                <select name="car_id" id="car_select" data-deptid="1" data-userid="1" class="form-select">
                                     <option value="">Alege ...</option>
-                                        @foreach ($cars as $car)
-                                        <option {{ (old('car_id') ? (old('car_id') ==  $car->id) : ($kmlog->car_id == $car->id))  ? "selected" : "" }}  value="{{ $car->id }}">{{ $car->numar }}</option>                                        @endforeach
+                                    @foreach ($cars as $car)
+                                        <option
+                                            {{ (old('car_id') ? old('car_id') == $car->id : $kmlog->car_id == $car->id) ? 'selected' : '' }}
+                                            value="{{ $car->id }}">{{ $car->numar }}</option>
+                                    @endforeach
                                 </select>
                                 @error('car_id')
-                                <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                                    <span class="invalid-feedback" role="alert">{{ $message }}</span>
                                 @enderror
                             </div>
                         </div>
-    
+
                         <div class="row mb-2">
                             <label for="user_id" class="col-md-2 col-form-label">Utilizatorul</label>
-    
+
                             <div class="col-md-4">
-                                <select name="user_id" id="user_select" data-deptid="1" data-userid="1"  class="form-select">
+                                <select name="user_id" id="user_select" data-deptid="1" data-userid="1" class="form-select">
                                     <option value="">Alege ...</option>
-                                        @foreach ($users as $user)
-                                        <option {{ (old('user_id') ? (old('user_id') ==  $user->id) : ($kmlog->user_id == $user->id))  ? "selected" : "" }}  value="{{ $user->id }}">{{ $user['name'] }}</option>                                        @endforeach
+                                    @foreach ($users as $user)
+                                        <option
+                                            {{ (old('user_id') ? old('user_id') == $user->id : $kmlog->user_id == $user->id) ? 'selected' : '' }}
+                                            value="{{ $user->id }}">{{ $user['name'] }}</option>
+                                    @endforeach
                                 </select>
                                 @error('user_id')
-                                <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                                    <span class="invalid-feedback" role="alert">{{ $message }}</span>
                                 @enderror
                             </div>
                         </div>
-    
+
                         <div class="row mb-2">
                             <label for="observatii" class="col-md-2 col-form-label">Observatii</label>
 
                             <div class="col-md-5">
                                 <input autocomplete="on" id="observatii" name="observatii" type="text"
                                     class="form-control @error('observatii') is-invalid @enderror"
-                                    value="{{ old('observatii') ? old('observatii') : $kmlog->observatii}}">
+                                    value="{{ old('observatii') ? old('observatii') : $kmlog->observatii }}">
 
                                 @error('observatii')
                                     <span class="invalid-feedback" role="alert">{{ $message }}</span>
@@ -144,11 +156,22 @@
 @endsection
 
 @section('scripts')
-
     <script>
-    jQuery(document).ready(function ($) {
-        $('#name').focus();
-        $('#my-nav-bar').addClass('d-none');//ascunde bara de navigare cand sunt pe create car
-    });
+        jQuery(document).ready(function($) {
+            $('#name').focus();
+            $('#my-nav-bar').addClass('d-none'); //ascunde bara de navigare cand sunt pe create car
+            $('#picture').change(function(){
+                const file = this.files[0];
+                console.log (file);
+                if (file){
+                    let reader = new FileReader();
+                    reader.onload = function(event){
+                        console.log(event.target.result);
+                        $('#my_picture').attr('src', event.target.result);
+                    }
+                    reader.readAsDataURL(file);
+                }
+            });
+        });
     </script>
 @endsection

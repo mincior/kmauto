@@ -4,7 +4,6 @@
     &vert; Km log
 @endsection
 <?php
-//dd($type_name, $kmlog_name, $kmlog->name, $user_name);
 ?>
 @section('content')
     <div class="container mt-4">
@@ -19,7 +18,7 @@
                         </div>
 
                         <div class="col fs-5 text-end">
-                            <img src="{{ asset('img/icons/delivery-030.png') }}" />
+                            <img src="{{ asset('img/buttons/delivery-030.png') }}" />
                         </div>
                     </div>
                     <div class="row mb-2">
@@ -47,11 +46,17 @@
                     </div>
 
                     <div class="row mb-2">
+                        <label  class="col-md-3 col-form-label">Status</label>
+
+                        <div class="col-md-8">
+                            <input type="text" readonly class="form-control-plaintext" value="{{ $stat_name }}">
+                        </div>
+                    </div>
+                    <div class="row mb-2">
                         <label  class="col-md-3 col-form-label">Poza</label>
 
                         <div class="col-md-8">
-                            <input  type="text" readonly
-                                class="form-control-plaintext" value="{{ $kmlog->ordine }}">
+                            <img class="img-fluid" src="/storage/pictures{{ $kmlog->picture }}">
                         </div>
                     </div>
 
@@ -64,13 +69,6 @@
                         </div>
                     </div>
 
-                    <div class="row mb-2">
-                        <label  class="col-md-3 col-form-label">Status</label>
-
-                        <div class="col-md-8">
-                            <input type="text" readonly class="form-control-plaintext" value="{{ $stat_name }}">
-                        </div>
-                    </div>
                     <div class="row mb-2">
                         <label class="col-md-3 col-form-label">Ordine</label>
 
