@@ -5,8 +5,8 @@
 @endsection
 
 @section('content')
-    <div class="card">
-        <div class="card-header d-print-none">
+<div class="card">
+    <div class="card-header d-print-none">
             <div class="row">
                 <div class="col">Km log</div>
 

@@ -11,8 +11,8 @@ $months = \App\Models\Month::Select()
     ->orderBy('data_raportarii', 'DESC')
     ->get();
 $selectedMonth = @\App\Models\Month::where('select', 1)->first();
-if(!$selectedMonth){
-    $selectedMonth= @\App\Models\Month::orderby('id', 'desc')->first();
+if (!$selectedMonth) {
+    $selectedMonth = @\App\Models\Month::orderby('id', 'desc')->first();
 }
 $selectedMonth_id = $selectedMonth->id;
 $lunaCurentaEsteInchisa = $selectedMonth->inchisa;
@@ -21,7 +21,7 @@ $mm = json_encode($months); //test pentru transmitere array catre javascript (JS
 ?>
 {{-- pune culoarea barei de navigare de sus in functie de luna si intervalul selectat. O luna daca este inchisa bara va fi rosie. Daca este deschisa 
     va fi verde daca intervalul este deschis si albastra daca nu.  --}}
-<nav class="navbar navbar-dark {{ $lunaCurentaEsteInchisa == 0 ? 'bg-success' : 'bg-danger' }} fixed-top d-print-none"
+<nav class="navbar navbar-dark {{ $lunaCurentaEsteInchisa == 0 ? 'bg-success' : 'bg-danger' }} d-print-none"
     id="my-nav-bar">
     <div class=" container-fluid" id="myli">
         {{-- left --}}
@@ -30,8 +30,8 @@ $mm = json_encode($months); //test pentru transmitere array catre javascript (JS
                 data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" tabindex="-1" title="Menu">
                 <i class="bi bi-list"></i>
             </button>
-            <a class="btn btn-lg {{ ($session == 'home' ? 'btn-light' : 'btn-outline-dark') }} me-1" href="/" title="Home" role="button"
-                tabindex="-1" onclick="change_button(this, 'home')">
+            <a class="btn btn-lg {{ $session == 'home' ? 'btn-light' : 'btn-outline-dark' }} me-1" href="/"
+                title="Home" role="button" tabindex="-1" onclick="change_button(this, 'home')">
                 <i class="bi bi-house-fill"></i>
             </a>
             {{-- <div class="btn-group me-1" role="group">
@@ -52,17 +52,20 @@ $mm = json_encode($months); //test pentru transmitere array catre javascript (JS
         {{-- center --}}
         <div>
             <div class="btn-group me-1" role="group">
-                <a class="btn btn-lg {{ ($session == 'users' ? 'btn-light' : 'btn-outline-dark') }}" id="user-button" href="{{ route('back.users.index') }}" title="Utilizatori"
-                    role="button" tabindex="-1" onclick="change_button(this, 'users')">
+                <a class="btn btn-lg {{ $session == 'users' ? 'btn-light' : 'btn-outline-dark' }}" id="user-button"
+                    href="{{ route('back.users.index') }}" title="Utilizatori" role="button" tabindex="-1"
+                    onclick="change_button(this, 'users')">
                     {{-- <img src="{{ asset('img/buttons/persons-025-wit.png') }}" class="img-fluid" /> --}}
                     <img src="{{ asset('img/icons/person.png') }}" class="img-fluid" />
                 </a>
-                <a class="btn btn-lg {{ ($session == 'cars' ? 'btn-light' : 'btn-outline-dark') }}" id="car-button" href="{{ route('back.cars.index') }}" title="Masini"
-                    role="button" tabindex="-1" onclick="change_button(this, 'cars')">
+                <a class="btn btn-lg {{ $session == 'cars' ? 'btn-light' : 'btn-outline-dark' }}" id="car-button"
+                    href="{{ route('back.cars.index') }}" title="Masini" role="button" tabindex="-1"
+                    onclick="change_button(this, 'cars')">
                     <img src="{{ asset('img/buttons/car.png') }}" class="img-fluid" />
                 </a>
-                <a class="btn btn-lg {{ ($session == 'kmlogs' ? 'btn-light' : 'btn-outline-dark') }}" id="kmlog-button" href="{{ route('back.kmlogs.index') }}" title="Masini"
-                    role="button" tabindex="-1" onclick="change_button(this, 'kmlogs')">
+                <a class="btn btn-lg {{ $session == 'kmlogs' ? 'btn-light' : 'btn-outline-dark' }}" id="kmlog-button"
+                    href="{{ route('back.kmlogs.index') }}" title="Masini" role="button" tabindex="-1"
+                    onclick="change_button(this, 'kmlogs')">
                     <img src="{{ asset('img/buttons/delivery-030.png') }}" class="img-fluid" />
                 </a>
             </div>
