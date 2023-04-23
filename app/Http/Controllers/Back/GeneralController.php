@@ -94,6 +94,33 @@ class GeneralController extends Controller
 
     }
 
+    public function setCarId(Request $request){
+        if($request->valoare == "0"){
+            Setting::where('nume', "carId")->where('interval_id', 1)->update(array('valoare' => 1));
+            Setting::where('nume', "filtreazaDupaMasina")->where('interval_id', 1)->update(array('valoare' => 0));
+
+        }else{
+            Setting::where('nume', "carId")->where('interval_id', 1)->update(array('valoare' => $request->valoare));
+            Setting::where('nume', "filtreazaDupaMasina")->where('interval_id', 1)->update(array('valoare' => 1));
+
+        }
+
+    }
+
+    public function setUserId(Request $request){
+        if($request->valoare == "0"){
+            Setting::where('nume', "userId")->where('interval_id', 1)->update(array('valoare' => 1));
+            Setting::where('nume', "filtreazaDupaUtilizator")->where('interval_id', 1)->update(array('valoare' => 0));
+
+        }else{
+            Setting::where('nume', "userId")->where('interval_id', 1)->update(array('valoare' => $request->valoare));
+            Setting::where('nume', "filtreazaDupaUtilizator")->where('interval_id', 1)->update(array('valoare' => 1));
+
+        }
+
+    }
+
+  
     public function getMonthIntervals($month_id)
     {
         //returneaza toate intervalele lunii selectate

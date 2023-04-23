@@ -44,6 +44,8 @@ Route::middleware('auth')->group(function () {
             Route::post('/general/setMonthId', 'setMonthId')->name('general.setMonthId');
             Route::post('/general/setBrandId', 'setBrandId')->name('general.setBrandId');
             Route::post('/general/setDepartmentId', 'setDepartmentId')->name('general.setDepartmentId');
+            Route::post('/general/setCarId', 'setCarId')->name('general.setCarId');
+            Route::post('/general/setUserId', 'setUserId')->name('general.setUserId');
             Route::get('/general/getDatatablesHelp', 'getDatatablesHelp')->name('general.getDatatablesHelp');
         });
         /* ---------------------------------------- */

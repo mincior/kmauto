@@ -43,6 +43,16 @@ class SettingsTableSeeder extends Seeder
                     'interval_id' => 1,
                 ],
                 [
+                    'nume' => 'carId',
+                    'valoare' => '1',
+                    'interval_id' => 1,
+                ],
+                [
+                    'nume' => 'userId',
+                    'valoare' => '1',
+                    'interval_id' => 1,
+                ],
+                [
                     'nume' => 'brandId',
                     'valoare' => '1',
                     'interval_id' => 1,
@@ -67,9 +77,19 @@ class SettingsTableSeeder extends Seeder
                     'valoare' => '1',
                     'interval_id' => 1,
                 ],
+                [
+                    'nume' => 'filtreazaDupaMasina',
+                    'valoare' => '1',
+                    'interval_id' => 1,
+                ],
+                [
+                    'nume' => 'filtreazaDupaUtilizator',
+                    'valoare' => '1',
+                    'interval_id' => 1,
+                ],
                
             )            
-        )->count(8)->create();
+        )->count(12)->create();
         
                 
 
