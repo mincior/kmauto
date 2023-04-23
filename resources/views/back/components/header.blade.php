@@ -21,7 +21,7 @@ $mm = json_encode($months); //test pentru transmitere array catre javascript (JS
 ?>
 {{-- pune culoarea barei de navigare de sus in functie de luna si intervalul selectat. O luna daca este inchisa bara va fi rosie. Daca este deschisa 
     va fi verde daca intervalul este deschis si albastra daca nu.  --}}
-<nav class="navbar navbar-dark {{ $lunaCurentaEsteInchisa == 0 ? 'bg-success' : 'bg-danger' }} d-print-none"
+<nav class="navbar navbar-dark {{ $lunaCurentaEsteInchisa == 0 ? 'bg-success' : 'bg-danger' }}  d-print-none"
     id="my-nav-bar">
     <div class=" container-fluid" id="myli">
         {{-- left --}}

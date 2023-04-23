@@ -1,7 +1,7 @@
 <div class="card mb-3">
     <div class="card-header">
         <div class="row">
-            <div class="col">Your Company Name</div>
+            <div class="col">Consolight SRL</div>
             <div class=" col fs-5 text-end">
                 <i class="bi bi-camera-fill"></i>
             </div>
@@ -81,7 +81,7 @@
             </div>
 
             <div class="col text-end">
-                Your Company Name<br />4087 Johnstown Road<br />60606 Chicago</br>Illinois<br />U.S.A
+                Consolight SRL<br />1 Decembrie 1918 - 1<br />Bucuresti</br>Sector 3<br />Romania
             </div>
         </div>
     </div>

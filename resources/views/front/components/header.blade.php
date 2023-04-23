@@ -7,9 +7,9 @@
                 <i class="bi bi-facebook"></i>
             </a>
 
-            <a class="btn btn-lg btn-light me-1" href="https://www.yourcompany.com" target="_blank"
+            <a class="btn btn-lg btn-light me-1" href="https://consolight.ro/website/" target="_blank"
                 title="yourcompany.com" role="button" tabindex="-1">
-                <img src="{{ asset('img/logo/laravel-025.png') }}" alt="yourcompany.com">
+                <img src="{{ asset('img/logo/laravel-025.png') }}" alt="consolight.ro">
             </a>
         </div>
 

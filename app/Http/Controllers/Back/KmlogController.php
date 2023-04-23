@@ -30,13 +30,13 @@ class KmlogController extends Controller
         $datetime = new DateTime();
         $timezone = new DateTimeZone('Europe/Bucharest');
         $datetime->setTimezone($timezone);
-    //dd($datetime, $datetime->format('y-m-d H:i:s'));
+        //dd($datetime, $datetime->format('y-m-d H:i:s'));
 
 
-        if ($request->ajax()) {    
+        if ($request->ajax()) {
             //aici se aduc toti userii si masinile. Asocierea nu se face in index ci in create sau update    
             $kmlogs = Kmlog::with('stat', 'user', 'car', 'interval', 'department')->orderby('id', 'desc')->select(sprintf('%s.*', (new Kmlog)->getTable()))->get();
-            foreach($kmlogs as $kmlog){
+            foreach ($kmlogs as $kmlog) {
                 @$kmlog['month'] = Month::where('id', Interval::where('id', $kmlog->interval_id)->first()->month_id)->first()->anul_luna;
             }
 
@@ -72,18 +72,17 @@ class KmlogController extends Controller
      */
     public function createThumbnail($path, $width, $height)
     {
-        try{
-        $img = @Image::make($path)->resize($width, $height, function ($constraint) {
-            $constraint->aspectRatio();
-        });
-            $img->save($path);  
-        }catch(Exception $e){
-
+        try {
+            $img = @Image::make($path)->resize($width, $height, function ($constraint) {
+                $constraint->aspectRatio();
+            });
+            $img->save($path);
+        } catch (Exception $e) {
         }
     }
 
 
-    
+
 
     public function store(KmlogStoreRequest $request)
     {
@@ -95,8 +94,8 @@ class KmlogController extends Controller
         $data = $request->all();
         $data['interval_id'] =  config('global.selected_interval');
         $data['ordine'] = 1;
-        $data['created_at']= $datetime->format('y-m-d H:i:s');
-        $data['updated_at']= $datetime->format('y-m-d H:i:s');
+        $data['created_at'] = $datetime->format('y-m-d H:i:s');
+        $data['updated_at'] = $datetime->format('y-m-d H:i:s');
 
 
         // $department = Department::where('id', $data['department_id'])->first()->name;
@@ -104,51 +103,51 @@ class KmlogController extends Controller
         $car = Car::where('id', $data['car_id'])->first()->numar;
         $interval = Interval::where('id', $selectedInterval)->first()->interval;
         $luna = Month::where('id', Interval::where('id', $selectedInterval)->first()->month_id)->first()->anul_luna;
-        $image_path = '/' . $car . ' - ' . $user  . "/" . $luna .  "/" . $interval ;
-        
-        if($request->file('picture')->getClientOriginalName()) {
-                    //pregateste calea pentru poze
+        $image_path = '/' . $car . ' - ' . $user  . "/" . $luna .  "/" . $interval;
+
+        if ($request->file('picture')->getClientOriginalName()) {
+            //pregateste calea pentru poze
             //get filename with extension
             $filenamewithextension = $request->file('picture')->getClientOriginalName();
-     
+
             //get filename without extension
             $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
-     
+
             //get file extension
             $extension = $request->file('picture')->getClientOriginalExtension();
-     
+
             $time = time();
-     
+
             //filename to store
-            $filenametostore = $filename.'_'.$time.'.'.$extension;
-     
+            $filenametostore = $filename . '_' . $time . '.' . $extension;
+
             //small thumbnail name
-            $smallthumbnail = $filename.'_small_'.$time.'.'.$extension;
-     
+            $smallthumbnail = $filename . '_small_' . $time . '.' . $extension;
+
             //medium thumbnail name
-            $mediumthumbnail = $filename.'_medium_'.$time.'.'.$extension;
-     
+            $mediumthumbnail = $filename . '_medium_' . $time . '.' . $extension;
+
             //large thumbnail name
-            $largethumbnail = $filename.'_large_'.$time.'.'.$extension;
-     
+            $largethumbnail = $filename . '_large_' . $time . '.' . $extension;
+
             //Upload File
-            $request->file('picture')->storeAs('public/pictures'. $image_path, $filenametostore);
-            $request->file('picture')->storeAs('public/pictures/thumbnail'. $image_path, $smallthumbnail);
-            $request->file('picture')->storeAs('public/pictures/thumbnail'. $image_path, $mediumthumbnail);
-            $request->file('picture')->storeAs('public/pictures/thumbnail'. $image_path, $largethumbnail);
-            
-            $filenametostorepath =  public_path('storage/pictures'. $image_path . '/' . $filenametostore);
+            $request->file('picture')->storeAs('public/pictures' . $image_path, $filenametostore);
+            $request->file('picture')->storeAs('public/pictures/thumbnail' . $image_path, $smallthumbnail);
+            $request->file('picture')->storeAs('public/pictures/thumbnail' . $image_path, $mediumthumbnail);
+            $request->file('picture')->storeAs('public/pictures/thumbnail' . $image_path, $largethumbnail);
+
+            $filenametostorepath =  public_path('storage/pictures' . $image_path . '/' . $filenametostore);
             $this->createThumbnail($filenametostorepath, 1020, 760);
             //create small thumbnail
-            $smallthumbnailpath = public_path('storage/pictures/thumbnail'. $image_path . '/' . $smallthumbnail);
+            $smallthumbnailpath = public_path('storage/pictures/thumbnail' . $image_path . '/' . $smallthumbnail);
             $this->createThumbnail($smallthumbnailpath, 150, 93);
-     
+
             //create medium thumbnail
-            $mediumthumbnailpath = public_path('storage/pictures/thumbnail'. $image_path . '/' . $mediumthumbnail);
+            $mediumthumbnailpath = public_path('storage/pictures/thumbnail' . $image_path . '/' . $mediumthumbnail);
             $this->createThumbnail($mediumthumbnailpath, 300, 185);
-     
+
             //create large thumbnail
-            $largethumbnailpath = public_path('storage/pictures/thumbnail'. $image_path . '/' . $largethumbnail);
+            $largethumbnailpath = public_path('storage/pictures/thumbnail' . $image_path . '/' . $largethumbnail);
             $this->createThumbnail($largethumbnailpath, 550, 340);
             $data['picture'] =   $image_path  . "/" . $filenametostore;
         }
@@ -156,7 +155,7 @@ class KmlogController extends Controller
         // @mkdir($image_path , 0777, true);
         // $image_name = $car . ' - ' . $user  . "_" . time() . "." . $request->picture->extension();
         // $request->picture->move("/storage/pictures/thumbnail".$image_path, $image_name);
-        
+
         $kmlog = Kmlog::create($data);
 
         $notification = [
@@ -178,24 +177,25 @@ class KmlogController extends Controller
         $stat_name = Stat::where('id', $kmlog->stat_id)->first()->name;
         $luna = Month::where('id', Interval::where('id', $selectedInterval)->first()->month_id)->first()->anul_luna;
         $interval = Interval::where('id', $selectedInterval)->first()->interval;
-        $image_path = '/' . $car_numar . ' - ' . $user_name  . "/" . $luna .  "/" . $interval ;
+        $image_path = '/' . $car_numar . ' - ' . $user_name  . "/" . $luna .  "/" . $interval;
 
         return view('back.kmlogs.show', compact('kmlog'))
-        ->with('department_name', $department_name)
-        ->with('user_name', $user_name)
-        ->with('car_numar', $car_numar)
-        ->with('stat_name', $stat_name)
-        ->with('image_path', $image_path)
-        ;
+            ->with('department_name', $department_name)
+            ->with('user_name', $user_name)
+            ->with('car_numar', $car_numar)
+            ->with('stat_name', $stat_name)
+            ->with('image_path', $image_path);
     }
 
     public function edit(Kmlog $kmlog)
     {
+        $departments = Department::get();
+
         $department_name = Department::where('id', $kmlog->department_id)->first()->name;
         $users = DepartmentController::getUsers($kmlog->department_id);
         $cars = DepartmentController::getCars($kmlog->department_id);
         $stats = Stat::get();
-        return view('back.kmlogs.edit', compact('kmlog', 'users', 'cars', 'stats'))->with('department_name', $department_name);
+        return view('back.kmlogs.edit', compact('kmlog', 'users', 'cars', 'stats', 'departments'))->with('department_name', $department_name);
     }
 
     public function update(KmlogUpdateRequest $request, Kmlog $kmlog)
@@ -209,60 +209,61 @@ class KmlogController extends Controller
 
         $data['interval_id'] =  $selectedInterval;
         $data['ordine'] = 1;
-        $data['updated_at']= $datetime->format('y-m-d H:i:s');
+        $data['updated_at'] = $datetime->format('y-m-d H:i:s');
         $user = User::where('id', $data['user_id'])->first()->name;
         $car = Car::where('id', $data['car_id'])->first()->numar;
         $interval = Interval::where('id', $selectedInterval)->first()->interval;
         $luna = Month::where('id', Interval::where('id', $selectedInterval)->first()->month_id)->first()->anul_luna;
-        $image_path = '/' . $car . ' - ' . $user  . "/" . $luna .  "/" . $interval ;
-        
-        if($request->file('picture')->getClientOriginalName()) {
-                    //pregateste calea pentru poze
-            //get filename with extension
-            $filenamewithextension = $request->file('picture')->getClientOriginalName();
-     
-            //get filename without extension
-            $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
-     
-            //get file extension
-            $extension = $request->file('picture')->getClientOriginalExtension();
-     
-            $time = time();
-     
-            //filename to store
-            $filenametostore = $filename.'_'.$time.'.'.$extension;
-     
-            //small thumbnail name
-            $smallthumbnail = $filename.'_small_'.$time.'.'.$extension;
-     
-            //medium thumbnail name
-            $mediumthumbnail = $filename.'_medium_'.$time.'.'.$extension;
-     
-            //large thumbnail name
-            $largethumbnail = $filename.'_large_'.$time.'.'.$extension;
-     
-            //Upload File
-            $request->file('picture')->storeAs('public/pictures'. $image_path, $filenametostore);
-            $request->file('picture')->storeAs('public/pictures/thumbnail'. $image_path, $smallthumbnail);
-            $request->file('picture')->storeAs('public/pictures/thumbnail'. $image_path, $mediumthumbnail);
-            $request->file('picture')->storeAs('public/pictures/thumbnail'. $image_path, $largethumbnail);
-            
-            $filenametostorepath =  public_path('storage/pictures'. $image_path . '/' . $filenametostore);
-            $this->createThumbnail($filenametostorepath, 1020, 760);
-            //create small thumbnail
-            $smallthumbnailpath = public_path('storage/pictures/thumbnail'. $image_path . '/' . $smallthumbnail);
-            $this->createThumbnail($smallthumbnailpath, 150, 93);
-     
-            //create medium thumbnail
-            $mediumthumbnailpath = public_path('storage/pictures/thumbnail'. $image_path . '/' . $mediumthumbnail);
-            $this->createThumbnail($mediumthumbnailpath, 300, 185);
-     
-            //create large thumbnail
-            $largethumbnailpath = public_path('storage/pictures/thumbnail'. $image_path . '/' . $largethumbnail);
-            $this->createThumbnail($largethumbnailpath, 550, 340);
-            $data['picture'] =   $image_path  . "/" . $filenametostore;
-        }
+        $image_path = '/' . $car . ' - ' . $user  . "/" . $luna .  "/" . $interval;
 
+        if ($request->picture) {
+            if ($request->file('picture')->getClientOriginalName()) {
+                //pregateste calea pentru poze
+                //get filename with extension
+                $filenamewithextension = $request->file('picture')->getClientOriginalName();
+
+                //get filename without extension
+                $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
+
+                //get file extension
+                $extension = $request->file('picture')->getClientOriginalExtension();
+
+                $time = time();
+
+                //filename to store
+                $filenametostore = $filename . '_' . $time . '.' . $extension;
+
+                //small thumbnail name
+                $smallthumbnail = $filename . '_small_' . $time . '.' . $extension;
+
+                //medium thumbnail name
+                $mediumthumbnail = $filename . '_medium_' . $time . '.' . $extension;
+
+                //large thumbnail name
+                $largethumbnail = $filename . '_large_' . $time . '.' . $extension;
+
+                //Upload File
+                $request->file('picture')->storeAs('public/pictures' . $image_path, $filenametostore);
+                $request->file('picture')->storeAs('public/pictures/thumbnail' . $image_path, $smallthumbnail);
+                $request->file('picture')->storeAs('public/pictures/thumbnail' . $image_path, $mediumthumbnail);
+                $request->file('picture')->storeAs('public/pictures/thumbnail' . $image_path, $largethumbnail);
+
+                $filenametostorepath =  public_path('storage/pictures' . $image_path . '/' . $filenametostore);
+                $this->createThumbnail($filenametostorepath, 1020, 760);
+                //create small thumbnail
+                $smallthumbnailpath = public_path('storage/pictures/thumbnail' . $image_path . '/' . $smallthumbnail);
+                $this->createThumbnail($smallthumbnailpath, 150, 93);
+
+                //create medium thumbnail
+                $mediumthumbnailpath = public_path('storage/pictures/thumbnail' . $image_path . '/' . $mediumthumbnail);
+                $this->createThumbnail($mediumthumbnailpath, 300, 185);
+
+                //create large thumbnail
+                $largethumbnailpath = public_path('storage/pictures/thumbnail' . $image_path . '/' . $largethumbnail);
+                $this->createThumbnail($largethumbnailpath, 550, 340);
+                $data['picture'] =   $image_path  . "/" . $filenametostore;
+            }
+        }
         $kmlog->update($data);
 
         $notification = [

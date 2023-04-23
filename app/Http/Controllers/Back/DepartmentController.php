@@ -62,8 +62,7 @@ class DepartmentController extends Controller
 
     public function store(DepartmentStoreRequest $request)
     {
-        $department = Department::create($request->all());
-
+        Department::create($request->all());
         $notification = [
             "type" => "success",
             "title" => 'Add ...',

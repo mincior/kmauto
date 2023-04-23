@@ -48,16 +48,16 @@
     <div class="card-footer">
         <div class="row ">
             <div class="col small">
-                <a href="https://www.yourcompany.com" target="_blank">www.yourcompany.com</a>
+                <a href="https://consolight.ro/website/" target="_blank">www.consolight.ro</a>
             </div>
 
             <div class="col small text-end d-none d-md-block">
-                Phone : +1 730 847-416-2143<br />
-                Mobile : +1 730 773-672-7009
+                Phone : company phone here<br />
+                Mobile : company mobile here
             </div>
 
             <div class="col text-end">
-                Your Company Name<br />4087 Johnstown Road<br />60606 Chicago</br>Illinois<br />U.S.A
+                Consolight SRL<br />1 Dec 1918 - 1<br />Bucuresti</br>Sector 3<br />Romania
             </div>
         </div>
     </div>

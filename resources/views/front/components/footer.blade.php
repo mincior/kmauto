@@ -21,7 +21,7 @@
         </div>
 
         <div class="col-sm small d-none d-md-block text-end">
-            &copy; {{ now()->year }} Your company name
+            &copy; {{ now()->year }} Consolight SRL
         </div>
     </div>
 </div>

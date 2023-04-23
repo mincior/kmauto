@@ -76,6 +76,22 @@
                         </div>
 
                         <div class="row mb-2">
+                            <label for="department_id" class="col-md-2 col-form-label">Filiala</label>
+    
+                            <div class="col-md-4">
+                                <select name="department_id" id="department_select" data-deptid="1" data-userid="1"  data-carid="1"  class="form-select">
+                                    <option value="">Alege ...</option>
+                                    @foreach ($departments as $department)
+                                        <option {{(old('department_id') ? old('department_id') == $department->id : $kmlog->department_id == $department->id) ? 'selected' : ''}} value="{{ $department->id }}">{{ $department->name }}</option>
+                                    @endforeach
+                                </select>
+                                @error('department_id')
+                                <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="row mb-2">
                             <label for="car_id" class="col-md-2 col-form-label">Masina</label>
 
                             <div class="col-md-4">
@@ -156,6 +172,7 @@
 @endsection
 
 @section('scripts')
+    <script src="{{ asset('js/me/get_department_cars_and_users.js') }}"></script>
     <script>
         jQuery(document).ready(function($) {
             $('#name').focus();
