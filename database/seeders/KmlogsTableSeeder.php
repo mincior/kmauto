@@ -48,8 +48,8 @@ class KmlogsTableSeeder extends Seeder
                     'observatii' => "Nu sunt",
                     'ordine' => "1",
                     'interval_id' => "4",
-                    'user_id' => "1",
-                    'car_id' => "1",
+                    'user_id' => "5",
+                    'car_id' => "134",
                     'stat_id' => "1",
                     'department_id' => "1",
                     'created_at' => "2023-04-01 16:17:29",
@@ -62,8 +62,8 @@ class KmlogsTableSeeder extends Seeder
                     'observatii' => "Nu sunt",
                     'ordine' => "3",
                     'interval_id' => "1",
-                    'user_id' => "1",
-                    'car_id' => "1",
+                    'user_id' => "17",
+                    'car_id' => "73",
                     'stat_id' => "1",
                     'department_id' => "1",
                     'created_at' => "2023-03-01 13:14:23",
@@ -76,8 +76,8 @@ class KmlogsTableSeeder extends Seeder
                     'observatii' => "Nu sunt",
                     'ordine' => "5",
                     'interval_id' => "11",
-                    'user_id' => "1",
-                    'car_id' => "1",
+                    'user_id' => "121",
+                    'car_id' => "59",
                     'stat_id' => "1",
                     'department_id' => "1",
                     'created_at' => "2023-04-01 13:16:23",
@@ -90,8 +90,23 @@ class KmlogsTableSeeder extends Seeder
                     'observatii' => "Nu sunt",
                     'ordine' => "4",
                     'interval_id' => "14",
-                    'user_id' => "1",
-                    'car_id' => "1",
+                    'user_id' => "48",
+                    'car_id' => "46",
+                    'stat_id' => "1",
+                    'department_id' => "1",
+                    'created_at' => "2023-04-01 11:12:23",
+                    'updated_at' => "2023-04-01 11:11:23",
+                ],
+                
+                [
+                    'id' => "6",
+                    'km' => 123, 
+                    'picture' => "Adauga aici o poza",
+                    'observatii' => "Nu sunt",
+                    'ordine' => "9",
+                    'interval_id' => "1",
+                    'user_id' => "55",
+                    'car_id' => "44",
                     'stat_id' => "1",
                     'department_id' => "1",
                     'created_at' => "2023-04-01 11:12:23",
@@ -99,7 +114,7 @@ class KmlogsTableSeeder extends Seeder
                 ],
                 
             )            
-        )->count(5)->create();
+        )->count(6)->create();
         
                 
 

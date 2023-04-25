@@ -46,6 +46,8 @@ Route::middleware('auth')->group(function () {
             Route::post('/general/setDepartmentId', 'setDepartmentId')->name('general.setDepartmentId');
             Route::post('/general/setCarId', 'setCarId')->name('general.setCarId');
             Route::post('/general/setUserId', 'setUserId')->name('general.setUserId');
+            // Route::post('/general/FiltreazaDupaMasina', 'FiltreazaDupaMasina')->name('general.FiltreazaDupaMasina');
+            // Route::post('/general/FiltreazaDupaUtilizator', 'FiltreazaDupaUtilizator')->name('general.FiltreazaDupaUtilizator');
             Route::get('/general/getDatatablesHelp', 'getDatatablesHelp')->name('general.getDatatablesHelp');
         });
         /* ---------------------------------------- */
