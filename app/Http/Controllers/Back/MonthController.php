@@ -141,6 +141,10 @@ class MonthController extends Controller
                 $data_intervale['month_id'] = $month->id;
                 Interval::create($data_intervale);
             }
+            //la final pune toata luna in intervalul 'Toate'
+            $toate_inceput = Interval::where('month_id', $month->id)->orderby('id', 'asc')->first()->data_inceput;
+            $toate_sfarsit = Interval::where('month_id', $month->id)->orderby('id', 'desc')->first()->data_sfarsit;
+            Interval::create(['data_inceput' => $toate_inceput, 'data_sfarsit' => $toate_sfarsit, 'interval' => 'Toate', 'month_id' => $month->id]);
         }
     }
 

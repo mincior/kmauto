@@ -219,7 +219,7 @@ $(function () {
 					}
 				});
 			} else {
-				bootbox.alert('Nu puteti sterge o luna inchisa');
+				bootbox.alert('Nu puteti sterge o luna inchisa sau ati selectat mai mult de o luna.');
 			}
 		}
 	}

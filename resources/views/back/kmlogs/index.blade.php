@@ -9,6 +9,9 @@ $arr_cars_with_car_activ = @array_keys(\App\MyHelpers\AppHelper::get_last_target
 $arr_users_with_user_activ = @array_keys(\App\MyHelpers\AppHelper::get_last_target_values_array('user_id', 'id', 'availableusers', $selectedInterval, 'valoare = 1'));
 $cars = \App\Models\Car::whereIn('id', $arr_cars_with_car_activ)->get();
 $users = \App\Models\User::whereIn('id', $arr_users_with_user_activ)->get();
+$selected_user_id = \App\Models\Setting::where('nume', "userId")->where('interval_id', 1)->first()->valoare;
+$selected_car_id =  \App\Models\Setting::where('nume', "carId")->where('interval_id', 1)->first()->valoare;
+
 //dd($arr_cars_with_car_activ, $arr_users_with_user_activ );
 ?>
 @section('content')
@@ -22,7 +25,7 @@ $users = \App\Models\User::whereIn('id', $arr_users_with_user_activ)->get();
                         <select name="car_id" id="car_select" data-deptid="1" data-userid="1" class="form-select">
                             <option value="0">Alege masina...</option>
                             @foreach ($cars as $car)
-                                <option value="{{ $car['id'] }}">{{ $car['numar'] }}</option>
+                                <option {{($car->id == $selected_car_id) ? 'selected' : ''}} value="{{ $car->id }}">{{ $car['numar'] }}</option>
                             @endforeach
                         </select>
                         @error('car_id')
@@ -33,7 +36,7 @@ $users = \App\Models\User::whereIn('id', $arr_users_with_user_activ)->get();
                         <select name="user_id" id="user_select" data-deptid="1" data-userid="1" class="form-select">
                             <option value="0">Alege utilizatorul...</option>
                             @foreach ($users as $user)
-                                <option value="{{ $user['id'] }}">{{ $user['name'] }}</option>
+                                <option  {{($user->id == $selected_user_id) ? 'selected' : ''}} value="{{ $user->id }}">{{ $user['name'] }}</option>
                             @endforeach
                         </select>
                         @error('user_id')
@@ -357,33 +360,37 @@ $users = \App\Models\User::whereIn('id', $arr_users_with_user_activ)->get();
         $('#car_select').change(function() {
             var car_id = $(this).find(":selected").val();
             let set_car_id_url = '/back/general/setCarId';
-            $.ajax({
-                method: 'POST',
-                url: set_car_id_url,
-                data: {
-                    valoare: car_id
-                },
-                success: function(response) {
-                    $('#sqltable').DataTable().draw();
-                    // $('#user_select option[value="'+response+'"]').prop('selected', 'selected').change();
-                }
-            });
+            if (car_id > 0) {
+                $.ajax({
+                    method: 'POST',
+                    url: set_car_id_url,
+                    data: {
+                        valoare: car_id
+                    },
+                    success: function(response) {
+                        $('#sqltable').DataTable().draw();
+                        $('#user_select option[value="0"]').prop('selected', 'selected').change();
+                    }
+                });
+            }
         });
 
         $('#user_select').change(function() {
             var user_id = $(this).find(":selected").val();
             let set_user_id_url = '/back/general/setUserId';
-            $.ajax({
-                method: 'POST',
-                url: set_user_id_url,
-                data: {
-                    valoare: user_id
-                },
-                success: function(response) {
-                    $('#sqltable').DataTable().draw();
-                    // $('#car_select option[value="'+response+'"]').prop('selected', 'selected').change();
-                }
-            });
+            if (user_id > 0) {
+                $.ajax({
+                    method: 'POST',
+                    url: set_user_id_url,
+                    data: {
+                        valoare: user_id
+                    },
+                    success: function(response) {
+                        $('#sqltable').DataTable().draw();
+                        $('#car_select option[value="0"]').prop('selected', 'selected').change();
+                    }
+                });
+            }
         });
     </script>
 @endsection

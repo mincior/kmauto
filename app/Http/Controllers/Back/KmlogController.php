@@ -38,17 +38,15 @@ class KmlogController extends Controller
         if ($request->ajax()) {
             $selectedInterval = config('global.selected_interval');
             $user_id = Setting::where('nume', 'userId')->where('interval_id', 1)->first()->valoare;
-            $filtreazaDupaUtilizator = Setting::where('nume', 'filtreazaDupaUtilizator')->where('interval_id', 1)->first()->valoare;
             $car_id = Setting::where('nume', 'carId')->where('interval_id', 1)->first()->valoare;
-            $filtreazaDupaMasina = Setting::where('nume', 'filtreazaDupaMasina')->where('interval_id', 1)->first()->valoare;
             //aici se aduc toti userii si masinile. Asocierea nu se face in index ci in create sau update    
             $kmlogs = Kmlog::with('stat', 'user', 'car', 'interval', 'department')->orderby('id', 'desc')->select(sprintf('%s.*', (new Kmlog)->getTable()))->get();
             foreach ($kmlogs as $key=>$kmlog) {
                 @$kmlog['month'] = Month::where('id', Interval::where('id', $kmlog->interval_id)->first()->month_id)->first();
-                if(@$kmlog->user_id != $user_id && $filtreazaDupaUtilizator == 1){
+                if(@$kmlog->user_id != $user_id && $user_id>0){
                     unset($kmlogs[$key]);
                 }
-                if(@$kmlog->car_id != $car_id && $filtreazaDupaMasina == 1){
+                if(@$kmlog->car_id != $car_id && $car_id>0){
                     unset($kmlogs[$key]);
                 }
             }

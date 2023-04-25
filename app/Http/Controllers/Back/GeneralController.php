@@ -92,23 +92,7 @@ class GeneralController extends Controller
         }
     }
 
-    // public function FiltreazaDupaMasina(Request $request)
-    // {
-    //     Setting::where('nume', "filtreazaDupaMasina")->where('interval_id', 1)->update(array('valoare' => 1));
-    //     Setting::where('nume', "filtreazaDupaUtilizator")->where('interval_id', 1)->update(array('valoare' => 0));
-    // }
-
-    // public function FiltreazaDupaUtilizator(Request $request)
-    // {
-    //     Setting::where('nume', "filtreazaDupaUtilizator")->where('interval_id', 1)->update(array('valoare' => 1));
-    //     Setting::where('nume', "filtreazaDupaMasina")->where('interval_id', 1)->update(array('valoare' => 0));
-    // }
-
     /**
-     * Pune in tabelul settings id-ul masinii selectate(selectia nu conteaza din ce pagina vine)
-     * Seteaza filtreazaDupaMasina = 1 si filtreazaDupaUtilizator = 0 daca car_id este mai mare ca zero
-     * Seteaza filtreazaDupaMasina = 0 daca car_id este egal cu zero iar $car_id se pune 0.
-     * Returneaza id-ul utilizatorului asociat masinii pentru a fi afisat undeva
      * @param Request $request
      * @return void
      */
@@ -117,13 +101,11 @@ class GeneralController extends Controller
         $selectedInterval = config('global.selected_interval');
 
         if ($request->valoare == "0") {
-            Setting::where('nume', "carId")->where('interval_id', 1)->update(array('valoare' => 1));
-            Setting::where('nume', "filtreazaDupaMasina")->where('interval_id', 1)->update(array('valoare' => 0));
+            Setting::where('nume', "carId")->where('interval_id', 1)->update(array('valoare' => 0));
             $car_id = 0;
         } else {
             Setting::where('nume', "carId")->where('interval_id', 1)->update(array('valoare' => $request->valoare));
-            Setting::where('nume', "filtreazaDupaMasina")->where('interval_id', 1)->update(array('valoare' => 1));
-            Setting::where('nume', "filtreazaDupaUtilizator")->where('interval_id', 1)->update(array('valoare' => 0));
+            Setting::where('nume', "userId")->where('interval_id', 1)->update(array('valoare' => 0));
             $car_id = $request->valoare;
         }
         $user_id = @UserCar::where('car_id', $car_id)->where('interval_id', '<=', $selectedInterval)->orderby('interval_id', 'desc')->first()->user_id;
@@ -131,10 +113,6 @@ class GeneralController extends Controller
     }
 
     /**
-     * Pune in tabelul settings id-ul utilizatorului selectat(selectia nu conteaza din ce pagina vine)
-     * Seteaza filtreazaDupaUtilizator = 1 si filtreazaDupaMasina = 0 daca car_id este mai mare ca zero
-     * Seteaza filtreazaDupaUtilizator = 0 daca car_id este egal cu zero iar $user_id se pune 0.
-     * Returneaza id-ul masinii asociate utilizatorului pentru a fi afisat undeva
      *
      * @param Request $request
      * @return void
@@ -144,13 +122,11 @@ class GeneralController extends Controller
         $selectedInterval = config('global.selected_interval');
 
         if ($request->valoare == "0") {
-            Setting::where('nume', "userId")->where('interval_id', 1)->update(array('valoare' => 1));
-            Setting::where('nume', "filtreazaDupaUtilizator")->where('interval_id', 1)->update(array('valoare' => 0));
+            Setting::where('nume', "userId")->where('interval_id', 1)->update(array('valoare' => 0));
             $user_id = 0;
         } else {
             Setting::where('nume', "userId")->where('interval_id', 1)->update(array('valoare' => $request->valoare));
-            Setting::where('nume', "filtreazaDupaUtilizator")->where('interval_id', 1)->update(array('valoare' => 1));
-            Setting::where('nume', "filtreazaDupaMasina")->where('interval_id', 1)->update(array('valoare' => 0));
+            Setting::where('nume', "carId")->where('interval_id', 1)->update(array('valoare' => 0));
             $user_id = $request->valoare;
         }
         $car_id = @UserCar::where('user_id', $user_id)->where('interval_id', '<=', $selectedInterval)->orderby('interval_id', 'desc')->first()->car_id;
