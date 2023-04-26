@@ -102,6 +102,49 @@ $(function () {
 		}
 	}
 	dtButtonsCenter.push(inchideDeschideLuna)
+	        // let carCreateButton = {
+            //     className: 'btn-success',
+            //     text: '<i class="bi bi-car-front-fill"></i>',
+            //     enabled: true,
+            //     url: "{{ route('back.general.FiltreazaDupaMasina') }}",
+
+            //     action: function(e, dt, node, config) {
+            //         $.ajax({
+            //             method: 'POST',
+            //             url: config.url,
+            //             data: {
+            //                 seteaza: 1
+            //             },
+            //             success: function(response) {
+            //                 oTable.draw();
+            //             }
+            //         })
+            //     }
+            // }
+            // dtButtonsLeft1.push(carCreateButton)
+
+            // let userCreateButton = {
+            //     className: 'btn-success',
+            //     text: '<i class="bi bi-person-fill"></i>',
+            //     enabled: true,
+            //     url: "{{ route('back.general.FiltreazaDupaUtilizator') }}",
+
+            //     action: function(e, dt, node, config) {
+            //         $.ajax({
+            //             method: 'POST',
+            //             url: config.url,
+            //             data: {
+            //                 seteaza: 1
+            //             },
+            //             success: function(response) {
+            //                 oTable.draw();
+            //             }
+            //         })
+            //     }
+            // }
+            // dtButtonsLeft1.push(userCreateButton)
+
+            
 	// let months_create_url = '/back/months/create'
 	// let monthCreateButton = {
 	// 	className: 'btn-success',

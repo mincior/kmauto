@@ -6,13 +6,15 @@
 
 @section('content')
     <?php
+    //dd($car_id, $user_id, $department_id);
     if(old('department_id')){
         $users = @\App\Http\Controllers\Back\DepartmentController::getUsers(old('department_id'));
         $cars = @\App\Http\Controllers\Back\DepartmentController::getCars(old('department_id'));
     }else{
-        
+        $users = @\App\Http\Controllers\Back\DepartmentController::getUsers($department_id);
+        $cars = @\App\Http\Controllers\Back\DepartmentController::getCars($department_id);
     }
-
+//  dd($cars);
     ?>
     <form id="myForm" method="POST" action="{{ route('back.kmlogs.store') }}" enctype="multipart/form-data">
         @csrf
@@ -51,7 +53,7 @@
                                 <select name="stat_id" id="stat_select" data-deptid="1" data-userid="1"  data-carid="1"  class="form-select">
                                     <option value="">Alege ...</option>
                                     @foreach ($stats as $stat)
-                                        <option {{ old('stat_id') ==  $stat['id']  ? "selected" : "" }}  value="{{ $stat['id'] }}">{{ $stat['name'] }}</option>
+                                        <option {{ old('stat_id') ==  $stat->id  ? "selected" : "" }}  value="{{ $stat->id }}">{{ $stat['name'] }}</option>
                                     @endforeach
                                 </select>
                                 @error('stat_id')
@@ -99,9 +101,20 @@
                             <div class="col-md-4">
                                 <select name="department_id" id="department_select" data-deptid="1" data-userid="1"  data-carid="1"  class="form-select">
                                     <option value="">Alege ...</option>
-                                    @foreach ($departments as $department)
-                                        <option {{ old('department_id') ==  $department['id']  ? "selected" : "" }}  value="{{ $department['id'] }}">{{ $department['name'] }}</option>
-                                    @endforeach
+                                    @if($departments){
+                                        @if (old('department_id')){
+                                            @foreach ($departments as $department)
+                                                <option {{ old('department_id') ==  $department->id  ? "selected" : "" }}  value="{{ $department->id }}">{{ $department['name'] }}</option>
+                                            @endforeach
+                                        }
+                                        @else{
+                                            @foreach ($departments as $department)
+                                                <option {{ $department_id ==  $department->id  ? "selected" : "" }}  value="{{ $department->id }}">{{ $department['name'] }}</option>
+                                            @endforeach
+                                        }
+                                        @endif
+                                    }
+                                    @endif
                                 </select>
                                 @error('department_id')
                                 <span class="invalid-feedback" role="alert">{{ $message }}</span>
@@ -115,10 +128,18 @@
                             <div class="col-md-4">
                                 <select name="car_id" id="car_select" data-deptid="1" data-userid="1"  class="form-select">
                                     <option value="">Alege ...</option>
-                                    @if (old('department_id')){
-                                        @foreach ($cars as $car)
-                                            <option {{ old('car_id') ==  $car['id']  ? "selected" : "" }}  value="{{ $car['id'] }}">{{ $car['name'] }}</option>
-                                        @endforeach
+                                    @if($cars){
+                                        @if (old('car_id')){
+                                            @foreach ($cars as $car)
+                                                <option {{ old('car_id') ==  $car->id  ? "selected" : "" }}  value="{{ $car->id }}">{{ $car['numar'] }}</option>
+                                            @endforeach
+                                        }
+                                        @else{
+                                            @foreach ($cars as $car)
+                                                <option {{ $car_id ==  $car->id  ? "selected" : "" }}  value="{{ $car->id }}">{{ $car['numar'] }}</option>
+                                            @endforeach
+                                        }
+                                        @endif
                                     }
                                     @endif
                                 </select>
@@ -134,10 +155,18 @@
                             <div class="col-md-4">
                                 <select name="user_id" id="user_select" data-deptid="1" data-userid="1"  class="form-select">
                                     <option value="">Alege ...</option>
-                                    @if (old('department_id')){
-                                        @foreach ($users as $user)
-                                            <option {{ old('user_id') ==  $user['id']  ? "selected" : "" }}  value="{{ $user['id'] }}">{{ $user['name'] }}</option>
-                                        @endforeach
+                                    @if($users){
+                                        @if (old('user_id')){
+                                            @foreach ($users as $user)
+                                                <option {{ old('user_id') ==  $user->id  ? "selected" : "" }}  value="{{ $user->id }}">{{ $user['name'] }}</option>
+                                            @endforeach
+                                        }
+                                        @else{
+                                            @foreach ($users as $user)
+                                                <option {{ $user_id ==  $user->id  ? "selected" : "" }}  value="{{ $user->id }}">{{ $user['name'] }}</option>
+                                            @endforeach
+                                        }
+                                        @endif
                                     }
                                     @endif
                                 </select>

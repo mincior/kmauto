@@ -11,9 +11,12 @@ use App\Models\Type;
 use App\Models\User;
 use App\Models\Kmlog;
 use App\Models\Month;
+use App\Models\CarDep;
 use DateTimeImmutable;
 use DateTimeInterface;
 use App\Models\Setting;
+use App\Models\UserCar;
+use App\Models\UserDep;
 use App\Models\Interval;
 use App\Models\Department;
 use App\MyHelpers\AppHelper;
@@ -34,11 +37,9 @@ class KmlogController extends Controller
         $datetime->setTimezone($timezone);
 
         if ($request->ajax()) {
-            $selected_interval_id = \App\MyHelpers\AppHelper::getSelectedInterval()->id; 
-            $selected_interval_interval = \App\MyHelpers\AppHelper::getSelectedInterval()->interval; 
-            if($selected_interval_interval == 'Toate' ){
-                $arr_ids = \App\MyHelpers\AppHelper::getSelectedToateIntervalIds($selected_interval_id);
-            }
+            //in $selected_interval exista un array numit 'arr_ids' doar daca intervalul selectat este de tip Toate
+            $selected_interval = \App\MyHelpers\AppHelper::getSelectedInterval();
+            $selected_interval_id = $selected_interval->id;
             $selected_user_id = Setting::where('nume', 'userId')->where('interval_id', 1)->first()->valoare;
             $selected_car_id = Setting::where('nume', 'carId')->where('interval_id', 1)->first()->valoare;
             $filtreaza_dupa_interval = Setting::where('nume', 'filtreazaDupaInterval')->where('interval_id', 1)->first()->valoare;
@@ -52,16 +53,14 @@ class KmlogController extends Controller
                 if ($selected_car_id > 0 && $kmlog->car_id != $selected_car_id) {
                     unset($kmlogs[$key]);
                 }
-                if($selected_interval_interval == 'Toate'){
-                    if ($filtreaza_dupa_interval = 1 && !in_array($kmlog->interval_id, $arr_ids)) {
+                if ($selected_interval->arr_ids) {
+                    if ($filtreaza_dupa_interval = 1 && !in_array($kmlog->interval_id, $selected_interval->arr_ids)) {
                         unset($kmlogs[$key]);
                     }
-
-                }else{
+                } else {
                     if ($filtreaza_dupa_interval = 1 && $kmlog->interval_id != $selected_interval_id) {
                         unset($kmlogs[$key]);
                     }
-
                 }
             }
             return DataTables::of($kmlogs)
@@ -73,13 +72,32 @@ class KmlogController extends Controller
         return view('back.kmlogs.index');
     }
 
-    public function create(Request $request)
+    public function create()
     {
-        dd($request->all());
+        $selected_user_id = Setting::where('nume', 'userId')->where('interval_id', 1)->first()->valoare;
+        $selected_car_id = Setting::where('nume', 'carId')->where('interval_id', 1)->first()->valoare;
+        $selected_interval = \App\MyHelpers\AppHelper::getSelectedInterval();
+        //daca intervalul selectat este Toate, va lua ca selected_interval_id pe primul interval din luna selectata
+        //altfel va lua chiar id-ul intervalului
+        $selected_interval_id = ($selected_interval->arr_ids ? $selected_interval->arr_ids[0] : $selected_interval->id);
+        //Vine aici din pagina index. De obicei create nu are request dar aici s-a injectat pentru ca se doreste selectarea
+        //unui user sau a unei masini care este deja selectat/selectata in pagina index
+        //Se primeste in request 'user_id' sau 'car_id' diferit de zero. Aceste id-uri se retransmit in pagina create
         //Aici se selecteaza mai intai departamentul urmand ca prin ajax sa se completeze lista cu masini si utilizatori
+        //Se mai determina si departamentul si userul/masina asoicate masinii/userului selectati/selectate
+        $department_id = 0;
+        if ($selected_user_id != '0') {
+            $department_id = UserDep::where('user_id', $selected_user_id)->where('interval_id', '<=', $selected_interval_id)->orderby('interval_id', 'desc')->first()->id;
+            $selected_car_id = @UserCar::where('user_id', $selected_user_id)->where('interval_id', '<=', $selected_interval_id)->orderby('interval_id', 'desc')->first()->car_id;
+        } else {
+            if ($selected_car_id != '0') {
+                $department_id = CarDep::where('car_id', $selected_car_id)->where('interval_id', '<=', $selected_interval_id)->orderby('interval_id', 'desc')->first()->id;
+                $selected_user_id = @UserCar::where('user_id', $selected_car_id)->where('interval_id', '<=', $selected_interval_id)->orderby('interval_id', 'desc')->first()->user_id;
+            }
+        }
         $departments = Department::get();
         $stats = Stat::get();
-        return view('back.kmlogs.create', compact('departments', 'stats'));
+        return view('back.kmlogs.create', compact('departments', 'stats'))->with(['user_id' => $selected_user_id, 'car_id' => $selected_car_id, 'department_id' => $department_id]);
     }
 
 

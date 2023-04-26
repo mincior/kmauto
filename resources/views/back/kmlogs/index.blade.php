@@ -4,7 +4,9 @@
     &vert; Km log
 @endsection
 <?php
-$selected_interval_id = \App\MyHelpers\AppHelper::getSelectedInterval()->id;
+$selected_interval = \App\MyHelpers\AppHelper::getSelectedInterval();
+$selected_interval_id = $selected_interval->id;
+$Toate = $selected_interval->arr_ids ? true : false;
 $arr_cars_with_car_activ = @array_keys(\App\MyHelpers\AppHelper::get_last_target_values_array('car_id', 'id', 'availablecars', $selected_interval_id, 'valoare = 1'));
 $arr_users_with_user_activ = @array_keys(\App\MyHelpers\AppHelper::get_last_target_values_array('user_id', 'id', 'availableusers', $selected_interval_id, 'valoare = 1'));
 $cars = \App\Models\Car::whereIn('id', $arr_cars_with_car_activ)->get();
@@ -99,12 +101,11 @@ $selected_car_id = \App\Models\Setting::where('nume', 'carId')
     <script type="text/javascript">
         $(function() {
             let createButton = {
-                className: 'btn-success',
-                text: '<i class="bi bi-plus"></i>',
+                className: 'btn-success myclass',
+                text: '+',
                 titleAttr: 'Add',
-                enabled: true,
+                enabled: false,
                 action: function(e, dt, node, config) {
-                    dt = {'car_id' : 345, 'user_id':555};
                     document.location.href = '{{ route('back.kmlogs.create') }}';
                 }
             }
@@ -154,8 +155,8 @@ $selected_car_id = \App\Models\Setting::where('nume', 'carId')
             dtButtonsRight.push(clearButton)
 
             let deleteButton = {
-                extend: 'selected',
-                className: 'btn-danger selectMultiple',
+                extend: 'selectedSingle',
+                className: 'btn-danger  selectOne',
                 text: '<i class="bi bi-trash"></i>',
                 titleAttr: 'Delete',
                 enabled: false,
@@ -366,6 +367,12 @@ $selected_car_id = \App\Models\Setting::where('nume', 'carId')
                 oTable.buttons('.selectOne').enable(selectedRows === 1);
                 oTable.buttons('.selectMultiple').enable(selectedRows > 0);
             });
+
+            oTable.buttons('.myclass').enable({{ $Toate == 1 ? 'false' : 'true' }});
+            if ('{{$Toate}}' == 1) {
+                oTable.buttons('.myclass').text("Deselectati 'Toate' pentru adaugare");
+            } 
+
         });
 
         $('#car_select').change(function() {
@@ -397,6 +404,8 @@ $selected_car_id = \App\Models\Setting::where('nume', 'carId')
                 },
                 success: function(response) {
                     $('#sqltable').DataTable().draw();
+
+
                     if (user_id > 0) {
                         $('#car_select option[value="0"]').prop('selected', 'selected').change();
                     }

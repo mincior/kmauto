@@ -47,20 +47,16 @@ class AppHelper
 	 */
 	public static function getSelectedInterval(){
 		$month_id = Month::where('select', 1)->first()->id;
-		return Interval::where('month_id', $month_id)->where('select', 1)->first();
+		$selected_interval = Interval::where('month_id', $month_id)->where('select', 1)->first();
+		$selected_interval_interval = $selected_interval->interval; 
+		$arr_ids =[];
+		if($selected_interval_interval == 'Toate' ){
+			$arr_ids = Interval::where('month_id', $month_id)->where('interval', '!=', 'Toate')->pluck('id')->toArray();;
+			$selected_interval['arr_ids'] = $arr_ids;
+		}
+		return $selected_interval;
 	}
 
-	/**
-	 * Cand se selecteaza toate intervalele (item = Toate) returneaza array-ul cu id-urile intervalelor reale
-	 *
-	 * @param [type] $toate_interval_id
-	 * @return array
-	 */
-	public static function getSelectedToateIntervalIds($toate_interval_id){
-		$month_id = Interval::where('id', $toate_interval_id)->first()->month_id;
-		$arr_ids= Interval::where('month_id', $month_id)->where('interval', '!=', 'Toate')->pluck('id')->toArray();
-		return $arr_ids;	
-	}
 	public static function prelucrare_numar_masina($numar)
 	{
 		//face toate literele mari
