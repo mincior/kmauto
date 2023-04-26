@@ -4,15 +4,20 @@
     &vert; Km log
 @endsection
 <?php
-$selectedInterval = config('global.selected_interval');
-$arr_cars_with_car_activ = @array_keys(\App\MyHelpers\AppHelper::get_last_target_values_array('car_id', 'id', 'availablecars', $selectedInterval, 'valoare = 1'));
-$arr_users_with_user_activ = @array_keys(\App\MyHelpers\AppHelper::get_last_target_values_array('user_id', 'id', 'availableusers', $selectedInterval, 'valoare = 1'));
+$selected_interval_id = \App\MyHelpers\AppHelper::getSelectedInterval()->id;
+$arr_cars_with_car_activ = @array_keys(\App\MyHelpers\AppHelper::get_last_target_values_array('car_id', 'id', 'availablecars', $selected_interval_id, 'valoare = 1'));
+$arr_users_with_user_activ = @array_keys(\App\MyHelpers\AppHelper::get_last_target_values_array('user_id', 'id', 'availableusers', $selected_interval_id, 'valoare = 1'));
 $cars = \App\Models\Car::whereIn('id', $arr_cars_with_car_activ)->get();
 $users = \App\Models\User::whereIn('id', $arr_users_with_user_activ)->get();
-$selected_user_id = \App\Models\Setting::where('nume', "userId")->where('interval_id', 1)->first()->valoare;
-$selected_car_id =  \App\Models\Setting::where('nume', "carId")->where('interval_id', 1)->first()->valoare;
+$selected_user_id = \App\Models\Setting::where('nume', 'userId')
+    ->where('interval_id', 1)
+    ->first()->valoare;
+$selected_car_id = \App\Models\Setting::where('nume', 'carId')
+    ->where('interval_id', 1)
+    ->first()->valoare;
 
 //dd($arr_cars_with_car_activ, $arr_users_with_user_activ );
+
 ?>
 @section('content')
     <div class="card">
@@ -25,7 +30,8 @@ $selected_car_id =  \App\Models\Setting::where('nume', "carId")->where('interval
                         <select name="car_id" id="car_select" data-deptid="1" data-userid="1" class="form-select">
                             <option value="0">Alege masina...</option>
                             @foreach ($cars as $car)
-                                <option {{($car->id == $selected_car_id) ? 'selected' : ''}} value="{{ $car->id }}">{{ $car['numar'] }}</option>
+                                <option {{ $car->id == $selected_car_id ? 'selected' : '' }} value="{{ $car->id }}">
+                                    {{ $car['numar'] }}</option>
                             @endforeach
                         </select>
                         @error('car_id')
@@ -36,12 +42,16 @@ $selected_car_id =  \App\Models\Setting::where('nume', "carId")->where('interval
                         <select name="user_id" id="user_select" data-deptid="1" data-userid="1" class="form-select">
                             <option value="0">Alege utilizatorul...</option>
                             @foreach ($users as $user)
-                                <option  {{($user->id == $selected_user_id) ? 'selected' : ''}} value="{{ $user->id }}">{{ $user['name'] }}</option>
+                                <option {{ $user->id == $selected_user_id ? 'selected' : '' }} value="{{ $user->id }}">
+                                    {{ $user['name'] }}</option>
                             @endforeach
                         </select>
                         @error('user_id')
                             <span class="invalid-feedback" role="alert">{{ $message }}</span>
                         @enderror
+                    </div>
+                    <div class="col-md-3">
+                        <button type="button" class="btn btn-success" onclick="puneSelecturilePeChoose()">Tot</button>
                     </div>
                 </div>
 
@@ -61,19 +71,19 @@ $selected_car_id =  \App\Models\Setting::where('nume', "carId")->where('interval
             <table id="sqltable" class="table table-bordered table-striped table-hover table-sm dataTable">
                 <thead class="table-success">
                     <tr>
-                        <th scope="col" width="4%">ID</th>
-                        <th scope="col" width="4%">Ord</th>
+                        <th scope="col">Masina</th>
+                        <th scope="col">Utilizator</th>
                         <th scope="col">Km</th>
                         <th scope="col">Status</th>
                         <th scope="col">Poza</th>
                         <th scope="col">Observatii</th>
                         <th scope="col">Filiala</th>
-                        <th scope="col">Masina</th>
-                        <th scope="col">Utilizator</th>
                         <th scope="col">Luna</th>
                         <th scope="col">Interval</th>
                         <th scope="col">Creat la</th>
                         <th scope="col">Modificat la</th>
+                        <th scope="col" width="4%">Ord</th>
+                        <th scope="col" width="4%">ID</th>
                     </tr>
                 </thead>
             </table>
@@ -94,6 +104,7 @@ $selected_car_id =  \App\Models\Setting::where('nume', "carId")->where('interval
                 titleAttr: 'Add',
                 enabled: true,
                 action: function(e, dt, node, config) {
+                    dt = {'car_id' : 345, 'user_id':555};
                     document.location.href = '{{ route('back.kmlogs.create') }}';
                 }
             }
@@ -213,21 +224,23 @@ $selected_car_id =  \App\Models\Setting::where('nume', "carId")->where('interval
                 },
                 columns: [{
                         data: 'id',
-                        name: 'id',
-                        searchable: false,
-                        className: 'text-left',
                         render: function(data, type, row, meta) {
-                            return data.toString();
-                        }
+                            if (typeof row.car === "undefined") {
+                                return '';
+                            } else {
+                                return row.car.numar;
+                            }
+                        },
                     },
                     {
-                        data: 'ordine',
-                        name: 'ordine',
-                        searchable: false,
-                        className: 'text-left',
+                        data: 'id',
                         render: function(data, type, row, meta) {
-                            return data.toString();
-                        }
+                            if (typeof row.user === "undefined") {
+                                return '';
+                            } else {
+                                return row.user.name;
+                            }
+                        },
                     },
                     {
                         data: 'km',
@@ -270,26 +283,6 @@ $selected_car_id =  \App\Models\Setting::where('nume', "carId")->where('interval
                     {
                         data: 'id',
                         render: function(data, type, row, meta) {
-                            if (typeof row.car === "undefined") {
-                                return '';
-                            } else {
-                                return row.car.numar;
-                            }
-                        },
-                    },
-                    {
-                        data: 'id',
-                        render: function(data, type, row, meta) {
-                            if (typeof row.user === "undefined") {
-                                return '';
-                            } else {
-                                return row.user.name;
-                            }
-                        },
-                    },
-                    {
-                        data: 'id',
-                        render: function(data, type, row, meta) {
                             if (typeof row.month === "undefined") {
                                 return '';
                             } else {
@@ -314,6 +307,24 @@ $selected_car_id =  \App\Models\Setting::where('nume', "carId")->where('interval
                     {
                         data: 'updated_at',
                         name: 'updated_at',
+                    },
+                    {
+                        data: 'ordine',
+                        name: 'ordine',
+                        searchable: false,
+                        className: 'text-left',
+                        render: function(data, type, row, meta) {
+                            return data.toString();
+                        }
+                    },
+                    {
+                        data: 'id',
+                        name: 'id',
+                        searchable: false,
+                        className: 'text-left',
+                        render: function(data, type, row, meta) {
+                            return data.toString();
+                        }
                     },
                 ],
                 select: {
@@ -360,38 +371,43 @@ $selected_car_id =  \App\Models\Setting::where('nume', "carId")->where('interval
         $('#car_select').change(function() {
             var car_id = $(this).find(":selected").val();
             let set_car_id_url = '/back/general/setCarId';
-            if (car_id > 0) {
-                $.ajax({
-                    method: 'POST',
-                    url: set_car_id_url,
-                    data: {
-                        valoare: car_id
-                    },
-                    success: function(response) {
-                        $('#sqltable').DataTable().draw();
+            $.ajax({
+                method: 'POST',
+                url: set_car_id_url,
+                data: {
+                    valoare: car_id
+                },
+                success: function(response) {
+                    $('#sqltable').DataTable().draw();
+                    if (car_id > 0) {
                         $('#user_select option[value="0"]').prop('selected', 'selected').change();
                     }
-                });
-            }
+                }
+            });
         });
 
         $('#user_select').change(function() {
             var user_id = $(this).find(":selected").val();
             let set_user_id_url = '/back/general/setUserId';
-            if (user_id > 0) {
-                $.ajax({
-                    method: 'POST',
-                    url: set_user_id_url,
-                    data: {
-                        valoare: user_id
-                    },
-                    success: function(response) {
-                        $('#sqltable').DataTable().draw();
+            $.ajax({
+                method: 'POST',
+                url: set_user_id_url,
+                data: {
+                    valoare: user_id
+                },
+                success: function(response) {
+                    $('#sqltable').DataTable().draw();
+                    if (user_id > 0) {
                         $('#car_select option[value="0"]').prop('selected', 'selected').change();
                     }
-                });
-            }
+                }
+            });
         });
+
+        function puneSelecturilePeChoose() {
+            $('#user_select option[value="0"]').prop('selected', 'selected').change();
+            $('#car_select option[value="0"]').prop('selected', 'selected').change();
+        }
     </script>
 @endsection
 

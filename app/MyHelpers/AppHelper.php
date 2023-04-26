@@ -16,11 +16,11 @@ class AppHelper
 	 * @param [type] $source_id
 	 * @param [type] $target_id
 	 * @param [type] $pivot_table_name
-	 * @param [type] $selectedInterval
+	 * @param [type] $selected_interval_id
 	 * @param string $whereRaw
 	 * @return void
 	 */
-	public static function get_last_target_values_array($source_id, $target_id, $pivot_table_name, $selectedInterval, $whereRaw = '' )
+	public static function get_last_target_values_array($source_id, $target_id, $pivot_table_name, $selected_interval_id, $whereRaw = '' )
 	{
 
 		$sql = " DISTINCT $source_id, LAST_VALUE($target_id) OVER (PARTITION BY $source_id ORDER BY interval_id RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING ) last_id";
@@ -29,7 +29,7 @@ class AppHelper
 		if ($whereRaw){
 			$res = $res->whereRaw($whereRaw);
 		}
-		$res = $res->where('interval_id', '<=', $selectedInterval)
+		$res = $res->where('interval_id', '<=', $selected_interval_id)
 			->get();
 		$results = json_decode($res, true);
 
@@ -40,6 +40,27 @@ class AppHelper
 		return  $array_ids;
 	}
 	
+	/**
+	 * Returneaza id-ul intervalului curent (luna selectata cu intervalul selectat)
+	 *
+	 * @return object
+	 */
+	public static function getSelectedInterval(){
+		$month_id = Month::where('select', 1)->first()->id;
+		return Interval::where('month_id', $month_id)->where('select', 1)->first();
+	}
+
+	/**
+	 * Cand se selecteaza toate intervalele (item = Toate) returneaza array-ul cu id-urile intervalelor reale
+	 *
+	 * @param [type] $toate_interval_id
+	 * @return array
+	 */
+	public static function getSelectedToateIntervalIds($toate_interval_id){
+		$month_id = Interval::where('id', $toate_interval_id)->first()->month_id;
+		$arr_ids= Interval::where('month_id', $month_id)->where('interval', '!=', 'Toate')->pluck('id')->toArray();
+		return $arr_ids;	
+	}
 	public static function prelucrare_numar_masina($numar)
 	{
 		//face toate literele mari

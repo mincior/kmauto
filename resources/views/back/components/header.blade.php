@@ -49,6 +49,22 @@ $mm = json_encode($months); //test pentru transmitere array catre javascript (JS
                 </a>
             </div> --}}
         </div>
+        {{-- right --}}
+        <div class="me-1">
+            <select id="month_select" class="form-select" style="width: 130%" data-months="{{ $mm }}">
+                @foreach ($months as $month)
+                    ;
+                    <option {{ (string) $month['select'] == 1 ? 'selected' : '' }} value="{{ $month['id'] }}">
+                        {{ $month['anul_luna'] }}
+                    </option>'
+                @endforeach
+            </select>
+        </div>
+        <div class="me-2 ">
+            <select id="interval_select" class="form-select" style="width: 120%">
+
+            </select>
+        </div>
         {{-- center --}}
         <div>
             <div class="btn-group me-1" role="group">
@@ -77,22 +93,6 @@ $mm = json_encode($months); //test pentru transmitere array catre javascript (JS
         </div>
 
 
-        {{-- right --}}
-        <div class="me-1">
-            <select id="month_select" class="form-select" data-months="{{ $mm }}">
-                @foreach ($months as $month)
-                    ;
-                    <option {{ (string) $month['select'] == 1 ? 'selected' : '' }} value="{{ $month['id'] }}">
-                        {{ $month['anul_luna'] }}
-                    </option>'
-                @endforeach
-            </select>
-        </div>
-        <div class="me-2 ">
-            <select id="interval_select" class="form-select" >
-
-            </select>
-        </div>
 
         {{-- Offcanvas Menu --}}
         @include('back.components.offcanvas')

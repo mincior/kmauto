@@ -6,9 +6,12 @@
 
 @section('content')
     <?php
-
-    $users = @\App\Http\Controllers\Back\DepartmentController::getUsers(old('department_id'));
-    $cars = @\App\Http\Controllers\Back\DepartmentController::getCars(old('department_id'));
+    if(old('department_id')){
+        $users = @\App\Http\Controllers\Back\DepartmentController::getUsers(old('department_id'));
+        $cars = @\App\Http\Controllers\Back\DepartmentController::getCars(old('department_id'));
+    }else{
+        
+    }
 
     ?>
     <form id="myForm" method="POST" action="{{ route('back.kmlogs.store') }}" enctype="multipart/form-data">
@@ -59,6 +62,9 @@
 
                         <div class="row mb-2">
                             <label for="picture" class="col-md-2 col-form-label">Poza bord</label>
+                            <div class="col-md-8">
+                                <img id="my_picture" class="img-fluid" >
+                            </div>
 
                             <div class="col-md-3">
                                 <input autocomplete="on" id="picture" name="picture" type="file"
@@ -70,7 +76,23 @@
                                 @enderror
                             </div>
                         </div>
-
+                            <div class="row mb-2">
+                                <label for="observatii" class="col-md-2 col-form-label">Observatii</label>
+    
+                                <div class="col-md-5">
+                                    <input autocomplete="on" id="observatii" name="observatii" type="text"
+                                        class="form-control @error('observatii') is-invalid @enderror"
+                                        value="{{ old('observatii')}}">
+    
+                                    @error('observatii')
+                                        <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
+    
+    
+    
+    
                         <div class="row mb-2">
                             <label for="department_id" class="col-md-2 col-form-label">Filiala</label>
     
@@ -125,22 +147,6 @@
                             </div>
                         </div>
     
-                        <div class="row mb-2">
-                            <label for="observatii" class="col-md-2 col-form-label">Observatii</label>
-
-                            <div class="col-md-5">
-                                <input autocomplete="on" id="observatii" name="observatii" type="text"
-                                    class="form-control @error('observatii') is-invalid @enderror"
-                                    value="{{ old('observatii')}}">
-
-                                @error('observatii')
-                                    <span class="invalid-feedback" role="alert">{{ $message }}</span>
-                                @enderror
-                            </div>
-                        </div>
-
-
-
 
                     </div>
 
@@ -176,6 +182,18 @@
     jQuery(document).ready(function ($) {
         $('#name').focus();
         $('#my-nav-bar').addClass('d-none');//ascunde bara de navigare cand sunt pe create car
+        $('#picture').change(function(){
+                const file = this.files[0];
+                console.log (file);
+                if (file){
+                    let reader = new FileReader();
+                    reader.onload = function(event){
+                        console.log(event.target.result);
+                        $('#my_picture').attr('src', event.target.result);
+                    }
+                    reader.readAsDataURL(file);
+                }
+            });
     });
     </script>
 @endsection

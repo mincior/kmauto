@@ -1,1 +1,0 @@
-<?php return ['selected_month' => 6, 'selected_interval' => 30];

@@ -22,9 +22,9 @@ class DepartmentController extends Controller
     public static function getUsers($department_id)
     {
         if(!($department_id == null)){
-            $selectedInterval = config('global.selected_interval');
+            $selected_interval_id = \App\MyHelpers\AppHelper::getSelectedInterval()->id;
             
-            $users_id = AppHelper::get_last_target_values_array('user_id', 'department_id', 'user_deps', $selectedInterval, "department_id = $department_id" );
+            $users_id = AppHelper::get_last_target_values_array('user_id', 'department_id', 'user_deps', $selected_interval_id, "department_id = $department_id" );
             $users = User::whereIn('id', $users_id)->get();
             return $users;
         }
@@ -33,9 +33,9 @@ class DepartmentController extends Controller
     public static function getCars($department_id)
     {
         if(!($department_id == null)){
-            $selectedInterval = config('global.selected_interval');
+            $selected_interval_id = \App\MyHelpers\AppHelper::getSelectedInterval()->id;
 
-            $cars_id = AppHelper::get_last_target_values_array('car_id', 'department_id', 'car_deps', $selectedInterval, "department_id = $department_id" );
+            $cars_id = AppHelper::get_last_target_values_array('car_id', 'department_id', 'car_deps', $selected_interval_id, "department_id = $department_id" );
             $cars = Car::whereIn('id', $cars_id)->get();
             return $cars;
         }

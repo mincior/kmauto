@@ -45,12 +45,6 @@ class GeneralController extends Controller
         //si seteaza selectul doar pentru luna month_id
         $query = Month::where('id', $request->month_id)->update(array('select' => 1));
 
-        //scrie o singura data luna selectata in config
-        $interval_selectat = @Interval::where('month_id', $request->month_id)->where('select', 1)->first()->id;
-        if (!$interval_selectat) {
-            $interval_selectat = Interval::where('month_id', $request->month_id)->orderby('id', 'desc')->first()->id;
-        }
-        File::put(env('APP_PATH', '/var/www/kmauto') . '/config/global.php', "<?php return ['selected_month' => $request->month_id, 'selected_interval' => $interval_selectat];");
         return response()->noContent();
     }
 
@@ -61,9 +55,6 @@ class GeneralController extends Controller
 
         //si seteaza selectul doar pentru intervalul selectat al lunii selectate
         $query = Interval::where('month_id', $request->month_id)->where('id', $request->interval_id)->update(array('select' => 1));
-
-        //scrie o singura data intervalul selectat in config
-        File::put(env('APP_PATH', '/var/www/kmauto') . '/config/global.php', "<?php return ['selected_month' => $request->month_id, 'selected_interval' => $request->interval_id];");
         return response()->noContent();
     }
 
@@ -98,7 +89,7 @@ class GeneralController extends Controller
      */
     public function setCarId(Request $request)
     {
-        $selectedInterval = config('global.selected_interval');
+        $selected_interval_id = \App\MyHelpers\AppHelper::getSelectedInterval()->id;
 
         if ($request->valoare == "0") {
             Setting::where('nume', "carId")->where('interval_id', 1)->update(array('valoare' => 0));
@@ -108,7 +99,7 @@ class GeneralController extends Controller
             Setting::where('nume', "userId")->where('interval_id', 1)->update(array('valoare' => 0));
             $car_id = $request->valoare;
         }
-        $user_id = @UserCar::where('car_id', $car_id)->where('interval_id', '<=', $selectedInterval)->orderby('interval_id', 'desc')->first()->user_id;
+        $user_id = @UserCar::where('car_id', $car_id)->where('interval_id', '<=', $selected_interval_id)->orderby('interval_id', 'desc')->first()->user_id;
         return response()->json($user_id);
     }
 
@@ -119,7 +110,7 @@ class GeneralController extends Controller
      */
     public function setUserId(Request $request)
     {
-        $selectedInterval = config('global.selected_interval');
+        $selected_interval_id = \App\MyHelpers\AppHelper::getSelectedInterval()->id;
 
         if ($request->valoare == "0") {
             Setting::where('nume', "userId")->where('interval_id', 1)->update(array('valoare' => 0));
@@ -129,7 +120,7 @@ class GeneralController extends Controller
             Setting::where('nume', "carId")->where('interval_id', 1)->update(array('valoare' => 0));
             $user_id = $request->valoare;
         }
-        $car_id = @UserCar::where('user_id', $user_id)->where('interval_id', '<=', $selectedInterval)->orderby('interval_id', 'desc')->first()->car_id;
+        $car_id = @UserCar::where('user_id', $user_id)->where('interval_id', '<=', $selected_interval_id)->orderby('interval_id', 'desc')->first()->car_id;
         return response()->json($car_id);
     }
 

@@ -34,15 +34,15 @@ class UserController extends Controller
         if ($request->ajax()) {
             //aici poate ajunge din trei locuri. Daca vine din butonul din bara de navigare generala va afisa toti userii
             //daca vine din foaia Departments sau din selectul Filala din Users, va afisa doar userii filialei selectate
-            $selectedInterval = config('global.selected_interval');
+            $selected_interval_id = \App\MyHelpers\AppHelper::getSelectedInterval()->id;
             $department_id = Setting::where('nume', 'departmentId')->where('interval_id', 1)->first()->valoare;
             $filtreazaDupaDepartament = Setting::where('nume', 'filtreazaDupaDepartament')->where('interval_id', 1)->first()->valoare;
             $users = User::select(sprintf('%s.*', (new User)->getTable()))->orderBy('id', 'desc')->get();
-            $arr_users_with_departments = AppHelper::get_last_target_values_array('user_id', 'department_id', 'user_deps', $selectedInterval);
-            $arr_users_with_cars = AppHelper::get_last_target_values_array('user_id', 'car_id', 'user_cars', $selectedInterval);
-            $arr_users_with_user_activ = AppHelper::get_last_target_values_array('user_id', 'id', 'availableusers', $selectedInterval);
-            $arr_users_with_user_phones = AppHelper::get_last_target_values_array('user_id', 'id', 'user_phones', $selectedInterval);
-            $arr_users_with_user_kmlimits = AppHelper::get_last_target_values_array('user_id', 'id', 'user_kmlimits', $selectedInterval);
+            $arr_users_with_departments = AppHelper::get_last_target_values_array('user_id', 'department_id', 'user_deps', $selected_interval_id);
+            $arr_users_with_cars = AppHelper::get_last_target_values_array('user_id', 'car_id', 'user_cars', $selected_interval_id);
+            $arr_users_with_user_activ = AppHelper::get_last_target_values_array('user_id', 'id', 'availableusers', $selected_interval_id);
+            $arr_users_with_user_phones = AppHelper::get_last_target_values_array('user_id', 'id', 'user_phones', $selected_interval_id);
+            $arr_users_with_user_kmlimits = AppHelper::get_last_target_values_array('user_id', 'id', 'user_kmlimits', $selected_interval_id);
 
             //in cars avem deja brand si type acum luam fiecare masina si-i adaugam departamentul, userul si consumul mediu (car_consumption)
             //asociate la momentul intervalului selectat
@@ -84,16 +84,16 @@ class UserController extends Controller
 
     public function create()
     {
-        $selectedInterval = config('global.selected_interval');
+        $selected_interval_id = \App\MyHelpers\AppHelper::getSelectedInterval()->id;
 
         $departments = Department::select('id', 'name')->orderBy('name')->get();
-        return view('back.users.create', compact('departments'))->with('selectedInterval', $selectedInterval);
+        return view('back.users.create', compact('departments'))->with('selected_interval', $selected_interval_id);
     }
 
 
     public function store(UserStoreRequest $request)
     {
-       $selectedInterval = config('global.selected_interval');
+       $selected_interval_id = \App\MyHelpers\AppHelper::getSelectedInterval()->id;
         $data = $request->all();
         $activ = intval($data['activ']);
         $car_id = intval($data['car_id']);
@@ -110,11 +110,11 @@ class UserController extends Controller
         $user = User::create($data);
         if ($user->id){//daca s-a creat userul
             //aduaga departamentul, userul - optional, consumul mediu si activ in tabelele pivot
-            UserDep::create(['department_id' => $department_id, 'user_id' => $user->id, 'interval_id' => $selectedInterval]);
-            UserPhone::create(['valoare' => $telefon, 'user_id' => $user->id, 'interval_id' => $selectedInterval]);
-            UserKmlimit::create(['valoare' => $kmlimit, 'user_id' => $user->id, 'interval_id' => $selectedInterval]);
-            if($car_id !== 0) UserCar::create(['car_id' => $car_id, 'user_id' => $user->id, 'interval_id' => $selectedInterval]);
-            Availableuser::create(['valoare' => $activ, 'user_id' => $user->id, 'interval_id' => $selectedInterval]);
+            UserDep::create(['department_id' => $department_id, 'user_id' => $user->id, 'interval_id' => $selected_interval_id]);
+            UserPhone::create(['valoare' => $telefon, 'user_id' => $user->id, 'interval_id' => $selected_interval_id]);
+            UserKmlimit::create(['valoare' => $kmlimit, 'user_id' => $user->id, 'interval_id' => $selected_interval_id]);
+            if($car_id !== 0) UserCar::create(['car_id' => $car_id, 'user_id' => $user->id, 'interval_id' => $selected_interval_id]);
+            Availableuser::create(['valoare' => $activ, 'user_id' => $user->id, 'interval_id' => $selected_interval_id]);
         }
         $notification = [
             "type" => "success",
@@ -129,16 +129,16 @@ class UserController extends Controller
     {
         $data = [];
         $data1 = [];
-        $selectedInterval = config('global.selected_interval');
-        $car_id = @UserCar::where('user_id', $user->id)->where('interval_id', '<=', $selectedInterval)->orderBy('interval_id', 'desc')->first()->car_id;
+        $selected_interval_id = \App\MyHelpers\AppHelper::getSelectedInterval()->id;
+        $car_id = @UserCar::where('user_id', $user->id)->where('interval_id', '<=', $selected_interval_id)->orderBy('interval_id', 'desc')->first()->car_id;
         $numar = @Car::where('id', $car_id)->first()->numar;
-        $department_id = @UserDep::where('user_id', $user->id)->where('interval_id', '<=', $selectedInterval)->orderBy('interval_id', 'desc')->first()->department_id;
+        $department_id = @UserDep::where('user_id', $user->id)->where('interval_id', '<=', $selected_interval_id)->orderBy('interval_id', 'desc')->first()->department_id;
         $department_name = Department::where('id', $department_id)->first()->name;
-        $telefon= @UserPhone::where('user_id', $user->id)->where('interval_id', '<=', $selectedInterval)->orderBy('interval_id', 'desc')->first()->valoare;
-        $kmlimit= @UserKmlimit::where('user_id', $user->id)->where('interval_id', '<=', $selectedInterval)->orderBy('interval_id', 'desc')->first()->valoare;
-        $activ= @Availableuser::where('user_id', $user->id)->where('interval_id', '<=', $selectedInterval)->orderBy('interval_id', 'desc')->first()->valoare;
+        $telefon= @UserPhone::where('user_id', $user->id)->where('interval_id', '<=', $selected_interval_id)->orderBy('interval_id', 'desc')->first()->valoare;
+        $kmlimit= @UserKmlimit::where('user_id', $user->id)->where('interval_id', '<=', $selected_interval_id)->orderBy('interval_id', 'desc')->first()->valoare;
+        $activ= @Availableuser::where('user_id', $user->id)->where('interval_id', '<=', $selected_interval_id)->orderBy('interval_id', 'desc')->first()->valoare;
         $department_name = Department::where('id', $department_id)->first()->name;
-        $data['selectedInterval'] = $selectedInterval;
+        $data['selected_interval'] = $selected_interval_id;
         $merged_data['numar'] = $numar;
         $merged_data['telefon'] = $telefon;
         $merged_data['kmlimit'] = $kmlimit;
@@ -151,25 +151,25 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
-        $selectedInterval = config('global.selected_interval');
+        $selected_interval_id = \App\MyHelpers\AppHelper::getSelectedInterval()->id;
 
         $departments = Department::select('id', 'name')->orderBy('name')->get();
         $dep_id = @UserDep::select('department_id', 'interval_id', 'user_id')
             ->where('user_id', $user->id)
-            ->where('interval_id', '<=', $selectedInterval)
+            ->where('interval_id', '<=', $selected_interval_id)
             ->orderBy('interval_id', 'desc')
             ->first()->department_id;
         // $cars = @Department::with('cars')->where('id', '=', $dep_id)->get()[0]['cars'];
         $cars = @DepartmentController::getCars($dep_id);
-        $activ = @Availableuser::where('user_id', $user->id)->where('interval_id', '<=', $selectedInterval)->orderby('interval_id', 'Desc')->first()->valoare;
-        $telefon = @UserPhone::where('user_id', $user->id)->where('interval_id', '<=', $selectedInterval)->orderby('interval_id', 'Desc')->first()->valoare;
-        $kmlimit = @UserKmlimit::where('user_id', $user->id)->where('interval_id', '<=', $selectedInterval)->orderby('interval_id', 'Desc')->first()->valoare;
+        $activ = @Availableuser::where('user_id', $user->id)->where('interval_id', '<=', $selected_interval_id)->orderby('interval_id', 'Desc')->first()->valoare;
+        $telefon = @UserPhone::where('user_id', $user->id)->where('interval_id', '<=', $selected_interval_id)->orderby('interval_id', 'Desc')->first()->valoare;
+        $kmlimit = @UserKmlimit::where('user_id', $user->id)->where('interval_id', '<=', $selected_interval_id)->orderby('interval_id', 'Desc')->first()->valoare;
 
         //usr_id = o masina poate sa nu aiba un user alocat (nici userul o masina) 
         //de aceea s-a pus @UserUser... sa nu dea eroare daca $usr_id este null
         $car_id = @UserCar::select('car_id', 'interval_id', 'user_id')
             ->where('user_id', $user->id)
-            ->where('interval_id', '<=', $selectedInterval)
+            ->where('interval_id', '<=', $selected_interval_id)
             ->orderBy('interval_id', 'desc')
             ->first()->car_id;
 
@@ -180,12 +180,12 @@ class UserController extends Controller
             ->with('activ', $activ)
             ->with('telefon', $telefon)
             ->with('kmlimit', $kmlimit)
-            ->with('selectedInterval', $selectedInterval);
+            ->with('selected_interval', $selected_interval_id);
     }
 
     public function update(UserUpdateRequest $request, User $user)
     {
-        $selectedInterval = config('global.selected_interval');
+        $selected_interval_id = \App\MyHelpers\AppHelper::getSelectedInterval()->id;
         $data = $request->all();
         $activ = intval($data['activ']);
         $car_id = intval($data['car_id']);
@@ -201,75 +201,75 @@ class UserController extends Controller
         $succes = $user->update($data);
         if ($succes){
             if (!$department_id == 0) {
-                $rec = UserDep::where('department_id', $department_id)->where('user_id', $user->id)->where('interval_id', '<=', $selectedInterval)->orderby('interval_id', 'Desc')->first();
+                $rec = UserDep::where('department_id', $department_id)->where('user_id', $user->id)->where('interval_id', '<=', $selected_interval_id)->orderby('interval_id', 'Desc')->first();
                 if (!is_null($rec)) {
                     if ($rec->department_id !== $department_id) { //s-a schimbat departamentul.
-                        if ($rec->interval_id == $selectedInterval) { //s-a schimbat doar departamentul in intervalul curent
+                        if ($rec->interval_id == $selected_interval_id) { //s-a schimbat doar departamentul in intervalul curent
                             $rec->update(['department_id', $department_id]);
                         } else { // Creaza o noua inregistrare cu noul department_id dar cu intervalul curent
-                            UserDep::create(['department_id' => $department_id, 'user_id' => $user->id, 'interval_id' => $selectedInterval]);
+                            UserDep::create(['department_id' => $department_id, 'user_id' => $user->id, 'interval_id' => $selected_interval_id]);
                         }
                     }
                 } else {
-                    UserDep::create(['department_id' => $department_id, 'user_id' => $user->id, 'interval_id' => $selectedInterval]);
+                    UserDep::create(['department_id' => $department_id, 'user_id' => $user->id, 'interval_id' => $selected_interval_id]);
                 }
             }
 
             if ($car_id !== 0) {
-                $rec = UserCar::where('user_id', $user->id)->where('car_id', $car_id)->where('interval_id', '<=', $selectedInterval)->orderby('interval_id', 'Desc')->first();
+                $rec = UserCar::where('user_id', $user->id)->where('car_id', $car_id)->where('interval_id', '<=', $selected_interval_id)->orderby('interval_id', 'Desc')->first();
                 if (!is_null($rec)) {
                     if ($rec->car_id !== $car_id) { //s-a schimbat masina.
-                        if ($rec->interval_id == $selectedInterval) { //s-a schimbat doar departamentul in intervalul curent
+                        if ($rec->interval_id == $selected_interval_id) { //s-a schimbat doar departamentul in intervalul curent
                             $rec->update(['car_id', $car_id]);
                         } else { // Creaza o noua inregistrare cu noul car_id dar cu intervalul curent
-                            UserCar::create(['user_id' => $user->id, 'car_id' => $car_id, 'interval_id' => $selectedInterval]);
+                            UserCar::create(['user_id' => $user->id, 'car_id' => $car_id, 'interval_id' => $selected_interval_id]);
                         }
                     }
                 } else { //userul nu exista deloc
-                    UserCar::create(['user_id' => $user->id, 'car_id' => $car_id, 'interval_id' => $selectedInterval]);
+                    UserCar::create(['user_id' => $user->id, 'car_id' => $car_id, 'interval_id' => $selected_interval_id]);
                 }
             }
 
-            $rec = Availableuser::where('valoare', $activ)->where('user_id', $user->id)->where('interval_id', '<=', $selectedInterval)->orderby('interval_id', 'Desc')->first();
+            $rec = Availableuser::where('valoare', $activ)->where('user_id', $user->id)->where('interval_id', '<=', $selected_interval_id)->orderby('interval_id', 'Desc')->first();
             if (!is_null($rec)) {
                 if ($rec->valoare !== $activ) { //s-a schimbat consumul_mediu.
-                    if ($rec->interval_id == $selectedInterval) { //s-a schimbat doar consumul_mediu in intervalul curent
+                    if ($rec->interval_id == $selected_interval_id) { //s-a schimbat doar consumul_mediu in intervalul curent
                         $rec->update(['valoare', $activ]);
                     } else { // Creaza o noua inregistrare cu noul valoare dar cu intervalul curent
-                        Availableuser::create(['valoare' => $activ, 'user_id' => $user->id, 'interval_id' => $selectedInterval]);
+                        Availableuser::create(['valoare' => $activ, 'user_id' => $user->id, 'interval_id' => $selected_interval_id]);
                     }
                 }
             } else { //consumul_mediu nu exista deloc
-                Availableuser::create(['valoare' => $activ, 'user_id' => $user->id, 'interval_id' => $selectedInterval]);
+                Availableuser::create(['valoare' => $activ, 'user_id' => $user->id, 'interval_id' => $selected_interval_id]);
             }
 
             if ($telefon !== 0) {
-                $rec = UserPhone::where('valoare', $telefon)->where('user_id', $user->id)->where('interval_id', '<=', $selectedInterval)->orderby('interval_id', 'Desc')->first();
+                $rec = UserPhone::where('valoare', $telefon)->where('user_id', $user->id)->where('interval_id', '<=', $selected_interval_id)->orderby('interval_id', 'Desc')->first();
                 if (!is_null($rec)) {
                     if ($rec->valoare !== $telefon) { //s-a schimbat consumul_mediu.
-                        if ($rec->interval_id == $selectedInterval) { //s-a schimbat doar consumul_mediu in intervalul curent
+                        if ($rec->interval_id == $selected_interval_id) { //s-a schimbat doar consumul_mediu in intervalul curent
                             $rec->update(['valoare', $telefon]);
                         } else { // Creaza o noua inregistrare cu noul valoare dar cu intervalul curent
-                            UserPhone::create(['valoare' => $telefon, 'user_id' => $user->id, 'interval_id' => $selectedInterval]);
+                            UserPhone::create(['valoare' => $telefon, 'user_id' => $user->id, 'interval_id' => $selected_interval_id]);
                         }
                     }
                 } else { //consumul_mediu nu exista deloc
-                    UserPhone::create(['valoare' => $telefon, 'user_id' => $user->id, 'interval_id' => $selectedInterval]);
+                    UserPhone::create(['valoare' => $telefon, 'user_id' => $user->id, 'interval_id' => $selected_interval_id]);
                 }
             }
 
             if ($kmlimit !== 0) {
-                $rec = UserKmlimit::where('valoare', $kmlimit)->where('user_id', $user->id)->where('interval_id', '<=', $selectedInterval)->orderby('interval_id', 'Desc')->first();
+                $rec = UserKmlimit::where('valoare', $kmlimit)->where('user_id', $user->id)->where('interval_id', '<=', $selected_interval_id)->orderby('interval_id', 'Desc')->first();
                 if (!is_null($rec)) {
                     if ($rec->valoare !== $kmlimit) { //s-a schimbat consumul_mediu.
-                        if ($rec->interval_id == $selectedInterval) { //s-a schimbat doar consumul_mediu in intervalul curent
+                        if ($rec->interval_id == $selected_interval_id) { //s-a schimbat doar consumul_mediu in intervalul curent
                             $rec->update(['valoare', $kmlimit]);
                         } else { // Creaza o noua inregistrare cu noul valoare dar cu intervalul curent
-                            UserKmlimit::create(['valoare' => $kmlimit, 'user_id' => $user->id, 'interval_id' => $selectedInterval]);
+                            UserKmlimit::create(['valoare' => $kmlimit, 'user_id' => $user->id, 'interval_id' => $selected_interval_id]);
                         }
                     }
                 } else { //consumul_mediu nu exista deloc
-                    UserKmlimit::create(['valoare' => $kmlimit, 'user_id' => $user->id, 'interval_id' => $selectedInterval]);
+                    UserKmlimit::create(['valoare' => $kmlimit, 'user_id' => $user->id, 'interval_id' => $selected_interval_id]);
                 }
             }
 

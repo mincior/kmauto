@@ -49,9 +49,9 @@ class FuelPriceController extends Controller
 
     public function store(FuelPriceStoreRequest $request)
     {
-        $selectedInterval = config('global.selected_interval');
+        $selected_interval_id = \App\MyHelpers\AppHelper::getSelectedInterval()->id;
         $data = $request->all();
-        $data['interval_id'] = $selectedInterval;
+        $data['interval_id'] = $selected_interval_id;
         $fuel_price = FuelPrice::create($data);
 
         $notification = [
