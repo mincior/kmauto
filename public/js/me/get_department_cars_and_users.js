@@ -1,3 +1,5 @@
+//Nu e nevoie deocamdata. Se va sterge in viitor.
+
 //Aduce utilizatorii filialei selectate si daca exista user_id selecteaza aceasta masina
 //trece pe aici la fiecare refresh de pagina
 //daca vine din edit vom gasi in user_id id-ul utilizatorului si in department_id id-ul filialei

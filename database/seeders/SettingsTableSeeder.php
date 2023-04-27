@@ -62,21 +62,6 @@ class SettingsTableSeeder extends Seeder
                     'valoare' => '1',
                     'interval_id' => 1,
                 ],
-                [
-                    'nume' => 'filtreazaDupaDepartament',
-                    'valoare' => '1',
-                    'interval_id' => 1,
-                ],
-                [
-                    'nume' => 'filtreazaDupaLuna',
-                    'valoare' => '1',
-                    'interval_id' => 1,
-                ],
-                [
-                    'nume' => 'filtreazaDupaInterval',
-                    'valoare' => '1',
-                    'interval_id' => 1,
-                ],
                
             )            
         )->count(12)->create();

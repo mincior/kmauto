@@ -18,15 +18,15 @@ class AppHelper
 	 * @param [type] $pivot_table_name
 	 * @param [type] $selected_interval_id
 	 * @param string $whereRaw
-	 * @return void
+	 * @return array
 	 */
-	public static function get_last_target_values_array($source_id, $target_id, $pivot_table_name, $selected_interval_id, $whereRaw = '' )
+	public static function get_last_target_values_array($source_id, $target_id, $pivot_table_name, $selected_interval_id, $whereRaw = '')
 	{
 
 		$sql = " DISTINCT $source_id, LAST_VALUE($target_id) OVER (PARTITION BY $source_id ORDER BY interval_id RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING ) last_id";
 		$res = DB::table($pivot_table_name)
 			->selectRaw($sql);
-		if ($whereRaw){
+		if ($whereRaw) {
 			$res = $res->whereRaw($whereRaw);
 		}
 		$res = $res->where('interval_id', '<=', $selected_interval_id)
@@ -39,18 +39,73 @@ class AppHelper
 		}
 		return  $array_ids;
 	}
-	
+
+	/**
+	 * Muta elementul element in directia sens in barr si returneaza barr
+	 *
+	 * @param [type] $arr
+	 * @param [type] $element
+	 * @param [type] $sens
+	 * @return array
+	 */
+	public static function arr_move($arr, $element, $sens)
+	{
+		$barr = [];
+
+		//ia pe rand elementele mai putin ultimul
+		if ($sens == "up") {
+			for ($k = 0; $k < count($arr) - 1; $k++) {
+				if ($arr[$k + 1] == $element) {
+					$barr[$k] = $element;
+				} elseif ($arr[$k] == $element) {
+					$barr[$k] = $arr[$k - 1];
+				} else {
+					$barr[$k] = $arr[$k];
+				}
+			}
+
+			//prelucreaza si pe ultimul ($k vine de mai sus)
+			if ($arr[$k] == $element) {
+				$barr[$k] = $arr[$k - 1];
+			} else {
+				$barr[$k] = $arr[$k];
+			}
+
+		}else{//sens = 'down
+			for ($k =  count($arr) - 1; $k > 0; $k--) {
+				if ($arr[$k - 1] == $element) {
+					$barr[$k] = $element;
+				} elseif ($arr[$k] == $element) {
+					$barr[$k] = $arr[$k + 1];
+				} else {
+					$barr[$k] = $arr[$k];
+				}
+
+			}
+
+			//prelucreaza si pe primul ($k vine de mai sus si este zero)
+			if ($arr[$k] == $element) {
+				$barr[$k] = $arr[$k + 1];
+			} else {
+				$barr[$k] = $arr[$k];
+			}
+		}
+		ksort($barr);
+		return $barr;
+	}
+
 	/**
 	 * Returneaza id-ul intervalului curent (luna selectata cu intervalul selectat)
 	 *
 	 * @return object
 	 */
-	public static function getSelectedInterval(){
+	public static function getSelectedInterval()
+	{
 		$month_id = Month::where('select', 1)->first()->id;
 		$selected_interval = Interval::where('month_id', $month_id)->where('select', 1)->first();
-		$selected_interval_interval = $selected_interval->interval; 
-		$arr_ids =[];
-		if($selected_interval_interval == 'Toate' ){
+		$selected_interval_interval = $selected_interval->interval;
+		$arr_ids = [];
+		if ($selected_interval_interval == 'Toate') {
 			$arr_ids = Interval::where('month_id', $month_id)->where('interval', '!=', 'Toate')->pluck('id')->toArray();;
 			$selected_interval['arr_ids'] = $arr_ids;
 		}
@@ -85,8 +140,9 @@ class AppHelper
 		return $first . "-" . $middle . "-" . $last;
 	}
 
-	public static function leadzero($val, $poz){
-		for ($i = 0; $i< ($poz - strlen($val)) ; $i++){
+	public static function leadzero($val, $poz)
+	{
+		for ($i = 0; $i < ($poz - strlen($val)); $i++) {
 			$val = '0' . $val;
 		}
 		return $val;

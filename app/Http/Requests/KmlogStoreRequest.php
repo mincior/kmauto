@@ -24,6 +24,22 @@ class KmlogStoreRequest extends FormRequest
     public function rules()
     {
         return [
-        ];
+            'km' => [
+                'numeric',
+                'max: 999999'
+            ],
+            'stat_id' => [
+                'integer',
+            ],
+            'car_id' => [
+                'integer',
+            ],
+            'user_id' => [
+                'integer',
+            ],
+            'department_id' => [
+                'integer',
+            ],
+    ];
     }
 }

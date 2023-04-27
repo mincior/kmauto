@@ -57,6 +57,19 @@
                                 @enderror
                             </div>
                         </div>
+                        <div class="row mb-2">
+                            <label for="observatii" class="col-md-2 col-form-label">Observatii</label>
+
+                            <div class="col-md-5">
+                                <input autocomplete="on" id="observatii" name="observatii" type="text"
+                                    class="form-control @error('observatii') is-invalid @enderror"
+                                    value="{{ old('observatii') ? old('observatii') : $kmlog->observatii }}">
+
+                                @error('observatii')
+                                    <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
 
                         <div class="row mb-2">
                             <label for="picture" class="col-md-2 col-form-label">Poza bord</label>
@@ -127,19 +140,6 @@
                             </div>
                         </div>
 
-                        <div class="row mb-2">
-                            <label for="observatii" class="col-md-2 col-form-label">Observatii</label>
-
-                            <div class="col-md-5">
-                                <input autocomplete="on" id="observatii" name="observatii" type="text"
-                                    class="form-control @error('observatii') is-invalid @enderror"
-                                    value="{{ old('observatii') ? old('observatii') : $kmlog->observatii }}">
-
-                                @error('observatii')
-                                    <span class="invalid-feedback" role="alert">{{ $message }}</span>
-                                @enderror
-                            </div>
-                        </div>
 
 
 

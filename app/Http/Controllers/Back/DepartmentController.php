@@ -21,22 +21,24 @@ class DepartmentController extends Controller
 {
     public static function getUsers($department_id)
     {
-        if(!($department_id == null)){
+        if (!($department_id == null)) {
             $selected_interval_id = \App\MyHelpers\AppHelper::getSelectedInterval()->id;
-            
-            $users_id = AppHelper::get_last_target_values_array('user_id', 'department_id', 'user_deps', $selected_interval_id, "department_id = $department_id" );
-            $users = User::whereIn('id', $users_id)->get();
+
+            $users_id = AppHelper::get_last_target_values_array('user_id', 'department_id', 'user_deps', $selected_interval_id, "department_id = $department_id");
+            $user_ids = array_keys($users_id);
+            $users = User::whereIn('id', $user_ids)->get();
             return $users;
         }
     }
 
     public static function getCars($department_id)
     {
-        if(!($department_id == null)){
+        if (!($department_id == null)) {
             $selected_interval_id = \App\MyHelpers\AppHelper::getSelectedInterval()->id;
 
-            $cars_id = AppHelper::get_last_target_values_array('car_id', 'department_id', 'car_deps', $selected_interval_id, "department_id = $department_id" );
-            $cars = Car::whereIn('id', $cars_id)->get();
+            $cars_id = AppHelper::get_last_target_values_array('car_id', 'department_id', 'car_deps', $selected_interval_id, "department_id = $department_id");
+            $car_ids = array_keys($cars_id);
+            $cars = Car::whereIn('id', $car_ids)->get();
             return $cars;
         }
     }
@@ -75,13 +77,11 @@ class DepartmentController extends Controller
     public function show(Department $department)
     {
         return view('back.departments.show', compact('department'));
-
     }
 
     public function edit(Department $department)
     {
         return view('back.departments.edit', compact('department'));
-
     }
 
     public function update(DepartmentUpdateRequest $request, Department $department)

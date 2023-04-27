@@ -37,23 +37,11 @@ class StatsTableSeeder extends Seeder
                 ],
                 [
                     'id' => "3",
-                    'name' => 'Plecare in interes serviciu'
-                ],
-                [
-                    'id' => "4",
-                    'name' => 'Sosire din interes serviciu'
-                ],
-                [
-                    'id' => "5",
-                    'name' => 'Plecare in concediu'
-                ],
-                [
-                    'id' => "6",
-                    'name' => 'Card personal'
+                    'name' => 'Nu se pune la plata'
                 ],
                 
             )            
-        )->count(6)->create();
+        )->count(3)->create();
         
                 
 

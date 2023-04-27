@@ -46,8 +46,6 @@ Route::middleware('auth')->group(function () {
             Route::post('/general/setDepartmentId', 'setDepartmentId')->name('general.setDepartmentId');
             Route::post('/general/setCarId', 'setCarId')->name('general.setCarId');
             Route::post('/general/setUserId', 'setUserId')->name('general.setUserId');
-            // Route::post('/general/FiltreazaDupaMasina', 'FiltreazaDupaMasina')->name('general.FiltreazaDupaMasina');
-            // Route::post('/general/FiltreazaDupaUtilizator', 'FiltreazaDupaUtilizator')->name('general.FiltreazaDupaUtilizator');
             Route::get('/general/getDatatablesHelp', 'getDatatablesHelp')->name('general.getDatatablesHelp');
         });
         /* ---------------------------------------- */
@@ -94,6 +92,7 @@ Route::middleware('auth')->group(function () {
         /* ---------------------------------------- */
         // Kmlog
         Route::controller(KmlogController::class)->group(function () {
+            Route::post('/kmlogs/muta', 'muta')->name('kmlogs.muta');
             Route::delete('/kmlogs/massDestroy', 'massDestroy')->name('kmlogs.massDestroy');
             Route::resource('/kmlogs', KmlogController::class)->except(['destroy']);
         });

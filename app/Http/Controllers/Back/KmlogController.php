@@ -42,9 +42,8 @@ class KmlogController extends Controller
             $selected_interval_id = $selected_interval->id;
             $selected_user_id = Setting::where('nume', 'userId')->where('interval_id', 1)->first()->valoare;
             $selected_car_id = Setting::where('nume', 'carId')->where('interval_id', 1)->first()->valoare;
-            $filtreaza_dupa_interval = Setting::where('nume', 'filtreazaDupaInterval')->where('interval_id', 1)->first()->valoare;
             // dd($selected_interval_id, $selected_user_id, $selected_car_id);
-            $kmlogs = Kmlog::with('stat', 'user', 'car', 'interval', 'department')->orderby('id', 'desc')->select(sprintf('%s.*', (new Kmlog)->getTable()))->get();
+            $kmlogs = Kmlog::with('stat', 'user', 'car', 'interval', 'department')->orderby('interval_id', 'desc')->orderby('user_id', 'asc')->orderby('km', 'asc')->select(sprintf('%s.*', (new Kmlog)->getTable()))->get();
             foreach ($kmlogs as $key => $kmlog) {
                 $kmlog['month'] = Month::where('id', Interval::where('id', $kmlog->interval_id)->first()->month_id)->first();
                 if ($selected_user_id > 0 && $kmlog->user_id != $selected_user_id) {
@@ -74,30 +73,54 @@ class KmlogController extends Controller
 
     public function create()
     {
+        //cand se alege o masina sau un user in Index, se va transmite la create prin tabelul settings
         $selected_user_id = Setting::where('nume', 'userId')->where('interval_id', 1)->first()->valoare;
         $selected_car_id = Setting::where('nume', 'carId')->where('interval_id', 1)->first()->valoare;
         $selected_interval = \App\MyHelpers\AppHelper::getSelectedInterval();
-        //daca intervalul selectat este Toate, va lua ca selected_interval_id pe primul interval din luna selectata
-        //altfel va lua chiar id-ul intervalului
-        $selected_interval_id = ($selected_interval->arr_ids ? $selected_interval->arr_ids[0] : $selected_interval->id);
-        //Vine aici din pagina index. De obicei create nu are request dar aici s-a injectat pentru ca se doreste selectarea
-        //unui user sau a unei masini care este deja selectat/selectata in pagina index
-        //Se primeste in request 'user_id' sau 'car_id' diferit de zero. Aceste id-uri se retransmit in pagina create
-        //Aici se selecteaza mai intai departamentul urmand ca prin ajax sa se completeze lista cu masini si utilizatori
-        //Se mai determina si departamentul si userul/masina asoicate masinii/userului selectati/selectate
+
+
         $department_id = 0;
         if ($selected_user_id != '0') {
-            $department_id = UserDep::where('user_id', $selected_user_id)->where('interval_id', '<=', $selected_interval_id)->orderby('interval_id', 'desc')->first()->id;
-            $selected_car_id = @UserCar::where('user_id', $selected_user_id)->where('interval_id', '<=', $selected_interval_id)->orderby('interval_id', 'desc')->first()->car_id;
+            $department_id = UserDep::where('user_id', $selected_user_id)->where('interval_id', '<=', $selected_interval->id)->orderby('interval_id', 'desc')->first()->id;
+            $selected_car_id = @UserCar::where('user_id', $selected_user_id)->where('interval_id', '<=', $selected_interval->id)->orderby('interval_id', 'desc')->first()->car_id;
         } else {
             if ($selected_car_id != '0') {
-                $department_id = CarDep::where('car_id', $selected_car_id)->where('interval_id', '<=', $selected_interval_id)->orderby('interval_id', 'desc')->first()->id;
-                $selected_user_id = @UserCar::where('user_id', $selected_car_id)->where('interval_id', '<=', $selected_interval_id)->orderby('interval_id', 'desc')->first()->user_id;
+                $department_id = CarDep::where('car_id', $selected_car_id)->where('interval_id', '<=', $selected_interval->id)->orderby('interval_id', 'desc')->first()->id;
+                $selected_user_id = @UserCar::where('user_id', $selected_car_id)->where('interval_id', '<=', $selected_interval->id)->orderby('interval_id', 'desc')->first()->user_id;
             }
         }
         $departments = Department::get();
         $stats = Stat::get();
-        return view('back.kmlogs.create', compact('departments', 'stats'))->with(['user_id' => $selected_user_id, 'car_id' => $selected_car_id, 'department_id' => $department_id]);
+        //afla cel mai mare index din intervalul anterior si cel mai mic index din intervalul curent
+        $idx_ant_max = @Kmlog::where('department_id', $department_id)->where('user_id', $selected_user_id)->where('car_id', $selected_car_id)->where('interval_id', ($selected_interval->id == 1) ? 1 : $selected_interval->id -1 )->orderby('km', 'desc')->first()->km;
+        $idx_crt_min = @Kmlog::where('department_id', $department_id)->where('user_id', $selected_user_id)->where('car_id', $selected_car_id)->where('interval_id', $selected_interval->id )->orderby('km', 'asc')->first()->km;
+        // dd($idx_crt_min, $idx_ant_max);
+        return view('back.kmlogs.create', compact('departments', 'stats'))->with(
+            [
+                'user_id' => $selected_user_id, 
+                'car_id' => $selected_car_id, 
+                'department_id' => $department_id,
+                'idx_ant_max' => $idx_ant_max,
+                'idx_crt_min' => $idx_crt_min
+            ]);
+    }
+
+    /**
+     * Muta inregistrarea cu o pozitie in sus 
+     * Modifica campul ordine 
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function muta(Request $request)
+    {
+        $arr = AppHelper::arr_move($request->all_ids, $request->selected_id, $request->sens);
+
+        //seteaza ordine in tabelul kmlog dupa $arr
+        foreach ($arr as $key => $id) {
+            $interval_id = Kmlog::where('id', $id)->first()->interval_id;
+            Kmlog::where('id', $id)->update(['ordine' => $interval_id * 100 + $key]);
+        }
     }
 
 
