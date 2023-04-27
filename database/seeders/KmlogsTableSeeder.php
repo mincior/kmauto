@@ -61,7 +61,7 @@ class KmlogsTableSeeder extends Seeder
                     'picture' => 'Adauga aici o poza',
                     'observatii' => 'Nu sunt',
                     'ordine' => 1,
-                    'stat_id' => 3,
+                    'stat_id' => 1,
                 ],
                 [
                     'car_id' => 7,
@@ -73,7 +73,7 @@ class KmlogsTableSeeder extends Seeder
                     'picture' => 'Adauga aici o poza',
                     'observatii' => 'Nu sunt',
                     'ordine' => 3,
-                    'stat_id' => 4,
+                    'stat_id' => 2,
                 ],
                 [
                     'car_id' => 3,
@@ -85,7 +85,7 @@ class KmlogsTableSeeder extends Seeder
                     'picture' => 'Adauga aici o poza',
                     'observatii' => 'Nu sunt',
                     'ordine' => 2,
-                    'stat_id' => 3,
+                    'stat_id' => 2,
                 ],
                 [
                     'car_id' => 3,
