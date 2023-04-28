@@ -30,6 +30,12 @@ use App\Http\Requests\KmlogUpdateRequest;
 
 class KmlogController extends Controller
 {
+    /**
+     * afiseaza indexul
+     *
+     * @param Request $request
+     * @return void
+     */
     public function index(Request $request)
     {
         $datetime = new DateTime();
@@ -71,6 +77,11 @@ class KmlogController extends Controller
         return view('back.kmlogs.index');
     }
 
+    /**
+     * Afiseaza formularul pentru creare
+     *
+     * @return void
+     */
     public function create()
     {
         //cand se alege o masina sau un user in Index, se va transmite la create prin tabelul settings
@@ -110,7 +121,7 @@ class KmlogController extends Controller
     }
 
     /**
-     * Muta inregistrarea cu o pozitie in sus 
+     * Muta inregistrarea cu o pozitie in sus  sau in jos - NU SE FOLOSESTE DEOCAMDATA
      * Modifica campul ordine 
      *
      * @param Request $request
@@ -154,7 +165,12 @@ class KmlogController extends Controller
 
 
 
-
+    /**
+     * Salveaza in baza de date noul obiect
+     *
+     * @param KmlogStoreRequest $request
+     * @return void
+     */
     public function store(KmlogStoreRequest $request)
     {
         $datetime = new DateTime();
@@ -242,6 +258,12 @@ class KmlogController extends Controller
         return redirect()->route('back.kmlogs.index')->with('notification', $notification);
     }
 
+    /**
+     * Afiseaza inregistrarea selectata
+     *
+     * @param Kmlog $kmlog
+     * @return void
+     */
     public function show(Kmlog $kmlog)
     {
 
@@ -262,6 +284,12 @@ class KmlogController extends Controller
             ->with('image_path', $image_path);
     }
 
+    /**
+     * Afiseaza formularul de modificare
+     *
+     * @param Kmlog $kmlog
+     * @return void
+     */
     public function edit(Kmlog $kmlog)
     {
         $departments = Department::get();
@@ -272,6 +300,13 @@ class KmlogController extends Controller
         return view('back.kmlogs.edit', compact('kmlog', 'users', 'cars', 'stats', 'departments'))->with('department_name', $department_name);
     }
 
+    /**
+     * Modifica in baza de date inregistrarea 
+     *
+     * @param KmlogUpdateRequest $request
+     * @param Kmlog $kmlog
+     * @return void
+     */
     public function update(KmlogUpdateRequest $request, Kmlog $kmlog)
     {
 
@@ -349,6 +384,12 @@ class KmlogController extends Controller
         return redirect()->route('back.kmlogs.index')->with('notification', $notification);
     }
 
+    /**
+     * Sterge in masa
+     *
+     * @param Request $request
+     * @return void
+     */
     public function massDestroy(Request $request)
     {
         Kmlog::whereIn('id', request('ids'))->delete();

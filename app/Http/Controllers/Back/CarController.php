@@ -175,7 +175,6 @@ class CarController extends Controller
     public function edit(Car $car)
     {
         $selected_interval_id = \App\MyHelpers\AppHelper::getSelectedInterval()->id;
-
         $departments = Department::select('id', 'name')->orderBy('name')->get();
         $dep_id = @CarDep::select('department_id', 'interval_id', 'car_id')
             ->where('car_id', $car->id)

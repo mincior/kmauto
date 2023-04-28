@@ -42,7 +42,35 @@ if ($selected_department_id > 0) {
     $users = $users->wherein('id', $arr_users_with_departments);
 }
 $users = $users->get();
-//dd($selected_department_id, $selected_user_id, $selected_car_id);
+
+//daca exista o asociere intre masina si user in UserCar, sel_user_id si sel_car_id vor fi ambele diferite de zero
+//daca una din ele este zero inseamna ca nu exista asociere si se va invita la crearea acesteia fie in cars fie in users
+$department_id = 0;
+$sel_car_id = 0;
+$sel_user_id = 0;
+if ($selected_user_id != '0') {
+    $department_id = \App\Models\UserDep::where('user_id', $selected_user_id)
+        ->where('interval_id', '<=', $selected_interval->id)
+        ->orderby('interval_id', 'desc')
+        ->first()->department_id;
+    $sel_car_id = @\App\Models\UserCar::where('user_id', $selected_user_id)
+        ->where('interval_id', '<=', $selected_interval->id)
+        ->orderby('interval_id', 'desc')
+        ->first()->car_id;
+} else {
+    if ($selected_car_id != '0') {
+        $department_id = \App\Models\CarDep::where('car_id', $selected_car_id)
+            ->where('interval_id', '<=', $selected_interval->id)
+            ->orderby('interval_id', 'desc')
+            ->first()->department_id;
+        $sel_user_id = @\App\Models\UserCar::where('car_id', $selected_car_id)
+            ->where('interval_id', '<=', $selected_interval->id)
+            ->orderby('interval_id', 'desc')
+            ->first()->user_id;
+    }
+}
+// dd($sel_user_id === null, $sel_car_id === null, $sel_user_id, $sel_car_id);
+// var_dump( $sel_user_id, $sel_car_id);
 ?>
 @section('content')
     <div class="card">
@@ -54,6 +82,13 @@ $users = $users->get();
                         <div style="width: 5%" class="col-md-1">
                             <button type="button" class="btn btn-success"
                                 onclick="puneToateSelecturilePeChoose()">Tot</button>
+                        </div>
+                    @endif
+                    @if ($selected_car_id > 0 || $selected_user_id > 0)
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-success"
+                                onclick="puneUserSiCarPeChoose()">{{ $selected_department_id > 0 ? 'Toata filiala' : 'Tot' }}
+                            </button>
                         </div>
                     @endif
                     <div class="col-md-2">
@@ -70,7 +105,6 @@ $users = $users->get();
                             <span class="invalid-feedback" role="alert">{{ $message }}</span>
                         @enderror
                     </div>
-
                     <div class="col-md-2">
                         <select style="width: 110%" name="car_id" id="car_select" data-deptid="1" data-userid="1"
                             class="form-select">
@@ -97,13 +131,17 @@ $users = $users->get();
                             <span class="invalid-feedback" role="alert">{{ $message }}</span>
                         @enderror
                     </div>
-                    @if ($selected_car_id > 0 || $selected_user_id > 0)
+                    @if ($sel_car_id === null)
                         <div class="col-md-2">
-                            <button type="button" class="btn btn-success"
-                                onclick="puneUserSiCarPeChoose()">{{ $selected_department_id > 0 ? 'Toata filiala' : 'Tot' }}
-                            </button>
+                            <a href="{{ route('back.users.edit', $selected_user_id) }}" class="btn btn-info" role="button">Asociaza masina</a>
                         </div>
                     @endif
+                    @if ($sel_user_id === null)
+                        <div class="col-md-2">
+                            <a href="{{ route('back.cars.edit', $selected_car_id) }}" class="btn btn-info" role="button">Asociaza utilizatorul</a>
+                        </div>
+                    @endif
+
                 </div>
 
                 <div class="col fs-5 text-end">
@@ -511,7 +549,7 @@ $users = $users->get();
             //butonul de adaugare nu trebuie sa fie activ daca intervalul selectat este 'Toate'
             if ('{{ $Toate }}' == 1) {
                 oTable.buttons('.external').enable(false);
-                $('#my-log').html('Nu puteti adauga sau modifica daca aveti selectat la inteval "Toate"');
+                $('#my-log').html('Nu puteti adauga sau modifica daca aveti selectat la interval "Toate"');
             } else {
                 oTable.buttons('.external').enable(true);
                 $('#my-log').html('Km log');
@@ -523,6 +561,12 @@ $users = $users->get();
                 $('#my-log').html('Nu puteti adauga sau modifica daca nu ati selectat masina sau utilizatorul');
             }
 
+            if('{{$sel_user_id === null || $sel_car_id === null}}'){
+                oTable.buttons('.externalEdit').enable(false);
+                oTable.buttons('.externalCreate').enable(false);
+                $('#my-log').html('Nu puteti adauga sau modifica daca utilizatorul sau masina selectat/a nu este asociat/a.');
+                
+            }
             // oTable.buttons('.externalCreate').text("Deselectati 'Toate' pentru adaugare");
             // oTable.buttons('.externalEdit').text("Deselectati 'Toate' pentru modificare");
         });
