@@ -4,56 +4,67 @@
     &vert; Km log
 @endsection
 <?php
+//intervale
 $selected_interval = \App\MyHelpers\AppHelper::getSelectedInterval();
 $selected_interval_id = $selected_interval->id;
-$Toate = $selected_interval->arr_ids ? true : false;//selected_interval este obiect si daca are arr_ids inseamna ca e selectat 'Toate' la intervale
+$Toate = $selected_interval->arr_ids ? true : false; //selected_interval este obiect si daca are arr_ids inseamna ca e selectat 'Toate' la intervale
 
+//departamente
+$departments = \App\Models\Department::get();
 $selected_department_id = \App\Models\Setting::where('nume', 'departmentId')
     ->where('interval_id', 1)
     ->first()->valoare;
-$selected_user_id = \App\Models\Setting::where('nume', 'userId')
-    ->where('interval_id', 1)
-    ->first()->valoare;
+
+//masini
 $selected_car_id = \App\Models\Setting::where('nume', 'carId')
     ->where('interval_id', 1)
     ->first()->valoare;
-$departments = \App\Models\Department::get();
-
-$arr_users_with_user_activ = @array_keys(\App\MyHelpers\AppHelper::get_last_target_values_array('user_id', 'id', 'availableusers', $selected_interval_id, 'valoare = 1'));
-$arr_users_with_department = AppHelper::get_last_target_values_array('user_id', 'department_id', 'user_deps', $selected_interval_id, "department_id = $selected_department_id");
-$arr_users_with_departments = array_keys($arr_users_with_department );
-
 $arr_cars_with_car_activ = @array_keys(\App\MyHelpers\AppHelper::get_last_target_values_array('car_id', 'id', 'availablecars', $selected_interval_id, 'valoare = 1'));
 $arr_cars_with_department = AppHelper::get_last_target_values_array('car_id', 'department_id', 'car_deps', $selected_interval_id, "department_id = $selected_department_id");
 $arr_cars_with_departments = array_keys($arr_cars_with_department);
-$cars = \App\Models\Car::whereIn('id', $arr_cars_with_car_activ);
-if($selected_department_id >0){
+$cars = \App\Models\Car::whereIn('id', $arr_cars_with_car_activ); //ia doar masinile active la data intervalului curent
+if ($selected_department_id > 0) {
+    //face si selectia dupa departament daca este cazul
     $cars = $cars->wherein('id', $arr_cars_with_departments);
 }
 $cars = $cars->get();
 
-$users = \App\Models\User::whereIn('id', $arr_users_with_user_activ);
-if($selected_department_id >0){
+//utilizatori
+$selected_user_id = \App\Models\Setting::where('nume', 'userId')
+    ->where('interval_id', 1)
+    ->first()->valoare;
+$arr_users_with_user_activ = @array_keys(\App\MyHelpers\AppHelper::get_last_target_values_array('user_id', 'id', 'availableusers', $selected_interval_id, 'valoare = 1'));
+$arr_users_with_department = AppHelper::get_last_target_values_array('user_id', 'department_id', 'user_deps', $selected_interval_id, "department_id = $selected_department_id");
+$arr_users_with_departments = array_keys($arr_users_with_department);
+$users = \App\Models\User::whereIn('id', $arr_users_with_user_activ); //ia doar userii activi la data intervalului curent
+if ($selected_department_id > 0) {
+    //face si selectia dupa departament daca este cazul
     $users = $users->wherein('id', $arr_users_with_departments);
 }
 $users = $users->get();
-
-
+//dd($selected_department_id, $selected_user_id, $selected_car_id);
 ?>
 @section('content')
     <div class="card">
         <div class="card-header d-print-none">
             <div class="row">
-                <div class="col">Km log</div>
+                <div id="my-log" class="col">Km log</div>
                 <div class="row mb-1">
-
+                    @if ($selected_department_id > 0)
+                        <div style="width: 5%" class="col-md-1">
+                            <button type="button" class="btn btn-success"
+                                onclick="puneToateSelecturilePeChoose()">Tot</button>
+                        </div>
+                    @endif
                     <div class="col-md-2">
-                        <select name="department_id" id="department_select" data-deptid="1" data-userid="1" class="form-select">
+                        <select style="width: 110%" name="department_id" id="department_select" data-deptid="1"
+                            data-userid="1" class="form-select">
                             <option value="0">Alege filiala...</option>
                             @foreach ($departments as $department)
-                            <option {{ $department->id == $selected_department_id ? 'selected' : '' }} value="{{ $department->id }}">
-                                {{ $department['name'] }}</option>
-                                @endforeach
+                                <option {{ $department->id == $selected_department_id ? 'selected' : '' }}
+                                    value="{{ $department->id }}">
+                                    {{ $department['name'] }}</option>
+                            @endforeach
                         </select>
                         @error('department_id')
                             <span class="invalid-feedback" role="alert">{{ $message }}</span>
@@ -61,7 +72,8 @@ $users = $users->get();
                     </div>
 
                     <div class="col-md-2">
-                        <select name="car_id" id="car_select" data-deptid="1" data-userid="1" class="form-select">
+                        <select style="width: 110%" name="car_id" id="car_select" data-deptid="1" data-userid="1"
+                            class="form-select">
                             <option value="0">Alege masina...</option>
                             @foreach ($cars as $car)
                                 <option {{ $car->id == $selected_car_id ? 'selected' : '' }} value="{{ $car->id }}">
@@ -73,7 +85,8 @@ $users = $users->get();
                         @enderror
                     </div>
                     <div class="col-md-3">
-                        <select name="user_id" id="user_select" data-deptid="1" data-userid="1" class="form-select">
+                        <select style="width: 100%" name="user_id" id="user_select" data-deptid="1" data-userid="1"
+                            class="form-select">
                             <option value="0">Alege utilizatorul...</option>
                             @foreach ($users as $user)
                                 <option {{ $user->id == $selected_user_id ? 'selected' : '' }} value="{{ $user->id }}">
@@ -84,9 +97,13 @@ $users = $users->get();
                             <span class="invalid-feedback" role="alert">{{ $message }}</span>
                         @enderror
                     </div>
-                    <div class="col-md-3">
-                        <button type="button" class="btn btn-success" onclick="puneSelecturilePeChoose()">Tot</button>
-                    </div>
+                    @if ($selected_car_id > 0 || $selected_user_id > 0)
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-success"
+                                onclick="puneUserSiCarPeChoose()">{{ $selected_department_id > 0 ? 'Toata filiala' : 'Tot' }}
+                            </button>
+                        </div>
+                    @endif
                 </div>
 
                 <div class="col fs-5 text-end">
@@ -132,69 +149,69 @@ $users = $users->get();
 
     <script type="text/javascript">
         $(function() {
-            let mutaInSus = {
-                extend: 'selectedSingle',
-                className: 'btn-secondary moveup',
-                text: '<i class="bi bi-chevron-double-up"></i>',
-                enabled: false,
-                url: "{{ route('back.kmlogs.muta') }}",
+            // let mutaInSus = {
+            //     extend: 'selectedSingle',
+            //     className: 'btn-secondary moveup',
+            //     text: '<i class="bi bi-chevron-double-up"></i>',
+            //     enabled: false,
+            //     url: "{{ route('back.kmlogs.muta') }}",
 
-                action: function(e, dt, node, config) {
-                    var selected_ids = $.map(dt.rows({
-                        selected: true
-                    }).data(), function(entry) {
-                        return entry.id;
-                    });
-                    var all_ids = $.map(dt.rows().data(), function(entry) {
-                        return entry.id;
-                    });
-                    $.ajax({
-                        method: 'POST',
-                        url: config.url,
-                        data: {
-                            selected_id: selected_ids[0],
-                            all_ids: all_ids,
-                            sens: 'up'
-                        },
-                        success: function(response) {
-                            oTable.draw();
-                        }
-                    })
-                }
-            }
-            dtButtonsLeft1.push(mutaInSus)
+            //     action: function(e, dt, node, config) {
+            //         var selected_ids = $.map(dt.rows({
+            //             selected: true
+            //         }).data(), function(entry) {
+            //             return entry.id;
+            //         });
+            //         var all_ids = $.map(dt.rows().data(), function(entry) {
+            //             return entry.id;
+            //         });
+            //         $.ajax({
+            //             method: 'POST',
+            //             url: config.url,
+            //             data: {
+            //                 selected_id: selected_ids[0],
+            //                 all_ids: all_ids,
+            //                 sens: 'up'
+            //             },
+            //             success: function(response) {
+            //                 oTable.draw();
+            //             }
+            //         })
+            //     }
+            // }
+            // dtButtonsLeft1.push(mutaInSus)
 
-            let mutaInJos = {
-                extend: 'selectedSingle',
-                className: 'btn-secondary movedown',
-                text: '<i class="bi bi-chevron-double-down"></i>',
-                enabled: false,
-                url: "{{ route('back.kmlogs.muta') }}",
+            // let mutaInJos = {
+            //     extend: 'selectedSingle',
+            //     className: 'btn-secondary movedown',
+            //     text: '<i class="bi bi-chevron-double-down"></i>',
+            //     enabled: false,
+            //     url: "{{ route('back.kmlogs.muta') }}",
 
-                action: function(e, dt, node, config) {
-                    var selected_ids = $.map(dt.rows({
-                        selected: true
-                    }).data(), function(entry) {
-                        return entry.id;
-                    });
-                    var all_ids = $.map(dt.rows().data(), function(entry) {
-                        return entry.id;
-                    });
-                    $.ajax({
-                        method: 'POST',
-                        url: config.url,
-                        data: {
-                            selected_id: selected_ids[0],
-                            all_ids: all_ids,
-                            sens: 'down'
-                        },
-                        success: function(response) {
-                            oTable.draw();
-                        }
-                    })
-                }
-            }
-            dtButtonsLeft1.push(mutaInJos)
+            //     action: function(e, dt, node, config) {
+            //         var selected_ids = $.map(dt.rows({
+            //             selected: true
+            //         }).data(), function(entry) {
+            //             return entry.id;
+            //         });
+            //         var all_ids = $.map(dt.rows().data(), function(entry) {
+            //             return entry.id;
+            //         });
+            //         $.ajax({
+            //             method: 'POST',
+            //             url: config.url,
+            //             data: {
+            //                 selected_id: selected_ids[0],
+            //                 all_ids: all_ids,
+            //                 sens: 'down'
+            //             },
+            //             success: function(response) {
+            //                 oTable.draw();
+            //             }
+            //         })
+            //     }
+            // }
+            // dtButtonsLeft1.push(mutaInJos)
 
             /* ------------------------------------------------------------------------ */
             let createButton = {
@@ -253,7 +270,7 @@ $users = $users->get();
 
             let deleteButton = {
                 extend: 'selectedSingle',
-                className: 'btn-danger  selectOne',
+                className: 'btn-danger selectMultiple',
                 text: '<i class="bi bi-trash"></i>',
                 titleAttr: 'Delete',
                 enabled: false,
@@ -447,7 +464,7 @@ $users = $users->get();
             /* ------------------------------------------------------------------------ */
             new $.fn.dataTable.Buttons(oTable, {
                 name: 'BtnGroupLeft',
-                buttons: dtButtonsLeft1
+                buttons: dtButtonsLeft1 //daca aici punem dtButtonsLeft vom vedea butoanele implicite definite in datatables-js.blade.php
             });
             new $.fn.dataTable.Buttons(oTable, {
                 name: 'BtnGroupCenter',
@@ -463,33 +480,51 @@ $users = $users->get();
             oTable.buttons('BtnGroupRight', null).containers().appendTo('#ToolbarRight');
 
             /* ------------------------------------------------------------------------ */
+            // oTable.on('select', function(e, dt, type, indexes) {
+            //     var all_user_ids = $.map(dt.rows({
+            //         selected: true
+            //     }).data(), function(entry) {
+            //         return [entry.user_id, entry.car_id, entry.department_id];
+            //     });
+            //     console.log(all_user_ids[2]);
+
+            // });
+
             oTable.on('select deselect', function(e, dt, type, indexes) {
                 var selectedRows = oTable.rows({
                     selected: true
                 }).count();
-                var all_ids = $.map(dt.rows().data(), function(entry) {
-                    return entry.id;
-                });
-                var all_ids_count = oTable.rows().count();
-                var selected_id = $.map(dt.rows({
-                    selected: true
-                }).data(), function(entry) {
-                    return entry.id;
-                });
-                console.log(selectedRows, all_ids, selected_id[0]);
-                oTable.buttons('.moveup').enable(selected_id[0] != all_ids[0]);
-                oTable.buttons('.movedown').enable(selected_id[0] != all_ids[all_ids_count - 1]);
+
+                // var all_ids_count = oTable.rows().count();
+                // var selected_id = $.map(dt.rows({
+                //     selected: true
+                // }).data(), function(entry) {
+                //     return entry.id;
+                // });
+
+                // oTable.buttons('.moveup').enable(selected_id[0] != all_ids[0]);
+                // oTable.buttons('.movedown').enable(selected_id[0] != all_ids[all_ids_count - 1]);
                 oTable.buttons('.selectOne').enable(selectedRows === 1);
                 oTable.buttons('.selectMultiple').enable(selectedRows > 0);
             });
 
             //butonul de adaugare nu trebuie sa fie activ daca intervalul selectat este 'Toate'
-            oTable.buttons('.external').enable({{ $Toate == 1 ? 'false' : 'true' }});
             if ('{{ $Toate }}' == 1) {
-                oTable.buttons('.externalCreate').text("Deselectati 'Toate' pentru adaugare");
-                oTable.buttons('.externalEdit').text("Deselectati 'Toate' pentru modificare");
+                oTable.buttons('.external').enable(false);
+                $('#my-log').html('Nu puteti adauga sau modifica daca aveti selectat la inteval "Toate"');
+            } else {
+                oTable.buttons('.external').enable(true);
+                $('#my-log').html('Km log');
             }
 
+            if ('{{ $selected_car_id == 0 && $selected_user_id == 0 }}') {
+                oTable.buttons('.externalEdit').enable(false);
+                oTable.buttons('.externalCreate').enable(false);
+                $('#my-log').html('Nu puteti adauga sau modifica daca nu ati selectat masina sau utilizatorul');
+            }
+
+            // oTable.buttons('.externalCreate').text("Deselectati 'Toate' pentru adaugare");
+            // oTable.buttons('.externalEdit').text("Deselectati 'Toate' pentru modificare");
         });
 
         $('#department_select').change(function() {
@@ -521,6 +556,7 @@ $users = $users->get();
                     if (car_id > 0) {
                         $('#user_select option[value="0"]').prop('selected', 'selected').change();
                     }
+                    window.location.reload();
                 }
             });
         });
@@ -536,16 +572,21 @@ $users = $users->get();
                 },
                 success: function(response) {
                     $('#sqltable').DataTable().draw();
-
-
                     if (user_id > 0) {
                         $('#car_select option[value="0"]').prop('selected', 'selected').change();
                     }
+                    window.location.reload();
                 }
             });
         });
 
-        function puneSelecturilePeChoose() {
+        function puneUserSiCarPeChoose() {
+            $('#user_select option[value="0"]').prop('selected', 'selected').change();
+            $('#car_select option[value="0"]').prop('selected', 'selected').change();
+        }
+
+        function puneToateSelecturilePeChoose() {
+            $('#department_select option[value="0"]').prop('selected', 'selected').change();
             $('#user_select option[value="0"]').prop('selected', 'selected').change();
             $('#car_select option[value="0"]').prop('selected', 'selected').change();
         }

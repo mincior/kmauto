@@ -81,14 +81,15 @@ class KmlogController extends Controller
 
         $department_id = 0;
         if ($selected_user_id != '0') {
-            $department_id = UserDep::where('user_id', $selected_user_id)->where('interval_id', '<=', $selected_interval->id)->orderby('interval_id', 'desc')->first()->id;
+            $department_id = UserDep::where('user_id', $selected_user_id)->where('interval_id', '<=', $selected_interval->id)->orderby('interval_id', 'desc')->first()->department_id;
             $selected_car_id = @UserCar::where('user_id', $selected_user_id)->where('interval_id', '<=', $selected_interval->id)->orderby('interval_id', 'desc')->first()->car_id;
         } else {
             if ($selected_car_id != '0') {
-                $department_id = CarDep::where('car_id', $selected_car_id)->where('interval_id', '<=', $selected_interval->id)->orderby('interval_id', 'desc')->first()->id;
-                $selected_user_id = @UserCar::where('user_id', $selected_car_id)->where('interval_id', '<=', $selected_interval->id)->orderby('interval_id', 'desc')->first()->user_id;
+                $department_id = CarDep::where('car_id', $selected_car_id)->where('interval_id', '<=', $selected_interval->id)->orderby('interval_id', 'desc')->first()->department_id;
+                $selected_user_id = @UserCar::where('car_id', $selected_car_id)->where('interval_id', '<=', $selected_interval->id)->orderby('interval_id', 'desc')->first()->user_id;
             }
         }
+
         $departments = Department::get();
         $stats = Stat::get();
         //afla cel mai mare index din intervalul anterior si cel mai mic index din intervalul curent
@@ -98,8 +99,11 @@ class KmlogController extends Controller
         return view('back.kmlogs.create', compact('departments', 'stats'))->with(
             [
                 'user_id' => $selected_user_id, 
-                'car_id' => $selected_car_id, 
+                'car_id' => $selected_car_id,
                 'department_id' => $department_id,
+                'user_name' => @User::where('id',$selected_user_id)->first()->name, 
+                'car_number' => @Car::where('id', $selected_car_id)->first()->numar, 
+                'department_name' => @Department::where('id', $department_id)->first()->name,
                 'idx_ant_max' => $idx_ant_max,
                 'idx_crt_min' => $idx_crt_min
             ]);
@@ -164,7 +168,6 @@ class KmlogController extends Controller
         $data['created_at'] = $datetime->format('y-m-d H:i:s');
         $data['updated_at'] = $datetime->format('y-m-d H:i:s');
 
-
         // $department = Department::where('id', $data['department_id'])->first()->name;
         $user = User::where('id', $data['user_id'])->first()->name;
         $car = Car::where('id', $data['car_id'])->first()->numar;
@@ -225,11 +228,11 @@ class KmlogController extends Controller
         // $request->picture->move("/storage/pictures/thumbnail".$image_path, $image_name);
 
         $kmlog = Kmlog::create($data);
-        //sterge masina si utilizatorul selectat
-        if ($kmlog) {
-            Setting::where('nume', "userId")->where('interval_id', 1)->update(array('valoare' => 0));
-            Setting::where('nume', "carId")->where('interval_id', 1)->update(array('valoare' => 0));
-        }
+        // //sterge masina si utilizatorul selectat
+        // if ($kmlog) {
+        //     Setting::where('nume', "userId")->where('interval_id', 1)->update(array('valoare' => 0));
+        //     Setting::where('nume', "carId")->where('interval_id', 1)->update(array('valoare' => 0));
+        // }
         $notification = [
             "type" => "success",
             "title" => 'Add ...',

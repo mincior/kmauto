@@ -54,7 +54,6 @@ class CarController extends Controller
             //daca vine din foaia Departments sau din selectul Filala din Users, va afisa doar masinile filialei selectate
             $selected_interval_id = \App\MyHelpers\AppHelper::getSelectedInterval()->id;
             $department_id = Setting::where('nume', 'departmentId')->where('interval_id', 1)->first()->valoare;
-            $filtreazaDupaDepartament = Setting::where('nume', 'filtreazaDupaDepartament')->where('interval_id', 1)->first()->valoare;
             $cars = Car::with('fuel', 'brand', 'type')->select(sprintf('%s.*', (new Car)->getTable()))->orderBy('id', 'desc')->get();
             $arr_cars_with_departments = AppHelper::get_last_target_values_array('car_id', 'department_id', 'car_deps', $selected_interval_id);
             $arr_cars_with_users = AppHelper::get_last_target_values_array('car_id', 'user_id', 'user_cars', $selected_interval_id);
@@ -69,7 +68,7 @@ class CarController extends Controller
                 @$car['activ'] = Availablecar::where('id', $arr_cars_with_car_activ[$car->id])->get();
                 @$car['car_consumptions'] = CarConsumption::where('id', $arr_cars_with_car_consumptions[$car->id])->get();
                 //daca filtreaza dupa departament scoate celelalte masini
-                if( @$arr_cars_with_departments[$car->id] != $department_id && $filtreazaDupaDepartament == 1){
+                if( @$arr_cars_with_departments[$car->id] != $department_id && $department_id >0){
                     unset($cars[$key]);
                 }
             }

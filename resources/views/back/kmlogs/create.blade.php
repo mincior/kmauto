@@ -6,15 +6,7 @@
 
 @section('content')
     <?php
-    $k=0;
-    if (old('department_id')) {
-        $users = @\App\Http\Controllers\Back\DepartmentController::getUsers(old('department_id'));
-        $cars = @\App\Http\Controllers\Back\DepartmentController::getCars(old('department_id'));
-    } else {
-        $users = @\App\Http\Controllers\Back\DepartmentController::getUsers($department_id);
-        $cars = @\App\Http\Controllers\Back\DepartmentController::getCars($department_id);
-    }
-    //  dd($cars);
+    $k=0;//pentru a pune la status doar Referinta sau restul
     ?>
     <form id="myForm" method="POST" action="{{ route('back.kmlogs.store') }}" enctype="multipart/form-data"
         onsubmit="return validateForm()">
@@ -24,8 +16,14 @@
                 <div class="card mb-3">
                     <div class="card-header">
                         <div class="row">
-                            <div id="myToolTip" class="col">Km log - adaugare</div>
-
+                            <div id="myToolTip" class="col">Km log - adaugare: 
+                                <span style="color:blue">{{$department_name}} </span> - 
+                                <span style="color:red">{{$car_number}}</span> - 
+                                <span style="color:rgb(62, 107, 139)">{{$user_name}}</span>
+                             </div>
+                             <input type="hidden" name="car_id" value="{{$car_id}}" class="form-control">
+                             <input type="hidden" name="user_id" value="{{$user_id}}" class="form-control">
+                             <input type="hidden" name="department_id" value="{{$department_id}}" class="form-control">
                             <div class="col fs-5 text-end">
                                 <img src="{{ asset('img/buttons/delivery-030.png') }}" />
                             </div>

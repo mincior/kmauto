@@ -36,7 +36,6 @@ class UserController extends Controller
             //daca vine din foaia Departments sau din selectul Filala din Users, va afisa doar userii filialei selectate
             $selected_interval_id = \App\MyHelpers\AppHelper::getSelectedInterval()->id;
             $department_id = Setting::where('nume', 'departmentId')->where('interval_id', 1)->first()->valoare;
-            $filtreazaDupaDepartament = Setting::where('nume', 'filtreazaDupaDepartament')->where('interval_id', 1)->first()->valoare;
             $users = User::select(sprintf('%s.*', (new User)->getTable()))->orderBy('id', 'desc')->get();
             $arr_users_with_departments = AppHelper::get_last_target_values_array('user_id', 'department_id', 'user_deps', $selected_interval_id);
             $arr_users_with_cars = AppHelper::get_last_target_values_array('user_id', 'car_id', 'user_cars', $selected_interval_id);
@@ -53,7 +52,7 @@ class UserController extends Controller
                 @$user['phones'] = UserPhone::where('id', $arr_users_with_user_phones[$user->id])->get();
                 @$user['kmlimits'] = UserKmlimit::where('id', $arr_users_with_user_kmlimits[$user->id])->get();
                 //daca filtreaza dupa departament scoate ceilalti useri
-                if( @$arr_users_with_departments[$user->id] != $department_id && $filtreazaDupaDepartament == 1){
+                if( @$arr_users_with_departments[$user->id] != $department_id && $department_id>0){
                     unset($users[$key]);
                 }
            }

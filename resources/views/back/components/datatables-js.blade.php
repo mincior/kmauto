@@ -38,6 +38,7 @@
         stateSave: true,
         stateDuration: -1,
         responsive: true,
+        scrollX: true,
         language: {
             url: "{{ asset('json/datatables/i18n/en_gb.json') }}",
             buttons: {
