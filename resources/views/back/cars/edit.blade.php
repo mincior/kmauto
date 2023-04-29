@@ -9,10 +9,14 @@
     //folosite la memorarea introducerii la eroare pentru a nu introduce din nou aceleasi valori
     $old_users = @\App\Http\Controllers\Back\DepartmentController::getUsers(old('department_id'));
     $old_types = @\App\Models\Brand::with('types')->where('id', '=', (old('brand_id')))->get()[0]['types'];
+    $source_name = substr($edit_source, strripos($edit_source, '/') + 1);//daca este 'kmlogs' inactiveaza selectul filiale
+    $permite_selectare_filiala = ($source_name=='kmlogs') ? "disabled" : "";
 ?>
 <form id="myForm" method="POST" action="{{ route('back.cars.update', [$car->id])  }}" enctype="multipart/form-data" wire:submit.prevent="savePersonalData" onkeydown="return event.key != 'Enter';">
     @csrf
     @method('PUT')
+    {{-- transmite sursa catre controller / update pentru a face redirect la cel care a trimis la editare --}}
+    <input type="hidden" name ="edit_source" value ="{{$edit_source}}">
     <div class="container mt-4">
         <div class="col">
             <div class="card mb-3">
@@ -44,7 +48,7 @@
                         <label for="department_id" class="col-md-2 col-form-label">Filiala :</label>
 
                         <div class="col-md-4">
-                            <select name="department_id" id="department_select" data-deptid="1" data-userid="1"  class="form-select">
+                            <select name="department_id" id="department_select" data-deptid="1" data-userid="1"  class="form-select" {{$permite_selectare_filiala}}>
                                 <option value="">Alege ...</option>
                                 @foreach ($departments as $department)
                                     <option {{ (old('department_id') ? (old('department_id') ==  $department['id']) : ($dep_id == $department['id']))  ? "selected" : "" }}  value="{{ $department['id'] }}">{{ $department['name'] }}</option>

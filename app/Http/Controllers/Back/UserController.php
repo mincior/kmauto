@@ -150,8 +150,9 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
+        //pune in source pagina de unde a venit request-ul pentru a se intoarce tot acolo dupa update
+        $edit_source = redirect()->back()->getTargetUrl();
         $selected_interval_id = \App\MyHelpers\AppHelper::getSelectedInterval()->id;
-
         $departments = Department::select('id', 'name')->orderBy('name')->get();
         $dep_id = @UserDep::select('department_id', 'interval_id', 'user_id')
             ->where('user_id', $user->id)
@@ -179,11 +180,18 @@ class UserController extends Controller
             ->with('activ', $activ)
             ->with('telefon', $telefon)
             ->with('kmlimit', $kmlimit)
-            ->with('selected_interval', $selected_interval_id);
+            ->with('selected_interval', $selected_interval_id)
+            ->with('edit_source', $edit_source);
+            
     }
 
     public function update(UserUpdateRequest $request, User $user)
     {
+        //poate ajunge aici din User/edit sau kmlog/index/[asociaza masina]
+        //$edit_source tine pagina care a trimis aici si catre care se face la final (dupa update) redirect
+        //$edit_source e transmis din sursa prin pagina de edit printr-un input type='hidden'
+        $edit_source = $request->edit_source;
+
         $selected_interval_id = \App\MyHelpers\AppHelper::getSelectedInterval()->id;
         $data = $request->all();
         $activ = intval($data['activ']);
@@ -281,7 +289,8 @@ class UserController extends Controller
             "message" => 'Utilizatorul a fost modificat cu succes!',
         ];
 
-        return redirect()->route('back.users.index')->with('notification', $notification);
+        //redirectul se face catre pagina care a trimis
+        return redirect($edit_source)->with('notification', $notification);
     }
 
     public function massDestroy(Request $request)

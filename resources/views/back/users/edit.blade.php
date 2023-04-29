@@ -10,11 +10,16 @@
     $old_cars = @\App\Models\Department::with('cars')
         ->where('id', '=', old('department_id'))
         ->get()[0]['cars'];
+    $source_name = substr($edit_source, strripos($edit_source, '/') + 1);//daca este 'kmlogs' inactiveaza selectul filiale
+    $permite_selectare_filiala = ($source_name=='kmlogs') ? "disabled" : "";
+
     ?>
     <form id="myForm" method="POST" action="{{ route('back.users.update', [$user->id]) }}" enctype="multipart/form-data"
         wire:submit.prevent="savePersonalData" onkeydown="return event.key != 'Enter';">
         @csrf
         @method('PUT')
+        {{-- transmite sursa catre controller / update pentru a face redirect la cel care a trimis la editare --}}
+        <input type="hidden" name ="edit_source" value ="{{$edit_source}}">
         <div class="container mt-4">
             <div class="col">
                 <div class="card mb-3">
@@ -58,8 +63,7 @@
                             <label for="department_id" class="col-md-2 col-form-label">Filiala :</label>
 
                             <div class="col-md-4">
-                                <select name="department_id" id="department_select" data-deptid="1" data-userid="1"
-                                    class="form-select">
+                                <select name="department_id" id="department_select" data-deptid="1" data-userid="1" class="form-select" {{$permite_selectare_filiala}}>
                                     <option value="">Alege ...</option>
                                     @foreach ($departments as $department)
                                         <option

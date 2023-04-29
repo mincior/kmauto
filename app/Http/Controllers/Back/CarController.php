@@ -174,6 +174,8 @@ class CarController extends Controller
      */
     public function edit(Car $car)
     {
+        //pune in source pagina de unde a venit request-ul pentru a se intoarce tot acolo dupa update
+        $edit_source = redirect()->back()->getTargetUrl();
         $selected_interval_id = \App\MyHelpers\AppHelper::getSelectedInterval()->id;
         $departments = Department::select('id', 'name')->orderBy('name')->get();
         $dep_id = @CarDep::select('department_id', 'interval_id', 'car_id')
@@ -204,11 +206,17 @@ class CarController extends Controller
             ->with('usr_id', $user_id)
             ->with('activ', $activ)
             ->with('consum_mediu', $consum_mediu)
-            ->with('selected_interval', $selected_interval_id);
+            ->with('selected_interval', $selected_interval_id)
+            ->with('edit_source', $edit_source);
     }
 
     public function update(CarUpdateRequest $request, Car $car)
     {
+        //poate ajunge aici din Car/edit sau kmlog/index/[asociaza utilizatorul]
+        //$edit_source tine pagina care a trimis aici si catre care se face la final (dupa update) redirect
+        //$edit_source e transmis din sursa prin pagina de edit printr-un input type='hidden'
+        $edit_source = $request->edit_source;
+
         $selected_interval_id = \App\MyHelpers\AppHelper::getSelectedInterval()->id;
         $data = $request->all();
         $consum_mediu = intval($data['consum_mediu']);
@@ -290,8 +298,8 @@ class CarController extends Controller
             "title" => 'Modificare ...',
             "message" => 'Masina a fost modificata cu succes!',
         ];
-
-        return redirect()->route('back.cars.index')->with('notification', $notification);
+        //redirectul se face catre pagina care a trimis
+        return redirect($edit_source)->with('notification', $notification);
     }
 
     public function massDestroy(Request $request)
