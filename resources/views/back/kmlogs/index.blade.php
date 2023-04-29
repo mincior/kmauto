@@ -69,7 +69,7 @@ if ($selected_user_id != '0') {
             ->first()->user_id;
     }
 }
-// dd($sel_user_id === null, $sel_car_id === null, $sel_user_id, $sel_car_id);
+// dd($selected_car_id, $selected_user_id, $sel_user_id, $sel_car_id);
 // var_dump( $sel_user_id, $sel_car_id);
 ?>
 @section('content')
@@ -133,12 +133,14 @@ if ($selected_user_id != '0') {
                     </div>
                     @if ($sel_car_id === null)
                         <div class="col-md-2">
-                            <a href="{{ route('back.users.edit', $selected_user_id) }}" class="btn btn-info" role="button">Asociaza masina</a>
+                            <a href="{{ route('back.users.edit', $selected_user_id) }}" class="btn btn-info"
+                                role="button">Asociaza masina</a>
                         </div>
                     @endif
                     @if ($sel_user_id === null)
                         <div class="col-md-2">
-                            <a href="{{ route('back.cars.edit', $selected_car_id) }}" class="btn btn-info" role="button">Asociaza utilizatorul</a>
+                            <a href="{{ route('back.cars.edit', $selected_car_id) }}" class="btn btn-info"
+                                role="button">Asociaza utilizatorul</a>
                         </div>
                     @endif
 
@@ -253,7 +255,7 @@ if ($selected_user_id != '0') {
 
             /* ------------------------------------------------------------------------ */
             let createButton = {
-                className: 'btn-success external externalCreate',
+                className: 'btn-success externalCreate',
                 text: '+',
                 titleAttr: 'Add',
                 enabled: false,
@@ -281,7 +283,7 @@ if ($selected_user_id != '0') {
 
             let editButton = {
                 extend: 'selectedSingle',
-                className: 'btn-primary selectOne external externalEdit',
+                className: 'btn-primary selectOne externalEdit',
                 text: '<i class="bi bi-pencil"></i>',
                 titleAttr: 'Edit',
                 enabled: false,
@@ -405,7 +407,12 @@ if ($selected_user_id != '0') {
                             if (typeof row.stat === "undefined") {
                                 return '';
                             } else {
-                                return row.stat.name;
+                                    return row.stat.name;
+                                // if (row.stat.name == 'Nu se pune la plata') {
+                                //     return '<span style="color:blue;">' + row.stat.name + '</span>';
+                                // } else {
+                                //     return row.stat.name;
+                                // }
                             }
                         },
                     },
@@ -529,6 +536,7 @@ if ($selected_user_id != '0') {
             // });
 
             oTable.on('select deselect', function(e, dt, type, indexes) {
+                //console.log(indexes[0]);
                 var selectedRows = oTable.rows({
                     selected: true
                 }).count();
@@ -546,29 +554,38 @@ if ($selected_user_id != '0') {
                 oTable.buttons('.selectMultiple').enable(selectedRows > 0);
             });
 
-            //butonul de adaugare nu trebuie sa fie activ daca intervalul selectat este 'Toate'
+            // oTable.buttons('.externalEdit').enable(true);
+            // oTable.buttons('.externalCreate').enable(true);
+            // $('#my-log').html('Km log');
+
+            //validari buton adaugare
             if ('{{ $Toate }}' == 1) {
-                oTable.buttons('.external').enable(false);
-                $('#my-log').html('Nu puteti adauga sau modifica daca aveti selectat la interval "Toate"');
-            } else {
-                oTable.buttons('.external').enable(true);
-                $('#my-log').html('Km log');
+                $('#my-log').html('Nu puteti adauga daca aveti selectat la interval "Toate"');
             }
 
             if ('{{ $selected_car_id == 0 && $selected_user_id == 0 }}') {
-                oTable.buttons('.externalEdit').enable(false);
-                oTable.buttons('.externalCreate').enable(false);
-                $('#my-log').html('Nu puteti adauga sau modifica daca nu ati selectat masina sau utilizatorul');
+                $('#my-log').html('Nu puteti adauga daca nu ati selectat masina sau utilizatorul');
             }
 
-            if('{{$sel_user_id === null || $sel_car_id === null}}'){
-                oTable.buttons('.externalEdit').enable(false);
-                oTable.buttons('.externalCreate').enable(false);
-                $('#my-log').html('Nu puteti adauga sau modifica daca utilizatorul sau masina selectat/a nu este asociat/a.');
-                
+            if ('{{ $sel_user_id === null || $sel_car_id === null }}') {
+                $('#my-log').html('Nu puteti adauga daca utilizatorul sau masina selectat/a nu este asociat/a.');
             }
+
+            if (
+                '{{ $Toate == 1 || ($selected_car_id == 0 && $selected_user_id == 0) || ($sel_user_id === null || $sel_car_id === null) }}'
+                ) {
+                oTable.buttons('.externalCreate').enable(false);
+
+            } else {
+                oTable.buttons('.externalCreate').enable(true);
+
+            }
+
+
+
             // oTable.buttons('.externalCreate').text("Deselectati 'Toate' pentru adaugare");
             // oTable.buttons('.externalEdit').text("Deselectati 'Toate' pentru modificare");
+
         });
 
         $('#department_select').change(function() {
@@ -635,6 +652,13 @@ if ($selected_user_id != '0') {
             $('#car_select option[value="0"]').prop('selected', 'selected').change();
         }
     </script>
+    <style>
+        .cheap {
+            background-color: #933c3c !important;
+            background-image: none !important;
+            color: #faf6f6 !important;
+        }
+    </style>
 @endsection
 
 @section('styles')

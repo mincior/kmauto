@@ -8,7 +8,8 @@
     <?php
     
     ?>
-    <form id="myForm" method="POST" action="{{ route('back.kmlogs.update', $kmlog->id) }}" enctype="multipart/form-data">
+    <form id="myForm" method="POST" action="{{ route('back.kmlogs.update', $kmlog->id) }}" enctype="multipart/form-data" 
+        onsubmit="return validateForm()">
         @csrf
         @method('PUT')
         <div class="container mt-4">
@@ -16,9 +17,16 @@
                 <div class="card mb-3">
                     <div class="card-header">
                         <div class="row">
-                            <div id="myToolTip" class="col">Km log - modificare filiala: {{ $department_name }}</div>
+                            <div id="myToolTip" class="col-md-10">Km log - adaugare: 
+                                <span style="color:blue">{{$department_name}} </span> - 
+                                <span style="color:red">{{$car_number}}</span> - 
+                                <span style="color:rgb(62, 107, 139)">{{$user_name}}</span>
+                             </div>
+                             <input type="hidden" name="car_id" value="{{$car_id}}" class="form-control">
+                             <input type="hidden" name="user_id" value="{{$user_id}}" class="form-control">
+                             <input type="hidden" name="department_id" value="{{$department_id}}" class="form-control">
 
-                            <div class="col fs-5 text-end">
+                            <div class="col-md-2 text-end">
                                 <img src="{{ asset('img/buttons/delivery-030.png') }}" />
                             </div>
                         </div>
@@ -28,9 +36,10 @@
                         <div class="row mb-2">
                             <label for="km" class="col-md-2 col-form-label">Km - index</label>
 
-                            <div class="col-md-3">
+                            <div class="col-md-5">
                                 <input autocomplete="on" id="km" name="km" type="text"
                                     class="form-control @error('km') is-invalid @enderror"
+                                    placeholder="minime:{{ $idx_ant_max . '  : ' . $idx_crt_min }}"
                                     value="{{ old('km') ? old('km') : $kmlog->km }}">
 
                                 @error('km')
@@ -87,63 +96,6 @@
                                 @enderror
                             </div>
                         </div>
-
-                        <div class="row mb-2">
-                            <label for="department_id" class="col-md-2 col-form-label">Filiala</label>
-    
-                            <div class="col-md-4">
-                                <select name="department_id" id="department_select" data-deptid="1" data-userid="1"  data-carid="1"  class="form-select">
-                                    <option value="">Alege ...</option>
-                                    @foreach ($departments as $department)
-                                        <option {{(old('department_id') ? old('department_id') == $department->id : $kmlog->department_id == $department->id) ? 'selected' : ''}} value="{{ $department->id }}">{{ $department->name }}</option>
-                                    @endforeach
-                                </select>
-                                @error('department_id')
-                                <span class="invalid-feedback" role="alert">{{ $message }}</span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="row mb-2">
-                            <label for="car_id" class="col-md-2 col-form-label">Masina</label>
-
-                            <div class="col-md-4">
-                                <select name="car_id" id="car_select" data-deptid="1" data-userid="1" class="form-select">
-                                    <option value="">Alege ...</option>
-                                    @foreach ($cars as $car)
-                                        <option
-                                            {{ (old('car_id') ? old('car_id') == $car->id : $kmlog->car_id == $car->id) ? 'selected' : '' }}
-                                            value="{{ $car->id }}">{{ $car->numar }}</option>
-                                    @endforeach
-                                </select>
-                                @error('car_id')
-                                    <span class="invalid-feedback" role="alert">{{ $message }}</span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="row mb-2">
-                            <label for="user_id" class="col-md-2 col-form-label">Utilizatorul</label>
-
-                            <div class="col-md-4">
-                                <select name="user_id" id="user_select" data-deptid="1" data-userid="1" class="form-select">
-                                    <option value="">Alege ...</option>
-                                    @foreach ($users as $user)
-                                        <option
-                                            {{ (old('user_id') ? old('user_id') == $user->id : $kmlog->user_id == $user->id) ? 'selected' : '' }}
-                                            value="{{ $user->id }}">{{ $user['name'] }}</option>
-                                    @endforeach
-                                </select>
-                                @error('user_id')
-                                    <span class="invalid-feedback" role="alert">{{ $message }}</span>
-                                @enderror
-                            </div>
-                        </div>
-
-
-
-
-
                     </div>
 
                     <div class="card-footer">
@@ -175,14 +127,14 @@
     <script src="{{ asset('js/me/get_department_cars_and_users.js') }}"></script>
     <script>
         jQuery(document).ready(function($) {
-            $('#name').focus();
+            $('#numar').focus();
             $('#my-nav-bar').addClass('d-none'); //ascunde bara de navigare cand sunt pe create car
-            $('#picture').change(function(){
+            $('#picture').change(function() {
                 const file = this.files[0];
-                console.log (file);
-                if (file){
+                console.log(file);
+                if (file) {
                     let reader = new FileReader();
-                    reader.onload = function(event){
+                    reader.onload = function(event) {
                         console.log(event.target.result);
                         $('#my_picture').attr('src', event.target.result);
                     }
@@ -190,5 +142,15 @@
                 }
             });
         });
+
+        function validateForm() {
+            let km = $('#km').val();
+            let idx_crt_min = parseInt("{{ $idx_crt_min }}", 10);
+            if (km < idx_crt_min) {
+                alert("Ati introdus un index mai mic decat ati introdus ultima data (" + idx_crt_min + "). Aveti grija la status: indexul cel mai mic trebuie sa fie 'Normal'" );
+            }
+            return true;
+        }
+
     </script>
 @endsection

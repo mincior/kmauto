@@ -6,9 +6,8 @@
 
 @section('content')
     <?php
-    $k=0;//pentru a pune la status doar Referinta sau restul
     ?>
-    <form id="myForm" method="POST" action="{{ route('back.kmlogs.store') }}" enctype="multipart/form-data"
+    <form id="myForm" method="POST" action="{{ route('back.kmlogs.store') }}" enctype="multipart/form-data" 
         onsubmit="return validateForm()">
         @csrf
         <div class="container mt-4">
@@ -16,7 +15,7 @@
                 <div class="card mb-3">
                     <div class="card-header">
                         <div class="row">
-                            <div id="myToolTip" class="col">Km log - adaugare: 
+                            <div id="myToolTip" class="col-md-10">Km log - adaugare: 
                                 <span style="color:blue">{{$department_name}} </span> - 
                                 <span style="color:red">{{$car_number}}</span> - 
                                 <span style="color:rgb(62, 107, 139)">{{$user_name}}</span>
@@ -24,7 +23,7 @@
                              <input type="hidden" name="car_id" value="{{$car_id}}" class="form-control">
                              <input type="hidden" name="user_id" value="{{$user_id}}" class="form-control">
                              <input type="hidden" name="department_id" value="{{$department_id}}" class="form-control">
-                            <div class="col fs-5 text-end">
+                            <div class="col-md-2 text-end">
                                 <img src="{{ asset('img/buttons/delivery-030.png') }}" />
                             </div>
                         </div>
@@ -34,10 +33,10 @@
                         <div class="row mb-2">
                             <label for="km" class="col-md-2 col-form-label">Km - index</label>
 
-                            <div class="col-md-3">
+                            <div class="col-md-5">
                                 <input autocomplete="on" id="km" name="km" type="text"
                                     class="form-control @error('km') is-invalid @enderror" value="{{ old('km') }}"
-                                    placeholder="ultim:{{ $idx_ant_max . '  : Referinta - ' . $idx_crt_min }}">
+                                    placeholder="minime :{{ $idx_ant_max . '  :  ' . $idx_crt_min }}">
 
                                 @error('km')
                                     <span class="invalid-feedback" role="alert">{{ $message }}</span>
@@ -54,19 +53,29 @@
                                     <option value="">Alege ...</option>
                                     @if ($idx_crt_min){
                                         @foreach ($stats as $stat)
-                                            {{$k++;}}
-                                            @if($k>1){
-                                                <option {{ old('stat_id') == $stat->id ? 'selected' : '' }} value="{{ $stat->id }}">{{ $stat['name'] }}</option>
-                                                }
-                                            @endif
+                                            <option {{ old('stat_id') == $stat->id ? 'selected' : '' }} value="{{ $stat->id }}">{{ $stat['name'] }}</option>
                                         @endforeach
                                         }
                                     @else{
-                                        <option selected value="1">Referinta</option>
+                                        <option selected value="1">Normal</option>
                                     }
                                     @endif
                                 </select>
                                 @error('stat_id')
+                                    <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="row mb-2">
+                            <label for="observatii" class="col-md-2 col-form-label">Observatii</label>
+
+                            <div class="col-md-5">
+                                <input autocomplete="on" id="observatii" name="observatii" type="text"
+                                    class="form-control @error('observatii') is-invalid @enderror"
+                                    value="{{ old('observatii') }}">
+
+                                @error('observatii')
                                     <span class="invalid-feedback" role="alert">{{ $message }}</span>
                                 @enderror
                             </div>
@@ -84,19 +93,6 @@
                                     value="{{ old('picture') }}">
 
                                 @error('picture')
-                                    <span class="invalid-feedback" role="alert">{{ $message }}</span>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="row mb-2">
-                            <label for="observatii" class="col-md-2 col-form-label">Observatii</label>
-
-                            <div class="col-md-5">
-                                <input autocomplete="on" id="observatii" name="observatii" type="text"
-                                    class="form-control @error('observatii') is-invalid @enderror"
-                                    value="{{ old('observatii') }}">
-
-                                @error('observatii')
                                     <span class="invalid-feedback" role="alert">{{ $message }}</span>
                                 @enderror
                             </div>
@@ -133,7 +129,7 @@
 
     <script>
         jQuery(document).ready(function($) {
-            $('#name').focus();
+            $('#numar').focus();
             $('#my-nav-bar').addClass('d-none'); //ascunde bara de navigare cand sunt pe create car
             $('#picture').change(function() {
                 const file = this.files[0];
@@ -152,10 +148,9 @@
 
         function validateForm() {
             let km = $('#km').val();
-            let idx_ant_max = "{{ $idx_ant_max }}";
-            if (km < idx_ant_max) {
-                alert("Nu puteti introduce un index mai mic decat ati introdus ultima data (" + idx_ant_max + ")");
-                return false;
+            let idx_crt_min = parseInt("{{ $idx_crt_min }}", 10);
+            if (km < idx_crt_min) {
+                alert("Ati introdus un index mai mic decat ati introdus ultima data (" + idx_crt_min + "). Aveti grija la status: indexul cel mai mic trebuie sa fie 'Normal'" );
             }
             return true;
         }

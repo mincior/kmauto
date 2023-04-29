@@ -101,13 +101,12 @@ class KmlogController extends Controller
             }
         }
 
-        $departments = Department::get();
         $stats = Stat::get();
         //afla cel mai mare index din intervalul anterior si cel mai mic index din intervalul curent
         $idx_ant_max = @Kmlog::where('department_id', $department_id)->where('user_id', $selected_user_id)->where('car_id', $selected_car_id)->where('interval_id', ($selected_interval->id == 1) ? 1 : $selected_interval->id -1 )->orderby('km', 'desc')->first()->km;
         $idx_crt_min = @Kmlog::where('department_id', $department_id)->where('user_id', $selected_user_id)->where('car_id', $selected_car_id)->where('interval_id', $selected_interval->id )->orderby('km', 'asc')->first()->km;
         // dd($idx_crt_min, $idx_ant_max);
-        return view('back.kmlogs.create', compact('departments', 'stats'))->with(
+        return view('back.kmlogs.create', compact('stats'))->with(
             [
                 'user_id' => $selected_user_id, 
                 'car_id' => $selected_car_id,
@@ -292,12 +291,42 @@ class KmlogController extends Controller
      */
     public function edit(Kmlog $kmlog)
     {
-        $departments = Department::get();
+        //cand se alege o masina sau un user in Index, se va transmite la create prin tabelul settings
+        $selected_user_id = Setting::where('nume', 'userId')->where('interval_id', 1)->first()->valoare;
+        $selected_car_id = Setting::where('nume', 'carId')->where('interval_id', 1)->first()->valoare;
+        //aici interval id este cel din kmlog->interval_id si nu cel din tabelul settings
+        $selected_interval = \App\MyHelpers\AppHelper::getSelectedInterval($kmlog->interval_id);
+        $department_id = 0;
+        if ($selected_user_id != '0') {
+            $department_id = UserDep::where('user_id', $selected_user_id)->where('interval_id', '<=', $selected_interval->id)->orderby('interval_id', 'desc')->first()->department_id;
+            $selected_car_id = @UserCar::where('user_id', $selected_user_id)->where('interval_id', '<=', $selected_interval->id)->orderby('interval_id', 'desc')->first()->car_id;
+        } else {
+            if ($selected_car_id != '0') {
+                $department_id = CarDep::where('car_id', $selected_car_id)->where('interval_id', '<=', $selected_interval->id)->orderby('interval_id', 'desc')->first()->department_id;
+                $selected_user_id = @UserCar::where('car_id', $selected_car_id)->where('interval_id', '<=', $selected_interval->id)->orderby('interval_id', 'desc')->first()->user_id;
+            }
+        }
+
         $department_name = Department::where('id', $kmlog->department_id)->first()->name;
         $users = DepartmentController::getUsers($kmlog->department_id);
         $cars = DepartmentController::getCars($kmlog->department_id);
         $stats = Stat::get();
-        return view('back.kmlogs.edit', compact('kmlog', 'users', 'cars', 'stats', 'departments'))->with('department_name', $department_name);
+
+        //afla cel mai mare index din intervalul anterior si cel mai mic index din intervalul curent
+        $idx_ant_max = @Kmlog::where('department_id', $department_id)->where('user_id', $selected_user_id)->where('car_id', $selected_car_id)->where('interval_id', ($selected_interval->id == 1) ? 1 : $selected_interval->id -1 )->orderby('km', 'desc')->first()->km;
+        $idx_crt_min = @Kmlog::where('department_id', $department_id)->where('user_id', $selected_user_id)->where('car_id', $selected_car_id)->where('interval_id', $selected_interval->id )->orderby('km', 'asc')->first()->km;
+
+        return view('back.kmlogs.edit', compact('kmlog', 'stats'))->with(
+            [
+                'user_id' => $selected_user_id, 
+                'car_id' => $selected_car_id,
+                'department_id' => $department_id,
+                'user_name' => @User::where('id',$selected_user_id)->first()->name, 
+                'car_number' => @Car::where('id', $selected_car_id)->first()->numar, 
+                'department_name' => @Department::where('id', $department_id)->first()->name,
+                'idx_ant_max' => $idx_ant_max,
+                'idx_crt_min' => $idx_crt_min
+            ]);
     }
 
     /**
@@ -313,7 +342,8 @@ class KmlogController extends Controller
         $datetime = new DateTime();
         $timezone = new DateTimeZone('Europe/Bucharest');
         $datetime->setTimezone($timezone);
-        $selected_interval_id = \App\MyHelpers\AppHelper::getSelectedInterval()->id;
+        //aici intervalul vine din Kmlog->interval_id si nu din tabelul settings
+        $selected_interval_id = \App\MyHelpers\AppHelper::getSelectedInterval($kmlog->interval_id)->id;
         $data = $request->all();
 
         $data['interval_id'] =  $selected_interval_id;

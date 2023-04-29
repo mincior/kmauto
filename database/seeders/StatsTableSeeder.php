@@ -29,19 +29,15 @@ class StatsTableSeeder extends Seeder
             new Sequence(
                 [
                     'id' => "1",
-                    'name' => 'Referinta'
-                ],
-                [
-                    'id' => "2",
                     'name' => 'Normal'
                 ],
                 [
-                    'id' => "3",
+                    'id' => "2",
                     'name' => 'Nu se pune la plata'
                 ],
                 
             )            
-        )->count(3)->create();
+        )->count(2)->create();
         
                 
 

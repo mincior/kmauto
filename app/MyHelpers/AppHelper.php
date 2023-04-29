@@ -95,14 +95,19 @@ class AppHelper
 	}
 
 	/**
-	 * Returneaza id-ul intervalului curent (luna selectata cu intervalul selectat)
+	 * Returneaza id-ul intervalului curent (luna selectata cu intervalul selectat) sau intervalul cu id-ul $interval_id daca acesta e diferit de zero
 	 *
 	 * @return object
 	 */
-	public static function getSelectedInterval()
+	public static function getSelectedInterval($interval_id = 0)
 	{
 		$month_id = Month::where('select', 1)->first()->id;
-		$selected_interval = Interval::where('month_id', $month_id)->where('select', 1)->first();
+		if ($interval_id == 0){
+			$selected_interval = Interval::where('month_id', $month_id)->where('select', 1)->first();
+		}else{
+			$selected_interval = Interval::where('id', $interval_id)->first();
+		}
+
 		$selected_interval_interval = $selected_interval->interval;
 		$arr_ids = [];
 		if ($selected_interval_interval == 'Toate') {

@@ -17,6 +17,9 @@
     @method('PUT')
     {{-- transmite sursa catre controller / update pentru a face redirect la cel care a trimis la editare --}}
     <input type="hidden" name ="edit_source" value ="{{$edit_source}}">
+    @if($source_name=='kmlogs')
+        <input type="hidden" name ="department_id" value ="{{$dep_id}}">
+    @endif
     <div class="container mt-4">
         <div class="col">
             <div class="card mb-3">
@@ -51,7 +54,7 @@
                             <select name="department_id" id="department_select" data-deptid="1" data-userid="1"  class="form-select" {{$permite_selectare_filiala}}>
                                 <option value="">Alege ...</option>
                                 @foreach ($departments as $department)
-                                    <option {{ (old('department_id') ? (old('department_id') ==  $department['id']) : ($dep_id == $department['id']))  ? "selected" : "" }}  value="{{ $department['id'] }}">{{ $department['name'] }}</option>
+                                    <option {{ (old('department_id') ? (old('department_id') ==  $department->id) : ($dep_id == $department->id))  ? "selected" : "" }}  value="{{ $department->id }}">{{ $department->name }}</option>
                                 @endforeach
                             </select>
                             @error('department_id')
@@ -68,13 +71,13 @@
                                 <option value="0">Choose ...</option>
                                 @if (old('department_id')){
                                     @foreach ($old_users as $user)
-                                        <option {{ old('user_id') == $user['id']? "selected" : "" }}  value="{{ $user['id'] }}">{{ $user['name'] }}</option>
+                                        <option {{ old('user_id') == $user->id? "selected" : "" }}  value="{{ $user->id }}">{{ $user->name }}</option>
                                     @endforeach
                                 }
                                 @else{
                                     @if($users){
                                         @foreach ($users as $user)
-                                            <option {{ $usr_id == $user['id']? "selected" : "" }}  value="{{ $user['id']}}">{{ $user['name'] }}</option>
+                                            <option {{ $usr_id == $user->id? "selected" : "" }}  value="{{ $user->id}}">{{ $user->name }}</option>
                                         @endforeach
                                     }
                                     @endif
@@ -95,7 +98,7 @@
                             <select name="brand_id" id="brand_select" class="form-select" data-brandid="1" data-typeid="1">
                                 <option value="">Alege ...</option>
                                 @foreach ($brands as $brand)
-                                <option  {{ ((old('brand_id') ==  $brand['id']) || ($car->brand_id ==$brand['id']))  ? "selected" : "" }} value="{{ $brand['id'] }}">{{ $brand['name'] }}</option>
+                                <option  {{ ((old('brand_id') ==  $brand->id) || ($car->brand_id ==$brand->id))  ? "selected" : "" }} value="{{ $brand->id }}">{{ $brand->name }}</option>
                                 @endforeach
                             </select>
                             @error('brand_id')
@@ -112,12 +115,12 @@
                                 <option value="">Alege ...</option>
                                 @if (old('brand_id')){
                                     @foreach ($old_types as $type)
-                                        <option {{ old('type_id') == $type['id']? "selected" : "" }}  value="{{ $type['id'] }}">{{ $type['name'] }}</option>
+                                        <option {{ old('type_id') == $type->id? "selected" : "" }}  value="{{ $type->id }}">{{ $type->name }}</option>
                                     @endforeach
                                 }
                                 @else{
                                     @foreach ($types as $type)
-                                        <option {{ $car->type_id == $type['id']? "selected" : "" }}  value="{{ $type['id'] }}">{{ $type['name'] }}</option>
+                                        <option {{ $car->type_id == $type->id? "selected" : "" }}  value="{{ $type->id }}">{{ $type->name }}</option>
                                     @endforeach
                                     
                                 }
@@ -156,7 +159,7 @@
                             <select name="fuel_id" id="fuel_select" class="form-select" data-fuelid="1" data-typeid="1">
                                 <option value="">Alege ...</option>
                                 @foreach ($fuels as $fuel)
-                                <option  {{ ((old('fuel_id') ==  $fuel['id']) || ($car->fuel_id ==$fuel['id']))  ? "selected" : "" }} value="{{ $fuel['id'] }}">{{ $fuel['name'] }}</option>
+                                <option  {{ ((old('fuel_id') ==  $fuel->id) || ($car->fuel_id ==$fuel->id))  ? "selected" : "" }} value="{{ $fuel->id }}">{{ $fuel->name }}</option>
                                 @endforeach
                             </select>
                             @error('fuel_id')
@@ -181,7 +184,7 @@
                 <div class="card-footer">
                     <div class="row">
                         <div class="col">
-                            <a class="btn btn-secondary text-white btn-sm" href="{{ route('back.cars.index') }}" role=" button" tabindex="-1">
+                            <a class="btn btn-secondary text-white btn-sm" href="{{$edit_source}}" role=" button" tabindex="-1">
                                 <i class="bi bi-arrow-left-short"></i>
                             </a>
                         </div>
