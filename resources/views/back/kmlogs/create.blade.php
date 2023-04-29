@@ -31,20 +31,6 @@
 
                     <div class="card-body">
                         <div class="row mb-2">
-                            <label for="km" class="col-md-2 col-form-label">Km - index</label>
-
-                            <div class="col-md-5">
-                                <input autocomplete="on" id="km" name="km" type="text"
-                                    class="form-control @error('km') is-invalid @enderror" value="{{ old('km') }}"
-                                    placeholder="minime :{{ $idx_ant_max . '  :  ' . $idx_crt_min }}">
-
-                                @error('km')
-                                    <span class="invalid-feedback" role="alert">{{ $message }}</span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="row mb-2">
                             <label for="stat_id" class="col-md-2 col-form-label">Status</label>
 
                             <div class="col-md-4">
@@ -66,6 +52,21 @@
                                 @enderror
                             </div>
                         </div>
+
+                        <div class="row mb-2">
+                            <label for="km" class="col-md-2 col-form-label">Km - index</label>
+
+                            <div class="col-md-5">
+                                <input autocomplete="on" id="km" name="km" type="text"
+                                    class="form-control @error('km') is-invalid @enderror" value="{{ old('km') }}"
+                                    placeholder="anterior :{{ $idx_ant_max . ' - minim curent: ' . $idx_crt_min }}">
+
+                                @error('km')
+                                    <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+
 
                         <div class="row mb-2">
                             <label for="observatii" class="col-md-2 col-form-label">Observatii</label>
@@ -129,7 +130,7 @@
 
     <script>
         jQuery(document).ready(function($) {
-            $('#numar').focus();
+            $('#km').focus();
             $('#my-nav-bar').addClass('d-none'); //ascunde bara de navigare cand sunt pe create car
             $('#picture').change(function() {
                 const file = this.files[0];
