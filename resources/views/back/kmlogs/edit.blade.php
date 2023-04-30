@@ -17,7 +17,7 @@
                 <div class="card mb-3">
                     <div class="card-header">
                         <div class="row">
-                            <div id="myToolTip" class="col-md-10">Km log - adaugare: 
+                            <div id="myToolTip" class="col-md-10">Km log - modificare: 
                                 <span style="color:blue">{{$department_name}} </span> - 
                                 <span style="color:red">{{$car_number}}</span> - 
                                 <span style="color:rgb(62, 107, 139)">{{$user_name}}</span>

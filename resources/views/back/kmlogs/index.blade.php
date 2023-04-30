@@ -175,6 +175,7 @@ if ($selected_user_id != '0') {
                         <th scope="col">Modificat la</th>
                         <th scope="col" width="4%">Ord</th>
                         <th scope="col" width="4%">ID</th>
+                        <th scope="col" width="4%">is_first</th>
                     </tr>
                 </thead>
             </table>
@@ -254,6 +255,7 @@ if ($selected_user_id != '0') {
             // dtButtonsLeft1.push(mutaInJos)
 
             /* ------------------------------------------------------------------------ */
+            let first =0;
             let createButton = {
                 className: 'btn-success externalCreate',
                 text: '+',
@@ -404,16 +406,35 @@ if ($selected_user_id != '0') {
                     {
                         data: 'id',
                         render: function(data, type, row, meta) {
-                            if (typeof row.stat === "undefined") {
-                                return '';
-                            } else {
-                                    return row.stat.name;
-                                // if (row.stat.name == 'Nu se pune la plata') {
-                                //     return '<span style="color:blue;">' + row.stat.name + '</span>';
-                                // } else {
-                                //     return row.stat.name;
-                                // }
+                            let interval_id = row.interval.id;
+                            if (row.stat.name == 'Nu se pune la plata' && row.is_first == 1){
+                                return '<span style="color:red;">' + row.stat.name + '</span>';
+                            }else{
+                                return row.stat.name;
+
                             }
+
+            // oTable.on('select', function(e, dt, type, indexes) {
+            //     var all_user_ids = $.map(dt.rows({
+            //         selected: true
+            //     }).data(), function(entry) {
+            //         return [entry.user_id, entry.car_id, entry.department_id];
+            //     });
+            //     console.log(all_user_ids[2]);
+                            // let res = $.map(first, function (entry){
+                            //     return entry.responseText;
+                            // })
+                                    // console.log(row.stat.name);
+                            // if (typeof row.stat === "undefined") {
+                            //     return '';
+                            // } else {
+                            //     //return row.stat.name;
+                            //     if (row.stat.name == 'Nu se pune la plata') {
+                            //         
+                            //     } else {
+                            //         return row.stat.name;
+                            //     }
+                            // }
                         },
                     },
                     {
@@ -495,6 +516,11 @@ if ($selected_user_id != '0') {
                             return data.toString();
                         }
                     },
+                    {
+                        data: 'is_first',
+                        name: 'is_first',
+                        searchable: false,
+                    },
                 ],
                 select: {
                     selector: 'td:not(.no-select)',
@@ -573,18 +599,23 @@ if ($selected_user_id != '0') {
 
             if (
                 '{{ $Toate == 1 || ($selected_car_id == 0 && $selected_user_id == 0) || ($sel_user_id === null || $sel_car_id === null) }}'
-                ) {
+            ) {
                 oTable.buttons('.externalCreate').enable(false);
 
             } else {
                 oTable.buttons('.externalCreate').enable(true);
 
             }
-
-
-
             // oTable.buttons('.externalCreate').text("Deselectati 'Toate' pentru adaugare");
             // oTable.buttons('.externalEdit').text("Deselectati 'Toate' pentru modificare");
+            // oTable.columns(1).render(function(data, type, row, meta) {
+            //                 return '<span style="color:blue;">' + row.stat.name + '</span>';
+            //             });
+            oTable.on('click', 'td', function() { //sau 'mouseenter'
+                var colIdx = oTable.cell(this).index().column;
+                var rowIdx = oTable.cell(this).index().row;
+                console.log(colIdx, rowIdx);
+            });
 
         });
 

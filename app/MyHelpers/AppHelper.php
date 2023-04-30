@@ -2,6 +2,7 @@
 
 namespace App\MyHelpers;
 
+use App\Models\Kmlog;
 use App\Models\Month;
 use App\Models\Interval;
 use Illuminate\Support\Str;
@@ -93,6 +94,21 @@ class AppHelper
 		ksort($barr);
 		return $barr;
 	}
+
+    /**
+     * Returneaza true daca intervalul primit ca parametru este primul interval din 
+     *
+     * @param $interval_id
+     * @return boolean
+     */
+    public static function isFirsRowOfInterval($kmlog_id, $user_id, $car_id){
+        $interval_id = Kmlog::where('id', $kmlog_id)->first()->interval_id;
+        // $month_id = Interval::where('id', $interval_id)->first()->month_id;
+        // $month_intervals = Interval::where('month_id', $month_id)->get()->pluck('id')->toArray();
+        $prima_inregistrare_din_interval_id = Kmlog::where('interval_id', $interval_id)->where('user_id', $user_id)->where('car_id', $car_id)->orderby('km', 'asc')->first()->id;
+        return ($prima_inregistrare_din_interval_id == $kmlog_id);
+      
+    }
 
 	/**
 	 * Returneaza id-ul intervalului curent (luna selectata cu intervalul selectat) sau intervalul cu id-ul $interval_id daca acesta e diferit de zero
