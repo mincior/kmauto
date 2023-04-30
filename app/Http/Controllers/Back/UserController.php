@@ -172,7 +172,6 @@ class UserController extends Controller
             ->where('interval_id', '<=', $selected_interval_id)
             ->orderBy('interval_id', 'desc')
             ->first()->car_id;
-
         return view('back.users.edit', compact('user'))
             ->with(compact('departments', 'cars'))
             ->with('dep_id', $dep_id)

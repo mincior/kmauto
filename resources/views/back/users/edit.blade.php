@@ -7,9 +7,7 @@
 @section('content')
     <?php
     //folosite la memorarea introducerii la eroare pentru a nu introduce din nou aceleasi valori
-    $old_cars = @\App\Models\Department::with('cars')
-        ->where('id', '=', old('department_id'))
-        ->get()[0]['cars'];
+    $old_cars = @\App\Models\Department::with('cars')->where('id', '=', old('department_id'))->get()[0]['cars'];
     $source_name = substr($edit_source, strripos($edit_source, '/') + 1);//daca este 'kmlogs' inactiveaza selectul filiale
     $permite_selectare_filiala = ($source_name=='kmlogs') ? "disabled" : "";
 
@@ -63,12 +61,15 @@
                             <label for="department_id" class="col-md-2 col-form-label">Filiala :</label>
 
                             <div class="col-md-4">
+                                @if($permite_selectare_filiala == 'disabled')
+                                    <input type="hidden" name="department_id" value="{{$dep_id}}">
+                                @endif
                                 <select name="department_id" id="department_select" data-deptid="1" data-userid="1" class="form-select" {{$permite_selectare_filiala}}>
                                     <option value="">Alege ...</option>
                                     @foreach ($departments as $department)
                                         <option
-                                            {{ (old('department_id') ? old('department_id') == $department['id'] : $dep_id == $department['id']) ? 'selected' : '' }}
-                                            value="{{ $department['id'] }}">{{ $department['name'] }}</option>
+                                            {{ (old('department_id') ? old('department_id') == $department->id : $dep_id == $department->id) ? 'selected' : '' }}
+                                            value="{{ $department->id }}">{{ $department['name'] }}</option>
                                     @endforeach
                                 </select>
                                 @error('department_id')
@@ -86,14 +87,14 @@
                                     @if (old('department_id'))
                                         {
                                         @foreach ($old_cars as $car)
-                                            <option {{ old('car_id') == $car['id'] ? 'selected' : '' }}
-                                                value="{{ $car['id'] }}">{{ $car['numar'] }}</option>
+                                            <option {{ old('car_id') == $car->id ? 'selected' : '' }}
+                                                value="{{ $car->id }}">{{ $car->numar }}</option>
                                         @endforeach
                                         }
                                     @else{
                                         @foreach ($cars as $car)
-                                            <option {{ $car->id == $car['id'] ? 'selected' : '' }}
-                                                value="{{ $car['id'] }}">{{ $car['numar'] }}</option>
+                                            <option {{ $car_id == $car->id ? 'selected' : '' }}
+                                                value="{{ $car->id }}">{{ $car->numar }}</option>
                                         @endforeach
 
                                         }
