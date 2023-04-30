@@ -18,7 +18,6 @@ class Kmlog extends Model
       'km', 
       'picture', 
       'observatii', 
-      'ordine',
       'interval_id', 
       'user_id', 
       'car_id', 

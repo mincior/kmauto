@@ -64,7 +64,7 @@ class SettingsTableSeeder extends Seeder
                 ],
                
             )            
-        )->count(12)->create();
+        )->count(7)->create();
         
                 
 

@@ -68,17 +68,6 @@
                                 class="form-control-plaintext" value="{{ $kmlog->observatii }}">
                         </div>
                     </div>
-
-                    <div class="row mb-2">
-                        <label class="col-md-3 col-form-label">Ordine</label>
-
-                        <div class="col-md-8">
-                            <input  type="text" readonly
-                                class="form-control-plaintext" value="{{ $kmlog->ordine }}">
-                        </div>
-                    </div>
-
-
                 </div>
 
             </div>

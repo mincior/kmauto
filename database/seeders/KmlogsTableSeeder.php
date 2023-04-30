@@ -36,7 +36,7 @@ class KmlogsTableSeeder extends Seeder
                     'interval_id' => 23,
                     'picture' => 'Adauga aici o poza',
                     'observatii' => 'Nu sunt',
-                    'ordine' => 6,
+                    'is_first' => 0,
                     'stat_id' => 1,
                 ],
                 [
@@ -48,7 +48,7 @@ class KmlogsTableSeeder extends Seeder
                     'interval_id' => 23,
                     'picture' => 'Adauga aici o poza',
                     'observatii' => 'Nu sunt',
-                    'ordine' => 5,
+                    'is_first' => 0,
                     'stat_id' => 2,
                 ],
                 [
@@ -60,7 +60,7 @@ class KmlogsTableSeeder extends Seeder
                     'interval_id' => 23,
                     'picture' => 'Adauga aici o poza',
                     'observatii' => 'Nu sunt',
-                    'ordine' => 1,
+                    'is_first' => 0,
                     'stat_id' => 1,
                 ],
                 [
@@ -72,7 +72,7 @@ class KmlogsTableSeeder extends Seeder
                     'interval_id' => 6,
                     'picture' => 'Adauga aici o poza',
                     'observatii' => 'Nu sunt',
-                    'ordine' => 3,
+                    'is_first' => 0,
                     'stat_id' => 2,
                 ],
                 [
@@ -84,7 +84,7 @@ class KmlogsTableSeeder extends Seeder
                     'interval_id' => 23,
                     'picture' => 'Adauga aici o poza',
                     'observatii' => 'Nu sunt',
-                    'ordine' => 2,
+                    'is_first' => 0,
                     'stat_id' => 2,
                 ],
                 [
@@ -96,7 +96,7 @@ class KmlogsTableSeeder extends Seeder
                     'interval_id' => 24,
                     'picture' => 'Adauga aici o poza',
                     'observatii' => 'Nu sunt',
-                    'ordine' => 1,
+                    'is_first' => 0,
                     'stat_id' => 2,
                 ],
 

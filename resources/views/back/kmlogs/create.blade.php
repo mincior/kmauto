@@ -39,7 +39,9 @@
                                     <option value="">Alege ...</option>
                                     @if ($idx_crt_min){
                                         @foreach ($stats as $stat)
-                                            <option {{ old('stat_id') == $stat->id ? 'selected' : '' }} value="{{ $stat->id }}">{{ $stat['name'] }}</option>
+                                            <option {{
+                                             old('stat_id') ? (($stat->id == old('stat_id')) ? 'selected' : '') :   ($stat->id == 1 ? 'selected' : '')
+                                             }} value="{{ $stat->id }}">{{ $stat['name'] }}</option>
                                         @endforeach
                                         }
                                     @else{
@@ -58,7 +60,7 @@
 
                             <div class="col-md-5">
                                 <input autocomplete="on" id="km" name="km" type="text"
-                                    class="form-control @error('km') is-invalid @enderror" value="{{ old('km') }}"
+                                    class="form-control @error('km') is-invalid @enderror" value="{{ old('km') ? old('km') : $idx_crt_min }}"
                                     placeholder="anterior :{{ $idx_ant_max . ' - minim curent: ' . $idx_crt_min }}">
 
                                 @error('km')

@@ -76,7 +76,7 @@ if ($selected_user_id != '0') {
     <div class="card">
         <div class="card-header d-print-none">
             <div class="row">
-                <div id="my-log" class="col">Km log</div>
+                <div id="title_bar" class="col">Km log</div>
                 <div class="row mb-1">
                     @if ($selected_department_id > 0)
                         <div style="width: 5%" class="col-md-1">
@@ -173,12 +173,13 @@ if ($selected_user_id != '0') {
                         <th scope="col">Interval</th>
                         <th scope="col">Creat la</th>
                         <th scope="col">Modificat la</th>
-                        <th scope="col" width="4%">Ord</th>
                         <th scope="col" width="4%">ID</th>
                         <th scope="col" width="4%">is_first</th>
                     </tr>
                 </thead>
             </table>
+            <div id="status-bar" class="col"></div>
+
         </div>
     </div>
 @endsection
@@ -255,7 +256,7 @@ if ($selected_user_id != '0') {
             // dtButtonsLeft1.push(mutaInJos)
 
             /* ------------------------------------------------------------------------ */
-            let first =0;
+            let first = 0;
             let createButton = {
                 className: 'btn-success externalCreate',
                 text: '+',
@@ -407,24 +408,24 @@ if ($selected_user_id != '0') {
                         data: 'id',
                         render: function(data, type, row, meta) {
                             let interval_id = row.interval.id;
-                            if (row.stat.name == 'Nu se pune la plata' && row.is_first == 1){
+                            if (row.stat.name == 'Nu se pune la plata' && row.is_first == 1) {
                                 return '<span style="color:red;">' + row.stat.name + '</span>';
-                            }else{
+                            } else {
                                 return row.stat.name;
 
                             }
 
-            // oTable.on('select', function(e, dt, type, indexes) {
-            //     var all_user_ids = $.map(dt.rows({
-            //         selected: true
-            //     }).data(), function(entry) {
-            //         return [entry.user_id, entry.car_id, entry.department_id];
-            //     });
-            //     console.log(all_user_ids[2]);
+                            // oTable.on('select', function(e, dt, type, indexes) {
+                            //     var all_user_ids = $.map(dt.rows({
+                            //         selected: true
+                            //     }).data(), function(entry) {
+                            //         return [entry.user_id, entry.car_id, entry.department_id];
+                            //     });
+                            //     console.log(all_user_ids[2]);
                             // let res = $.map(first, function (entry){
                             //     return entry.responseText;
                             // })
-                                    // console.log(row.stat.name);
+                            // console.log(row.stat.name);
                             // if (typeof row.stat === "undefined") {
                             //     return '';
                             // } else {
@@ -499,15 +500,6 @@ if ($selected_user_id != '0') {
                         name: 'updated_at',
                     },
                     {
-                        data: 'ordine',
-                        name: 'ordine',
-                        searchable: false,
-                        className: 'text-left',
-                        render: function(data, type, row, meta) {
-                            return data.toString();
-                        }
-                    },
-                    {
                         data: 'id',
                         name: 'id',
                         searchable: false,
@@ -567,13 +559,28 @@ if ($selected_user_id != '0') {
                     selected: true
                 }).count();
 
-                // var all_ids_count = oTable.rows().count();
-                // var selected_id = $.map(dt.rows({
-                //     selected: true
-                // }).data(), function(entry) {
-                //     return entry.id;
-                // });
+                var numar_inregistrari_selectate = oTable.rows({
+                    selected: true
+                }).count();
+                if (numar_inregistrari_selectate == 1) {
+                    var selected_status = $.map(dt.rows({
+                        selected: true
+                    }).data(), function(entry) {
+                        return entry.stat_id;
+                    });
+                    var selected_is_first = $.map(dt.rows({
+                        selected: true
+                    }).data(), function(entry) {
+                        return entry.is_first;
+                    });
+                    if(selected_status == 2 && selected_is_first == 1){
+                        $('#status-bar').html('Prima inregistrare din interval (weekend) trebuie sa aiba status Normal (Este referinta ce se scade pentru a afla numarul de km parcursi.)');
+                    }else{
+                        $('#status-bar').html('');
+                    }
 
+
+                }
                 // oTable.buttons('.moveup').enable(selected_id[0] != all_ids[0]);
                 // oTable.buttons('.movedown').enable(selected_id[0] != all_ids[all_ids_count - 1]);
                 oTable.buttons('.selectOne').enable(selectedRows === 1);
@@ -582,19 +589,19 @@ if ($selected_user_id != '0') {
 
             // oTable.buttons('.externalEdit').enable(true);
             // oTable.buttons('.externalCreate').enable(true);
-            // $('#my-log').html('Km log');
+            // $('#title_bar').html('Km log');
 
             //validari buton adaugare
             if ('{{ $Toate }}' == 1) {
-                $('#my-log').html('Nu puteti adauga daca aveti selectat la interval "Toate"');
+                $('#title_bar').html('Nu puteti adauga daca aveti selectat la interval "Toate"');
             }
 
             if ('{{ $selected_car_id == 0 && $selected_user_id == 0 }}') {
-                $('#my-log').html('Nu puteti adauga daca nu ati selectat masina sau utilizatorul');
+                $('#title_bar').html('Nu puteti adauga daca nu ati selectat masina sau utilizatorul');
             }
 
             if ('{{ $sel_user_id === null || $sel_car_id === null }}') {
-                $('#my-log').html('Nu puteti adauga daca utilizatorul sau masina selectat/a nu este asociat/a.');
+                $('#title_bar').html('Nu puteti adauga daca utilizatorul sau masina selectat/a nu este asociat/a.');
             }
 
             if (
@@ -608,14 +615,17 @@ if ($selected_user_id != '0') {
             }
             // oTable.buttons('.externalCreate').text("Deselectati 'Toate' pentru adaugare");
             // oTable.buttons('.externalEdit').text("Deselectati 'Toate' pentru modificare");
+
             // oTable.columns(1).render(function(data, type, row, meta) {
             //                 return '<span style="color:blue;">' + row.stat.name + '</span>';
             //             });
-            oTable.on('click', 'td', function() { //sau 'mouseenter'
-                var colIdx = oTable.cell(this).index().column;
-                var rowIdx = oTable.cell(this).index().row;
-                console.log(colIdx, rowIdx);
-            });
+
+
+            // oTable.on('click', 'td', function() { //sau 'mouseenter'
+            //     var colIdx = oTable.cell(this).index().column;
+            //     var rowIdx = oTable.cell(this).index().row;
+            //     console.log(colIdx, rowIdx);
+            // });
 
         });
 

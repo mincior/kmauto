@@ -106,7 +106,15 @@ class AppHelper
         // $month_id = Interval::where('id', $interval_id)->first()->month_id;
         // $month_intervals = Interval::where('month_id', $month_id)->get()->pluck('id')->toArray();
         $prima_inregistrare_din_interval_id = Kmlog::where('interval_id', $interval_id)->where('user_id', $user_id)->where('car_id', $car_id)->orderby('km', 'asc')->first()->id;
-        return ($prima_inregistrare_din_interval_id == $kmlog_id);
+		$is_first = ($prima_inregistrare_din_interval_id == $kmlog_id);
+		if ($is_first) {//daca id-ul primit ca parametru pentru userul cu masina specificate este prima inregistrare din interval, sterge campul is_first pentru toate inregistrarile din interval
+			//la retur se va scrie cu 1 is_first pentru $kmlog_id primit
+			$inregistrarile_intervalului = Kmlog::where('interval_id', $interval_id)->where('user_id', $user_id)->where('car_id', $car_id)->get();
+			foreach ($inregistrarile_intervalului as $rec) {
+				$rec->update(['is_first'=> 0]);
+			}
+		}
+        return $is_first;
       
     }
 

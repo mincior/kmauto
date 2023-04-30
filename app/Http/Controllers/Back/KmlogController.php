@@ -119,23 +119,6 @@ class KmlogController extends Controller
             ]);
     }
 
-    /**
-     * Muta inregistrarea cu o pozitie in sus  sau in jos - NU SE FOLOSESTE DEOCAMDATA
-     * Modifica campul ordine 
-     *
-     * @param Request $request
-     * @return void
-     */
-    public function muta(Request $request)
-    {
-        $arr = AppHelper::arr_move($request->all_ids, $request->selected_id, $request->sens);
-
-        //seteaza ordine in tabelul kmlog dupa $arr
-        foreach ($arr as $key => $id) {
-            $interval_id = Kmlog::where('id', $id)->first()->interval_id;
-            Kmlog::where('id', $id)->update(['ordine' => $interval_id * 100 + $key]);
-        }
-    }
 
 
     public function getKmlogTypes($kmlog_id)
@@ -179,7 +162,6 @@ class KmlogController extends Controller
 
         $data = $request->all();
         $data['interval_id'] =  \App\MyHelpers\AppHelper::getSelectedInterval()->id;
-        $data['ordine'] = 1;
         $data['created_at'] = $datetime->format('y-m-d H:i:s');
         $data['updated_at'] = $datetime->format('y-m-d H:i:s');
 
@@ -348,7 +330,6 @@ class KmlogController extends Controller
         $data = $request->all();
 
         $data['interval_id'] =  $selected_interval_id;
-        $data['ordine'] = 1;
         $data['updated_at'] = $datetime->format('y-m-d H:i:s');
         $user = User::where('id', $data['user_id'])->first()->name;
         $car = Car::where('id', $data['car_id'])->first()->numar;

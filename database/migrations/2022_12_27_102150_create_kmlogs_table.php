@@ -21,7 +21,7 @@ class CreateKmlogsTable extends Migration
 			$table->bigInteger('km')->nullable();
 			$table->string('picture')->nullable();
             $table->string('observatii')->nullable();
-			$table->integer('ordine')->nullable();
+			$table->boolean('is_first')->nullable();
 			$table->bigInteger('interval_id')->unsigned()->index()->nullable();
 			$table->foreign('interval_id')->references('id')->on('intervals');
 			$table->bigInteger('user_id')->unsigned()->index()->nullable();
