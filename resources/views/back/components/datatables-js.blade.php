@@ -39,6 +39,7 @@
         stateDuration: -1,
         responsive: true,
         scrollX: true,
+        defaultContent: '<i class="icon-plus font-blue" style="cursor: pointer; font-size: 16px;"></i>',
         language: {
             url: "{{ asset('json/datatables/i18n/en_gb.json') }}",
             buttons: {

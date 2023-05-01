@@ -80,8 +80,6 @@ if ($selected_user_id != '0') {
                 <div class="row mb-1">
                     @if ($selected_department_id > 0)
                         <div style="width: 5%" class="col-md-1">
-                            <button type="button" class="btn btn-success"
-                                onclick="puneToateSelecturilePeChoose()">Tot</button>
                         </div>
                     @endif
                     @if ($selected_car_id > 0 || $selected_user_id > 0)
@@ -373,9 +371,9 @@ if ($selected_user_id != '0') {
             dtButtonsRight.push(deleteButton)
             /* ------------------------------------------------------------------------ */
             let dtOverrideGlobals = {
-                searching: false,
-                paging: false,
-                info: false,
+                // searching: false,
+                // paging: false,
+                // info: false,
                 ajax: {
                     url: "{{ route('back.kmlogs.index') }}",
                     data: function(d) {}
@@ -407,6 +405,8 @@ if ($selected_user_id != '0') {
                     {
                         data: 'id',
                         render: function(data, type, row, meta) {
+                            //console.log(row);
+                            //console.log(JSON.stringify(row));
                             let interval_id = row.interval.id;
                             if (row.stat.name == 'Nu se pune la plata' && row.is_first == 1) {
                                 return '<span style="color:red;">' + row.stat.name + '</span>';
@@ -552,7 +552,6 @@ if ($selected_user_id != '0') {
             //     console.log(all_user_ids[2]);
 
             // });
-
             oTable.on('select deselect', function(e, dt, type, indexes) {
                 //console.log(indexes[0]);
                 var selectedRows = oTable.rows({
@@ -573,10 +572,10 @@ if ($selected_user_id != '0') {
                     }).data(), function(entry) {
                         return entry.is_first;
                     });
-                    if(selected_status == 2 && selected_is_first == 1){
-                        $('#status-bar').html('Prima inregistrare din interval (weekend) trebuie sa aiba status Normal (Este referinta ce se scade pentru a afla numarul de km parcursi.)');
-                    }else{
-                        $('#status-bar').html('');
+                    if (selected_status == 2 && selected_is_first == 1) {//afisarea de aici in status bar este prioritara
+                        $('#status-bar').html(
+                            'Prima inregistrare din interval (weekend) trebuie sa aiba status Normal (Este referinta ce se scade pentru a afla numarul de km parcursi.)'
+                        );
                     }
 
 
@@ -586,22 +585,21 @@ if ($selected_user_id != '0') {
                 oTable.buttons('.selectOne').enable(selectedRows === 1);
                 oTable.buttons('.selectMultiple').enable(selectedRows > 0);
             });
-
             // oTable.buttons('.externalEdit').enable(true);
             // oTable.buttons('.externalCreate').enable(true);
             // $('#title_bar').html('Km log');
 
             //validari buton adaugare
             if ('{{ $Toate }}' == 1) {
-                $('#title_bar').html('Nu puteti adauga daca aveti selectat la interval "Toate"');
+                $('#title_bar').html('<span style="color:red;">Nu puteti adauga daca aveti selectat la interval "Toate"</span>');
             }
 
             if ('{{ $selected_car_id == 0 && $selected_user_id == 0 }}') {
-                $('#title_bar').html('Nu puteti adauga daca nu ati selectat masina sau utilizatorul');
+                $('#title_bar').html('<span style="color:red;">Nu puteti adauga daca nu ati selectat masina sau utilizatorul</span>');
             }
 
             if ('{{ $sel_user_id === null || $sel_car_id === null }}') {
-                $('#title_bar').html('Nu puteti adauga daca utilizatorul sau masina selectat/a nu este asociat/a.');
+                $('#title_bar').html('<span style="color:red;">Nu puteti adauga daca utilizatorul sau masina selectat/a nu este asociat/a.</span>');
             }
 
             if (
@@ -613,13 +611,52 @@ if ($selected_user_id != '0') {
                 oTable.buttons('.externalCreate').enable(true);
 
             }
+            var createNestedObject = function( base, names ) {
+                for( var i = 0; i < names.length; i++ ) {
+                    base = base[ names[i] ] = base[ names[i] ] || {};
+                }
+            };
+            //va afisa in status bar un totalizator
+            oTable.on('draw', function(e, dt, type, indexes) {
+                let myData={};
+                // const dynamicArray = ["2007", "2008", "2009", "2010"];
+                // const obj = Object.fromEntries(
+                // dynamicArray.map(year => [year, {
+                //     something: "based",
+                //     on: year
+                // }])
+                //)   
+                let count = {};             
+                oTable.rows().eq(0).each(function(index) {
+                    //scoate toate datele din tabel (obiecte inlantuite. Sunt toate datele)
+                    var row = oTable.row(index);
+                    var data = row.data();
+
+                    //creaza un contor pentru fiecare user
+                    createNestedObject( count, [data.user.name], "cnt" );
+                    //care se initializeaza cu zero
+                    if(!count[data.user.name].cnt ){count[data.user.name].cnt = 0;}
+                    //dupa care se incrementeaza pe fiecare user
+                    count[data.user.name].cnt = parseInt(count[data.user.name].cnt, 10) + 1;
+
+                    //creaza un obiect myData ce contine datele pentru fiecare user
+                    createNestedObject( myData, [data.user.name, count[data.user.name].cnt, "status"] );
+                    createNestedObject( myData, [data.user.name, count[data.user.name].cnt,  "km"] );
+                    createNestedObject( myData, [data.user.name, count[data.user.name].cnt,  "interval"] );
+                    myData[data.user.name][count[data.user.name].cnt].status = data.stat.name ;
+                    myData[data.user.name][count[data.user.name].cnt].km = data.km;
+                    myData[data.user.name][count[data.user.name].cnt].interval = data.interval['interval'];
+                    //$('#status-bar').html($('#status-bar').html() + '<p>'  + data.user.name + ' ' + data.km  + '</p>');
+
+                });
+                console.log (count, myData);
+                $('#status-bar').html(
+                   '<pre>' + JSON.stringify(myData, null, 2) + '</pre>'
+                );
+
+            });
             // oTable.buttons('.externalCreate').text("Deselectati 'Toate' pentru adaugare");
             // oTable.buttons('.externalEdit').text("Deselectati 'Toate' pentru modificare");
-
-            // oTable.columns(1).render(function(data, type, row, meta) {
-            //                 return '<span style="color:blue;">' + row.stat.name + '</span>';
-            //             });
-
 
             // oTable.on('click', 'td', function() { //sau 'mouseenter'
             //     var colIdx = oTable.cell(this).index().column;
@@ -629,6 +666,7 @@ if ($selected_user_id != '0') {
 
         });
 
+        /* Formatting function for row details - modify as you need */
         $('#department_select').change(function() {
             var department_id = $(this).find(":selected").val();
             let set_department_id_url = '/back/general/setDepartmentId';
@@ -681,6 +719,8 @@ if ($selected_user_id != '0') {
                 }
             });
         });
+
+        function adaugaTotal() {}
 
         function puneUserSiCarPeChoose() {
             $('#user_select option[value="0"]').prop('selected', 'selected').change();
