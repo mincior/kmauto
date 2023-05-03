@@ -17,7 +17,7 @@ $("#department_select").change(function () {
 
 //incarca masinile filialei
 function get_department_cars( department_id, car_id) {
-	let url = siteUrl + '/back/departments/get-cars' + '/' + department_id
+	let url = siteUrl + '/back/departments/get-cars' + '/' + department_id  
 	//ajax http request
 	axios.get(url)
 		.then(function (res) {
@@ -43,7 +43,7 @@ function get_department_cars( department_id, car_id) {
 }
 //incarca utilizatorii filialei
 function get_department_users( department_id, user_id) {
-	let url = siteUrl + '/back/departments/get-users' + '/' + department_id
+	let url = siteUrl + '/back/departments/get-users' + '/' + department_id  
 	//ajax http request
 
 	axios.get(url)

@@ -311,8 +311,8 @@ class KmlogController extends Controller
         // }
 
         $department_name = Department::where('id', $kmlog->department_id)->first()->name;
-        // $users = DepartmentController::getUnAssociatedUsers($kmlog->department_id);
-        // $cars = DepartmentController::getUnAssociatedCars($kmlog->department_id);
+        // $users = DepartmentController::getUsers($kmlog->department_id);
+        // $cars = DepartmentController::getCars($kmlog->department_id);
         $stats = Stat::get();
 
         //nu se poate introduce un index mai mic decat cel mai mare index din intervalul anterior(daca exista) si nici decat cel mai mic din intervalul urmator (daca exista)

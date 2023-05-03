@@ -7,7 +7,7 @@
 @section('content')
 <?php
     //folosite la memorarea introducerii la eroare pentru a nu introduce din nou aceleasi valori
-    $old_users = @\App\Http\Controllers\Back\DepartmentController::getUnAssociatedUsers(old('department_id'));
+    $old_users = @\App\Http\Controllers\Back\DepartmentController::getUsers(old('department_id'));
     $old_types = @\App\Models\Brand::with('types')->where('id', '=', (old('brand_id')))->get()[0]['types'];
     $source_name = substr($edit_source, strripos($edit_source, '/') + 1);//daca este 'kmlogs' inactiveaza selectul filiale
     $permite_selectare_filiala = ($source_name=='kmlogs') ? "disabled" : "";

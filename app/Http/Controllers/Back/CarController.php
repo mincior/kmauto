@@ -196,7 +196,7 @@ class CarController extends Controller
             ->first()->department_id;
         //dd($dep_id);
         // $users = @Department::with('users')->where('id', '=', $dep_id)->get()[0]['users'];
-        $users = @DepartmentController::getUnAssociatedUsers($dep_id);
+        $users = @DepartmentController::getUsers($dep_id);
 
         //usr_id = o masina poate sa nu aiba un user alocat (nici userul o masina) 
         //de aceea s-a pus @UserCar... sa nu dea eroare daca $user_id este null
@@ -356,7 +356,7 @@ class CarController extends Controller
     public function getDepartmentCars()
     {
         // $department_id = Setting::where('nume', 'departmentId')->where('interval_id', 1)->first()->valoare;
-        // $cars = DepartmentController::getUnAssociatedCars($department_id);
+        // $cars = DepartmentController::getCars($department_id);
         return view('back.cars.index');
     }
 }

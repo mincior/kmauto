@@ -107,12 +107,23 @@ class UserController extends Controller
         $data['name'] = ucwords($data['name']);
 
         $user = User::create($data);
+        $user_name = @User::where('id', $user->id)->first()->name;
+        $car_number = @Car::where('id', $car_id)->first()->numar;
+
         if ($user->id){//daca s-a creat userul
             //aduaga departamentul, userul - optional, consumul mediu si activ in tabelele pivot
             UserDep::create(['department_id' => $department_id, 'user_id' => $user->id, 'interval_id' => $selected_interval_id]);
             UserPhone::create(['valoare' => $telefon, 'user_id' => $user->id, 'interval_id' => $selected_interval_id]);
             UserKmlimit::create(['valoare' => $kmlimit, 'user_id' => $user->id, 'interval_id' => $selected_interval_id]);
-            if($car_id !== 0) UserCar::create(['car_id' => $car_id, 'user_id' => $user->id, 'interval_id' => $selected_interval_id]);
+            if ($car_id !== 0) { //daca este specificat un car
+                //verifica daca acel car are asociata o alta masina pe intervalul selectat
+                $asociat_id = @UserCar::where('car_id', $car_id)->where('interval_id', $selected_interval_id)->first()->id;
+                if ($asociat_id) { //daca da, schimba id-ul masinii asociate deja cu id-ul masinii create
+                    UserCar::where('id', $asociat_id)->update(['user_id' => $user->id, 'masina' => $car_number, 'masina' => $user_name]);
+                } else {
+                    UserCar::create(['car_id' => $car_id, 'user_id' => $user->id, 'interval_id' => $selected_interval_id, 'observatii' => 'asociere la creare masina', 'masina' => $car_number, 'masina' => $user_name]);
+                }
+            }
             Availableuser::create(['valoare' => $activ, 'user_id' => $user->id, 'interval_id' => $selected_interval_id]);
         }
         $notification = [
@@ -160,7 +171,7 @@ class UserController extends Controller
             ->orderBy('interval_id', 'desc')
             ->first()->department_id;
         // $cars = @Department::with('cars')->where('id', '=', $dep_id)->get()[0]['cars'];
-        $cars = @DepartmentController::getUnAssociatedCars($dep_id);
+        $cars = @DepartmentController::getCars($dep_id);
         $activ = @Availableuser::where('user_id', $user->id)->where('interval_id', '<=', $selected_interval_id)->orderby('interval_id', 'Desc')->first()->valoare;
         $telefon = @UserPhone::where('user_id', $user->id)->where('interval_id', '<=', $selected_interval_id)->orderby('interval_id', 'Desc')->first()->valoare;
         $kmlimit = @UserKmlimit::where('user_id', $user->id)->where('interval_id', '<=', $selected_interval_id)->orderby('interval_id', 'Desc')->first()->valoare;
@@ -221,18 +232,37 @@ class UserController extends Controller
                 }
             }
 
-            if ($car_id !== 0) {
-                $rec = UserCar::where('user_id', $user->id)->where('car_id', $car_id)->where('interval_id', '<=', $selected_interval_id)->orderby('interval_id', 'Desc')->first();
-                if (!is_null($rec)) {
-                    if ($rec->car_id !== $car_id) { //s-a schimbat masina.
-                        if ($rec->interval_id == $selected_interval_id) { //s-a schimbat doar departamentul in intervalul curent
-                            $rec->update(['car_id', $car_id]);
-                        } else { // Creaza o noua inregistrare cu noul car_id dar cu intervalul curent
-                            UserCar::create(['user_id' => $user->id, 'car_id' => $car_id, 'interval_id' => $selected_interval_id]);
+            //verifica daca exista o asociere a masinii editate in intervalul curent
+            $utilizatorul_asociat_crt_id =  @UserCar::where('user_id', $user->id)->where('interval_id',  $selected_interval_id)->first()->id;
+            $car_number = @Car::where('id', $car_id)->first()->numar;
+            $user_name = @User::where('id', $user->id)->first()->name;
+            if ($car_id !== 0) { //daca este specificat un car
+                //verifica daca masina specificat este deja asociata la alta utilizatorul
+                $masina_asociata_crt_id =  @UserCar::where('car_id', $car_id)->where('interval_id',  $selected_interval_id)->first()->id;
+                //returneaza id-ul masinaui ultimei asocieri a masinii editate
+                $masina_la_ultima_asociere_a_masinii_id = @UserCar::where('user_id', $user->id)->where('interval_id', '<', $selected_interval_id)->orderby('interval_id', 'desc')->first()->car_id;
+                if (!$utilizatorul_asociat_crt_id) {//nu exista o asociere a masinii editate
+                    if(!$masina_asociata_crt_id ){//dar masina selectat nu este deja asociata
+                        UserCar::create(['car_id' => $car_id, 'user_id' => $user->id, 'interval_id' => $selected_interval_id, 'observatii' => 'asociere noua la modifiusere utilizatorul', 'masina' => $car_number, 'user' => $user_name]);
+                    }else{
+                        UserCar::where('id', $masina_asociata_crt_id)->update(['user_id' => $user->id, 'observatii' => 'asociere utilizatorul la car la modifiusere utilizatorul', 'masina' => $car_number, 'user' => $user_name]);
+                    }
+                    
+                }else{//exista o asociere pe utilizatorul editata
+                    if(!$masina_asociata_crt_id ){//dar masina selectat nu este deja asociata
+                        UserCar::where('id', $utilizatorul_asociat_crt_id)->update(['car_id' => $car_id, 'observatii' => 'asociere car la utilizatorul la modifiusere utilizatorul', 'masina' => $car_number, 'user' => $user_name]);
+                    }else{
+                        if ($utilizatorul_asociat_crt_id != $masina_asociata_crt_id){
+                            UserCar::where('id', $masina_asociata_crt_id)->update(['user_id' => $user->id, 'observatii' => 'asociere utilizatorul cu stergere la modifiusere utilizatorul', 'masina' => $car_number, 'user' => $user_name]);
+                            UserCar::where('id', $utilizatorul_asociat_crt_id)->delete();
+                        }else{
+                            UserCar::where('id', $utilizatorul_asociat_crt_id)->update(['car_id' => $car_id, 'observatii' => 'asociere car la modifiusere utilizatorul', 'masina' => $car_number, 'user' => $user_name]);
                         }
                     }
-                } else { //userul nu exista deloc
-                    UserCar::create(['user_id' => $user->id, 'car_id' => $car_id, 'interval_id' => $selected_interval_id]);
+                }
+            }else{//nu este specificat un car
+                if($utilizatorul_asociat_crt_id ) {
+                    UserCar::where('id', $utilizatorul_asociat_crt_id )->delete();
                 }
             }
 
@@ -315,7 +345,7 @@ class UserController extends Controller
     }
     public function getDepartmentUsers(){
         $department_id = Setting::where('nume', 'departmentId')->where('interval_id', 1)->first()->valoare;
-        $users = DepartmentController::getUnAssociatedUsers($department_id);
+        $users = DepartmentController::getUsers($department_id);
 
         return view('back.users.index', $users);
 
