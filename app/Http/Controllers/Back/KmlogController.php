@@ -27,6 +27,7 @@ use Intervention\Image\Facades\Image;
 use App\Http\Requests\KmlogStoreRequest;
 use Yajra\DataTables\Facades\DataTables;
 use App\Http\Requests\KmlogUpdateRequest;
+use App\Http\Requests\KmlogStoreOrUpdateRequest;
 
 class KmlogController extends Controller
 {
@@ -48,22 +49,26 @@ class KmlogController extends Controller
             $selected_interval_id = $selected_interval->id;
             $selected_user_id = Setting::where('nume', 'userId')->where('interval_id', 1)->first()->valoare;
             $selected_car_id = Setting::where('nume', 'carId')->where('interval_id', 1)->first()->valoare;
+            $selected_department_id = Setting::where('nume', 'departmentId')->where('interval_id', 1)->first()->valoare;
             // dd($selected_interval_id, $selected_user_id, $selected_car_id);
-            $kmlogs = Kmlog::with('stat', 'user', 'car', 'interval', 'department')->orderby('interval_id', 'desc')->orderby('user_id', 'asc')->orderby('km', 'asc')->select(sprintf('%s.*', (new Kmlog)->getTable()))->get();
+            $kmlogs = Kmlog::with('stat', 'user', 'car', 'interval', 'department')->orderby('interval_id', 'asc')->orderby('user_id', 'asc')->orderby('km', 'asc')->select(sprintf('%s.*', (new Kmlog)->getTable()))->get();
             foreach ($kmlogs as $key => $kmlog) {
                 $kmlog['month'] = Month::where('id', Interval::where('id', $kmlog->interval_id)->first()->month_id)->first();
+                if ($selected_department_id > 0 && $kmlog->department_id != $selected_department_id) {
+                    unset($kmlogs[$key]);
+                }
                 if ($selected_user_id > 0 && $kmlog->user_id != $selected_user_id) {
                     unset($kmlogs[$key]);
                 }
                 if ($selected_car_id > 0 && $kmlog->car_id != $selected_car_id) {
                     unset($kmlogs[$key]);
                 }
-                if ($selected_interval->arr_ids) {
-                    if ($filtreaza_dupa_interval = 1 && !in_array($kmlog->interval_id, $selected_interval->arr_ids)) {
+                if ($selected_interval->arr_ids) {//sunt selectate Toate    
+                    if (!in_array($kmlog->interval_id, $selected_interval->arr_ids)) {
                         unset($kmlogs[$key]);
                     }
                 } else {
-                    if ($filtreaza_dupa_interval = 1 && $kmlog->interval_id != $selected_interval_id) {
+                    if ($kmlog->interval_id != $selected_interval_id) {
                         unset($kmlogs[$key]);
                     }
                 }
@@ -102,10 +107,23 @@ class KmlogController extends Controller
         }
 
         $stats = Stat::get();
-        //afla cel mai mare index din intervalul anterior si cel mai mic index din intervalul curent
-        $idx_ant_max = @Kmlog::where('department_id', $department_id)->where('user_id', $selected_user_id)->where('car_id', $selected_car_id)->where('interval_id', ($selected_interval->id == 1) ? 1 : $selected_interval->id -1 )->orderby('km', 'desc')->first()->km;
+        //nu se poate introduce un index mai mic decat cel mai mare index din intervalul anterior(daca exista) si nici decat cel mai mic din intervalul urmator (daca exista)
+        $idx_ant_max = @Kmlog::where('department_id', $department_id)->where('user_id', $selected_user_id)->where('car_id', $selected_car_id)->where('interval_id','<', $selected_interval->id )->orderby('km', 'desc')->first()->km;
         $idx_crt_min = @Kmlog::where('department_id', $department_id)->where('user_id', $selected_user_id)->where('car_id', $selected_car_id)->where('interval_id', $selected_interval->id )->orderby('km', 'asc')->first()->km;
-        // dd($idx_crt_min, $idx_ant_max);
+        $idx_crt_max = @Kmlog::where('department_id', $department_id)->where('user_id', $selected_user_id)->where('car_id', $selected_car_id)->where('interval_id', $selected_interval->id )->orderby('km', 'desc')->first()->km;
+        $idx_post_min = @Kmlog::where('department_id', $department_id)->where('user_id', $selected_user_id)->where('car_id', $selected_car_id)->where('interval_id','>', $selected_interval->id)->orderby('km', 'asc')->first()->km;
+        if(!$idx_post_min){
+            $idx_post_min = 99999999;
+        }
+        if(!$idx_ant_max){
+            $idx_ant_max = 0;
+        }
+        if(!$idx_crt_min){
+            $idx_crt_min = $idx_post_min;
+        }
+        if(!$idx_crt_max){
+            $idx_crt_max = $idx_crt_min;
+        }
         return view('back.kmlogs.create', compact('stats'))->with(
             [
                 'user_id' => $selected_user_id, 
@@ -115,7 +133,9 @@ class KmlogController extends Controller
                 'car_number' => @Car::where('id', $selected_car_id)->first()->numar, 
                 'department_name' => @Department::where('id', $department_id)->first()->name,
                 'idx_ant_max' => $idx_ant_max,
-                'idx_crt_min' => $idx_crt_min
+                'idx_crt_min' => $idx_crt_min,
+                'idx_crt_max' => $idx_crt_max,
+                'idx_post_min' => $idx_post_min
             ]);
     }
 
@@ -153,7 +173,7 @@ class KmlogController extends Controller
      * @param KmlogStoreRequest $request
      * @return void
      */
-    public function store(KmlogStoreRequest $request)
+    public function store(KmlogStoreOrUpdateRequest $request)
     {
         $datetime = new DateTime();
         $timezone = new DateTimeZone('Europe/Bucharest');
@@ -291,13 +311,27 @@ class KmlogController extends Controller
         // }
 
         $department_name = Department::where('id', $kmlog->department_id)->first()->name;
-        // $users = DepartmentController::getUsers($kmlog->department_id);
-        // $cars = DepartmentController::getCars($kmlog->department_id);
+        // $users = DepartmentController::getUnAssociatedUsers($kmlog->department_id);
+        // $cars = DepartmentController::getUnAssociatedCars($kmlog->department_id);
         $stats = Stat::get();
 
-        //afla cel mai mare index din intervalul anterior si cel mai mic index din intervalul curent
-        $idx_ant_max = @Kmlog::where('department_id', $kmlog->department_id)->where('user_id', $kmlog->user_id)->where('car_id', $kmlog->car_id)->where('interval_id', ($selected_interval->id == 1) ? 1 : $selected_interval->id -1 )->orderby('km', 'desc')->first()->km;
+        //nu se poate introduce un index mai mic decat cel mai mare index din intervalul anterior(daca exista) si nici decat cel mai mic din intervalul urmator (daca exista)
+        $idx_ant_max = @Kmlog::where('department_id', $kmlog->department_id)->where('user_id', $kmlog->user_id)->where('car_id', $kmlog->car_id)->where('interval_id','<', $selected_interval->id )->orderby('km', 'desc')->first()->km;
         $idx_crt_min = @Kmlog::where('department_id', $kmlog->department_id)->where('user_id', $kmlog->user_id)->where('car_id', $kmlog->car_id)->where('interval_id', $selected_interval->id )->orderby('km', 'asc')->first()->km;
+        $idx_crt_max = @Kmlog::where('department_id', $kmlog->department_id)->where('user_id', $kmlog->user_id)->where('car_id', $kmlog->car_id)->where('interval_id', $selected_interval->id )->orderby('km', 'desc')->first()->km;
+        $idx_post_min = @Kmlog::where('department_id', $kmlog->department_id)->where('user_id', $kmlog->user_id)->where('car_id', $kmlog->car_id)->where('interval_id','>', $selected_interval->id)->orderby('km', 'asc')->first()->km;
+        if(!$idx_post_min){
+            $idx_post_min = 99999999;
+        }
+        if(!$idx_ant_max){
+            $idx_ant_max = 0;
+        }
+        if(!$idx_crt_min){
+            $idx_crt_min = $idx_post_min;
+        }
+        if(!$idx_crt_max){
+            $idx_crt_max = $idx_crt_min;
+        }
 
         return view('back.kmlogs.edit', compact('kmlog', 'stats'))->with(
             [
@@ -308,7 +342,9 @@ class KmlogController extends Controller
                 'car_number' => @Car::where('id', $kmlog->car_id)->first()->numar, 
                 'department_name' => @Department::where('id', $kmlog->department_id)->first()->name,
                 'idx_ant_max' => $idx_ant_max,
-                'idx_crt_min' => $idx_crt_min
+                'idx_crt_min' => $idx_crt_min,
+                'idx_crt_max' => $idx_crt_max,
+                'idx_post_min' => $idx_post_min
             ]);
     }
 
@@ -319,7 +355,7 @@ class KmlogController extends Controller
      * @param Kmlog $kmlog
      * @return void
      */
-    public function update(KmlogUpdateRequest $request, Kmlog $kmlog)
+    public function update(KmlogStoreOrUpdateRequest $request, Kmlog $kmlog)
     {
 
         $datetime = new DateTime();

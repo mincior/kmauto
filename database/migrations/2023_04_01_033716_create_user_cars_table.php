@@ -22,7 +22,11 @@ class CreateUserCarsTable extends Migration
 			$table->bigInteger('user_id')->unsigned()->index()->nullable();
 			$table->foreign('user_id')->references('id')->on('users');
 			$table->bigInteger('car_id')->unsigned()->index()->nullable();
-			$table->foreign('car_id')->references('id')->on('cars');
+			$table->foreign('car_id')->references('id')->on('cars');    
+            $table->string('user')->nullable();
+            $table->string('masina')->nullable();
+		
+		
 			//End craft placeholder #1
         });
     }

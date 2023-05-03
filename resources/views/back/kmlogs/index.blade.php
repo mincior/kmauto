@@ -572,7 +572,8 @@ if ($selected_user_id != '0') {
                     }).data(), function(entry) {
                         return entry.is_first;
                     });
-                    if (selected_status == 2 && selected_is_first == 1) {//afisarea de aici in status bar este prioritara
+                    if (selected_status == 2 && selected_is_first ==
+                        1) { //afisarea de aici in status bar este prioritara
                         $('#status-bar').html(
                             'Prima inregistrare din interval (weekend) trebuie sa aiba status Normal (Este referinta ce se scade pentru a afla numarul de km parcursi.)'
                         );
@@ -591,15 +592,20 @@ if ($selected_user_id != '0') {
 
             //validari buton adaugare
             if ('{{ $Toate }}' == 1) {
-                $('#title_bar').html('<span style="color:red;">Nu puteti adauga daca aveti selectat la interval "Toate"</span>');
+                $('#title_bar').html(
+                    '<span style="color:red;">Nu puteti adauga daca aveti selectat la interval "Toate"</span>');
             }
 
             if ('{{ $selected_car_id == 0 && $selected_user_id == 0 }}') {
-                $('#title_bar').html('<span style="color:red;">Nu puteti adauga daca nu ati selectat masina sau utilizatorul</span>');
+                $('#title_bar').html(
+                    '<span style="color:red;">Nu puteti adauga daca nu ati selectat masina sau utilizatorul</span>'
+                );
             }
 
             if ('{{ $sel_user_id === null || $sel_car_id === null }}') {
-                $('#title_bar').html('<span style="color:red;">Nu puteti adauga daca utilizatorul sau masina selectat/a nu este asociat/a.</span>');
+                $('#title_bar').html(
+                    '<span style="color:red;">Nu puteti adauga daca utilizatorul sau masina selectat/a nu este asociat/a.</span>'
+                );
             }
 
             if (
@@ -611,14 +617,15 @@ if ($selected_user_id != '0') {
                 oTable.buttons('.externalCreate').enable(true);
 
             }
-            var createNestedObject = function( base, names ) {
-                for( var i = 0; i < names.length; i++ ) {
-                    base = base[ names[i] ] = base[ names[i] ] || {};
+
+            var createNestedObject = function(base, names) {
+                for (var i = 0; i < names.length; i++) {
+                    base = base[names[i]] = base[names[i]] || {};
                 }
             };
             //va afisa in status bar un totalizator
             oTable.on('draw', function(e, dt, type, indexes) {
-                let myData={};
+                let myData = {};
                 // const dynamicArray = ["2007", "2008", "2009", "2010"];
                 // const obj = Object.fromEntries(
                 // dynamicArray.map(year => [year, {
@@ -626,33 +633,74 @@ if ($selected_user_id != '0') {
                 //     on: year
                 // }])
                 //)   
-                let count = {};             
+                let count = {};
                 oTable.rows().eq(0).each(function(index) {
                     //scoate toate datele din tabel (obiecte inlantuite. Sunt toate datele)
                     var row = oTable.row(index);
                     var data = row.data();
 
-                    //creaza un contor pentru fiecare user
-                    createNestedObject( count, [data.user.name], "cnt" );
-                    //care se initializeaza cu zero
-                    if(!count[data.user.name].cnt ){count[data.user.name].cnt = 0;}
+                    //creaza un obiect contor pentru fiecare interval/user
+                    createNestedObject(count, [data.user.name, data.interval[
+                        'interval']]); //tot ce se pune in acest array sunt obiecte
+                    //in care se pune o variabila cnt care se initializeaza cu zero
+                    if (!count[data.user.name][data.interval['interval']].cnt) {
+                        count[data.user.name][data.interval['interval']].cnt = 0;
+                    }
                     //dupa care se incrementeaza pe fiecare user
-                    count[data.user.name].cnt = parseInt(count[data.user.name].cnt, 10) + 1;
+                    count[data.user.name][data.interval['interval']].cnt = count[data.user.name][
+                        data.interval['interval']
+                    ].cnt + 1;
 
                     //creaza un obiect myData ce contine datele pentru fiecare user
-                    createNestedObject( myData, [data.user.name, count[data.user.name].cnt, "status"] );
-                    createNestedObject( myData, [data.user.name, count[data.user.name].cnt,  "km"] );
-                    createNestedObject( myData, [data.user.name, count[data.user.name].cnt,  "interval"] );
-                    myData[data.user.name][count[data.user.name].cnt].status = data.stat.name ;
-                    myData[data.user.name][count[data.user.name].cnt].km = data.km;
-                    myData[data.user.name][count[data.user.name].cnt].interval = data.interval['interval'];
+                    createNestedObject(myData, [data.user.name, data.interval['interval'], count[data.user.name][data.interval['interval']].cnt, "status"]);
+                    createNestedObject(myData, [data.user.name, data.interval['interval'], count[data.user.name][data.interval['interval']].cnt, "km"]);
+                    //adauga la obiectul interval o proprietate numerica numita total care se initializeaza cu zero
+                    if (!myData[data.user.name][data.interval['interval']].total) {
+                        myData[data.user.name][data.interval['interval']].total = 0;
+                    }
+                    myData[data.user.name][data.interval['interval']][count[data.user.name][data .interval['interval']].cnt].status = data.stat.name;
+                    myData[data.user.name][data.interval['interval']][count[data.user.name][data.interval['interval']].cnt].km = data.km;
+                    //daca nu sunt pe prima inregistrare din interval, si status-ul e Normal, 
+                    //face diferenta si o adauga la cea anterioara pentru a gasi un total pe interval
+                    if (count[data.user.name][data.interval['interval']].cnt > 1 && data.stat.name == 'Normal') {
+                        myData[data.user.name][data.interval['interval']].total += myData[data.user.name][data.interval['interval']][count[data.user.name][data.interval['interval']
+                        ].cnt].km - myData[data.user.name][data.interval['interval']][count[data.user.name][data.interval['interval']].cnt - 1].km;
+                    }
+                    //myData[data.user.name][data.interval['interval']].total += Math.random(22);
                     //$('#status-bar').html($('#status-bar').html() + '<p>'  + data.user.name + ' ' + data.km  + '</p>');
 
                 });
-                console.log (count, myData);
-                $('#status-bar').html(
-                   '<pre>' + JSON.stringify(myData, null, 2) + '</pre>'
-                );
+                let str = '';
+                $.each(myData, function(key, value) {
+                    str += key + ': '; //pune utilizatorul
+                    let k = 0;
+                    let tot = 0;
+                    $.each(value, function(key1, value1) {
+                        str += ((k == 0) ? '' : ' + ') + value1[
+                        'total']; //si totalurile km-lor parcursi
+                        tot += value1['total'];
+                        k += 1;
+                    })
+                    str += '. <span style="color:red;"> Total : <b>' + tot +
+                        '</b> km</span> parcursi in interes personal ';
+                    if ($('#interval_select :selected').text() == 'Toate') {
+                        str += ' in luna : <span style="color:blue;">' + $(
+                            '#month_select :selected').text() + '</span>';
+                    } else {
+                        str += ' in luna : <span style="color:blue;"><b>' + $(
+                                '#month_select :selected').text() +
+                            '</b></span> weekend-ul : <span style="color:green;"><b>' + $(
+                                '#interval_select :selected').text() + '</b></span>';
+                    }
+                    str += '<br>';
+                })
+                // $.each(arr, function(key, value) {
+                // $str =  '<pre>' + value + '</pre><br>'
+
+                // })
+                console.log('kk' + str);
+                $('#status-bar').html(str);
+                //$('#status-bar').html('<pre>' + JSON.stringify(myData, null, 2)) +'</pre>' ;
 
             });
             // oTable.buttons('.externalCreate').text("Deselectati 'Toate' pentru adaugare");

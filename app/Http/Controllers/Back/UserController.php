@@ -160,7 +160,7 @@ class UserController extends Controller
             ->orderBy('interval_id', 'desc')
             ->first()->department_id;
         // $cars = @Department::with('cars')->where('id', '=', $dep_id)->get()[0]['cars'];
-        $cars = @DepartmentController::getCars($dep_id);
+        $cars = @DepartmentController::getUnAssociatedCars($dep_id);
         $activ = @Availableuser::where('user_id', $user->id)->where('interval_id', '<=', $selected_interval_id)->orderby('interval_id', 'Desc')->first()->valoare;
         $telefon = @UserPhone::where('user_id', $user->id)->where('interval_id', '<=', $selected_interval_id)->orderby('interval_id', 'Desc')->first()->valoare;
         $kmlimit = @UserKmlimit::where('user_id', $user->id)->where('interval_id', '<=', $selected_interval_id)->orderby('interval_id', 'Desc')->first()->valoare;
@@ -315,7 +315,7 @@ class UserController extends Controller
     }
     public function getDepartmentUsers(){
         $department_id = Setting::where('nume', 'departmentId')->where('interval_id', 1)->first()->valoare;
-        $users = DepartmentController::getUsers($department_id);
+        $users = DepartmentController::getUnAssociatedUsers($department_id);
 
         return view('back.users.index', $users);
 

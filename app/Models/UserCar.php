@@ -15,6 +15,8 @@ class UserCar extends Model
 		'observatii', 
 		'user_id', 
 		'car_id', 
+		'user', 
+		'masina', 
 		'interval_id', 
 	];
 	public $timestamps = false;

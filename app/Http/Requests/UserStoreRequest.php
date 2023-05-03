@@ -36,12 +36,12 @@ class UserStoreRequest extends FormRequest
                 'max:191',
                 'unique:users',
             ],
-            'password' => [
-                'required',
-                'string',
-                'min:8',
-                'max:255',
-            ],
+            // 'password' => [
+            //     'required',
+            //     'string',
+            //     'min:8',
+            //     'max:255',
+            // ],
             'calificativ' => [
                 'string',
                 'min:2',

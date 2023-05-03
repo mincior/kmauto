@@ -62,13 +62,13 @@ class CarController extends Controller
 
             //in cars avem deja brand si type acum luam fiecare masina si-i adaugam departamentul, userul, consumul mediu (car_consumption)
             //si activ,  asociate la momentul intervalului selectat
-            foreach ($cars as $key=>$car) {
+            foreach ($cars as $key => $car) {
                 @$car['departments'] = Department::where('id', $arr_cars_with_departments[$car->id])->get();
                 @$car['users'] = User::where('id', $arr_cars_with_users[$car->id])->get();
                 @$car['activ'] = Availablecar::where('id', $arr_cars_with_car_activ[$car->id])->get();
                 @$car['car_consumptions'] = CarConsumption::where('id', $arr_cars_with_car_consumptions[$car->id])->get();
                 //daca filtreaza dupa departament scoate celelalte masini
-                if( @$arr_cars_with_departments[$car->id] != $department_id && $department_id >0){
+                if (@$arr_cars_with_departments[$car->id] != $department_id && $department_id > 0) {
                     unset($cars[$key]);
                 }
             }
@@ -122,10 +122,21 @@ class CarController extends Controller
         unset($data['department_id']);
         $data['numar'] = AppHelper::prelucrare_numar_masina($data['numar']);
         $car = Car::create($data);
+        $user_name = @User::where('id', $user_id)->first()->name;
+        $car_number = @Car::where('id', $car->id)->first()->numar;
+    
         if ($car->id) { //daca s-a creat masina
             //aduaga departamentul, userul - optional, consumul mediu si activ in tabelele pivot
             CarDep::create(['department_id' => $department_id, 'car_id' => $car->id, 'interval_id' => $selected_interval_id]);
-            if ($user_id !== 0) UserCar::create(['user_id' => $user_id, 'car_id' => $car->id, 'interval_id' => $selected_interval_id]);
+            if ($user_id !== 0) { //daca este specificat un user
+                //verifica daca acel user are asociata o alta masina pe intervalul selectat
+                $asociat_id = @UserCar::where('user_id', $user_id)->where('interval_id', $selected_interval_id)->first()->id;
+                if ($asociat_id) { //daca da, schimba id-ul masinii asociate deja cu id-ul masinii create
+                    UserCar::where('id', $asociat_id)->update(['car_id' => $car->id, 'user' => $user_name, 'masina' => $car_number]);
+                } else {
+                    UserCar::create(['user_id' => $user_id, 'car_id' => $car->id, 'interval_id' => $selected_interval_id, 'observatii' => 'asociere la creare masina', 'user' => $user_name, 'masina' => $car_number]);
+                }
+            }
             CarConsumption::create(['valoare' => $consum_mediu, 'car_id' => $car->id, 'interval_id' => $selected_interval_id]);
             Availablecar::create(['valoare' => $activ, 'car_id' => $car->id, 'interval_id' => $selected_interval_id]);
         }
@@ -147,12 +158,12 @@ class CarController extends Controller
         $brand_name = Brand::where('id', $car->brand_id)->first()->name;
         $fuel_name = Fuel::where('id', $car->fuel_id)->first()->name;
         $type_name = Type::where('id', $car->type_id)->first()->name;
-        $activ= @Availablecar::where('car_id', $car->id)->where('interval_id', '<=', $selected_interval_id)->orderBy('interval_id', 'desc')->first()->valoare;
+        $activ = @Availablecar::where('car_id', $car->id)->where('interval_id', '<=', $selected_interval_id)->orderBy('interval_id', 'desc')->first()->valoare;
         $user_id = @UserCar::where('car_id', $car->id)->where('interval_id', '<=', $selected_interval_id)->orderBy('interval_id', 'desc')->first()->user_id;
         $user_name = @User::where('id', $user_id)->first()->name;
         $department_id = CarDep::where('car_id', $car->id)->where('interval_id', '<=', $selected_interval_id)->orderBy('interval_id', 'desc')->first()->department_id;
         $department_name = Department::where('id', $department_id)->first()->name;
-        $consum_mediu= @CarConsumption::where('car_id', $car->id)->where('interval_id', '<=', $selected_interval_id)->orderBy('interval_id', 'desc')->first()->valoare;
+        $consum_mediu = @CarConsumption::where('car_id', $car->id)->where('interval_id', '<=', $selected_interval_id)->orderBy('interval_id', 'desc')->first()->valoare;
         $data['selected_interval'] = $selected_interval_id;
         $data['brand_name'] = $brand_name;
         $data['fuel_name'] = $fuel_name;
@@ -185,7 +196,7 @@ class CarController extends Controller
             ->first()->department_id;
         //dd($dep_id);
         // $users = @Department::with('users')->where('id', '=', $dep_id)->get()[0]['users'];
-        $users = @DepartmentController::getUsers($dep_id);
+        $users = @DepartmentController::getUnAssociatedUsers($dep_id);
 
         //usr_id = o masina poate sa nu aiba un user alocat (nici userul o masina) 
         //de aceea s-a pus @UserCar... sa nu dea eroare daca $user_id este null
@@ -233,6 +244,7 @@ class CarController extends Controller
         // $car->departments()->syncWithPivotValues([$data['department_id']],  ['interval_id' => intval($data['selected_interval'])]);
         if ($succes) { //daca s-a modificat masina
             //proceseaza tabelele pivot
+
             //toate masinile sunt asignate unui departament atunci cand sunt create. Se verifica departamentul ultimului interval si daca difera de cel actual, il schimba
             if (!$department_id == 0) {
                 $rec = CarDep::where('department_id', $department_id)->where('car_id', $car->id)->where('interval_id', '<=', $selected_interval_id)->orderby('interval_id', 'Desc')->first();
@@ -249,18 +261,37 @@ class CarController extends Controller
                 }
             }
 
-            if ($user_id !== 0) {
-                $rec = UserCar::where('user_id', $user_id)->where('car_id', $car->id)->where('interval_id', '<=', $selected_interval_id)->orderby('interval_id', 'Desc')->first();
-                if (!is_null($rec)) {
-                    if ($rec->user_id !== $user_id) { //s-a schimbat userul.
-                        if ($rec->interval_id == $selected_interval_id) { //s-a schimbat doar departamentul in intervalul curent
-                            $rec->update(['user_id', $user_id]);
-                        } else { // Creaza o noua inregistrare cu noul user_id dar cu intervalul curent
-                            UserCar::create(['user_id' => $user_id, 'car_id' => $car->id, 'interval_id' => $selected_interval_id]);
+            //verifica daca exista o asociere a masinii editate in intervalul curent
+            $masina_asociata_crt_id =  @UserCar::where('car_id', $car->id)->where('interval_id',  $selected_interval_id)->first()->id;
+            $user_name = @User::where('id', $user_id)->first()->name;
+            $car_number = @Car::where('id', $car->id)->first()->numar;
+            if ($user_id !== 0) { //daca este specificat un user
+                //verifica daca userul specificat este deja asociat la alta masina
+                $userul_asociat_crt_id =  @UserCar::where('user_id', $user_id)->where('interval_id',  $selected_interval_id)->first()->id;
+                //returneaza id-ul userului ultimei asocieri a masinii editate
+                $userul_la_ultima_asociere_a_masinii_id = @UserCar::where('car_id', $car->id)->where('interval_id', '<', $selected_interval_id)->orderby('interval_id', 'desc')->first()->user_id;
+                if (!$masina_asociata_crt_id) {//nu exista o asociere a masinii editate
+                    if(!$userul_asociat_crt_id ){//dar userul selectat nu este deja asociat
+                        UserCar::create(['user_id' => $user_id, 'car_id' => $car->id, 'interval_id' => $selected_interval_id, 'observatii' => 'asociere noua la modificare masina', 'user' => $user_name, 'masina' => $car_number]);
+                    }else{
+                        UserCar::where('id', $userul_asociat_crt_id)->update(['car_id' => $car->id, 'observatii' => 'asociere masina la user la modificare masina', 'user' => $user_name, 'masina' => $car_number]);
+                    }
+                    
+                }else{//exista o asociere pe masina editata
+                    if(!$userul_asociat_crt_id ){//dar userul selectat nu este deja asociat
+                        UserCar::where('id', $masina_asociata_crt_id)->update(['user_id' => $user_id, 'observatii' => 'asociere user la masina la modificare masina', 'user' => $user_name, 'masina' => $car_number]);
+                    }else{
+                        if ($masina_asociata_crt_id != $userul_asociat_crt_id){
+                            UserCar::where('id', $userul_asociat_crt_id)->update(['car_id' => $car->id, 'observatii' => 'asociere masina cu stergere la modificare masina', 'user' => $user_name, 'masina' => $car_number]);
+                            UserCar::where('id', $masina_asociata_crt_id)->delete();
+                        }else{
+                            UserCar::where('id', $masina_asociata_crt_id)->update(['user_id' => $user_id, 'observatii' => 'asociere user la modificare masina', 'user' => $user_name, 'masina' => $car_number]);
                         }
                     }
-                } else { //userul nu exista deloc
-                    UserCar::create(['user_id' => $user_id, 'car_id' => $car->id, 'interval_id' => $selected_interval_id]);
+                }
+            }else{//nu este specificat un user
+                if($masina_asociata_crt_id ) {
+                    UserCar::where('id',$masina_asociata_crt_id )->delete();
                 }
             }
 
@@ -322,11 +353,10 @@ class CarController extends Controller
         }
         return response()->noContent();
     }
-    public function getDepartmentCars(){
+    public function getDepartmentCars()
+    {
         // $department_id = Setting::where('nume', 'departmentId')->where('interval_id', 1)->first()->valoare;
-        // $cars = DepartmentController::getCars($department_id);
+        // $cars = DepartmentController::getUnAssociatedCars($department_id);
         return view('back.cars.index');
-
     }
-
 }

@@ -7,7 +7,7 @@
 @section('content')
 <?php
     //daca prin javascript e nevoie de un tabel copil, avem nevoie de o lista din care sa selectam valoarea veche a id-ului.
-    $users = @\App\Http\Controllers\Back\DepartmentController::getUsers(old('department_id'));
+    $users = @\App\Http\Controllers\Back\DepartmentController::getUnAssociatedUsers(old('department_id'));
     $types = @\App\Models\Brand::with('types')->where('id', '=', (old('brand_id')))->get()[0]['types'];
 ?>
 <form id="myForm" method="POST" action="{{ route('back.cars.store') }}" enctype="multipart/form-data" >

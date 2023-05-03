@@ -7,7 +7,7 @@
 @section('content')
     <?php
     ?>
-    <form id="myForm" method="POST" action="{{ route('back.kmlogs.store') }}" enctype="multipart/form-data" 
+    <form id="myForm" method="POST" action="{{ route('back.kmlogs.store') }}" enctype="multipart/form-data"
         onsubmit="return validateForm()">
         @csrf
         <div class="container mt-4">
@@ -15,14 +15,14 @@
                 <div class="card mb-3">
                     <div class="card-header">
                         <div class="row">
-                            <div id="myToolTip" class="col-md-10">Km log - adaugare: 
-                                <span style="color:blue">{{$department_name}} </span> - 
-                                <span style="color:red">{{$car_number}}</span> - 
-                                <span style="color:rgb(62, 107, 139)">{{$user_name}}</span>
-                             </div>
-                             <input type="hidden" name="car_id" value="{{$car_id}}" class="form-control">
-                             <input type="hidden" name="user_id" value="{{$user_id}}" class="form-control">
-                             <input type="hidden" name="department_id" value="{{$department_id}}" class="form-control">
+                            <div id="myToolTip" class="col-md-10">Km log - adaugare:
+                                <span style="color:blue">{{ $department_name }} </span> -
+                                <span style="color:red">{{ $car_number }}</span> -
+                                <span style="color:rgb(62, 107, 139)">{{ $user_name }}</span>. Valori posibile intre: {{ $idx_ant_max . ' si ' . $idx_post_min }}
+                            </div>
+                            <input type="hidden" name="car_id" value="{{ $car_id }}" class="form-control">
+                            <input type="hidden" name="user_id" value="{{ $user_id }}" class="form-control">
+                            <input type="hidden" name="department_id" value="{{ $department_id }}" class="form-control">
                             <div class="col-md-2 text-end">
                                 <img src="{{ asset('img/buttons/delivery-030.png') }}" />
                             </div>
@@ -37,16 +37,17 @@
                                 <select name="stat_id" id="stat_select" data-deptid="1" data-userid="1" data-carid="1"
                                     class="form-select @error('stat_id') is-invalid @enderror">
                                     <option value="">Alege ...</option>
-                                    @if ($idx_crt_min){
+                                    @if ($idx_crt_min)
+                                        {
                                         @foreach ($stats as $stat)
-                                            <option {{
-                                             old('stat_id') ? (($stat->id == old('stat_id')) ? 'selected' : '') :   ($stat->id == 1 ? 'selected' : '')
-                                             }} value="{{ $stat->id }}">{{ $stat['name'] }}</option>
+                                            <option
+                                                {{ old('stat_id') ? ($stat->id == old('stat_id') ? 'selected' : '') : ($stat->id == 1 ? 'selected' : '') }}
+                                                value="{{ $stat->id }}">{{ $stat['name'] }}</option>
                                         @endforeach
                                         }
                                     @else{
                                         <option selected value="1">Normal</option>
-                                    }
+                                        }
                                     @endif
                                 </select>
                                 @error('stat_id')
@@ -60,8 +61,9 @@
 
                             <div class="col-md-5">
                                 <input autocomplete="on" id="km" name="km" type="text"
-                                    class="form-control @error('km') is-invalid @enderror" value="{{ old('km') ? old('km') : $idx_crt_min }}"
-                                    placeholder="anterior :{{ $idx_ant_max . ' - minim curent: ' . $idx_crt_min }}">
+                                    class="form-control @error('km') is-invalid @enderror"
+                                    value="{{ old('km') ? old('km') : (($idx_crt_max == 99999999) ? '' : $idx_crt_max) }}"
+                                    placeholder="valori posibile intre: {{ $idx_ant_max . ' si ' . $idx_post_min }}">
 
                                 @error('km')
                                     <span class="invalid-feedback" role="alert">{{ $message }}</span>
@@ -129,7 +131,6 @@
 @endsection
 
 @section('scripts')
-
     <script>
         jQuery(document).ready(function($) {
             $('#km').focus();
@@ -152,8 +153,10 @@
         function validateForm() {
             let km = $('#km').val();
             let idx_crt_min = parseInt("{{ $idx_crt_min }}", 10);
-            if (km < idx_crt_min) {
-                alert("Ati introdus un index mai mic decat ati introdus ultima data (" + idx_crt_min + "). Aveti grija la status: indexul cel mai mic trebuie sa fie 'Normal'" );
+            let status = $('#stat_select option:selected').text();
+            if (km < idx_crt_min && status != 'Normal') {
+                alert("Ati introdus un index mai mic decat ati introdus ultima data si status-ul este 'Nu se pune la plata' (" +
+                    idx_crt_min + "). Indexul cel mai mic trebuie sa fie 'Normal'");
             }
             return true;
         }

@@ -129,8 +129,8 @@ Route::middleware('auth')->group(function () {
         });
          // Departments
          Route::controller(DepartmentController::class)->group(function () {
-            Route::get('/departments/get-cars/{department_id}','getCars')->name('get-cars');
-            Route::get('/departments/get-users/{department_id}','getUsers')->name('get-users');
+            Route::get('/departments/get-cars/{department_id}','getUnAssociatedCars')->name('get-cars');
+            Route::get('/departments/get-users/{department_id}','getUnAssociatedUsers')->name('get-users');
             Route::delete('/departments/massDestroy', 'massDestroy')->name('departments.massDestroy');
             Route::resource('/departments', DepartmentController::class)->except(['destroy']);
         });

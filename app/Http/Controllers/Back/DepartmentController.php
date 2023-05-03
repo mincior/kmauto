@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Brand;
 use App\Models\Month;
 use App\Models\Country;
+use App\Models\UserCar;
 use App\Models\Interval;
 use App\Models\Department;
 use App\MyHelpers\AppHelper;
@@ -19,26 +20,30 @@ use App\Http\Requests\DepartmentUpdateRequest;
 
 class DepartmentController extends Controller
 {
-    public static function getUsers($department_id)
+    public static function getUnAssociatedUsers($department_id)
     {
         if (!($department_id == null)) {
             $selected_interval_id = \App\MyHelpers\AppHelper::getSelectedInterval()->id;
 
             $users_id = AppHelper::get_last_target_values_array('user_id', 'department_id', 'user_deps', $selected_interval_id, "department_id = $department_id");
             $user_ids = array_keys($users_id);
-            $users = User::whereIn('id', $user_ids)->get();
+            $useri_asociati_ids = UserCar::where('interval_id', '<=', $selected_interval_id)->get()->pluck('user_id')->toArray();
+            $users = User::whereIn('id', $user_ids)->whereNotIn('id', $useri_asociati_ids)->get();
+            // $user_ids = $users->pluck('id')->toArray();
+            // dd($user_ids, $useri_asociati_ids  );
             return $users;
         }
     }
 
-    public static function getCars($department_id)
+    public static function getUnAssociatedCars($department_id)
     {
         if (!($department_id == null)) {
             $selected_interval_id = \App\MyHelpers\AppHelper::getSelectedInterval()->id;
 
             $cars_id = AppHelper::get_last_target_values_array('car_id', 'department_id', 'car_deps', $selected_interval_id, "department_id = $department_id");
             $car_ids = array_keys($cars_id);
-            $cars = Car::whereIn('id', $car_ids)->get();
+            $masini_asociate_ids = UserCar::where('interval_id', '<=', $selected_interval_id)->get()->pluck('car_id')->toArray();
+            $cars = Car::whereIn('id', $car_ids)->whereNotIn('id', $masini_asociate_ids)->get();
             return $cars;
         }
     }

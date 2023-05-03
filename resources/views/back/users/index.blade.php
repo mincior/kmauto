@@ -19,7 +19,7 @@ $departments = @\App\Models\Department::get();
                     <div class="col-md-4">
                         <select name="department_id" id="department_select" data-deptid="1" data-userid="1"
                             class="form-select">
-                            <option value="">Alege ...</option>
+                            <option value="0">Alege ...</option>
                             @foreach ($departments as $department)
                                 <option {{ old('department_id') == $department['id'] ? 'selected' : '' }}
                                     value="{{ $department['id'] }}">{{ $department['name'] }}</option>
@@ -47,7 +47,6 @@ $departments = @\App\Models\Department::get();
             <table id="sqltable" class="table table-bordered table-striped table-hover table-sm dataTable">
                 <thead class="table-success">
                     <tr>
-                        <th scope="col" width="4%">ID</th>
                         <th scope="col">Nume</th>
                         <th scope="col">Masina</th>
                         <th scope="col">Email</th>
@@ -58,6 +57,7 @@ $departments = @\App\Models\Department::get();
                         <th scope="col">Filiala</th>
                         <th scope="col">Is admin</th>
                         <th scope="col">Activ</th>
+                        <th scope="col" width="4%">ID</th>
                     </tr>
                 </thead>
             </table>
@@ -194,15 +194,7 @@ $departments = @\App\Models\Department::get();
                     url: "{{ route('back.users.index') }}",
                     data: function(d) {}
                 },
-                columns: [{
-                        data: 'id',
-                        name: 'id',
-                        searchable: false,
-                        className: 'text-left',
-                        render: function(data, type, row, meta) {
-                            return data.toString();
-                        }
-                    },
+                columns: [
                     {
                         data: 'name',
                         name: 'name',
@@ -299,7 +291,16 @@ $departments = @\App\Models\Department::get();
                                 return row.activ[0].valoare == 1 ? 'Da' : 'Nu';
                             }
                         },
-                    }
+                    },
+                    {
+                        data: 'id',
+                        name: 'id',
+                        searchable: false,
+                        className: 'text-left',
+                        render: function(data, type, row, meta) {
+                            return data.toString();
+                        }
+                    },
                 ],
                 select: {
                     selector: 'td:not(.no-select)',

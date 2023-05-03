@@ -20,7 +20,7 @@
                             <div id="myToolTip" class="col-md-10">Km log - modificare: 
                                 <span style="color:blue">{{$department_name}} </span> - 
                                 <span style="color:red">{{$car_number}}</span> - 
-                                <span style="color:rgb(62, 107, 139)">{{$user_name}}</span>
+                                <span style="color:rgb(62, 107, 139)">{{$user_name}}</span>. Valori posibile intre: {{ $idx_ant_max . ' si ' . $idx_post_min }}
                              </div>
                              <input type="hidden" name="car_id" value="{{$car_id}}" class="form-control">
                              <input type="hidden" name="user_id" value="{{$user_id}}" class="form-control">
@@ -56,10 +56,10 @@
                             <label for="km" class="col-md-2 col-form-label">Km - index</label>
 
                             <div class="col-md-5">
-                                <input onClick="this.select();" autocomplete="on" id="km" name="km" type="text"
+                                <input autocomplete="on" id="km" name="km" type="text"
                                     class="form-control @error('km') is-invalid @enderror"
-                                    placeholder="minime:{{ $idx_ant_max . '  : ' . $idx_crt_min }}"
-                                    value="{{ old('km') ? old('km') : $kmlog->km }}">
+                                    value="{{ old('km') ? old('km') : (($idx_crt_max == 99999999) ? '' : $idx_crt_max) }}"
+                                    placeholder="valori posibile intre: {{ $idx_ant_max . ' si ' . $idx_post_min }}">
 
                                 @error('km')
                                     <span class="invalid-feedback" role="alert">{{ $message }}</span>
@@ -147,7 +147,8 @@
         function validateForm() {
             let km = $('#km').val();
             let idx_crt_min = parseInt("{{ $idx_crt_min }}", 10);
-            if (km < idx_crt_min) {
+            let status = $('#stat_select option:selected').text();
+            if (km < idx_crt_min && status !='Normal') {
                 alert("Ati introdus un index mai mic decat ati introdus ultima data (" + idx_crt_min + "). Aveti grija la status: indexul cel mai mic trebuie sa fie 'Normal'" );
             }
             return true;

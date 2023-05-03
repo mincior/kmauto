@@ -6,7 +6,7 @@
 
 @section('content')
     <?php
-    $cars = @\App\Http\Controllers\Back\DepartmentController::getCars(old('department_id'));
+    $cars = @\App\Http\Controllers\Back\DepartmentController::getUnAssociatedCars(old('department_id'));
     ?>
     <form id="myForm" method="POST" action="{{ route('back.users.store') }}" enctype="multipart/form-data">
         @csrf

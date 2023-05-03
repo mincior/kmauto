@@ -18,7 +18,7 @@
                     <div class="col-md-4">
                         <select name="department_id" id="department_select" data-deptid="1" data-userid="1"
                             class="form-select">
-                            <option value="">Alege ...</option>
+                            <option value="0">Alege ...</option>
                             @foreach ($departments as $department)
                                 <option {{ old('department_id') == $department['id'] ? 'selected' : '' }}
                                     value="{{ $department['id'] }}">{{ $department['name'] }}</option>
@@ -46,15 +46,15 @@
             <table id="sqltable" class="table table-bordered table-striped table-hover table-sm dataTable">
                 <thead class="table-success">
                     <tr>
-                        <th scope="col" width="4%">ID</th>
                         <th scope="col">Numar</th>
+                        <th scope="col">Utilizator</th>
                         <th scope="col">Marca</th>
                         <th scope="col">Model</th>
                         <th scope="col">Consum mediu</th>
                         <th scope="col">Carburant</th>
                         <th scope="col">Filiala</th>
-                        <th scope="col">Utilizator</th>
                         <th scope="col">Activ</th>
+                        <th scope="col" width="4%">ID</th>
                     </tr>
                 </thead>
             </table>
@@ -191,18 +191,20 @@
                     url: "{{ route('back.cars.index') }}",
                     data: function(d) {}
                 },
-                columns: [{
-                        data: 'id',
-                        name: 'id',
-                        searchable: false,
-                        className: 'text-left',
-                        render: function(data, type, row, meta) {
-                            return data.toString();
-                        }
-                    },
+                columns: [
                     {
                         data: 'numar',
                         name: 'numar',
+                    },
+                    {
+                        data: 'id',
+                        render: function(data, type, row, meta) {
+                            if ( typeof row.users[0] === "undefined"){
+                                return '';
+                            }else{
+                                return row.users[0].name;
+                            }
+                        },
                     },
                     {
                         data: 'brand_id',
@@ -258,23 +260,22 @@
                     {
                         data: 'id',
                         render: function(data, type, row, meta) {
-                            if ( typeof row.users[0] === "undefined"){
-                                return '';
-                            }else{
-                                return row.users[0].name;
-                            }
-                        },
-                    },
-                    {
-                        data: 'id',
-                        render: function(data, type, row, meta) {
                             if ( typeof row.activ[0] === "undefined"){
                                 return '';
                             }else{
                                 return row.activ[0].valoare == 1 ? 'Da': 'Nu';
                             }
                         },
-                    }
+                    },
+                    {
+                        data: 'id',
+                        name: 'id',
+                        searchable: false,
+                        className: 'text-left',
+                        render: function(data, type, row, meta) {
+                            return data.toString();
+                        }
+                    },
                 ],
                 select: {
                     selector: 'td:not(.no-select)',

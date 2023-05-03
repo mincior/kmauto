@@ -7,7 +7,7 @@
 @section('content')
 <?php
     //folosite la memorarea introducerii la eroare pentru a nu introduce din nou aceleasi valori
-    $old_users = @\App\Http\Controllers\Back\DepartmentController::getUsers(old('department_id'));
+    $old_users = @\App\Http\Controllers\Back\DepartmentController::getUnAssociatedUsers(old('department_id'));
     $old_types = @\App\Models\Brand::with('types')->where('id', '=', (old('brand_id')))->get()[0]['types'];
 ?>
 <form id="myForm" method="POST" action="{{ route('back.brands.update', [$brand->id])  }}" enctype="multipart/form-data" wire:submit.prevent="savePersonalData" onkeydown="return event.key != 'Enter';">
