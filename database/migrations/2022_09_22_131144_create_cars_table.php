@@ -26,6 +26,7 @@ class CreateCarsTable extends Migration
 			$table->foreign('type_id')->references('id')->on('types');
 			$table->bigInteger('brand_id')->unsigned()->index()->nullable();
 			$table->foreign('brand_id')->references('id')->on('brands');		
+            $table->string('culoare', 10)->default('#000')->nullable();
 		//End craft placeholder #2
         });
     }

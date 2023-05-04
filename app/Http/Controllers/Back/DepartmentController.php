@@ -31,6 +31,7 @@ class DepartmentController extends Controller
             $users = User::whereIn('id', $user_ids);
             //$users= $users->whereNotIn('id', $useri_asociati_ids);
             $users = $users->get();
+           //dd($users);
             return $users;
         }
     }

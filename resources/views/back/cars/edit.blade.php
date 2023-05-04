@@ -71,13 +71,13 @@
                                 <option value="0">Choose ...</option>
                                 @if (old('department_id')){
                                     @foreach ($old_users as $user)
-                                        <option {{ old('user_id') == $user->id? "selected" : "" }}  value="{{ $user->id }}">{{ $user->name }}</option>
+                                        <option style="color: {{$user->culoare}} " data-color=" {{$user->culoare}} " {{ old('user_id') == $user->id? "selected" : "" }}  value="{{ $user->id }}">{{ $user->name }}</option>
                                     @endforeach
                                 }
                                 @else{
                                     @if($users){
                                         @foreach ($users as $user)
-                                            <option {{ $usr_id == $user->id? "selected" : "" }}  value="{{ $user->id}}">{{ $user->name }}</option>
+                                            <option style="color: {{$user->culoare}} " data-color=" {{$user->culoare}} " {{ $usr_id == $user->id? "selected" : "" }}  value=" {{ $user->id}} ">{{ $user->name }}</option>
                                         @endforeach
                                     }
                                     @endif

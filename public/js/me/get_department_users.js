@@ -19,23 +19,24 @@ function get_department_users( department_id, user_id) {
 
 	axios.get(url)
 		.then(function (res) {
-			//sterge utilizatorii din select pentru a le aduce pe cele ale filialei selectate
+			//sterge utilizatorii din select pentru a-i aduce pe cei ai filialei selectate
 			$("#user_select").empty();
-			//afla lungimea vectorului cu masini pentru a le itera
+			//afla lungimea vectorului cu useri pentru a-i itera
 			console.log(res.data);
 			var len = res.data.length;
-			//itereaza vectorul cu masini
+			//itereaza vectorul cu useri
 				$("#user_select").append("<option value='0'>Alege...</option>");
 			for (var i = 0; i < len; i++)
 			{
-				//scoate id-ul si numarul utilizatorului curente
+				//scoate id-ul si numele utilizatorului curent
 				//$departments[0]['users'][1]['numar']
 				var id = res.data[i]['id'];
 				var nume = res.data[i]['name'];
-				//pune 'selected' pentru masina cu id-ul user_id
+				var culoare = res.data[i]['culoare'];
+				//pune 'selected' pentru userul cu id-ul user_id
 				var sel = ((id == user_id) ? 'selected' : '');
-				//adauga masina in caseta (select) cu masini
-				$("#user_select").append("<option " + sel + " value='" + id + "'>" + nume + "</option>");
+				//adauga userul in caseta (select) cu useri
+				$("#user_select").append("<option style=\"color: " + culoare + "\" data-color=\""+ culoare +"\"" + sel + " value='" + id + "'>" + nume + "</option>");
 			}
 		})
 }

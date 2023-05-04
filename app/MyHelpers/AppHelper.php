@@ -40,7 +40,6 @@ class AppHelper
 		}
 		return  $array_ids;
 	}
-
 	/**
 	 * Muta elementul element in directia sens in barr si returneaza barr
 	 *

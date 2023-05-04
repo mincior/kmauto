@@ -51,6 +51,15 @@ trait CarRelationships
 	public function car_consumptions(){
 		return $this->hasMany('App\\Models\\CarConsumption');
 	}
+	public function proprietar(){
+		return $this->belongsToMany('App\\Models\\Interval', 'App\\Models\\CarProp')->withPivot('valoare', 'interval_id', 'car_id');
+	}
+	public function asigurator(){
+		return $this->belongsToMany('App\\Models\\Interval', 'App\\Models\\CarAsig')->withPivot('valoare', 'interval_id', 'car_id');
+	}
+	public function status(){
+		return $this->belongsToMany('App\\Models\\Interval', 'App\\Models\\CarStat')->withPivot('valoare', 'interval_id', 'car_id');
+	}
 
 	//End craft placeholder #1
 }

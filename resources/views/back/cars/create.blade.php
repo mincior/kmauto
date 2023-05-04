@@ -63,7 +63,7 @@
                                 <option value="0">Choose ...</option>
                                 @if (old('department_id')){
                                     @foreach ($users as $user)
-                                        <option {{ old('user_id') == $user['id']? "selected" : "" }}  value="{{ $user['id'] }}">{{ $user['name'] }}</option>
+                                        <option {{ old('user_id') == $user['id']? "selected" : "" }} {{ $user['id'] }}>{{ $user['name'] }}</option>
                                     @endforeach
                                 }
                                 @endif
@@ -191,5 +191,6 @@
 <script src="{{ asset('js/me/get_brand_types.js') }}"></script>
 <script src="{{ asset('js/me/create_or_update_car.js') }}"></script>
 <script>
+
 </script>
 @endsection

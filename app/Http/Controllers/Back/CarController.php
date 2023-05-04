@@ -56,10 +56,13 @@ class CarController extends Controller
             $department_id = Setting::where('nume', 'departmentId')->where('interval_id', 1)->first()->valoare;
             $cars = Car::with('fuel', 'brand', 'type')->select(sprintf('%s.*', (new Car)->getTable()))->orderBy('id', 'desc')->get();
             $arr_cars_with_departments = AppHelper::get_last_target_values_array('car_id', 'department_id', 'car_deps', $selected_interval_id);
-            $arr_cars_with_users = AppHelper::get_last_target_values_array('car_id', 'user_id', 'user_cars', $selected_interval_id);
+            
+            //obtine ultima valoare unica pentru userul asociat (inversand in functie user_id cu car_id si apoi inversand cheile cu valorile array-ului)
+            //asta pentru a evita asocierea aceluiasi user la mai multe masini in intervale diferite. Spre ex. daca un user asocia o masina in februarie
+            //si alta in martie, in raportul cu masini am fi avut in luna martie acelasi user la cele doua masini.
+            $arr_cars_with_users = array_flip(AppHelper::get_last_target_values_array('user_id', 'car_id',  'user_cars', $selected_interval_id));
             $arr_cars_with_car_consumptions = AppHelper::get_last_target_values_array('car_id', 'id', 'car_consumptions', $selected_interval_id);
             $arr_cars_with_car_activ = AppHelper::get_last_target_values_array('car_id', 'id', 'availablecars', $selected_interval_id);
-
             //in cars avem deja brand si type acum luam fiecare masina si-i adaugam departamentul, userul, consumul mediu (car_consumption)
             //si activ,  asociate la momentul intervalului selectat
             foreach ($cars as $key => $car) {
@@ -129,6 +132,8 @@ class CarController extends Controller
             //aduaga departamentul, userul - optional, consumul mediu si activ in tabelele pivot
             CarDep::create(['department_id' => $department_id, 'car_id' => $car->id, 'interval_id' => $selected_interval_id]);
             if ($user_id !== 0) { //daca este specificat un user
+                User::where('id', $user_id)->update(['culoare' => '#F00']);
+                Car::where('id', $car->id)->update(['culoare' => '#F00']);
                 //verifica daca acel user are asociata o alta masina pe intervalul selectat
                 $asociat_id = @UserCar::where('user_id', $user_id)->where('interval_id', $selected_interval_id)->first()->id;
                 if ($asociat_id) { //daca da, schimba id-ul masinii asociate deja cu id-ul masinii create
@@ -136,7 +141,7 @@ class CarController extends Controller
                 } else {
                     UserCar::create(['user_id' => $user_id, 'car_id' => $car->id, 'interval_id' => $selected_interval_id, 'observatii' => 'asociere la creare masina', 'user' => $user_name, 'masina' => $car_number]);
                 }
-            }
+            }//altfel nu face nimic
             CarConsumption::create(['valoare' => $consum_mediu, 'car_id' => $car->id, 'interval_id' => $selected_interval_id]);
             Availablecar::create(['valoare' => $activ, 'car_id' => $car->id, 'interval_id' => $selected_interval_id]);
         }
@@ -266,33 +271,36 @@ class CarController extends Controller
             $user_name = @User::where('id', $user_id)->first()->name;
             $car_number = @Car::where('id', $car->id)->first()->numar;
             if ($user_id !== 0) { //daca este specificat un user
-                //verifica daca userul specificat este deja asociat la alta masina
+                User::where('id', $user_id)->update(['culoare' => '#F00']);
+                Car::where('id', $car->id)->update(['culoare' => '#F00']);
+                //verifica daca userul specificat este deja asociat la alta masina in intervalul curent
                 $userul_asociat_crt_id =  @UserCar::where('user_id', $user_id)->where('interval_id',  $selected_interval_id)->first()->id;
-                //returneaza id-ul userului ultimei asocieri a masinii editate
-                $userul_la_ultima_asociere_a_masinii_id = @UserCar::where('car_id', $car->id)->where('interval_id', '<', $selected_interval_id)->orderby('interval_id', 'desc')->first()->user_id;
                 if (!$masina_asociata_crt_id) {//nu exista o asociere a masinii editate
-                    if(!$userul_asociat_crt_id ){//dar userul selectat nu este deja asociat
+                    if(!$userul_asociat_crt_id ){//si nici userul selectat nu este deja asociat
                         UserCar::create(['user_id' => $user_id, 'car_id' => $car->id, 'interval_id' => $selected_interval_id, 'observatii' => 'asociere noua la modificare masina', 'user' => $user_name, 'masina' => $car_number]);
                     }else{
                         UserCar::where('id', $userul_asociat_crt_id)->update(['car_id' => $car->id, 'observatii' => 'asociere masina la user la modificare masina', 'user' => $user_name, 'masina' => $car_number]);
                     }
                     
-                }else{//exista o asociere pe masina editata
+                }else{//exista o asociere pe masina editata in intervalul curent
                     if(!$userul_asociat_crt_id ){//dar userul selectat nu este deja asociat
                         UserCar::where('id', $masina_asociata_crt_id)->update(['user_id' => $user_id, 'observatii' => 'asociere user la masina la modificare masina', 'user' => $user_name, 'masina' => $car_number]);
                     }else{
                         if ($masina_asociata_crt_id != $userul_asociat_crt_id){
                             UserCar::where('id', $userul_asociat_crt_id)->update(['car_id' => $car->id, 'observatii' => 'asociere masina cu stergere la modificare masina', 'user' => $user_name, 'masina' => $car_number]);
                             UserCar::where('id', $masina_asociata_crt_id)->delete();
+                            User::where('id', $user_id)->update(['culoare' => '#000']);
                         }else{
                             UserCar::where('id', $masina_asociata_crt_id)->update(['user_id' => $user_id, 'observatii' => 'asociere user la modificare masina', 'user' => $user_name, 'masina' => $car_number]);
                         }
                     }
                 }
-            }else{//nu este specificat un user
+            }else{//nu este specificat un user, dezasociaza masina in intervalul curent
                 if($masina_asociata_crt_id ) {
-                    UserCar::where('id',$masina_asociata_crt_id )->delete();
-                }
+                    UserCar::where('id', $masina_asociata_crt_id )->delete();
+                    User::where('id', $user_id)->update(['culoare' => '#000']);
+                    Car::where('id', $car->id)->update(['culoare' => '#000']);
+            }
             }
 
             if ($consum_mediu !== 0) {

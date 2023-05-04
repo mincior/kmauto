@@ -22,6 +22,8 @@ return new class extends Migration
 			$table->string('observatii', 250)->nullable();
             $table->boolean('is_admin', 1)->default(0);
 			$table->integer('calificativ')->nullable();
+            $table->string('functie')->nullable();		
+            $table->string('culoare', 10)->default('#000')->nullable();
             $table->rememberToken();
         });
     }

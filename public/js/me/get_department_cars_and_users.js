@@ -34,10 +34,11 @@ function get_department_cars( department_id, car_id) {
 				//$departments[0]['cars'][1]['numar']
 				var id = res.data[i]['id'];
 				var numar = res.data[i]['numar'];
+				var culoare = res.data[i]['culoare'];
 				//pune 'selected' pentru masina cu id-ul car_id
 				var sel = ((id == car_id) ? 'selected' : '');
 				//adauga masina in caseta (select) cu masini
-				$("#car_select").append("<option " + sel + " value='" + id + "'>" + numar + "</option>");
+				$("#car_select").append("<option style=\"color: " + culoare + "\" data-color=\""+ culoare +"\" " + sel + " value='" + id + "'>" + numar + "</option>");
 			}
 		})
 }
@@ -61,10 +62,11 @@ function get_department_users( department_id, user_id) {
 				//$departments[0]['users'][1]['numar']
 				var id = res.data[i]['id'];
 				var nume = res.data[i]['name'];
+				var culoare = res.data[i]['culoare'];
 				//pune 'selected' pentru masina cu id-ul user_id
 				var sel = ((id == user_id) ? 'selected' : '');
 				//adauga masina in caseta (select) cu masini
-				$("#user_select").append("<option " + sel + " value='" + id + "'>" + nume + "</option>");
+				$("#user_select").append("<option style=\"color: " + culoare + "\" data-color=\""+ culoare +"\" " + sel + " value='" + id + "'>" + nume + "</option>");
 			}
 		})
 }
