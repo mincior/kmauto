@@ -26,12 +26,13 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Auth::routes();
 
 Route::middleware('auth')->group(function () {
-    //for visiting the form page
-    Route::get('back/excel/fileupload', [ImportController::class,'viewupload'])->name('viewupload');
-    //for uploading to database
-    Route::post('back/excel/fileupload', [ImportController::class,'uploadusers'])->name('uploadusers');
-
-    //we have to create <mark style="background-color:rgba(0, 0, 0, 0)" class="has-inline-color has-vivid-red-color">FileManagerController</mark>
+    Route::controller(ImportController::class)->group(function(){
+        //for visiting the form page
+        Route::get('back/excel/view-upload-form', 'viewUploadForm')->name('view-upload-form');
+        //for uploading to database
+        Route::post('back/excel/excel-upload', 'excelUpload')->name('excel-upload');
+        //we have to create <mark style="background-color:rgba(0, 0, 0, 0)" class="has-inline-color has-vivid-red-color">FileManagerController</mark>
+    });
 
     Route::controller(ImageController::class)->group(function(){
         Route::get('/image-upload', 'index')->name('image.form');

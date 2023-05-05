@@ -4,8 +4,9 @@ namespace App\Imports;
 
 use App\Models\Car;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithStartRow;
 
-class CarsImport implements ToModel
+class CarsImport implements ToModel, WithStartRow
 {
     /**
      * @param array $row
@@ -14,14 +15,21 @@ class CarsImport implements ToModel
      */
     public function model(array $row)
     {
-        dd($row);
         return new Car
         ([
-            'name' => $row[1],
-            'email' => $row[8],
-            'limita_km' => $row[4],
-            'observatii' => $row[11],
-            'telefon' => $row[12],
+            'id' => $row[0],
+            'numar' => $row[1],
+            'fuel_id' => $row[3],
+            'type_id' => $row[9],
+            'brand_id' => $row[7],
         ]);
+
+    }
+    /**
+     * @return int
+     */
+    public function startRow(): int
+    {
+        return 2;
     }
 }

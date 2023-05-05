@@ -129,7 +129,7 @@ class TypesTableSeeder extends Seeder
                 ],
                 
             )            
-        )->count(15)->create();
+        )->count(20)->create();
         
                 
 
