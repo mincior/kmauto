@@ -21,7 +21,7 @@ class CreateExpiresTable extends Migration
 			$table->date('casco')->nullable();
 			$table->date('rca')->nullable();
 			$table->date('rovinieta')->nullable();
-			$table->date('ipt')->nullable();
+			$table->date('itp')->nullable();
 			$table->date('final_leasing')->nullable();
 			$table->bigInteger('car_id')->unsigned()->index()->nullable();
 			$table->foreign('car_id')->references('id')->on('cars');		

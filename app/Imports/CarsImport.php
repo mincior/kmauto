@@ -5,8 +5,9 @@ namespace App\Imports;
 use App\Models\Car;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithStartRow;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class CarsImport implements ToModel, WithStartRow
+class CarsImport implements ToModel, WithHeadingRow
 {
     /**
      * @param array $row
@@ -17,19 +18,20 @@ class CarsImport implements ToModel, WithStartRow
     {
         return new Car
         ([
-            'id' => $row[0],
-            'numar' => $row[1],
-            'fuel_id' => $row[3],
-            'type_id' => $row[9],
-            'brand_id' => $row[7],
+            'id' => $row['Car id'],
+            'numar' => $row['Numar'],
+            'fuel_id' => $row['Combustibil id'],
+            'type_id' => $row['Model id'],
+            'brand_id' => $row['Marca id'],
         ]);
 
     }
-    /**
-     * @return int
-     */
-    public function startRow(): int
-    {
-        return 2;
-    }
+
+    // /**
+    //  * @return int
+    //  */
+    // public function startRow(): int
+    // {
+    //     return 2;
+    // }
 }
