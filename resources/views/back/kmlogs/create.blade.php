@@ -18,7 +18,8 @@
                             <div id="myToolTip" class="col-md-10">Km log - adaugare:
                                 <span style="color:blue">{{ $department_name }} </span> -
                                 <span style="color:red">{{ $car_number }}</span> -
-                                <span style="color:rgb(62, 107, 139)">{{ $user_name }}</span>. Valori posibile intre: {{ $idx_ant_max . ' si ' . $idx_post_min }}
+                                <span style="color:rgb(62, 107, 139)">{{ $user_name }}</span>. Valori posibile intre:
+                                {{ $idx_ant_max . ' si ' . $idx_post_min }}
                             </div>
                             <input type="hidden" name="car_id" value="{{ $car_id }}" class="form-control">
                             <input type="hidden" name="user_id" value="{{ $user_id }}" class="form-control">
@@ -62,7 +63,7 @@
                             <div class="col-md-5">
                                 <input autocomplete="on" id="km" name="km" type="text"
                                     class="form-control @error('km') is-invalid @enderror"
-                                    value="{{ old('km') ? old('km') : (($idx_crt_max == 99999999) ? '' : $idx_crt_max) }}"
+                                    value="{{ old('km') ? old('km') : ($idx_crt_max == 99999999 ? '' : $idx_crt_max) }}"
                                     placeholder="valori posibile intre: {{ $idx_ant_max . ' si ' . $idx_post_min }}">
 
                                 @error('km')
@@ -92,7 +93,8 @@
                                 <img id="my_picture" class="img-fluid">
                             </div>
 
-                            <div class="col-md-3">
+                            <div class="input-group  custom-file-button col-md-3">
+                                <label class="input-group-text" for="picture">Selectati poza</label>
                                 <input autocomplete="on" id="picture" name="picture" type="file"
                                     class="form-control @error('picture') is-invalid @enderror"
                                     value="{{ old('picture') }}">
@@ -131,6 +133,25 @@
 @endsection
 
 @section('scripts')
+    <style>
+        .custom-file-button input[type=file] {
+            margin-left: -2px !important;
+        }
+
+        .custom-file-button input[type=file]::-webkit-file-upload-button {
+            display: none;
+        }
+
+        .custom-file-button input[type=file]::file-selector-button {
+            display: none;
+        }
+
+        .custom-file-button:hover label {
+            background-color: #dde0e3;
+            cursor: pointer;
+        }
+    </style>
+
     <script>
         jQuery(document).ready(function($) {
             $('#km').focus();

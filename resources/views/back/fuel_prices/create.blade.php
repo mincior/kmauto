@@ -1,7 +1,7 @@
 @extends('layouts.back')
 
 @section('title')
-    &vert; Carburanti
+    &vert; Masiniburanti
 @endsection
 
 @section('content')

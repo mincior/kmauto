@@ -2,11 +2,13 @@
 
 namespace Database\Seeders;
 
-use App\Models\Stat;
+use App\Models\Brand;
+use App\Models\CarAsig;
+use App\Models\CarStat;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 
-class StatsTableSeeder extends Seeder
+class CarAsigsTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,6 +17,7 @@ class StatsTableSeeder extends Seeder
      */
     public function run()
     {
+        // Create dummy customers
         $this->generate();
     }
 
@@ -25,19 +28,23 @@ class StatsTableSeeder extends Seeder
      */
     private function generate()
     {
-        $users = Stat::factory()->state(
+        $carasigs = CarAsig::factory()->state(
             new Sequence(
                 [
-                    'id' => "1",
-                    'name' => 'Normal'
+                    'name' => "Folosita",
+                    'id' => 1,
                 ],
                 [
-                    'id' => "2",
-                    'name' => 'Nu se pune la plata'
+                    'name' => 'De Vanzare',
+                    'id' => 2,
+                ],
+                [
+                    'name' => 'HUB',
+                    'id' => 3,
                 ],
                 
             )            
-        )->count(2)->create();
+        )->count(3)->create();
         
                 
 

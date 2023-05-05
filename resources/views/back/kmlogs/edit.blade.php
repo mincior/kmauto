@@ -84,13 +84,14 @@
                         <div class="row mb-2">
                             <label for="picture" class="col-md-2 col-form-label">Poza bord</label>
                             <div class="col-md-8">
-                                <img id="my_picture" class="img-fluid" src="/storage/pictures{{ $kmlog->picture }}">
+                                <img id="my_picture" class="img-fluid">
                             </div>
 
-                            <div class="col-md-3">
+                            <div class="input-group  custom-file-button col-md-3">
+                                <label class="input-group-text" for="picture">Selectati poza</label>
                                 <input autocomplete="on" id="picture" name="picture" type="file"
                                     class="form-control @error('picture') is-invalid @enderror"
-                                    value="{{ old('picture') ? old('picture') : $kmlog->picture }}">
+                                    value="{{ old('picture') }}">
 
                                 @error('picture')
                                     <span class="invalid-feedback" role="alert">{{ $message }}</span>
@@ -125,6 +126,25 @@
 @endsection
 
 @section('scripts')
+<style>
+    .custom-file-button input[type=file] {
+        margin-left: -2px !important;
+    }
+
+    .custom-file-button input[type=file]::-webkit-file-upload-button {
+        display: none;
+    }
+
+    .custom-file-button input[type=file]::file-selector-button {
+        display: none;
+    }
+
+    .custom-file-button:hover label {
+        background-color: #dde0e3;
+        cursor: pointer;
+    }
+</style>
+
     <script src="{{ asset('js/me/get_department_cars_and_users.js') }}"></script>
     <script>
         jQuery(document).ready(function($) {

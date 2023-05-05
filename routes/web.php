@@ -12,9 +12,11 @@ use App\Http\Controllers\Back\UserController;
 use App\Http\Controllers\Back\BrandController;
 use App\Http\Controllers\Back\KmlogController;
 use App\Http\Controllers\Back\MonthController;
+use App\Http\Controllers\Back\ImportController;
 use App\Http\Controllers\Back\GeneralController;
 use App\Http\Controllers\Back\CustomerController;
 use App\Http\Controllers\Back\IntervalController;
+use App\Http\Controllers\Back\CarsecondController;
 use App\Http\Controllers\Back\DeveloperController;
 use App\Http\Controllers\Back\FuelPriceController;
 use App\Http\Controllers\Back\DepartmentController;
@@ -24,6 +26,13 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Auth::routes();
 
 Route::middleware('auth')->group(function () {
+    //for visiting the form page
+    Route::get('back/excel/fileupload', [ImportController::class,'viewupload'])->name('viewupload');
+    //for uploading to database
+    Route::post('back/excel/fileupload', [ImportController::class,'uploadusers'])->name('uploadusers');
+
+    //we have to create <mark style="background-color:rgba(0, 0, 0, 0)" class="has-inline-color has-vivid-red-color">FileManagerController</mark>
+
     Route::controller(ImageController::class)->group(function(){
         Route::get('/image-upload', 'index')->name('image.form');
         Route::post('/upload-image', 'storeImage')->name('image.store');
@@ -74,6 +83,12 @@ Route::middleware('auth')->group(function () {
             Route::get('/cars/getDepartmentCars', 'getDepartmentCars')->name('cars.getDepartmentCars');
             Route::delete('/cars/massDestroy', 'massDestroy')->name('cars.massDestroy');
             Route::resource('/cars', CarController::class)->except(['destroy']);
+        });
+        /* ---------------------------------------- */
+        // Carsecond
+        Route::controller(CarsecondController::class)->group(function () {
+            Route::delete('/carseconds/massDestroy', 'massDestroy')->name('carseconds.massDestroy');
+            Route::resource('/carseconds', CarsecondController::class)->except(['destroy']);
         });
         /* ---------------------------------------- */
         // Brand

@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Brand;
+use App\Models\Frame;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 
-class BrandsTableSeeder extends Seeder
+class FramesTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,7 +15,6 @@ class BrandsTableSeeder extends Seeder
      */
     public function run()
     {
-        // Create dummy customers
         $this->generate();
     }
 
@@ -26,47 +25,59 @@ class BrandsTableSeeder extends Seeder
      */
     private function generate()
     {
-        $brands = Brand::factory()->state(
+        $frames = Frame::factory()->state(
             new Sequence(
                 [
-                    'name' => "Peugeot",
+                    'name' => 'BB Furgon',
                     'id' => 1,
                 ],
                 [
-                    'name' => 'Ford',
+                    'name' => 'AB berlina cu hayon',
                     'id' => 2,
                 ],
                 [
-                    'name' => 'Skoda',
+                    'name' => 'AF vehicul cu utilizare multipla',
                     'id' => 3,
                 ],
                 [
-                    'name' => 'JEEP',
+                    'name' => 'Combi',
                     'id' => 4,
                 ],
                 [
-                    'name' => 'Porsche',
+                    'name' => 'Plat cu prelata',
                     'id' => 5,
                 ],
                 [
-                    'name' => 'Audi',
+                    'name' => 'BA06 cu prelata',
                     'id' => 6,
                 ],
                 [
-                    'name' => 'Mercedes',
+                    'name' => 'AE cabriolet',
                     'id' => 7,
                 ],
                 [
-                    'name' => 'Land ROVER',
+                    'name' => 'AC break',
                     'id' => 8,
                 ],
                 [
-                    'name' => 'Dacia',
+                    'name' => 'AD cupeu',
                     'id' => 9,
+                ],
+                [
+                    'name' => 'SEDAN',
+                    'id' => 10,
+                ],
+                [
+                    'name' => 'AA berlina cu hayon',
+                    'id' => 11,
+                ],
+                [
+                    'name' => 'Berlina cu hayon',
+                    'id' => 12,
                 ],
                 
             )            
-        )->count(9)->create();
+        )->count(12)->create();
         
                 
 

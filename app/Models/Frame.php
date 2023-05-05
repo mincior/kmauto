@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Carsecond extends Model
+class Frame extends Model
 {
-    use HasFactory,  CarsecondRelationships;
+    use HasFactory,  FrameRelationships;
             /**
      * The attributes that are mass assignable.
      *
@@ -15,20 +15,7 @@ class Carsecond extends Model
      */
     protected $fillable = [
         //Begin craft placeholder #1
-		'nr_identificare', 
-		'caroseria', 
-		'are_gps', 
-		'recep_auto', 
-		'an_fabr', 
-		'poluare', 
-		'p_kw', 
-		'mtma', 
-		'cap_cyl', 
-		'cap_rez', 
-		'auto_inloc', 
-		'km_contract', 
-		'car_id', 
-		'frame_id', 
+		'name', 
 		//End craft placeholder #1
         
     ];

@@ -1,7 +1,7 @@
 @extends('layouts.back')
 
 @section('title')
-    &vert; Car
+    &vert; Masini
 @endsection
 <?php
 //dd($type_name, $fuel_name, $fuel->name, $user_name);

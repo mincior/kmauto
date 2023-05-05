@@ -20,7 +20,7 @@ class UserDepTableSeeder extends Seeder
     }
 
         /**
-     * Inserts in DB users that are harcoded.
+     
      * 
      * @return void     
      */

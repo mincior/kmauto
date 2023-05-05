@@ -1,14 +1,14 @@
 @extends('layouts.back')
 
 @section('title')
-    &vert; Cars
+    &vert; Masini
 @endsection
 
 @section('content')
     <div class="card">
         <div class="card-header d-print-none">
             <div class="row">
-                <div class="col">Cars</div>
+                <div class="col">Masini</div>
 
                 <div class="col fs-5 text-end">
                     <img src="{{ asset('img/icons/car.png') }}" />

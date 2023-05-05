@@ -1,7 +1,7 @@
 @extends('layouts.back')
 
 @section('title')
-    &vert; Cars
+    &vert; Masini
 @endsection
 <?php
     $departments = @\App\Models\Department::get();
@@ -13,7 +13,7 @@
             <div class="row">
                 <div class="col"><img src="{{ asset('img/icons/car.png') }}" /></div>
                 <div class="row mb-2">
-                    <label for="department_id" class="col-md-2 col-form-label">Filiala :</label>
+                    <label for="department_id" class="col-md-2 col-form-label">Masini - Filiala :</label>
 
                     <div class="col-md-4">
                         <select name="department_id" id="department_select" data-deptid="1" data-userid="1"

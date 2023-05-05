@@ -28,8 +28,12 @@ class CreateCarsecondsTable extends Migration
 			$table->string('mtma')->nullable();
 			$table->string('cap_cyl')->nullable();
 			$table->string('cap_rez')->nullable();
+			$table->string('auto_inloc')->nullable();
+			$table->string('km_contract')->nullable();
 			$table->bigInteger('car_id')->unsigned()->index()->nullable();
 			$table->foreign('car_id')->references('id')->on('cars');		
+			$table->bigInteger('frame_id')->unsigned()->index()->nullable();
+			$table->foreign('frame_id')->references('id')->on('frames');		
 		//End craft placeholder #2
         });
     }

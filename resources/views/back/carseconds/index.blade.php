@@ -1,17 +1,37 @@
 @extends('layouts.back')
 
 @section('title')
-    &vert; Masini
+    &vert; Masini detalii
 @endsection
+<?php
+    $departments = @\App\Models\Department::get();
+?>
 
 @section('content')
     <div class="card">
         <div class="card-header d-print-none">
             <div class="row">
-                <div class="col">Masini</div>
+                <div class="col"><img src="{{ asset('img/icons/taxi-front-fill.png') }}" /></div>
+                <div class="row mb-2">
+                    <label for="department_id" class="col-md-2 col-form-label">Masini detalii - Filiala :</label>
+
+                    <div class="col-md-4">
+                        <select name="department_id" id="department_select" data-deptid="1" data-userid="1"
+                            class="form-select">
+                            <option value="0">Alege ...</option>
+                            @foreach ($departments as $department)
+                                <option {{ old('department_id') == $department['id'] ? 'selected' : '' }}
+                                    value="{{ $department['id'] }}">{{ $department['name'] }}</option>
+                            @endforeach
+                        </select>
+                        @error('department_id')
+                            <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
 
                 <div class="col fs-5 text-end">
-                    <img src="{{ asset('img/icons/car.png') }}" />
+                    
                 </div>
             </div>
         </div>
@@ -26,8 +46,18 @@
             <table id="sqltable" class="table table-bordered table-striped table-hover table-sm dataTable">
                 <thead class="table-success">
                     <tr>
+                        <th scope="col">Numar masina</th>
+                        <th scope="col">Numar identificare</th>
+                        <th scope="col">Caroseria</th>
+                        <th scope="col">Are gps?</th>
+                        <th scope="col">Receptie auto</th>
+                        <th scope="col">An fabricatie</th>
+                        <th scope="col">Poluare</th>
+                        <th scope="col">Putere KW</th>
+                        <th scope="col">MTMA</th>
+                        <th scope="col">Cap. cilindrica</th>
+                        <th scope="col">Cap. rezervor</th>
                         <th scope="col" width="4%">ID</th>
-                        <th scope="col">Nume</th>
                     </tr>
                 </thead>
             </table>
@@ -50,7 +80,7 @@
                 titleAttr: 'Add',
                 enabled: true,
                 action: function(e, dt, node, config) {
-                    document.location.href = '{{ route('back.fuels.create') }}';
+                    document.location.href = '{{ route('back.carseconds.create') }}';
                 }
             }
             dtButtonsCenter.push(createButton)
@@ -66,7 +96,7 @@
                         selected: true
                     }).data().id;
 
-                    document.location.href = '{{ route('back.fuels.show', 'id') }}'.replace("id", id);
+                    document.location.href = '{{ route('back.carseconds.show', 'id') }}'.replace("id", id);
                 }
             }
             dtButtonsCenter.push(showButton)
@@ -82,7 +112,7 @@
                         selected: true
                     }).data().id;
 
-                    document.location.href = '{{ route('back.fuels.edit', 'id') }}'.replace("id", id);
+                    document.location.href = '{{ route('back.carseconds.edit', 'id') }}'.replace("id", id);
                 }
             }
             dtButtonsCenter.push(editButton)
@@ -104,7 +134,7 @@
                 text: '<i class="bi bi-trash"></i>',
                 titleAttr: 'Delete',
                 enabled: false,
-                url: "{{ route('back.fuels.massDestroy') }}",
+                url: "{{ route('back.carseconds.massDestroy') }}",
                 action: function(e, dt, node, config) {
                     var ids = $.map(dt.rows({
                         selected: true
@@ -121,7 +151,7 @@
                     }
 
                     bootbox.confirm({
-                        title: 'Stergeti marcile selectate? ',
+                        title: 'Stergeti detaliile selectate? ',
                         message: "Sunteti sigur?",
                         buttons: {
                             confirm: {
@@ -148,7 +178,7 @@
                                         showToast({
                                             type: 'success',
                                             title: 'Stergere ...',
-                                            message: 'Tipul/tipurile de combustibil au fost sterse!',
+                                            message: 'Detaliul/detaliile au fost sterse!',
                                         });
                                     }
                                 });
@@ -161,10 +191,55 @@
             /* ------------------------------------------------------------------------ */
             let dtOverrideGlobals = {
                 ajax: {
-                    url: "{{ route('back.fuels.index') }}",
+                    url: "{{ route('back.carseconds.index') }}",
                     data: function(d) {}
                 },
-                columns: [{
+                columns: [
+                    {
+                        data: 'car_id',
+                        name: 'car_id',
+                    },
+                    {
+                        data: 'nr_identificare',
+                        name: 'nr_identificare',
+                    },
+                    {
+                        data: 'caroseria',
+                        name: 'caroseria',
+                    },
+                    {
+                        data: 'are_gps',
+                        name: 'are_gps',
+                    },
+                    {
+                        data: 'recep_auto',
+                        name: 'recep_auto',
+                    },
+                    {
+                        data: 'an_fabr',
+                        name: 'an_fabr',
+                    },
+                    {
+                        data: 'poluare',
+                        name: 'poluare',
+                    },
+                    {
+                        data: 'p_kw',
+                        name: 'p_kw',
+                    },
+                    {
+                        data: 'mtma',
+                        name: 'mtma',
+                    },
+                    {
+                        data: 'cap_cyl',
+                        name: 'cap_cyl',
+                    },
+                    {
+                        data: 'cap_rez',
+                        name: 'cap_rez',
+                    },
+                    {
                         data: 'id',
                         name: 'id',
                         searchable: false,
@@ -172,10 +247,6 @@
                         render: function(data, type, row, meta) {
                             return data.toString();
                         }
-                    },
-                    {
-                        data: 'name',
-                        name: 'name',
                     },
                 ],
                 select: {
@@ -205,7 +276,7 @@
                 buttons: dtButtonsRight
             });
 
-            oTable.buttons('BtnGroupLeft', null).containers().appendTo('#ToolbarLeft');
+            //oTable.buttons('BtnGroupLeft', null).containers().appendTo('#ToolbarLeft');
             oTable.buttons('BtnGroupCenter', null).containers().appendTo('#ToolbarCenter');
             oTable.buttons('BtnGroupRight', null).containers().appendTo('#ToolbarRight');
             /* ------------------------------------------------------------------------ */

@@ -19,13 +19,13 @@ class AvailableusersTableSeeder extends Seeder
     }
 
         /**
-     * Inserts in DB users that are harcoded.
+     
      * 
      * @return void     
      */
     private function generate()
     {
-        $users = Availableuser::factory()->state(
+        $availableusers = Availableuser::factory()->state(
             new Sequence(
                 [
                     'valoare' => 1, 

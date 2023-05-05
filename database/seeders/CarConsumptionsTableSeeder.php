@@ -19,13 +19,13 @@ class CarConsumptionsTableSeeder extends Seeder
     }
 
         /**
-     * Inserts in DB users that are harcoded.
+     
      * 
      * @return void     
      */
     private function generate()
     {
-        $users = CarConsumption::factory()->state(
+        $carconsumptions = CarConsumption::factory()->state(
             new Sequence(
                 [
                     'valoare' => 6.5,
