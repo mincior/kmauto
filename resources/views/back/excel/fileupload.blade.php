@@ -29,8 +29,9 @@
                             <div class="col-md-4">
                                 <select name="action_id" id="action_select" class="form-select">
                                     <option selected value="0">masini</option>
-                                    <option value="1">masini detalii</option>
-                                    <option value="2">utilizatori</option>
+                                    <option value="1">expirari</option>
+                                    <option value="2">masini detalii</option>
+                                    <option value="3">utilizatori</option>
                                 </select>
                             </div>
                         </div>

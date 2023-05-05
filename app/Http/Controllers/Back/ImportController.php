@@ -26,15 +26,15 @@ use Database\Seeders\RevisionsTableSeeder;
 class ImportController extends Controller
 {
 	public function excelUpload(Request $request)
-    {
+	{
 		//Anumite tabele sunt mai convenabil de importat direct dintr-un excel. Scrierea unui seeder poate fi destul de anevoioasa.
 		//Totusi daca tabelul are multe chei straine, tabelele legate trebuiesc mai intai sterse si apoi recreate fie prin import
 		//tot din excel sau folosind seedere deja create.
-		switch($request->action_id){
-			case 0://masini
-				$excelFile =  public_path('storage/' . config('global.cars_import_file') );
+		DB::statement('SET FOREIGN_KEY_CHECKS = 0;');
+		switch ($request->action_id) {
+			case 0: //masini
+				$excelFile =  public_path('storage/' . config('global.cars_import_file'));
 				//pentru a putea aplica truncate(stergere cu  aducerea id-ului de pornire la valoarea 1) pe Car trebuie sa nu se mai verifice cheile straine
-				DB::statement('SET FOREIGN_KEY_CHECKS = 0;');
 				//totusi cheile straine vor ramane orfane daca nu se sterg
 				Availablecar::truncate();
 				CarAsig::truncate();
@@ -51,27 +51,33 @@ class ImportController extends Controller
 				Car::truncate();
 				//face importul
 				$ex = Excel::import(new CarsImport, $excelFile);
-				$excelFile =  public_path('storage/' . config('global.expires_import_file') );
+				$excelFile =  public_path('storage/' . config('global.expires_import_file'));
 				$ex = Excel::import(new ExpiresImport, $excelFile);
 				//reactiveaza verificarea cheilor straine
-				DB::statement('SET FOREIGN_KEY_CHECKS = 1;');
 				//reincarca tabelele care au seeder (tabele mici, usor de completat)
 				$seeder = new RevisionsTableSeeder;
 				$seeder->run();
 				dd($ex);
-			case 1://masini detalii
+				break;
+			case 1: //expirari
+				Expire::truncate(); //sterge cu resetare id
+				$excelFile =  public_path('storage/' . config('global.expires_import_file'));
+				$ex = Excel::import(new ExpiresImport, $excelFile); //importa
+				break;
+			case 2: //masini detalii
 				dd('incarca aici masini detalii');
-
-			case 2://utilizatori
-				dd('incarca aici utilizatori');
+				break;
+			case 3: //utilizatori
+				dd('incarca aici masini detalii');
+				break;
 		}
+		DB::statement('SET FOREIGN_KEY_CHECKS = 1;');
 
-        return back()->with('massage', 'Excel file imported successfully');
-    }
+		return back()->with('massage', 'Excel file imported successfully');
+	}
 
-    public function viewUploadForm(Request $request)
-    {
-        return view('back/excel/fileupload');
-    }
-
+	public function viewUploadForm(Request $request)
+	{
+		return view('back/excel/fileupload');
+	}
 }
