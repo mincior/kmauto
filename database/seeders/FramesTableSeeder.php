@@ -36,48 +36,68 @@ class FramesTableSeeder extends Seeder
                     'id' => 2,
                 ],
                 [
-                    'name' => 'AF vehicul cu utilizare multipla',
+                    'name' => 'AA berlina',
                     'id' => 3,
                 ],
                 [
-                    'name' => 'Combi',
+                    'name' => 'AF vehicul cu utilizare multipla',
                     'id' => 4,
                 ],
                 [
-                    'name' => 'Plat cu prelata',
+                    'name' => 'Combi',
                     'id' => 5,
                 ],
                 [
-                    'name' => 'BA06 cu prelata',
+                    'name' => 'Plat cu prelata',
                     'id' => 6,
                 ],
                 [
-                    'name' => 'AE cabriolet',
+                    'name' => 'BA06 cu prelata',
                     'id' => 7,
                 ],
                 [
-                    'name' => 'AC break',
+                    'name' => 'AE cabriolet',
                     'id' => 8,
                 ],
                 [
-                    'name' => 'AD cupeu',
+                    'name' => 'AC break',
                     'id' => 9,
                 ],
                 [
-                    'name' => 'SEDAN',
+                    'name' => 'AD cupeu',
                     'id' => 10,
                 ],
                 [
-                    'name' => 'AA berlina cu hayon',
+                    'name' => 'SEDAN',
                     'id' => 11,
                 ],
                 [
-                    'name' => 'Berlina cu hayon',
+                    'name' => 'AA berlina cu hayon',
                     'id' => 12,
+                ],
+                [
+                    'name' => 'Berlina cu hayon',
+                    'id' => 13,
+                ],
+                [
+                    'name' => 'Van BB furgon',
+                    'id' => 14,
+                ],
+                [
+                    'name' => 'Break, 4+1 usi',
+                    'id' => 15,
+                ],
+                [
+                    'name' => 'BA suprastructura deschisa',
+                    'id' => 16,
+                ],
+                [
+                    'name' => 'nespecificata',
+                    'id' => 17,
                 ],
                 
             )            
-        )->count(12)->create();
+        )->count(17)->create();
         
                 
 

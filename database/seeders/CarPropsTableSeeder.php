@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Brand;
+use App\Models\CarProp;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 
-class BrandsTableSeeder extends Seeder
+class CarPropsTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -26,67 +26,47 @@ class BrandsTableSeeder extends Seeder
      */
     private function generate()
     {
-        $brands = Brand::factory()->state(
+        $brands = CarProp::factory()->state(
             new Sequence(
                 [
-                    'name' => "Peugeot",
+                    'valoare' => "Consolight",
                     'id' => 1,
                 ],
                 [
-                    'name' => 'Ford',
+                    'valoare' => 'ALD Automotive',
                     'id' => 2,
                 ],
                 [
-                    'name' => 'Skoda',
+                    'valoare' => 'LeasePlan',
                     'id' => 3,
                 ],
                 [
-                    'name' => 'JEEP',
+                    'valoare' => 'Porsche Mobility',
                     'id' => 4,
                 ],
                 [
-                    'name' => 'Porsche',
+                    'valoare' => 'Tiriac Leasing',
                     'id' => 5,
                 ],
                 [
-                    'name' => 'Audi',
+                    'valoare' => 'Unicredit',
                     'id' => 6,
                 ],
                 [
-                    'name' => 'Mercedes',
+                    'valoare' => 'Porsche Leasing',
                     'id' => 7,
                 ],
                 [
-                    'name' => 'Land ROVER',
+                    'valoare' => 'Raiffeisen Leasing',
                     'id' => 8,
                 ],
                 [
-                    'name' => 'Dacia',
+                    'valoare' => 'Arval',
                     'id' => 9,
-                ],
-                [
-                    'name' => 'Toyota',
-                    'id' => 10,
-                ],
-                [
-                    'name' => 'Mitsubishi',
-                    'id' => 11,
-                ],
-                [
-                    'name' => 'Citroen',
-                    'id' => 12,
-                ],
-                [
-                    'name' => 'BMW',
-                    'id' => 13,
-                ],
-                [
-                    'name' => 'VW',
-                    'id' => 14,
                 ],
                 
             )            
-        )->count(14)->create();
+        )->count(9)->create();
         
                 
 

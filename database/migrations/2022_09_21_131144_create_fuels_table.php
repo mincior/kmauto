@@ -20,8 +20,6 @@ class CreateFuelsTable extends Migration
 			$table->id();
 			$table->string('name');		
 		//End craft placeholder #2
-            $table->timestamps();
-            $table->timestamp('deleted_at')->nullable();
         });
     }
 

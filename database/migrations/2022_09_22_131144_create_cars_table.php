@@ -18,7 +18,7 @@ class CreateCarsTable extends Migration
         //Begin craft placeholder #2
 		Schema::create('cars', function (Blueprint $table) {
 			$table->id();
-			$table->string('numar')->unique();
+			$table->string('numar');
 			$table->string('observatii')->nullable();
 			$table->bigInteger('fuel_id')->unsigned()->index()->nullable();
 			$table->foreign('fuel_id')->references('id')->on('fuels');

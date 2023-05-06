@@ -3,6 +3,7 @@
 namespace App\Imports;
 
 use App\Models\Car;
+use App\Models\Expire;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithStartRow;
@@ -38,9 +39,9 @@ class ExpiresImport implements ToCollection, WithHeadingRow
                 $seed = $seed . "\t" . "'" . $key . "' => '" . $value . "', " ;
             }
             $seed = $seed . "\n],\n";
-            Car::create($arr_import);
+            Expire::create($arr_import);
         }
-        file_put_contents(base_path('/database/seeders/ExpiresImportSeeder - '.count($rows).'.txt'), stripslashes($seed));
+        file_put_contents(base_path('/database/seeders/ExpiresImportSeeder.txt'), stripslashes($seed));
 
     }
 

@@ -6,7 +6,7 @@ use App\Models\CarDep;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 
-class CarDepTableSeeder extends Seeder
+class CarDepsTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -577,31 +577,9 @@ class CarDepTableSeeder extends Seeder
                 
                 [
                     'id' => 138, 'department_id' => '10', 'interval_id' => 1 , 'car_id' => 138, 'observatii' => '',
-                ],
-                
-                [
-                    'id' => 139, 'department_id' => '10', 'interval_id' => 1 , 'car_id' => 139, 'observatii' => 'B038685',
-                ],
-                
-                [
-                    'id' => 140, 'department_id' => '5', 'interval_id' => 1 , 'car_id' => 140, 'observatii' => 'B038679',
-                ],
-                
-                [
-                    'id' => 141, 'department_id' => '5', 'interval_id' => 1 , 'car_id' => 141, 'observatii' => 'B038678',
-                ],
-                
-                [
-                    'id' => 142, 'department_id' => '5', 'interval_id' => 1 , 'car_id' => 142, 'observatii' => 'B038680',
-                ],
-                
-                [
-                    'id' => 143, 'department_id' => '16', 'interval_id' => 1 , 'car_id' => 143, 'observatii' => 'B038677',
-                ],
-                               
-                                                
+                ],                                        
             )            
-        )->count(143)->create();
+        )->count(138)->create();
         
                 
 

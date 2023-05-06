@@ -40,9 +40,17 @@ class CarStatValuesTableSeeder extends Seeder
                     'name' => 'HUB',
                     'id' => 3,
                 ],
+                [
+                    'name' => 'Vanduta',
+                    'id' => 4,
+                ],
+                [
+                    'name' => 'Predate leasing',
+                    'id' => 5,
+                ],
                 
             )            
-        )->count(3)->create();
+        )->count(5)->create();
         
                 
 

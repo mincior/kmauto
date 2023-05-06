@@ -31,20 +31,28 @@ class CarAsigsTableSeeder extends Seeder
         $carasigs = CarAsig::factory()->state(
             new Sequence(
                 [
-                    'name' => "Folosita",
+                    'name' => "Groupama",
                     'id' => 1,
                 ],
                 [
-                    'name' => 'De Vanzare',
+                    'name' => 'Fara',
                     'id' => 2,
                 ],
                 [
-                    'name' => 'HUB',
+                    'name' => 'Omniasig',
                     'id' => 3,
+                ],
+                [
+                    'name' => 'Alianz',
+                    'id' => 4,
+                ],
+                [
+                    'name' => 'Asirom',
+                    'id' => 5,
                 ],
                 
             )            
-        )->count(3)->create();
+        )->count(5)->create();
         
                 
 

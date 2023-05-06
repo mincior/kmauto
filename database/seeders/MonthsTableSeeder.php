@@ -6,7 +6,7 @@ use App\Models\Month;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 
-class MonthTableSeeder extends Seeder
+class MonthsTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.

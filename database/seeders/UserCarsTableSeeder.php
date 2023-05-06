@@ -7,7 +7,7 @@ use App\Models\CarDep;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 
-class UserCarTableSeeder extends Seeder
+class UserCarsTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.

@@ -412,3 +412,240 @@
 [
 	'id' => '138', 	'numar' => 'B-143-CLT', 	'fuel_id' => '2', 	'type_id' => '4', 	'brand_id' => '1', 
 ],
+[
+	'id' => '139', 	'numar' => 'B-130-CLT', 	'fuel_id' => '5', 	'type_id' => '4', 	'brand_id' => '1', 
+],
+[
+	'id' => '140', 	'numar' => 'B-48-CNH', 	'fuel_id' => '5', 	'type_id' => '23', 	'brand_id' => '1', 
+],
+[
+	'id' => '141', 	'numar' => 'B-888-CLT', 	'fuel_id' => '5', 	'type_id' => '24', 	'brand_id' => '1', 
+],
+[
+	'id' => '142', 	'numar' => 'B-128-CLT', 	'fuel_id' => '5', 	'type_id' => '7', 	'brand_id' => '2', 
+],
+[
+	'id' => '143', 	'numar' => 'B-999-CLS', 	'fuel_id' => '5', 	'type_id' => '25', 	'brand_id' => '11', 
+],
+[
+	'id' => '144', 	'numar' => 'B-889-CLT', 	'fuel_id' => '5', 	'type_id' => '24', 	'brand_id' => '1', 
+],
+[
+	'id' => '145', 	'numar' => 'B-131-CLT', 	'fuel_id' => '5', 	'type_id' => '26', 	'brand_id' => '12', 
+],
+[
+	'id' => '146', 	'numar' => 'B-500-CLT', 	'fuel_id' => '5', 	'type_id' => '5', 	'brand_id' => '1', 
+],
+[
+	'id' => '147', 	'numar' => 'B-330-CLT', 	'fuel_id' => '5', 	'type_id' => '5', 	'brand_id' => '1', 
+],
+[
+	'id' => '148', 	'numar' => 'B-300-CLT', 	'fuel_id' => '5', 	'type_id' => '5', 	'brand_id' => '1', 
+],
+[
+	'id' => '149', 	'numar' => 'B-135-CLT', 	'fuel_id' => '5', 	'type_id' => '5', 	'brand_id' => '1', 
+],
+[
+	'id' => '150', 	'numar' => 'B-93-CNL', 	'fuel_id' => '5', 	'type_id' => '0', 	'brand_id' => '0', 
+],
+[
+	'id' => '151', 	'numar' => 'B-140-CLT', 	'fuel_id' => '5', 	'type_id' => '7', 	'brand_id' => '2', 
+],
+[
+	'id' => '152', 	'numar' => 'B-150-CLT', 	'fuel_id' => '5', 	'type_id' => '4', 	'brand_id' => '1', 
+],
+[
+	'id' => '153', 	'numar' => 'B-152-CLT', 	'fuel_id' => '5', 	'type_id' => '4', 	'brand_id' => '1', 
+],
+[
+	'id' => '154', 	'numar' => 'B-888-CNL', 	'fuel_id' => '5', 	'type_id' => '27', 	'brand_id' => '13', 
+],
+[
+	'id' => '155', 	'numar' => 'B-149-CLT', 	'fuel_id' => '5', 	'type_id' => '4', 	'brand_id' => '1', 
+],
+[
+	'id' => '156', 	'numar' => 'B-173-CLT', 	'fuel_id' => '5', 	'type_id' => '14', 	'brand_id' => '1', 
+],
+[
+	'id' => '157', 	'numar' => 'B-174-CLT', 	'fuel_id' => '5', 	'type_id' => '14', 	'brand_id' => '1', 
+],
+[
+	'id' => '158', 	'numar' => 'B-133-CLT', 	'fuel_id' => '5', 	'type_id' => '28', 	'brand_id' => '1', 
+],
+[
+	'id' => '159', 	'numar' => 'B-54-CLT', 	'fuel_id' => '5', 	'type_id' => '29', 	'brand_id' => '1', 
+],
+[
+	'id' => '160', 	'numar' => 'B-57-CLT', 	'fuel_id' => '5', 	'type_id' => '29', 	'brand_id' => '1', 
+],
+[
+	'id' => '161', 	'numar' => 'B-48-CLT', 	'fuel_id' => '5', 	'type_id' => '29', 	'brand_id' => '1', 
+],
+[
+	'id' => '162', 	'numar' => 'B-176-CLT', 	'fuel_id' => '5', 	'type_id' => '14', 	'brand_id' => '1', 
+],
+[
+	'id' => '163', 	'numar' => 'B-123-CLT', 	'fuel_id' => '5', 	'type_id' => '19', 	'brand_id' => '1', 
+],
+[
+	'id' => '164', 	'numar' => 'B-124-CLT', 	'fuel_id' => '5', 	'type_id' => '4', 	'brand_id' => '1', 
+],
+[
+	'id' => '165', 	'numar' => 'B-220-CLT', 	'fuel_id' => '5', 	'type_id' => '5', 	'brand_id' => '1', 
+],
+[
+	'id' => '166', 	'numar' => 'B-555-CLT', 	'fuel_id' => '5', 	'type_id' => '5', 	'brand_id' => '1', 
+],
+[
+	'id' => '167', 	'numar' => 'B-550-CLT', 	'fuel_id' => '5', 	'type_id' => '5', 	'brand_id' => '1', 
+],
+[
+	'id' => '168', 	'numar' => 'B-18-CLT', 	'fuel_id' => '5', 	'type_id' => '21', 	'brand_id' => '10', 
+],
+[
+	'id' => '169', 	'numar' => 'B-61-HNS', 	'fuel_id' => '5', 	'type_id' => '22', 	'brand_id' => '9', 
+],
+[
+	'id' => '170', 	'numar' => 'B-61-HNT', 	'fuel_id' => '5', 	'type_id' => '22', 	'brand_id' => '9', 
+],
+[
+	'id' => '171', 	'numar' => 'B-444-CLT', 	'fuel_id' => '5', 	'type_id' => '7', 	'brand_id' => '2', 
+],
+[
+	'id' => '172', 	'numar' => 'B-156-CLT', 	'fuel_id' => '5', 	'type_id' => '2', 	'brand_id' => '2', 
+],
+[
+	'id' => '173', 	'numar' => 'B-164-CLT', 	'fuel_id' => '5', 	'type_id' => '2', 	'brand_id' => '2', 
+],
+[
+	'id' => '174', 	'numar' => 'B-153-CLT', 	'fuel_id' => '5', 	'type_id' => '2', 	'brand_id' => '2', 
+],
+[
+	'id' => '175', 	'numar' => 'B-154-CLT ', 	'fuel_id' => '5', 	'type_id' => '2', 	'brand_id' => '2', 
+],
+[
+	'id' => '176', 	'numar' => 'B-166-CLT', 	'fuel_id' => '5', 	'type_id' => '2', 	'brand_id' => '2', 
+],
+[
+	'id' => '177', 	'numar' => 'B-168-CLT', 	'fuel_id' => '5', 	'type_id' => '2', 	'brand_id' => '2', 
+],
+[
+	'id' => '178', 	'numar' => 'B-161-CLT', 	'fuel_id' => '5', 	'type_id' => '2', 	'brand_id' => '2', 
+],
+[
+	'id' => '179', 	'numar' => 'B-167-CLT', 	'fuel_id' => '5', 	'type_id' => '2', 	'brand_id' => '2', 
+],
+[
+	'id' => '180', 	'numar' => 'B-155-CLT', 	'fuel_id' => '5', 	'type_id' => '2', 	'brand_id' => '2', 
+],
+[
+	'id' => '181', 	'numar' => 'B-162-CLT', 	'fuel_id' => '5', 	'type_id' => '2', 	'brand_id' => '2', 
+],
+[
+	'id' => '182', 	'numar' => 'B-165-CLT', 	'fuel_id' => '5', 	'type_id' => '2', 	'brand_id' => '2', 
+],
+[
+	'id' => '183', 	'numar' => 'B-169-CLT', 	'fuel_id' => '5', 	'type_id' => '2', 	'brand_id' => '2', 
+],
+[
+	'id' => '184', 	'numar' => 'B-170-CLT', 	'fuel_id' => '5', 	'type_id' => '2', 	'brand_id' => '2', 
+],
+[
+	'id' => '185', 	'numar' => 'B-163-CLT', 	'fuel_id' => '5', 	'type_id' => '2', 	'brand_id' => '2', 
+],
+[
+	'id' => '186', 	'numar' => 'B-157-CLT', 	'fuel_id' => '5', 	'type_id' => '6', 	'brand_id' => '3', 
+],
+[
+	'id' => '187', 	'numar' => 'B-158-CLT', 	'fuel_id' => '5', 	'type_id' => '6', 	'brand_id' => '3', 
+],
+[
+	'id' => '188', 	'numar' => 'B-159-CLT', 	'fuel_id' => '5', 	'type_id' => '6', 	'brand_id' => '3', 
+],
+[
+	'id' => '189', 	'numar' => 'B-160-CLT', 	'fuel_id' => '5', 	'type_id' => '6', 	'brand_id' => '3', 
+],
+[
+	'id' => '190', 	'numar' => 'IF-05-CLT', 	'fuel_id' => '5', 	'type_id' => '2', 	'brand_id' => '2', 
+],
+[
+	'id' => '191', 	'numar' => 'B-204-CLT', 	'fuel_id' => '5', 	'type_id' => '6', 	'brand_id' => '3', 
+],
+[
+	'id' => '192', 	'numar' => 'B-206-CLT', 	'fuel_id' => '5', 	'type_id' => '6', 	'brand_id' => '3', 
+],
+[
+	'id' => '193', 	'numar' => 'B-182-CLT', 	'fuel_id' => '5', 	'type_id' => '6', 	'brand_id' => '3', 
+],
+[
+	'id' => '194', 	'numar' => 'B-183-CLT', 	'fuel_id' => '5', 	'type_id' => '6', 	'brand_id' => '3', 
+],
+[
+	'id' => '195', 	'numar' => 'B-185-CLT', 	'fuel_id' => '5', 	'type_id' => '6', 	'brand_id' => '3', 
+],
+[
+	'id' => '196', 	'numar' => 'B-184-CLT', 	'fuel_id' => '5', 	'type_id' => '6', 	'brand_id' => '3', 
+],
+[
+	'id' => '197', 	'numar' => 'B-181-CLT', 	'fuel_id' => '5', 	'type_id' => '6', 	'brand_id' => '3', 
+],
+[
+	'id' => '198', 	'numar' => 'IF-19-CLT', 	'fuel_id' => '5', 	'type_id' => '2', 	'brand_id' => '2', 
+],
+[
+	'id' => '199', 	'numar' => 'IF-06-CLT', 	'fuel_id' => '5', 	'type_id' => '2', 	'brand_id' => '2', 
+],
+[
+	'id' => '200', 	'numar' => 'IF-18-CLT', 	'fuel_id' => '5', 	'type_id' => '2', 	'brand_id' => '2', 
+],
+[
+	'id' => '201', 	'numar' => 'IF-08-CLT', 	'fuel_id' => '5', 	'type_id' => '2', 	'brand_id' => '2', 
+],
+[
+	'id' => '202', 	'numar' => 'IF-15-CLT', 	'fuel_id' => '5', 	'type_id' => '2', 	'brand_id' => '2', 
+],
+[
+	'id' => '203', 	'numar' => 'B-201-CLT', 	'fuel_id' => '5', 	'type_id' => '2', 	'brand_id' => '2', 
+],
+[
+	'id' => '204', 	'numar' => 'B-192-CLT', 	'fuel_id' => '5', 	'type_id' => '2', 	'brand_id' => '2', 
+],
+[
+	'id' => '205', 	'numar' => 'B-193-CLT', 	'fuel_id' => '5', 	'type_id' => '2', 	'brand_id' => '2', 
+],
+[
+	'id' => '206', 	'numar' => 'B-194-CLT', 	'fuel_id' => '5', 	'type_id' => '2', 	'brand_id' => '2', 
+],
+[
+	'id' => '207', 	'numar' => 'B-196-CLT', 	'fuel_id' => '5', 	'type_id' => '2', 	'brand_id' => '2', 
+],
+[
+	'id' => '208', 	'numar' => 'B-197-CLT', 	'fuel_id' => '5', 	'type_id' => '2', 	'brand_id' => '2', 
+],
+[
+	'id' => '209', 	'numar' => 'B-198-CLT', 	'fuel_id' => '5', 	'type_id' => '2', 	'brand_id' => '2', 
+],
+[
+	'id' => '210', 	'numar' => 'B-199-CLT', 	'fuel_id' => '5', 	'type_id' => '2', 	'brand_id' => '2', 
+],
+[
+	'id' => '211', 	'numar' => 'B-202-CLT', 	'fuel_id' => '5', 	'type_id' => '2', 	'brand_id' => '2', 
+],
+[
+	'id' => '212', 	'numar' => 'B-210-CLT', 	'fuel_id' => '5', 	'type_id' => '2', 	'brand_id' => '2', 
+],
+[
+	'id' => '213', 	'numar' => 'B-213-CLT', 	'fuel_id' => '5', 	'type_id' => '2', 	'brand_id' => '2', 
+],
+[
+	'id' => '214', 	'numar' => 'B-211-CLT', 	'fuel_id' => '5', 	'type_id' => '2', 	'brand_id' => '2', 
+],
+[
+	'id' => '215', 	'numar' => 'B-212-CLT', 	'fuel_id' => '5', 	'type_id' => '2', 	'brand_id' => '2', 
+],
+[
+	'id' => '216', 	'numar' => 'B-214-CLT', 	'fuel_id' => '5', 	'type_id' => '2', 	'brand_id' => '2', 
+],
+[
+	'id' => '217', 	'numar' => 'B-215-CLT', 	'fuel_id' => '5', 	'type_id' => '2', 	'brand_id' => '2', 
+],

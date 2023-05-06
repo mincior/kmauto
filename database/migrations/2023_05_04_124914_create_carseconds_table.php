@@ -18,7 +18,7 @@ class CreateCarsecondsTable extends Migration
         //Begin craft placeholder #2
 		Schema::create('carseconds', function (Blueprint $table) {
 			$table->id();
-			$table->string('nr_identificare')->nullable();
+			$table->string('nr_identificare')->unique();
 			$table->string('caroseria')->nullable();
 			$table->boolean('are_gps')->nullable();
 			$table->date('recep_auto')->nullable();

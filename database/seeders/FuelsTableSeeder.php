@@ -43,9 +43,13 @@ class FuelsTableSeeder extends Seeder
                     'name' => 'electric',
                     'id' => 4,
                 ],
+                [
+                    'name' => 'necunoscut',
+                    'id' => 5,
+                ],
                 
             )            
-        )->count(4)->create();
+        )->count(5)->create();
         
                 
 

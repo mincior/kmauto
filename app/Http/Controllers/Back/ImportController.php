@@ -18,6 +18,8 @@ use App\Models\CarStatValue;
 use Illuminate\Http\Request;
 use App\Imports\ExpiresImport;
 use App\Models\CarConsumption;
+use App\Imports\CarStatsImport;
+use App\Imports\CarsecondsImport;
 use App\Imports\CarsImportToModel;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -56,7 +58,7 @@ class ImportController extends Controller
 				Car::truncate();
 				//face importul
 				$ex = Excel::import(new CarsImport, $excelFile);
-				$excelFile =  public_path('storage/' . config('global.expires_import_file'));
+				$excelFile =  public_path('storage/' . config('global.cars_import_file'));
 				$ex = Excel::import(new ExpiresImport, $excelFile);
 				//reactiveaza verificarea cheilor straine
 				//reincarca tabelele care au seeder (tabele mici, usor de completat)
@@ -68,14 +70,19 @@ class ImportController extends Controller
 				break;
 			case 1: //expirari
 				Expire::truncate(); //sterge cu resetare id
-				$excelFile =  public_path('storage/' . config('global.expires_import_file'));
+				$excelFile =  public_path('storage/' . config('global.cars_import_file'));
 				$ex = Excel::import(new ExpiresImport, $excelFile); //importa
 				break;
-			case 2: //masini detalii
-				dd('incarca aici masini detalii');
+			case 2: //car stat
+				CarStat::truncate();
+				$excelFile =  public_path('storage/' . config('global.cars_import_file'));
+				$ex = Excel::import(new CarStatsImport, $excelFile); //importa
 				break;
-			case 3: //utilizatori
-				dd('incarca aici masini detalii');
+			case 3: //masini detalii
+				Carsecond::truncate(); //sterge cu resetare id
+				$excelFile =  public_path('storage/' . config('global.cars_import_file'));
+				$ex = Excel::import(new CarsecondsImport, $excelFile); //importa
+				dd($ex);
 				break;
 		}
 		DB::statement('SET FOREIGN_KEY_CHECKS = 1;');

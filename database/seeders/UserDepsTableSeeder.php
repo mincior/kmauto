@@ -7,7 +7,7 @@ use App\Models\UserDep;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 
-class UserDepTableSeeder extends Seeder
+class UserDepsTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.

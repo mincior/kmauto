@@ -13,7 +13,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call(UsersTableSeeder::class);
-        $this->call(MonthTableSeeder::class);
+        $this->call(MonthsTableSeeder::class);
         $this->call(IntervalsTableSeeder::class);
         $this->call(CustomersSeeder::class);
         $this->call(DepartmentsTableSeeder::class);
@@ -23,19 +23,22 @@ class DatabaseSeeder extends Seeder
         $this->call(CarsTableSeeder::class);
         $this->call(RevisionsTableSeeder::class);
         $this->call(CarStatValuesTableSeeder::class);
-        //$this->call(CarStatsTableSeeder::class);
-        //$this->call(CarDepTableSeeder::class);
-        $this->call(UserDepTableSeeder::class);
+        $this->call(CarStatsTableSeeder::class);
+        $this->call(CarDepsTableSeeder::class);
+        $this->call(FramesTableSeeder::class);
+        $this->call(CarsecondsTableSeeder::class);
+        $this->call(UserDepsTableSeeder::class);
         $this->call(SettingsTableSeeder::class);
-        $this->call(UserCarTableSeeder::class);
+        $this->call(UserCarsTableSeeder::class);
         $this->call(CarConsumptionsTableSeeder::class);
         $this->call(AvailablecarsTableSeeder::class);
+        $this->call(ExpiresTableSeeder::class);
+        $this->call(CarPropsTableSeeder::class);
         $this->call(AvailableusersTableSeeder::class);
         $this->call(UserKmlimitsTableSeeder::class);
         $this->call(UserPhonesTableSeeder::class);
         $this->call(FuelPricesTableSeeder::class);
         $this->call(StatsTableSeeder::class);
-        $this->call(FramesTableSeeder::class);
         //$this->call(KmlogsTableSeeder::class);
        
     }

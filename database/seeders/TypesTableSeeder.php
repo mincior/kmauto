@@ -127,9 +127,59 @@ class TypesTableSeeder extends Seeder
                     'brand_id' => 3, 
                     'id' => 20,
                 ],
+                [
+                    'name' => "RAV 4",
+                    'brand_id' => 10, 
+                    'id' => 21,
+                ],
+                [
+                    'name' => "Logan",
+                    'brand_id' => 9, 
+                    'id' => 22,
+                ],
+                [
+                    'name' => "207",
+                    'brand_id' => 1, 
+                    'id' => 23,
+                ],
+                [
+                    'name' => "407",
+                    'brand_id' => 1, 
+                    'id' => 24,
+                ],
+                [
+                    'name' => "Outlander",
+                    'brand_id' => 11, 
+                    'id' => 25,
+                ],
+                [
+                    'name' => "Jumper",
+                    'brand_id' => 12, 
+                    'id' => 26,
+                ],
+                [
+                    'name' => "X6",
+                    'brand_id' => 13, 
+                    'id' => 27,
+                ],
+                [
+                    'name' => "207",
+                    'brand_id' => 1, 
+                    'id' => 28,
+                ],
+                [
+                    'name' => "308 SW",
+                    'brand_id' => 1, 
+                    'id' => 29,
+                ],
+                [
+                    'name' => "Golf",
+                    'brand_id' => 14, 
+                    'id' => 30,
+                ],
                 
             )            
-        )->count(20)->create();
+        )->count(30)->create();
         
                 
 
