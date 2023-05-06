@@ -17,10 +17,12 @@ use App\Models\Availablecar;
 use Illuminate\Http\Request;
 use App\Imports\ExpiresImport;
 use App\Models\CarConsumption;
+use App\Imports\CarsImportToModel;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
 use Database\Seeders\RevisionsTableSeeder;
+use App\Imports\CarsImportToCollectionAndSeeder;
 
 
 class ImportController extends Controller
@@ -50,13 +52,18 @@ class ImportController extends Controller
 				//sterge toate masinile
 				Car::truncate();
 				//face importul
-				$ex = Excel::import(new CarsImport, $excelFile);
-				$excelFile =  public_path('storage/' . config('global.expires_import_file'));
-				$ex = Excel::import(new ExpiresImport, $excelFile);
-				//reactiveaza verificarea cheilor straine
-				//reincarca tabelele care au seeder (tabele mici, usor de completat)
-				$seeder = new RevisionsTableSeeder;
-				$seeder->run();
+				if($request->make_seeder){
+					$ex = Excel::import(new CarsImportToCollectionAndSeeder, $excelFile);
+				}else{
+					$ex = Excel::import(new CarsImportToModel, $excelFile);
+
+				}
+				// $excelFile =  public_path('storage/' . config('global.expires_import_file'));
+				// $ex = Excel::import(new ExpiresImport, $excelFile);
+				// //reactiveaza verificarea cheilor straine
+				// //reincarca tabelele care au seeder (tabele mici, usor de completat)
+				// $seeder = new RevisionsTableSeeder;
+				// $seeder->run();
 				dd($ex);
 				break;
 			case 1: //expirari
