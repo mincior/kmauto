@@ -14,6 +14,7 @@ use App\Models\Revision;
 use App\Models\Carsecond;
 use App\Imports\CarsImport;
 use App\Models\Availablecar;
+use App\Models\CarStatValue;
 use Illuminate\Http\Request;
 use App\Imports\ExpiresImport;
 use App\Models\CarConsumption;
@@ -22,6 +23,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
 use Database\Seeders\RevisionsTableSeeder;
+use Database\Seeders\CarStatValuesTableSeeder;
 use App\Imports\CarsImportToCollectionAndSeeder;
 
 
@@ -43,6 +45,7 @@ class ImportController extends Controller
 				CarConsumption::truncate();
 				CarDep::truncate();
 				CarProp::truncate();
+				CarStatValue::truncate();
 				CarStat::truncate();
 				Kmlog::truncate();
 				Revision::truncate();
@@ -52,18 +55,15 @@ class ImportController extends Controller
 				//sterge toate masinile
 				Car::truncate();
 				//face importul
-				if($request->make_seeder){
-					$ex = Excel::import(new CarsImportToCollectionAndSeeder, $excelFile);
-				}else{
-					$ex = Excel::import(new CarsImportToModel, $excelFile);
-
-				}
-				// $excelFile =  public_path('storage/' . config('global.expires_import_file'));
-				// $ex = Excel::import(new ExpiresImport, $excelFile);
-				// //reactiveaza verificarea cheilor straine
-				// //reincarca tabelele care au seeder (tabele mici, usor de completat)
-				// $seeder = new RevisionsTableSeeder;
-				// $seeder->run();
+				$ex = Excel::import(new CarsImport, $excelFile);
+				$excelFile =  public_path('storage/' . config('global.expires_import_file'));
+				$ex = Excel::import(new ExpiresImport, $excelFile);
+				//reactiveaza verificarea cheilor straine
+				//reincarca tabelele care au seeder (tabele mici, usor de completat)
+				$seeder = new CarStatValuesTableSeeder;
+				$seeder->run();
+				$seeder = new RevisionsTableSeeder;
+				$seeder->run();
 				dd($ex);
 				break;
 			case 1: //expirari

@@ -717,33 +717,8 @@ class AvailablecarsTableSeeder extends Seeder
                     'car_id' => 138,
                     'interval_id' => 1,
                 ],
-                [
-                    'valoare' => 1,
-                    'car_id' => 139,
-                    'interval_id' => 1,
-                ],
-                [
-                    'valoare' => 1,
-                    'car_id' => 140,
-                    'interval_id' => 1,
-                ],
-                [
-                    'valoare' => 1,
-                    'car_id' => 141,
-                    'interval_id' => 1,
-                ],
-                [
-                    'valoare' => 1,
-                    'car_id' => 142,
-                    'interval_id' => 1,
-                ],
-                [
-                    'valoare' => 1,
-                    'car_id' => 143,
-                    'interval_id' => 1,
-                ],
 
             )
-        )->count(143)->create();
+        )->count(138)->create();
     }
 }

@@ -34,10 +34,6 @@
                                     <option value="3">utilizatori</option>
                                 </select>
                             </div>
-                            <div class="col-md-4">
-                                <input type="checkbox" id="make_seeder" name="make_seeder" value="make_seeder">
-                                <label for="make_seeder">Creaza seeder-ul</label><br>
-                            </div>
                         </div>
 
                     <div class="card-footer">

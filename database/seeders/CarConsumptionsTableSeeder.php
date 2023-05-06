@@ -29,22 +29,22 @@ class CarConsumptionsTableSeeder extends Seeder
             new Sequence(
                 [
                     'valoare' => 6.5,
-                    'car_id' => 140,
+                    'car_id' => 1,
                     'interval_id' => 1,
                 ],
                 [
                     'valoare' => 9,
-                    'car_id' => 139,
+                    'car_id' => 13,
                     'interval_id' => 1,
                 ],
                 [
                     'valoare' => 11,
-                    'car_id' => 138,
+                    'car_id' => 38,
                     'interval_id' => 1,
                 ],
                 [
                     'valoare' => 12,
-                    'car_id' => 143,
+                    'car_id' => 43,
                     'interval_id' => 1,
                 ],
                 

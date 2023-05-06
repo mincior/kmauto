@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class CarStat extends Model
+class CarStatValue extends Model
 {
-    use HasFactory,  CarStatRelationships;
+    use HasFactory,  CarStatValueRelationships;
             /**
      * The attributes that are mass assignable.
      *
@@ -15,10 +15,7 @@ class CarStat extends Model
      */
     protected $fillable = [
         //Begin craft placeholder #1
-		'observatii', 
-		'interval_id', 
-		'car_id', 
-		'car_stat_value_id', 
+		'name', 
 		//End craft placeholder #1
         
     ];

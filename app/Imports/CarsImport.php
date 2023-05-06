@@ -3,14 +3,12 @@
 namespace App\Imports;
 
 use App\Models\Car;
-use App\Models\User;
 use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithStartRow;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class CarsImportToCollectionAndSeeder implements ToCollection, WithHeadingRow
+class CarsImport implements ToCollection, WithHeadingRow
 {
     /**
      * Undocumented function
