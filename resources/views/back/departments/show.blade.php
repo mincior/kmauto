@@ -22,6 +22,7 @@
                             <img src="{{ asset('img/icons/categorisatie.png') }}" />
                         </div>
                     </div>
+                    
                     <div class="row mb-2">
                         <label for="email" class="col-md-3 col-form-label">Email :</label>
 
@@ -30,6 +31,7 @@
                                 class="form-control-plaintext" value="{{ $department->email }}">
                         </div>
                     </div>
+
                     <div class="row mb-2">
                         <label for="responsabil" class="col-md-3 col-form-label">Responsabil :</label>
 

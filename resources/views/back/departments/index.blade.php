@@ -189,7 +189,8 @@
                     url: "{{ route('back.departments.index') }}",
                     data: function(d) {}
                 },
-                columns: [{
+                columns: [
+                    {
                         data: 'id',
                         name: 'id',
                         searchable: false,

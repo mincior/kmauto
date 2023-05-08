@@ -17,7 +17,7 @@
                             <div id="myToolTip" class="col">Filiale adaugare</div>
 
                             <div class="col fs-5 text-end">
-                                <img src="{{ asset('img/icons/categorisatie.png') }}" />
+                                <img src="{{ asset('img/icons/check.png') }}" />
                             </div>
                         </div>
                     </div>

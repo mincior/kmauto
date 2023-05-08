@@ -47,7 +47,6 @@ class CarsecondsImport implements ToCollection, WithHeadingRow
             Carsecond::create($arr_import);
         }
         $succes = file_put_contents(base_path('/database/seeders/CarsecondImportSeeder.txt'), $seed);
-        dd($succes, $seed) ;
     }
 
     // /**
