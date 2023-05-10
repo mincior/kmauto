@@ -15,6 +15,8 @@ class CarsecondFactory extends Factory
     public function definition()
     {
         return [
+            //Begin craft placeholder #1
+            //End craft placeholder #1
         ];
     }
 

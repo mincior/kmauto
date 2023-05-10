@@ -16,7 +16,7 @@ use App\Http\Controllers\Back\ImportController;
 use App\Http\Controllers\Back\GeneralController;
 use App\Http\Controllers\Back\CustomerController;
 use App\Http\Controllers\Back\IntervalController;
-use App\Http\Controllers\Back\CarsecondController;
+
 use App\Http\Controllers\Back\DeveloperController;
 use App\Http\Controllers\Back\FuelPriceController;
 use App\Http\Controllers\Back\DepartmentController;

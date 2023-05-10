@@ -15,10 +15,7 @@ class Revision extends Model
      */
     protected $fillable = [
         //Begin craft placeholder #1
-		'data', 
-		'km', 
-		'car_id', 
-		//End craft placeholder #1
+        //End craft placeholder #1
         
     ];
     public $timestamps = false;

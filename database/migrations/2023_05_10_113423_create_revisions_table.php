@@ -19,7 +19,7 @@ class CreateRevisionsTable extends Migration
 		Schema::create('revisions', function (Blueprint $table) {
 			$table->id();
 			$table->date('data')->nullable();
-			$table->integer('km');
+			$table->integer('km')->nullable();
 			$table->bigInteger('car_id')->unsigned()->index()->nullable();
 			$table->foreign('car_id')->references('id')->on('cars');		
 		//End craft placeholder #2

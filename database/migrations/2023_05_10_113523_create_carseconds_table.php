@@ -18,8 +18,7 @@ class CreateCarsecondsTable extends Migration
         //Begin craft placeholder #2
 		Schema::create('carseconds', function (Blueprint $table) {
 			$table->id();
-			$table->string('nr_identificare')->unique();
-			$table->string('caroseria')->nullable();
+			$table->string('nr_identificare')->nullable();
 			$table->boolean('are_gps')->nullable();
 			$table->date('recep_auto')->nullable();
 			$table->integer('an_fabr')->nullable();
@@ -31,7 +30,7 @@ class CreateCarsecondsTable extends Migration
 			$table->string('auto_inloc')->nullable();
 			$table->string('km_contract')->nullable();
 			$table->bigInteger('car_id')->unsigned()->index()->nullable();
-			$table->foreign('car_id')->references('id')->on('cars');		
+			$table->foreign('car_id')->references('id')->on('cars');
 			$table->bigInteger('frame_id')->unsigned()->index()->nullable();
 			$table->foreign('frame_id')->references('id')->on('frames');		
 		//End craft placeholder #2

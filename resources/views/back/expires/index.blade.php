@@ -1,14 +1,14 @@
 @extends('layouts.back')
 
 @section('title')
-    &vert; Carseconds
+    &vert; Expires
 @endsection
 
 @section('content')
     <div class="card">
         <div class="card-header d-print-none">
             <div class="row">
-                <div class="col">Carseconds</div>
+                <div class="col">Expires</div>
 
                 <div class="col fs-5 text-end">
                     <img src="{{ asset('img/icons/check.png') }}" />
@@ -23,23 +23,16 @@
                 <div id="ToolbarRight"></div>
             </div>
 
-            <table id="carsecondTable" class="table table-bordered table-striped table-hover table-sm dataTable">
+            <table id="expireTable" class="table table-bordered table-striped table-hover table-sm dataTable">
                 <thead class="table-success">
                     <tr>
                         
-							 <th scope="col"> Nr_identificare</th>
-							 <th scope="col"> Are_gps</th>
-							 <th scope="col"> Recep_auto</th>
-							 <th scope="col"> An_fabr</th>
-							 <th scope="col"> Poluare</th>
-							 <th scope="col"> P_kw</th>
-							 <th scope="col"> Mtma</th>
-							 <th scope="col"> Cap_cyl</th>
-							 <th scope="col"> Cap_rez</th>
-							 <th scope="col"> Auto_inloc</th>
-							 <th scope="col"> Km_contract</th>
+							 <th scope="col"> Casco</th>
+							 <th scope="col"> Rca</th>
+							 <th scope="col"> Rovinieta</th>
+							 <th scope="col"> Itp</th>
+							 <th scope="col"> Final_leasing</th>
 							 <th scope="col"> Car_id</th>
-							 <th scope="col"> Frame_id</th>
 
                     </tr>
                 </thead>
@@ -62,7 +55,7 @@
                 titleAttr: 'Add',
                 enabled: true,
                 action: function(e, dt, node, config) {
-                    document.location.href = '{{ route('back.carseconds.create') }}';
+                    document.location.href = '{{ route('back.expires.create') }}';
                 }
             }
             dtButtonsCenter.push(createButton)
@@ -78,7 +71,7 @@
                         selected: true
                     }).data().id;
 
-                    document.location.href = '{{ route('back.carseconds.show', 'id') }}'.replace("id", id);
+                    document.location.href = '{{ route('back.expires.show', 'id') }}'.replace("id", id);
                 }
             }
             dtButtonsCenter.push(showButton)
@@ -94,7 +87,7 @@
                         selected: true
                     }).data().id;
 
-                    document.location.href = '{{ route('back.carseconds.edit', 'id') }}'.replace("id", id);
+                    document.location.href = '{{ route('back.expires.edit', 'id') }}'.replace("id", id);
                 }
             }
             dtButtonsCenter.push(editButton)
@@ -116,7 +109,7 @@
                 text: '<i class="bi bi-trash"></i>',
                 titleAttr: 'Delete',
                 enabled: false,
-                url: "{{ route('back.carseconds.massDestroy') }}",
+                url: "{{ route('back.expires.massDestroy') }}",
                 action: function(e, dt, node, config) {
                     var ids = $.map(dt.rows({
                         selected: true
@@ -173,62 +166,34 @@
             /* ------------------------------------------------------------------------ */
             let dtOverrideGlobals = {
                 ajax: {
-                    url: "{{ route('back.carseconds.index') }}",
+                    url: "{{ route('back.expires.index') }}",
                     data: function(d) {}
                 },
                 columns: [
                     
 					{
-						 data: 'nr_identificare',
-						 name: 'nr_identificare',
+						 data: 'casco',
+						 name: 'casco',
 					},
 					{
-						 data: 'are_gps',
-						 name: 'are_gps',
+						 data: 'rca',
+						 name: 'rca',
 					},
 					{
-						 data: 'recep_auto',
-						 name: 'recep_auto',
+						 data: 'rovinieta',
+						 name: 'rovinieta',
 					},
 					{
-						 data: 'an_fabr',
-						 name: 'an_fabr',
+						 data: 'itp',
+						 name: 'itp',
 					},
 					{
-						 data: 'poluare',
-						 name: 'poluare',
-					},
-					{
-						 data: 'p_kw',
-						 name: 'p_kw',
-					},
-					{
-						 data: 'mtma',
-						 name: 'mtma',
-					},
-					{
-						 data: 'cap_cyl',
-						 name: 'cap_cyl',
-					},
-					{
-						 data: 'cap_rez',
-						 name: 'cap_rez',
-					},
-					{
-						 data: 'auto_inloc',
-						 name: 'auto_inloc',
-					},
-					{
-						 data: 'km_contract',
-						 name: 'km_contract',
+						 data: 'final_leasing',
+						 name: 'final_leasing',
 					},
 					{
 						 data: 'car_id',
 						 name: 'car_id',
-					},
-					{
-						 data: 'frame_id',
-						 name: 'frame_id',
 					},
 
                 ],
@@ -244,7 +209,7 @@
                 }
             };
             /* ------------------------------------------- */
-            let oTable = $('#carsecondTable').DataTable(dtOverrideGlobals);
+            let oTable = $('#expireTable').DataTable(dtOverrideGlobals);
             /* ------------------------------------------------------------------------ */
             new $.fn.dataTable.Buttons(oTable, {
                 name: 'BtnGroupLeft',
@@ -272,8 +237,8 @@
                 oTable.buttons('.selectMultiple').enable(selectedRows > 0);
             });
 
-            // var table = $('#carsecondTable').DataTable();
-            // $('#carsecondTable').on('click', 'tr', function() {
+            // var table = $('#expireTable').DataTable();
+            // $('#expireTable').on('click', 'tr', function() {
             //     let department_id = table.row($(this)).data().id;
             //     let set_department_id_url = '/back/general/setDepartmentId';
             //     $.ajax({

@@ -15,12 +15,12 @@
             <hr class="narrow">
         </a>
         <ul class="dropdown-menu" aria-labelledby="offcanvasNavbarDropdown">
-            <li><a  href="{{ route('back.carseconds.index') }}" style="color:rgb(22, 22, 11);">Masini - detalii</a></li>
             <li><a  href="{{ route('back.brands.index') }}" style="color:rgb(22, 22, 11);">Masini - marca</a></li>
             <li><a  href="{{ route('back.types.index') }}" style="color:rgb(22, 22, 11);">Masini - model</a></li>
             <hr class="narrow">
         </ul>
     </li>
+        {{-- craft insert link placeholder --}}
         <li><a  href="{{ route('view-upload-form') }}" style="color:beige;">Incarca tabele din excel</a></li>
         <li><a  href="{{ route('back.departments.index') }}" style="color:beige;">Filiale</a></li>
         <li><a  href="{{ route('back.months.index') }}" style="color:beige;">Luni</a></li>
