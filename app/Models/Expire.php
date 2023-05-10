@@ -15,7 +15,13 @@ class Expire extends Model
      */
     protected $fillable = [
         //Begin craft placeholder #1
-        //End craft placeholder #1
+		'casco', 
+		'rca', 
+		'rovinieta', 
+		'itp', 
+		'final_leasing', 
+		'car_id', 
+		//End craft placeholder #1
         
     ];
     public $timestamps = false;

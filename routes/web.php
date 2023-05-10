@@ -1,4 +1,12 @@
 <?php
+//Begin craft placeholder #1
+use App\Http\Controllers\Back\ExpireController;
+use App\Http\Controllers\Back\CarAsigController;
+use App\Http\Controllers\Back\RevisionController;
+use App\Http\Controllers\Back\CarsecondController;
+
+
+
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -16,7 +24,6 @@ use App\Http\Controllers\Back\ImportController;
 use App\Http\Controllers\Back\GeneralController;
 use App\Http\Controllers\Back\CustomerController;
 use App\Http\Controllers\Back\IntervalController;
-
 use App\Http\Controllers\Back\DeveloperController;
 use App\Http\Controllers\Back\FuelPriceController;
 use App\Http\Controllers\Back\DepartmentController;
@@ -44,6 +51,31 @@ Route::middleware('auth')->group(function () {
     });
     // Backend routes
     Route::prefix('back')->as('back.')->group(function () {
+        //Begin craft placeholder #2
+		//Expire
+		Route::controller(ExpireController::class)->group(function () {
+			Route::delete('/expires/massDestroy', 'massDestroy')->name('expires.massDestroy');
+			Route::resource('/expires', ExpireController::class)->except(['destroy']);
+		});
+		/* ---------------------------------------- */
+
+		//CarAsig
+		Route::controller(CarAsigController::class)->group(function () {
+			Route::delete('/car-asigs/massDestroy', 'massDestroy')->name('car-asigs.massDestroy');
+			Route::resource('/car-asigs', CarAsigController::class)->except(['destroy']);
+		});
+		/* ---------------------------------------- */
+
+		//Revision
+		Route::controller(RevisionController::class)->group(function () {
+			Route::delete('/revisions/massDestroy', 'massDestroy')->name('revisions.massDestroy');
+			Route::resource('/revisions', RevisionController::class)->except(['destroy']);
+		});
+		/* ---------------------------------------- */
+
+
+
+
         // General routines
         Route::controller(GeneralController::class)->group(function () {
             Route::get('/general/get-month-intervals/{anul_luna}', 'getMonthIntervals')->name('get-month-intervals');
