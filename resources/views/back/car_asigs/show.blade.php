@@ -25,11 +25,19 @@
                 <div class="card-body">
                     
 					 <div class="row mb-2">
-						 <label for="valoare" class="col-md-2 col-form-label">Valoare :</label>
+						 <label for="observatii" class="col-md-2 col-form-label">Observatii :</label>
 
 						 <div class="col-md-8">
-							 <input id="valoare" name="valoare" type="text" readonly class="form-control-plaintext"
-								 value="{{ $car_asig->valoare }}">
+							 <input id="observatii" name="observatii" type="text" readonly class="form-control-plaintext"
+								 value="{{ $car_asig->observatii }}">
+						 </div>
+					 </div>
+					 <div class="row mb-2">
+						 <label for="car_asig_value_id" class="col-md-2 col-form-label">Car_asig_value_id :</label>
+
+						 <div class="col-md-8">
+							 <input id="car_asig_value_id" name="car_asig_value_id" type="text" readonly class="form-control-plaintext"
+								 value="{{ $car_asig->car_asig_value_id }}">
 						 </div>
 					 </div>
 					 <div class="row mb-2">

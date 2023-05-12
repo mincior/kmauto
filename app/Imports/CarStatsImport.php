@@ -36,7 +36,7 @@ class CarStatsImport implements ToCollection, WithHeadingRow
             //CarStat::create($arr_import);
         }
         if($seed){//atentie. scrierea dureaza ceva. Nu va grabiti sa dati alta scriere
-            file_put_contents(base_path('/database/seeders/CarStatsImportSeeder.txt'), stripslashes($seed))
+            file_put_contents(base_path('/database/seeders/CarStatsImportSeeder.txt'), stripslashes($seed));
         }
     }
 

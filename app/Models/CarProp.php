@@ -15,9 +15,10 @@ class CarProp extends Model
      */
     protected $fillable = [
         //Begin craft placeholder #1
-		'valoare', 
+		'observatii', 
 		'interval_id', 
 		'car_id', 
+		'car_prop_value_id', 
 		//End craft placeholder #1
         
     ];

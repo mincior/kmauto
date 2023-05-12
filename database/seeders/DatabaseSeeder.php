@@ -4,6 +4,18 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Database\Seeders\CarsTableSeeder;
+use Database\Seeders\CustomersSeeder;
+use Database\Seeders\FuelsTableSeeder;
+use Database\Seeders\TypesTableSeeder;
+use Database\Seeders\UsersTableSeeder;
+use Database\Seeders\BrandsTableSeeder;
+use Database\Seeders\MonthsTableSeeder;
+use Database\Seeders\IntervalsTableSeeder;
+use Database\Seeders\RevisionsTableSeeder;
+use Database\Seeders\DepartmentsTableSeeder;
+use Database\Seeders\CarAsigValuesTableSeeder;
+use Database\Seeders\CarStatValuesTableSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -22,6 +34,8 @@ class DatabaseSeeder extends Seeder
         $this->call(FuelsTableSeeder::class);
         $this->call(CarsTableSeeder::class);
         $this->call(RevisionsTableSeeder::class);
+        $this->call(CarAsigValuesTableSeeder::class);
+        $this->call(CarAsigsTableSeeder::class);
         $this->call(CarStatValuesTableSeeder::class);
         $this->call(CarStatsTableSeeder::class);
         $this->call(CarDepsTableSeeder::class);
@@ -33,6 +47,7 @@ class DatabaseSeeder extends Seeder
         $this->call(CarConsumptionsTableSeeder::class);
         $this->call(AvailablecarsTableSeeder::class);
         $this->call(ExpiresTableSeeder::class);
+        $this->call(CarPropValuesTableSeeder::class);
         $this->call(CarPropsTableSeeder::class);
         $this->call(AvailableusersTableSeeder::class);
         $this->call(UserKmlimitsTableSeeder::class);

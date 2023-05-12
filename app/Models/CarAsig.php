@@ -15,7 +15,8 @@ class CarAsig extends Model
      */
     protected $fillable = [
         //Begin craft placeholder #1
-		'valoare', 
+		'observatii', 
+		'car_asig_value_id', 
 		'interval_id', 
 		'car_id', 
 		//End craft placeholder #1

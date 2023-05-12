@@ -27,13 +27,25 @@
                     <div class="card-body">
                         
 						 <div class="row mb-2">
-							 <label for="valoare" class="col-md-2 col-form-label">Valoare :</label>
+							 <label for="observatii" class="col-md-2 col-form-label">Observatii :</label>
 
 							 <div class="col-md-3">
-								 <input autocomplete="on" id="valoare" name="valoare" type="text"
-								 class="form-control @error('valoare') is-invalid @enderror" value="{{ old('valoare') }}">
+								 <input autocomplete="on" id="observatii" name="observatii" type="text"
+								 class="form-control @error('observatii') is-invalid @enderror" value="{{ old('observatii') }}">
 
-								 @error('valoare')
+								 @error('observatii')
+								 <span class="invalid-feedback" role="alert">{{ $message }}</span>
+								 @enderror
+							 </div>
+						 </div>
+						 <div class="row mb-2">
+							 <label for="car_asig_value_id" class="col-md-2 col-form-label">Car_asig_value_id :</label>
+
+							 <div class="col-md-3">
+								 <input autocomplete="on" id="car_asig_value_id" name="car_asig_value_id" type="text"
+								 class="form-control @error('car_asig_value_id') is-invalid @enderror" value="{{ old('car_asig_value_id') }}">
+
+								 @error('car_asig_value_id')
 								 <span class="invalid-feedback" role="alert">{{ $message }}</span>
 								 @enderror
 							 </div>

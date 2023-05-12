@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 //Begin craft placeholder #1
-class CreateCarPropsTable extends Migration
+class CreateCarAsigsTable extends Migration
 //End craft placeholder #1
 {
     /**
@@ -16,9 +16,11 @@ class CreateCarPropsTable extends Migration
     public function up()
     {
         //Begin craft placeholder #2
-		Schema::create('car_props', function (Blueprint $table) {
+		Schema::create('car_asigs', function (Blueprint $table) {
 			$table->id();
-			$table->string('valoare');
+			$table->string('observatii');
+			$table->bigInteger('car_asig_value_id')->unsigned()->index()->nullable();
+			$table->foreign('car_asig_value_id')->references('id')->on('car_asig_values');
 			$table->bigInteger('interval_id')->unsigned()->index()->nullable();
 			$table->foreign('interval_id')->references('id')->on('intervals');
 			$table->bigInteger('car_id')->unsigned()->index()->nullable();
@@ -35,7 +37,7 @@ class CreateCarPropsTable extends Migration
     public function down()
     {
     //Begin craft placeholder #3
-	Schema::dropIfExists('car_props');
+	Schema::dropIfExists('car_asigs');
 	//End craft placeholder #3
     }
 }

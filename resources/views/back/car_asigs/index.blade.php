@@ -27,7 +27,8 @@
                 <thead class="table-success">
                     <tr>
                         
-							 <th scope="col"> Valoare</th>
+							 <th scope="col"> Observatii</th>
+							 <th scope="col"> Car_asig_value_id</th>
 							 <th scope="col"> Interval_id</th>
 							 <th scope="col"> Car_id</th>
 
@@ -169,8 +170,12 @@
                 columns: [
                     
 					{
-						 data: 'valoare',
-						 name: 'valoare',
+						 data: 'observatii',
+						 name: 'observatii',
+					},
+					{
+						 data: 'car_asig_value_id',
+						 name: 'car_asig_value_id',
 					},
 					{
 						 data: 'interval_id',

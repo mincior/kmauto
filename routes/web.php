@@ -1,7 +1,18 @@
 <?php
 //Begin craft placeholder #1
-use App\Http\Controllers\Back\ExpireController;
+use App\Http\Controllers\Back\CarAsigValueController;
 use App\Http\Controllers\Back\CarAsigController;
+use App\Http\Controllers\Back\CarStatValueController;
+use App\Http\Controllers\Back\CarStatController;
+use App\Http\Controllers\Back\CarPropValueController;
+use App\Http\Controllers\Back\CarPropController;
+
+
+
+
+
+use App\Http\Controllers\Back\ExpireController;
+
 use App\Http\Controllers\Back\RevisionController;
 use App\Http\Controllers\Back\CarsecondController;
 
@@ -53,10 +64,10 @@ Route::middleware('auth')->group(function () {
     // Backend routes
     Route::prefix('back')->as('back.')->group(function () {
         //Begin craft placeholder #2
-		//Expire
-		Route::controller(ExpireController::class)->group(function () {
-			Route::delete('/expires/massDestroy', 'massDestroy')->name('expires.massDestroy');
-			Route::resource('/expires', ExpireController::class)->except(['destroy']);
+		//CarAsigValue
+		Route::controller(CarAsigValueController::class)->group(function () {
+			Route::delete('/car-asig-values/massDestroy', 'massDestroy')->name('car-asig-values.massDestroy');
+			Route::resource('/car-asig-values', CarAsigValueController::class)->except(['destroy']);
 		});
 		/* ---------------------------------------- */
 
@@ -66,6 +77,47 @@ Route::middleware('auth')->group(function () {
 			Route::resource('/car-asigs', CarAsigController::class)->except(['destroy']);
 		});
 		/* ---------------------------------------- */
+
+		//CarStatValue
+		Route::controller(CarStatValueController::class)->group(function () {
+			Route::delete('/car-stat-values/massDestroy', 'massDestroy')->name('car-stat-values.massDestroy');
+			Route::resource('/car-stat-values', CarStatValueController::class)->except(['destroy']);
+		});
+		/* ---------------------------------------- */
+
+		//CarStat
+		Route::controller(CarStatController::class)->group(function () {
+			Route::delete('/car-stats/massDestroy', 'massDestroy')->name('car-stats.massDestroy');
+			Route::resource('/car-stats', CarStatController::class)->except(['destroy']);
+		});
+		/* ---------------------------------------- */
+
+		//CarPropValue
+		Route::controller(CarPropValueController::class)->group(function () {
+			Route::delete('/car-prop-values/massDestroy', 'massDestroy')->name('car-prop-values.massDestroy');
+			Route::resource('/car-prop-values', CarPropValueController::class)->except(['destroy']);
+		});
+		/* ---------------------------------------- */
+
+		//CarProp
+		Route::controller(CarPropController::class)->group(function () {
+			Route::delete('/car-props/massDestroy', 'massDestroy')->name('car-props.massDestroy');
+			Route::resource('/car-props', CarPropController::class)->except(['destroy']);
+		});
+		/* ---------------------------------------- */
+
+
+
+
+
+
+		//Expire
+		Route::controller(ExpireController::class)->group(function () {
+			Route::delete('/expires/massDestroy', 'massDestroy')->name('expires.massDestroy');
+			Route::resource('/expires', ExpireController::class)->except(['destroy']);
+		});
+		/* ---------------------------------------- */
+
 
 		//Revision
 		Route::controller(RevisionController::class)->group(function () {
