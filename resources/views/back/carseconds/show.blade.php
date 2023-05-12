@@ -113,6 +113,14 @@
 						 </div>
 					 </div>
 					 <div class="row mb-2">
+						 <label for="caroseria" class="col-md-2 col-form-label">Caroseria :</label>
+
+						 <div class="col-md-8">
+							 <input id="caroseria" name="caroseria" type="text" readonly class="form-control-plaintext"
+								 value="{{ $carsecond->caroseria }}">
+						 </div>
+					 </div>
+					 <div class="row mb-2">
 						 <label for="car_id" class="col-md-2 col-form-label">Car_id :</label>
 
 						 <div class="col-md-8">

@@ -446,7 +446,7 @@
 	'id' => '149', 	'numar' => 'B-135-CLT', 	'fuel_id' => '5', 	'type_id' => '5', 	'brand_id' => '1', 
 ],
 [
-	'id' => '150', 	'numar' => 'B-93-CNL', 	'fuel_id' => '5', 	'type_id' => '0', 	'brand_id' => '0', 
+	'id' => '150', 	'numar' => 'B-93-CNL', 	'fuel_id' => '5', 	'type_id' => '30', 	'brand_id' => '14', 
 ],
 [
 	'id' => '151', 	'numar' => 'B-140-CLT', 	'fuel_id' => '5', 	'type_id' => '7', 	'brand_id' => '2', 

@@ -29,6 +29,10 @@
 
 
 
+
+
+
+
         <li><a  href="{{ route('view-upload-form') }}" style="color:beige;">Incarca tabele din excel</a></li>
         <li><a  href="{{ route('back.departments.index') }}" style="color:beige;">Filiale</a></li>
         <li><a  href="{{ route('back.months.index') }}" style="color:beige;">Luni</a></li>

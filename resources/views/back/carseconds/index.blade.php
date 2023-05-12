@@ -38,6 +38,7 @@
 							 <th scope="col"> Cap_rez</th>
 							 <th scope="col"> Auto_inloc</th>
 							 <th scope="col"> Km_contract</th>
+							 <th scope="col"> Caroseria</th>
 							 <th scope="col"> Car_id</th>
 							 <th scope="col"> Frame_id</th>
 
@@ -221,6 +222,10 @@
 					{
 						 data: 'km_contract',
 						 name: 'km_contract',
+					},
+					{
+						 data: 'caroseria',
+						 name: 'caroseria',
 					},
 					{
 						 data: 'car_id',

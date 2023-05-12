@@ -39,9 +39,11 @@ class ExpiresImport implements ToCollection, WithHeadingRow
                 $seed = $seed . "\t" . "'" . $key . "' => '" . $value . "', " ;
             }
             $seed = $seed . "\n],\n";
-            Expire::create($arr_import);
+            //Expire::create($arr_import);
         }
-        file_put_contents(base_path('/database/seeders/ExpiresImportSeeder.txt'), stripslashes($seed));
+        if($seed){//atentie. scrierea dureaza ceva. Nu va grabiti sa dati alta scriere
+            file_put_contents(base_path('/database/seeders/ExpiresImportSeeder.txt'), stripslashes($seed));
+        }
 
     }
 

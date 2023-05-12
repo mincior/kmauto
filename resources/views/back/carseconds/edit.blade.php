@@ -170,6 +170,19 @@
 							 </div>
 						 </div>
 						 <div class="row mb-2">
+							 <label for="caroseria" class="col-md-2 col-form-label">Caroseria :</label>
+
+							 <div class="col-md-3">
+								 <input autocomplete="on" id="caroseria" name="caroseria" type="text" 
+									 class="form-control @error('caroseria') is-invalid @enderror" 
+									 value="{{ old('caroseria') ? old('caroseria') : $carsecond->caroseria }}" >
+
+								 @error('caroseria')
+									 <span class="invalid-feedback" role="alert">{{ $message }}</span>
+								 @enderror
+							 </div>
+						 </div>
+						 <div class="row mb-2">
 							 <label for="car_id" class="col-md-2 col-form-label">Car_id :</label>
 
 							 <div class="col-md-3">

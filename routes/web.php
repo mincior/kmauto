@@ -8,6 +8,7 @@ use App\Http\Controllers\Back\CarsecondController;
 
 
 
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
@@ -72,6 +73,9 @@ Route::middleware('auth')->group(function () {
 			Route::resource('/revisions', RevisionController::class)->except(['destroy']);
 		});
 		/* ---------------------------------------- */
+
+
+
 
 
 

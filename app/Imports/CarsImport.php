@@ -33,9 +33,12 @@ class CarsImport implements ToCollection, WithHeadingRow
                 $seed = $seed . "\t" . "'" . $key . "' => '" . $value . "', " ;
             }
             $seed = $seed . "\n],\n";
-            Car::create($arr_import);
+            //Car::create($arr_import); //debifeaza aici daca vrei sa scrie in baza de date. Altfel creaza doar fisierul pentru seed
+            //care se va scrie cu copiere si lipire in fisierul seed adevarat. 
         }
-        file_put_contents(base_path('/database/seeders/CarsImportSeeder.txt'), stripslashes($seed));
+        if($seed){//atentie. scrierea dureaza ceva. Nu va grabiti sa dati alta scriere
+            file_put_contents(base_path('/database/seeders/CarsImportSeeder.txt'), stripslashes($seed));
+        }
     }
 
     // /**

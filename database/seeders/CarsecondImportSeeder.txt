@@ -167,13 +167,13 @@
 	'id' => '56', 	'nr_identificare' => 'TMBAJ7NX9MY118037', 	'caroseria' => 'AA berlina', 	'are_gps' => '', 	'recep_auto' => '2021-03-03', 	'an_fabr' => '', 	'poluare' => '', 	'p_kw' => '', 	'mtma' => '', 	'cap_cyl' => '', 	'cap_rez' => '', 	'auto_inloc' => 'Da 15 zile', 	'km_contract' => '100', 	'car_id' => '56', 	'frame_id' => '3', 
 ],
 [
-	'id' => '57', 	'nr_identificare' => 'WF0EXXTTRELT41844', 	'caroseria' => '', 	'are_gps' => '1', 	'recep_auto' => '', 	'an_fabr' => '2020', 	'poluare' => '6', 	'p_kw' => '95.6', 	'mtma' => '3500', 	'cap_cyl' => '1995', 	'cap_rez' => '70', 	'auto_inloc' => '', 	'km_contract' => '', 	'car_id' => '57', 	'frame_id' => '0', 
+	'id' => '57', 	'nr_identificare' => 'WF0EXXTTRELT41844', 	'caroseria' => '', 	'are_gps' => '1', 	'recep_auto' => '', 	'an_fabr' => '2020', 	'poluare' => '6', 	'p_kw' => '95.6', 	'mtma' => '3500', 	'cap_cyl' => '1995', 	'cap_rez' => '70', 	'auto_inloc' => '', 	'km_contract' => '', 	'car_id' => '57', 	'frame_id' => '17', 
 ],
 [
-	'id' => '58', 	'nr_identificare' => 'WF0EXXTTRELT41859', 	'caroseria' => '', 	'are_gps' => '1', 	'recep_auto' => '', 	'an_fabr' => '2020', 	'poluare' => '6', 	'p_kw' => '95.6', 	'mtma' => '3500', 	'cap_cyl' => '1995', 	'cap_rez' => '70', 	'auto_inloc' => '', 	'km_contract' => '', 	'car_id' => '58', 	'frame_id' => '0', 
+	'id' => '58', 	'nr_identificare' => 'WF0EXXTTRELT41859', 	'caroseria' => '', 	'are_gps' => '1', 	'recep_auto' => '', 	'an_fabr' => '2020', 	'poluare' => '6', 	'p_kw' => '95.6', 	'mtma' => '3500', 	'cap_cyl' => '1995', 	'cap_rez' => '70', 	'auto_inloc' => '', 	'km_contract' => '', 	'car_id' => '58', 	'frame_id' => '17', 
 ],
 [
-	'id' => '59', 	'nr_identificare' => 'WF0EXXTTRELT41872', 	'caroseria' => '', 	'are_gps' => '1', 	'recep_auto' => '2023-01-16', 	'an_fabr' => '2020', 	'poluare' => '6', 	'p_kw' => '95.6', 	'mtma' => '3500', 	'cap_cyl' => '1995', 	'cap_rez' => '70', 	'auto_inloc' => '', 	'km_contract' => '', 	'car_id' => '59', 	'frame_id' => '0', 
+	'id' => '59', 	'nr_identificare' => 'WF0EXXTTRELT41872', 	'caroseria' => '', 	'are_gps' => '1', 	'recep_auto' => '2023-01-16', 	'an_fabr' => '2020', 	'poluare' => '6', 	'p_kw' => '95.6', 	'mtma' => '3500', 	'cap_cyl' => '1995', 	'cap_rez' => '70', 	'auto_inloc' => '', 	'km_contract' => '', 	'car_id' => '59', 	'frame_id' => '17', 
 ],
 [
 	'id' => '60', 	'nr_identificare' => 'VF3YD2MFC12H22047', 	'caroseria' => 'BB furgon', 	'are_gps' => '1', 	'recep_auto' => '', 	'an_fabr' => '2018', 	'poluare' => '6', 	'p_kw' => '96', 	'mtma' => '3500', 	'cap_cyl' => '1997', 	'cap_rez' => '90', 	'auto_inloc' => '', 	'km_contract' => '', 	'car_id' => '60', 	'frame_id' => '1', 

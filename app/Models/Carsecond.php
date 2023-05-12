@@ -26,6 +26,7 @@ class Carsecond extends Model
 		'cap_rez', 
 		'auto_inloc', 
 		'km_contract', 
+		'caroseria', 
 		'car_id', 
 		'frame_id', 
 		//End craft placeholder #1

@@ -33,9 +33,11 @@ class CarStatsImport implements ToCollection, WithHeadingRow
                 $seed = $seed . "\t" . "'" . $key . "' => '" . $value . "', " ;
             }
             $seed = $seed . "\n],\n";
-            CarStat::create($arr_import);
+            //CarStat::create($arr_import);
         }
-        file_put_contents(base_path('/database/seeders/CarStatsImportSeeder.txt'), stripslashes($seed));
+        if($seed){//atentie. scrierea dureaza ceva. Nu va grabiti sa dati alta scriere
+            file_put_contents(base_path('/database/seeders/CarStatsImportSeeder.txt'), stripslashes($seed))
+        }
     }
 
     // /**

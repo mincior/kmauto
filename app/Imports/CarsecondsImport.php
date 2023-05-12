@@ -44,9 +44,11 @@ class CarsecondsImport implements ToCollection, WithHeadingRow
                 $seed = $seed . "\t" . "'" . $key . "' => '" . $value . "', " ;
             }
             $seed = $seed . "\n],\n";
-            Carsecond::create($arr_import);
+            //Carsecond::create($arr_import);
         }
-        $succes = file_put_contents(base_path('/database/seeders/CarsecondImportSeeder.txt'), $seed);
+        if($seed){
+            $succes = file_put_contents(base_path('/database/seeders/CarsecondImportSeeder.txt'), $seed);
+        }
     }
 
     // /**
