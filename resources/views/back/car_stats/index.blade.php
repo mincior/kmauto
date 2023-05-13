@@ -30,7 +30,7 @@
 							 <th scope="col"> Observatii</th>
 							 <th scope="col"> Interval_id</th>
 							 <th scope="col"> Car_id</th>
-							 <th scope="col"> Car_stat_value_id</th>
+							 <th scope="col"> CarStatValue Name</th>
 
                     </tr>
                 </thead>
@@ -183,7 +183,15 @@
 					},
 					{
 						 data: 'car_stat_value_id',
-						 name: 'car_stat_value_id',
+						 
+						render: function(data, type, row, meta) {
+							if ( typeof row.car_stat_value.name === 'undefined'){
+								return '';
+							}else{
+								return row.car_stat_value.name;
+							}
+						},
+
 					},
 
                 ],

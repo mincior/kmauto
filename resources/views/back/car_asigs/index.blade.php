@@ -28,7 +28,7 @@
                     <tr>
                         
 							 <th scope="col"> Observatii</th>
-							 <th scope="col"> Car_asig_value_id</th>
+							 <th scope="col"> CarAsigValue Name</th>
 							 <th scope="col"> Interval_id</th>
 							 <th scope="col"> Car_id</th>
 
@@ -175,7 +175,15 @@
 					},
 					{
 						 data: 'car_asig_value_id',
-						 name: 'car_asig_value_id',
+						 
+						render: function(data, type, row, meta) {
+							if (row.car_asig_value === null){
+								return '';
+							}else{
+								return row.car_asig_value.name;
+							}
+						},
+
 					},
 					{
 						 data: 'interval_id',

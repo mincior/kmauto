@@ -18,8 +18,8 @@ class CreateMonthsTable extends Migration
         //Begin craft placeholder #2
 		Schema::create('months', function (Blueprint $table) {
 			$table->id();
-			$table->date('data_raportarii')->unique();
 			$table->string('anul_luna');		
+			$table->date('data_raportarii')->unique();
 			$table->boolean('select')->default(0);
 			$table->boolean('inchisa')->default(0);		
 		//End craft placeholder #2

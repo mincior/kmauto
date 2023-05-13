@@ -18,9 +18,9 @@ class CreateIntervalsTable extends Migration
         //Begin craft placeholder #2
 		Schema::create('intervals', function (Blueprint $table) {
 			$table->id();
+			$table->string('interval');
 			$table->date('data_inceput');
 			$table->date('data_sfarsit');
-			$table->string('interval');
 			$table->boolean('select')->default(0);
 		    $table->bigInteger('month_id')->unsigned()->index()->nullable();
 			$table->foreign('month_id')->references('id')->on('months');		
