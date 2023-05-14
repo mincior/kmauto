@@ -28,8 +28,8 @@
                     <tr>
                         
 							 <th scope="col"> Observatii</th>
-							 <th scope="col"> Interval_id</th>
-							 <th scope="col"> Car_id</th>
+							 <th scope="col"> Interval Interval</th>
+							 <th scope="col"> Car Numar</th>
 							 <th scope="col"> CarStatValue Name</th>
 
                     </tr>
@@ -175,17 +175,33 @@
 					},
 					{
 						 data: 'interval_id',
-						 name: 'interval_id',
+						 
+						render: function(data, type, row, meta) {
+							if (row.car_stat_interval === null){
+								return '';
+							}else{
+								return row.car_stat_interval.interval;
+							}
+						},
+
 					},
 					{
 						 data: 'car_id',
-						 name: 'car_id',
+						 
+						render: function(data, type, row, meta) {
+							if (row.car_stat_car === null){
+								return '';
+							}else{
+								return row.car_stat_car.numar;
+							}
+						},
+
 					},
 					{
 						 data: 'car_stat_value_id',
 						 
 						render: function(data, type, row, meta) {
-							if ( typeof row.car_stat_value.name === 'undefined'){
+							if (row.car_stat_value === null){
 								return '';
 							}else{
 								return row.car_stat_value.name;

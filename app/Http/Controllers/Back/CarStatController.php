@@ -15,7 +15,7 @@ class CarStatController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $carStats = CarStat::with('carStatValue')->select(sprintf('%s.*', (new CarStat)->getTable()));
+            $carStats = CarStat::with('car_stat_interval', 'car_stat_car', 'car_stat_value')->select(sprintf('%s.*', (new CarStat)->getTable()));
             return DataTables::of($carStats)
                 ->addColumn('DT_RowId', function ($row) {return $row->id;})
                 // ->editColumn('address_street', function ($row) {return $row->address;})

@@ -15,7 +15,7 @@ class CarAsigController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $carAsigs = CarAsig::with('carAsigValue')->select(sprintf('%s.*', (new CarAsig)->getTable()));
+            $carAsigs = CarAsig::with('car_asig_value', 'car_asig_interval', 'car_asig_car')->select(sprintf('%s.*', (new CarAsig)->getTable()));
             return DataTables::of($carAsigs)
                 ->addColumn('DT_RowId', function ($row) {return $row->id;})
                 // ->editColumn('address_street', function ($row) {return $row->address;})

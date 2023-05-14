@@ -15,7 +15,7 @@ class CarPropController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $carProps = CarProp::select(sprintf('%s.*', (new CarProp)->getTable()));
+            $carProps = CarProp::with('car_prop_interval', 'car_prop_car', 'car_prop_value')->select(sprintf('%s.*', (new CarProp)->getTable()));
             return DataTables::of($carProps)
                 ->addColumn('DT_RowId', function ($row) {return $row->id;})
                 // ->editColumn('address_street', function ($row) {return $row->address;})
