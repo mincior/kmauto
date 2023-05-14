@@ -7,7 +7,7 @@ use Illuminate\Database\Query\Builder;
 trait CarStatValueRelationships
 {
 	//Begin craft placeholder #1
-	public function carStats(){
+	public function car_stats(){
 		return $this->hasMany('App\\Models\\CarStat');
 	}
 

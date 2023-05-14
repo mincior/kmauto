@@ -29,6 +29,8 @@
                         
 							 <th scope="col"> Name</th>
 
+                        <th scope="col"> Id</th>
+
                     </tr>
                 </thead>
             </table>
@@ -171,13 +173,18 @@
 						 name: 'name',
 					},
 
+                    {
+						 data: 'id',
+						 name: 'id',
+					},
+
                 ],
                 select: {
                     selector: 'td:not(.no-select)',
                 },
                 ordering: true,
                 order: [
-                    [1, "asc"],
+                    [0, "asc"],
                 ],
                 preDrawCallback: function(settings) {
                     oTable.columns.adjust();

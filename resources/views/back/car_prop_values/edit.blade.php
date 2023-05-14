@@ -9,8 +9,9 @@
     /*  Php header placeholder */
     ?>
     
-    <form id="myForm" method="POST" action="{{ route('back.car-prop-values.update', [$car_prop_value->id]) }}" enctype="multipart/form-data">
+    <form id="myForm" method="POST" action="{{ route('back.car-prop-values.update', [$carPropValue->id]) }}" enctype="multipart/form-data">
         @csrf
+        @method('PUT')
         <div class="container mt-4">
             <div class="col-12">
                 <div class="card mb-3">
@@ -32,7 +33,7 @@
 							 <div class="col-md-3">
 								 <input autocomplete="on" id="name" name="name" type="text" 
 									 class="form-control @error('name') is-invalid @enderror" 
-									 value="{{ old('name') ? old('name') : $car_prop_value->name }}" >
+									 value="{{ old('name') ? old('name') : $carPropValue->name }}" >
 
 								 @error('name')
 									 <span class="invalid-feedback" role="alert">{{ $message }}</span>

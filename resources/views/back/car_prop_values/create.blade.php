@@ -11,6 +11,7 @@
     
     <form id="myForm" method="POST" action="{{ route('back.car-prop-values.store') }}" enctype="multipart/form-data">
         @csrf
+        @method('PUT')
         <div class="container mt-4">
             <div class="col-12">
                 <div class="card mb-3">

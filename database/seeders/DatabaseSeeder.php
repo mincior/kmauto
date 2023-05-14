@@ -54,6 +54,8 @@ class DatabaseSeeder extends Seeder
         $this->call(FuelPricesTableSeeder::class);
         $this->call(StatsTableSeeder::class);
         /* database table seeder placeholder */
+		$this->call(CarAsigValuesTableSeeder::class);
+
 		$this->call(CarPropsTableSeeder::class);
 
 		$this->call(CarAsigsTableSeeder::class);

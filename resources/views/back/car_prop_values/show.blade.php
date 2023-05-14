@@ -29,7 +29,7 @@
 
 						 <div class="col-md-8">
 							 <input id="name" name="name" type="text" readonly class="form-control-plaintext"
-								 value="{{ $car_prop_value->name }}">
+								 value="{{ $carPropValue->name }}">
 						 </div>
 					 </div>
 
