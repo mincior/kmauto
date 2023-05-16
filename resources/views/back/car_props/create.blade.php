@@ -11,6 +11,7 @@
     
     <form id="myForm" method="POST" action="{{ route('back.car-props.store') }}" enctype="multipart/form-data">
         @csrf
+        @method('PUT')
         <div class="container mt-4">
             <div class="col-12">
                 <div class="card mb-3">
@@ -27,49 +28,58 @@
                     <div class="card-body">
                         
 						 <div class="row mb-2">
-							 <label for="observatii" class="col-md-2 col-form-label">Observatii :</label>
+							 <label for="carProp" class="col-md-2 col-form-label">Observatii :</label>
 
-							 <div class="col-md-3">
-								 <input autocomplete="on" id="observatii" name="observatii" type="text"
-								 class="form-control @error('observatii') is-invalid @enderror" value="{{ old('observatii') }}">
+							 <div class="col-md-4">
+								 <input autocomplete="on" id="carProp" name="carProp" type="text"
+								 class="form-control @error('carProp') is-invalid @enderror" value="{{ old('carProp') }}">
 
-								 @error('observatii')
+								 @error('carProp')
 								 <span class="invalid-feedback" role="alert">{{ $message }}</span>
 								 @enderror
 							 </div>
 						 </div>
 						 <div class="row mb-2">
-							 <label for="interval_id" class="col-md-2 col-form-label">Interval_id :</label>
+							 <label for="interval" class="col-md-2 col-form-label">Interval interval :</label>
 
-							 <div class="col-md-3">
-								 <input autocomplete="on" id="interval_id" name="interval_id" type="text"
-								 class="form-control @error('interval_id') is-invalid @enderror" value="{{ old('interval_id') }}">
-
-								 @error('interval_id')
+							 <div class="col-md-4">
+								 <select name="interval_id" id="intervals_select" class="form-select">
+									 <option value="0">Alege ...</option>
+									 <@foreach ($intervals as $interval)
+										 <option {{ old('interval') ==  $interval->id ? "selected" : "" }}  value="{{ $interval->id }}">{{ $interval->interval }}</option>
+									 <@endforeach
+								 </select>
+								 @error('interval')
 								 <span class="invalid-feedback" role="alert">{{ $message }}</span>
 								 @enderror
 							 </div>
 						 </div>
 						 <div class="row mb-2">
-							 <label for="car_id" class="col-md-2 col-form-label">Car_id :</label>
+							 <label for="car" class="col-md-2 col-form-label">Car numar :</label>
 
-							 <div class="col-md-3">
-								 <input autocomplete="on" id="car_id" name="car_id" type="text"
-								 class="form-control @error('car_id') is-invalid @enderror" value="{{ old('car_id') }}">
-
-								 @error('car_id')
+							 <div class="col-md-4">
+								 <select name="car_id" id="cars_select" class="form-select">
+									 <option value="0">Alege ...</option>
+									 <@foreach ($cars as $car)
+										 <option {{ old('car') ==  $car->id ? "selected" : "" }}  value="{{ $car->id }}">{{ $car->numar }}</option>
+									 <@endforeach
+								 </select>
+								 @error('car')
 								 <span class="invalid-feedback" role="alert">{{ $message }}</span>
 								 @enderror
 							 </div>
 						 </div>
 						 <div class="row mb-2">
-							 <label for="car_prop_value_id" class="col-md-2 col-form-label">Car_prop_value_id :</label>
+							 <label for="carPropValue" class="col-md-2 col-form-label">CarPropValue name :</label>
 
-							 <div class="col-md-3">
-								 <input autocomplete="on" id="car_prop_value_id" name="car_prop_value_id" type="text"
-								 class="form-control @error('car_prop_value_id') is-invalid @enderror" value="{{ old('car_prop_value_id') }}">
-
-								 @error('car_prop_value_id')
+							 <div class="col-md-4">
+								 <select name="car_prop_value_id" id="car_prop_values_select" class="form-select">
+									 <option value="0">Alege ...</option>
+									 <@foreach ($carPropValues as $carPropValue)
+										 <option {{ old('carPropValue') ==  $carPropValue->id ? "selected" : "" }}  value="{{ $carPropValue->id }}">{{ $carPropValue->name }}</option>
+									 <@endforeach
+								 </select>
+								 @error('carPropValue')
 								 <span class="invalid-feedback" role="alert">{{ $message }}</span>
 								 @enderror
 							 </div>

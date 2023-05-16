@@ -29,7 +29,7 @@
 
 						 <div class="col-md-8">
 							 <input id="observatii" name="observatii" type="text" readonly class="form-control-plaintext"
-								 value="{{ $car_prop->observatii }}">
+								 value="{{ $carProp->observatii }}">
 						 </div>
 					 </div>
 					 <div class="row mb-2">
@@ -37,7 +37,7 @@
 
 						 <div class="col-md-8">
 							 <input id="interval_id" name="interval_id" type="text" readonly class="form-control-plaintext"
-								 value="{{ $car_prop->interval_id }}">
+								 value="{{ $carProp->interval_id }}">
 						 </div>
 					 </div>
 					 <div class="row mb-2">
@@ -45,7 +45,7 @@
 
 						 <div class="col-md-8">
 							 <input id="car_id" name="car_id" type="text" readonly class="form-control-plaintext"
-								 value="{{ $car_prop->car_id }}">
+								 value="{{ $carProp->car_id }}">
 						 </div>
 					 </div>
 					 <div class="row mb-2">
@@ -53,7 +53,7 @@
 
 						 <div class="col-md-8">
 							 <input id="car_prop_value_id" name="car_prop_value_id" type="text" readonly class="form-control-plaintext"
-								 value="{{ $car_prop->car_prop_value_id }}">
+								 value="{{ $carProp->car_prop_value_id }}">
 						 </div>
 					 </div>
 

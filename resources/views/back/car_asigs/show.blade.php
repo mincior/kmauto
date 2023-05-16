@@ -29,7 +29,15 @@
 
 						 <div class="col-md-8">
 							 <input id="observatii" name="observatii" type="text" readonly class="form-control-plaintext"
-								 value="{{ $car_asig->observatii }}">
+								 value="{{ $carAsig->observatii }}">
+						 </div>
+					 </div>
+					 <div class="row mb-2">
+						 <label for="poza_amenda" class="col-md-2 col-form-label">Poza_amenda :</label>
+
+						 <div class="col-md-8">
+							 <input id="poza_amenda" name="poza_amenda" type="text" readonly class="form-control-plaintext"
+								 value="{{ $carAsig->poza_amenda }}">
 						 </div>
 					 </div>
 					 <div class="row mb-2">
@@ -37,7 +45,7 @@
 
 						 <div class="col-md-8">
 							 <input id="car_asig_value_id" name="car_asig_value_id" type="text" readonly class="form-control-plaintext"
-								 value="{{ $car_asig->car_asig_value_id }}">
+								 value="{{ $carAsig->car_asig_value_id }}">
 						 </div>
 					 </div>
 					 <div class="row mb-2">
@@ -45,7 +53,7 @@
 
 						 <div class="col-md-8">
 							 <input id="interval_id" name="interval_id" type="text" readonly class="form-control-plaintext"
-								 value="{{ $car_asig->interval_id }}">
+								 value="{{ $carAsig->interval_id }}">
 						 </div>
 					 </div>
 					 <div class="row mb-2">
@@ -53,7 +61,7 @@
 
 						 <div class="col-md-8">
 							 <input id="car_id" name="car_id" type="text" readonly class="form-control-plaintext"
-								 value="{{ $car_asig->car_id }}">
+								 value="{{ $carAsig->car_id }}">
 						 </div>
 					 </div>
 

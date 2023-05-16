@@ -28,9 +28,12 @@
                     <tr>
                         
 							 <th scope="col"> Observatii</th>
+							 <th scope="col"> Poza_amenda</th>
 							 <th scope="col"> CarAsigValue Name</th>
 							 <th scope="col"> Interval Interval</th>
 							 <th scope="col"> Car Numar</th>
+
+                        <th scope="col"> Id</th>
 
                     </tr>
                 </thead>
@@ -174,6 +177,10 @@
 						 name: 'observatii',
 					},
 					{
+						 data: 'poza_amenda',
+						 name: 'poza_amenda',
+					},
+					{
 						 data: 'car_asig_value_id',
 						 
 						render: function(data, type, row, meta) {
@@ -210,13 +217,18 @@
 
 					},
 
+                    {
+						 data: 'id',
+						 name: 'id',
+					},
+
                 ],
                 select: {
                     selector: 'td:not(.no-select)',
                 },
                 ordering: true,
                 order: [
-                    [1, "asc"],
+                    [0, "asc"],
                 ],
                 preDrawCallback: function(settings) {
                     oTable.columns.adjust();

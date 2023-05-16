@@ -36,39 +36,41 @@ class CarPropController extends Controller
         }
 
         return view('back.car_props.index');
-    }
+    }//end function index
 
     public function create()
-    {
-        $carProps = CarProp::query()->get();
-
-        return view('back.car_props.create')->with(compact('carProps'));
-    }
+	{
+		$intervals = \App\Models\Interval::select('id', 'interval')->orderBy('interval')->get();
+		$cars = \App\Models\Car::select('id', 'numar')->orderBy('numar')->get();
+		$carPropValues = \App\Models\CarPropValue::select('id', 'name')->orderBy('name')->get();
+		 return view('back.car_props.create', compact('intervals', 'cars', 'carPropValues')); 
+	}
+	//end function create
 
     public function store(CarPropStoreRequest $request)
     {
         $carProp = CarProp::create($request->all());
-
-        $notification = [
-            "type" => "success",
-            "title" => 'Add ...',
-            "message" => 'Item added.',
-        ];
+        $notification = ["type" => "success", "title" => 'Add ...', "message" => 'Item added.',];
 
         return redirect()->route('back.car-props.index')->with('notification', $notification);
-    }
+    }//end function store
 
     public function show(CarProp $carProp)
     {
 
         return view('back.car_props.show', compact('carProp'));
-    }
+    }//end function show
 
-    public function edit(CarProp $carProp)
-    {
+    public function edit()
+	{
+		$carProp = \App\Models\CarProp::query()->get();
+		$intervals = \App\Models\Interval::select('id', 'interval')->orderBy('interval')->get();
+		$cars = \App\Models\Car::select('id', 'numar')->orderBy('numar')->get();
+		$carPropValues = \App\Models\CarPropValue::select('id', 'name')->orderBy('name')->get();
+		return view('back.car_props.create', compact('carProp', 'intervals', 'cars', 'carPropValues')); 
+	}
 
-        return view('back.car_props.edit', compact('carProp'));
-    }
+	//end function edit
 
     public function update(CarPropUpdateRequest $request, CarProp $carProp)
     {
@@ -81,12 +83,12 @@ class CarPropController extends Controller
         ];
 
         return redirect()->route('back.car-props.index')->with('notification', $notification);
-    }
+    }//end function update
 
     public function massDestroy(Request $request)
     {
         CarProp::whereIn('id', request('ids'))->delete();
 
         return response()->noContent();
-    }
+    }//end function massDestroy
 }

@@ -32,6 +32,8 @@
 							 <th scope="col"> Car Numar</th>
 							 <th scope="col"> CarPropValue Name</th>
 
+                        <th scope="col"> Id</th>
+
                     </tr>
                 </thead>
             </table>
@@ -210,13 +212,18 @@
 
 					},
 
+                    {
+						 data: 'id',
+						 name: 'id',
+					},
+
                 ],
                 select: {
                     selector: 'td:not(.no-select)',
                 },
                 ordering: true,
                 order: [
-                    [1, "asc"],
+                    [0, "asc"],
                 ],
                 preDrawCallback: function(settings) {
                     oTable.columns.adjust();

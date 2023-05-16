@@ -597,7 +597,7 @@ class CarPropsTableSeeder extends Seeder
 					 'observatii' => 'Nu sunt',  'interval_id' => '1',  'car_id' => '189',  'car_prop_value_id' => '9', 
 				],
 				[
-					 'observatii' => 'Nu sunt',  'interval_id' => '1',  'car_id' => '190',  'car_prop_value_id' => '0', 
+					 'observatii' => 'Nu sunt',  'interval_id' => '1',  'car_id' => '190', 
 				],
 				[
 					 'observatii' => 'Nu sunt',  'interval_id' => '1',  'car_id' => '191',  'car_prop_value_id' => '4', 
@@ -621,19 +621,19 @@ class CarPropsTableSeeder extends Seeder
 					 'observatii' => 'Nu sunt',  'interval_id' => '1',  'car_id' => '197',  'car_prop_value_id' => '4', 
 				],
 				[
-					 'observatii' => 'Nu sunt',  'interval_id' => '1',  'car_id' => '198',  'car_prop_value_id' => '0', 
+					 'observatii' => 'Nu sunt',  'interval_id' => '1',  'car_id' => '198', 
 				],
 				[
-					 'observatii' => 'Nu sunt',  'interval_id' => '1',  'car_id' => '199',  'car_prop_value_id' => '0', 
+					 'observatii' => 'Nu sunt',  'interval_id' => '1',  'car_id' => '199', 
 				],
 				[
-					 'observatii' => 'Nu sunt',  'interval_id' => '1',  'car_id' => '200',  'car_prop_value_id' => '0', 
+					 'observatii' => 'Nu sunt',  'interval_id' => '1',  'car_id' => '200', 
 				],
 				[
-					 'observatii' => 'Nu sunt',  'interval_id' => '1',  'car_id' => '201',  'car_prop_value_id' => '0', 
+					 'observatii' => 'Nu sunt',  'interval_id' => '1',  'car_id' => '201', 
 				],
 				[
-					 'observatii' => 'Nu sunt',  'interval_id' => '1',  'car_id' => '202',  'car_prop_value_id' => '0', 
+					 'observatii' => 'Nu sunt',  'interval_id' => '1',  'car_id' => '202', 
 				],
 				[
 					 'observatii' => 'Nu sunt',  'interval_id' => '1',  'car_id' => '203',  'car_prop_value_id' => '3', 

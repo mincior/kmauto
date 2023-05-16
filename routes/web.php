@@ -1,5 +1,10 @@
 <?php
 //Begin craft placeholder #1
+use App\Http\Controllers\Back\CarAsigController;
+
+
+
+
 use App\Http\Controllers\Back\CarStatValueController;
 use App\Http\Controllers\Back\CarPropValueController;
 use App\Http\Controllers\Back\CarAsigValueController;
@@ -7,7 +12,7 @@ use App\Http\Controllers\Back\CarAsigValueController;
 
 
 use App\Http\Controllers\Back\CarPropController;
-use App\Http\Controllers\Back\CarAsigController;
+
 use App\Http\Controllers\Back\CarStatController;
 
 
@@ -74,6 +79,17 @@ Route::middleware('auth')->group(function () {
     // Backend routes
     Route::prefix('back')->as('back.')->group(function () {
         //Begin craft placeholder #2
+		//CarAsig
+		Route::controller(CarAsigController::class)->group(function () {
+			Route::delete('/car-asigs/massDestroy', 'massDestroy')->name('car-asigs.massDestroy');
+			Route::resource('/car-asigs', CarAsigController::class)->except(['destroy']);
+		});
+		/* ---------------------------------------- */
+
+
+
+
+
 		//CarStatValue
 		Route::controller(CarStatValueController::class)->group(function () {
 			Route::delete('/car-stat-values/massDestroy', 'massDestroy')->name('car-stat-values.massDestroy');
@@ -105,12 +121,6 @@ Route::middleware('auth')->group(function () {
 		});
 		/* ---------------------------------------- */
 
-		//CarAsig
-		Route::controller(CarAsigController::class)->group(function () {
-			Route::delete('/car-asigs/massDestroy', 'massDestroy')->name('car-asigs.massDestroy');
-			Route::resource('/car-asigs', CarAsigController::class)->except(['destroy']);
-		});
-		/* ---------------------------------------- */
 
 		//CarStat
 		Route::controller(CarStatController::class)->group(function () {

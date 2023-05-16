@@ -36,41 +36,32 @@ class CarAsigController extends Controller
         }
 
         return view('back.car_asigs.index');
-    }//end function index
-
-    public function create()
-	{
-		$carAsigValues = \App\Models\CarAsigValue::select('id', 'name')->orderBy('name')->get();
-		$intervals = \App\Models\Interval::select('id', 'interval')->orderBy('interval')->get();
-		$cars = \App\Models\Car::select('id', 'numar')->orderBy('numar')->get();
-		 return view('back.car_asigs.create', compact('carAsigValues', 'intervals', 'cars')); 
-	}
-	//end function create
+    }
 
     public function store(CarAsigStoreRequest $request)
     {
         $carAsig = CarAsig::create($request->all());
-        $notification = ["type" => "success", "title" => 'Add ...', "message" => 'Item added.',];
+
+        $notification = [
+            "type" => "success",
+            "title" => 'Add ...',
+            "message" => 'Item added.',
+        ];
 
         return redirect()->route('back.car-asigs.index')->with('notification', $notification);
-    }//end function store
+    }
 
     public function show(CarAsig $carAsig)
     {
 
         return view('back.car_asigs.show', compact('carAsig'));
-    }//end function show
+    }
 
-    public function edit()
-	{
-		$carAsig = \App\Models\CarAsig::query()->get();
-		$carAsigValues = \App\Models\CarAsigValue::select('id', 'name')->orderBy('name')->get();
-		$intervals = \App\Models\Interval::select('id', 'interval')->orderBy('interval')->get();
-		$cars = \App\Models\Car::select('id', 'numar')->orderBy('numar')->get();
-		return view('back.car_asigs.create', compact('carAsig', 'carAsigValues', 'intervals', 'cars')); 
-	}
+    public function edit(CarAsig $carAsig)
+    {
 
-	//end function edit
+        return view('back.car_asigs.edit', compact('carAsig'));
+    }
 
     public function update(CarAsigUpdateRequest $request, CarAsig $carAsig)
     {
@@ -83,12 +74,12 @@ class CarAsigController extends Controller
         ];
 
         return redirect()->route('back.car-asigs.index')->with('notification', $notification);
-    }//end function update
+    }
 
     public function massDestroy(Request $request)
     {
         CarAsig::whereIn('id', request('ids'))->delete();
 
         return response()->noContent();
-    }//end function massDestroy
+    }
 }

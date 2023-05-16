@@ -104,7 +104,6 @@
                                 @enderror
                             </div>
                         </div>
-
                     </div>
 
                     <div class="card-footer">
@@ -158,7 +157,7 @@
             $('#my-nav-bar').addClass('d-none'); //ascunde bara de navigare cand sunt pe create car
             $('#picture').change(function() {
                 const file = this.files[0];
-                console.log(file);
+                //console.log(file);
                 if (file) {
                     let reader = new FileReader();
                     reader.onload = function(event) {
