@@ -698,7 +698,7 @@ if ($selected_user_id != '0') {
                 // $str =  '<pre>' + value + '</pre><br>'
 
                 // })
-                console.log('kk' + str);
+                //console.log('kk' + str);
                 $('#status-bar').html(str);
                 //$('#status-bar').html('<pre>' + JSON.stringify(myData, null, 2)) +'</pre>' ;
 

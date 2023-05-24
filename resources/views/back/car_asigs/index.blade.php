@@ -29,6 +29,7 @@
                         
 							 <th scope="col"> Observatii</th>
 							 <th scope="col"> Poza_amenda</th>
+							 <th scope="col"> Poza_sofer</th>
 							 <th scope="col"> CarAsigValue Name</th>
 							 <th scope="col"> Interval Interval</th>
 							 <th scope="col"> Car Numar</th>
@@ -179,6 +180,10 @@
 					{
 						 data: 'poza_amenda',
 						 name: 'poza_amenda',
+					},
+					{
+						 data: 'poza_sofer',
+						 name: 'poza_sofer',
 					},
 					{
 						 data: 'car_asig_value_id',

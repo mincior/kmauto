@@ -132,7 +132,7 @@
             function dateChange(e){
             const data = $(e).val();
             const v = data.split('-');
-            console.log(v[1]);
+            //console.log(v[1]);
             $('#anul_luna').val(  luni[Number(v[1])-1] +  ' ' + v[0]);
         }
         });

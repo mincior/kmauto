@@ -192,7 +192,7 @@
                     {
                         data: 'id',
                         render: function(data, type, row, meta) {
-                            console.log(row);
+                            //console.log(row);
                             if ( typeof row.select === "undefined"){
                                 return '';
                             }else{
@@ -203,7 +203,7 @@
                     {
                         data: 'id',
                         render: function(data, type, row, meta) {
-                            console.log(row);
+                            //console.log(row);
                             if ( typeof row.month.anul_luna === "undefined"){
                                 return '';
                             }else{

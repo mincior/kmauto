@@ -24,47 +24,29 @@
 
                 <div class="card-body">
                     
-					 <div class="row mb-2">
-						 <label for="observatii" class="col-md-2 col-form-label">Observatii :</label>
+						<div class="row mb-2">
+							<label for="observatii" class="col-md-2 col-form-label">Observatii :</label>
 
-						 <div class="col-md-8">
-							 <input id="observatii" name="observatii" type="text" readonly class="form-control-plaintext"
-								 value="{{ $carAsig->observatii }}">
-						 </div>
-					 </div>
-					 <div class="row mb-2">
-						 <label for="poza_amenda" class="col-md-2 col-form-label">Poza_amenda :</label>
-
-						 <div class="col-md-8">
-							 <input id="poza_amenda" name="poza_amenda" type="text" readonly class="form-control-plaintext"
-								 value="{{ $carAsig->poza_amenda }}">
-						 </div>
-					 </div>
-					 <div class="row mb-2">
-						 <label for="car_asig_value_id" class="col-md-2 col-form-label">Car_asig_value_id :</label>
-
-						 <div class="col-md-8">
-							 <input id="car_asig_value_id" name="car_asig_value_id" type="text" readonly class="form-control-plaintext"
-								 value="{{ $carAsig->car_asig_value_id }}">
-						 </div>
-					 </div>
-					 <div class="row mb-2">
-						 <label for="interval_id" class="col-md-2 col-form-label">Interval_id :</label>
-
-						 <div class="col-md-8">
-							 <input id="interval_id" name="interval_id" type="text" readonly class="form-control-plaintext"
-								 value="{{ $carAsig->interval_id }}">
-						 </div>
-					 </div>
-					 <div class="row mb-2">
-						 <label for="car_id" class="col-md-2 col-form-label">Car_id :</label>
-
-						 <div class="col-md-8">
-							 <input id="car_id" name="car_id" type="text" readonly class="form-control-plaintext"
-								 value="{{ $carAsig->car_id }}">
-						 </div>
-					 </div>
-
+							<div class="col-md-8">
+								<input id="observatii" name="observatii" type="text" readonly class="form-control-plaintext"
+									value="{{ $carAsig->observatii }}">
+							</div>
+						</div>
+						<div class="row mb-2">
+							<label  class="col-md-3 col-form-label">Poza poza_amenda</label>
+	
+							<div class="col-md-8">
+								<img class="img-fluid" src="/storage/pictures{{ $carAsig->poza_amenda }}">
+							</div>
+						</div>
+							<div class="row mb-2">
+							<label  class="col-md-3 col-form-label">Poza poza_sofer</label>
+	
+							<div class="col-md-8">
+								<img class="img-fluid" src="/storage/pictures{{ $carAsig->poza_sofer }}">
+							</div>
+						</div>
+	
                 </div>
 
                 <div class="card-footer">

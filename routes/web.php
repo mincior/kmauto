@@ -1,39 +1,14 @@
 <?php
 //Begin craft placeholder #1
 use App\Http\Controllers\Back\CarAsigController;
-
-
-
-
 use App\Http\Controllers\Back\CarStatValueController;
 use App\Http\Controllers\Back\CarPropValueController;
 use App\Http\Controllers\Back\CarAsigValueController;
-
-
-
 use App\Http\Controllers\Back\CarPropController;
-
 use App\Http\Controllers\Back\CarStatController;
-
-
-
-
-
-
-
-
-
-
-
-
 use App\Http\Controllers\Back\ExpireController;
-
 use App\Http\Controllers\Back\RevisionController;
 use App\Http\Controllers\Back\CarsecondController;
-
-
-
-
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -60,7 +35,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Auth::routes();
 
 Route::middleware('auth')->group(function () {
-    Route::controller(ImportController::class)->group(function(){
+    Route::controller(ImportController::class)->group(function () {
         //for visiting the form page
         Route::get('back/excel/view-upload-form', 'viewUploadForm')->name('view-upload-form');
         //for uploading to database
@@ -68,7 +43,7 @@ Route::middleware('auth')->group(function () {
         //we have to create <mark style="background-color:rgba(0, 0, 0, 0)" class="has-inline-color has-vivid-red-color">FileManagerController</mark>
     });
 
-    Route::controller(ImageController::class)->group(function(){
+    Route::controller(ImageController::class)->group(function () {
         Route::get('/image-upload', 'index')->name('image.form');
         Route::post('/upload-image', 'storeImage')->name('image.store');
     });
@@ -79,88 +54,62 @@ Route::middleware('auth')->group(function () {
     // Backend routes
     Route::prefix('back')->as('back.')->group(function () {
         //Begin craft placeholder #2
-		//CarAsig
-		Route::controller(CarAsigController::class)->group(function () {
-			Route::delete('/car-asigs/massDestroy', 'massDestroy')->name('car-asigs.massDestroy');
-			Route::resource('/car-asigs', CarAsigController::class)->except(['destroy']);
-		});
-		/* ---------------------------------------- */
+        //CarAsig
+        Route::controller(CarAsigController::class)->group(function () {
+            Route::delete('/car-asigs/massDestroy', 'massDestroy')->name('car-asigs.massDestroy');
+            Route::resource('/car-asigs', CarAsigController::class)->except(['destroy']);
+        });
+        /* ---------------------------------------- */
+
+        //CarStatValue
+        Route::controller(CarStatValueController::class)->group(function () {
+            Route::delete('/car-stat-values/massDestroy', 'massDestroy')->name('car-stat-values.massDestroy');
+            Route::resource('/car-stat-values', CarStatValueController::class)->except(['destroy']);
+        });
+        /* ---------------------------------------- */
+
+        //CarPropValue
+        Route::controller(CarPropValueController::class)->group(function () {
+            Route::delete('/car-prop-values/massDestroy', 'massDestroy')->name('car-prop-values.massDestroy');
+            Route::resource('/car-prop-values', CarPropValueController::class)->except(['destroy']);
+        });
+        /* ---------------------------------------- */
+
+        //CarAsigValue
+        Route::controller(CarAsigValueController::class)->group(function () {
+            Route::delete('/car-asig-values/massDestroy', 'massDestroy')->name('car-asig-values.massDestroy');
+            Route::resource('/car-asig-values', CarAsigValueController::class)->except(['destroy']);
+        });
+        /* ---------------------------------------- */
+
+        //CarProp
+        Route::controller(CarPropController::class)->group(function () {
+            Route::delete('/car-props/massDestroy', 'massDestroy')->name('car-props.massDestroy');
+            Route::resource('/car-props', CarPropController::class)->except(['destroy']);
+        });
+        /* ---------------------------------------- */
+
+        //CarStat
+        Route::controller(CarStatController::class)->group(function () {
+            Route::delete('/car-stats/massDestroy', 'massDestroy')->name('car-stats.massDestroy');
+            Route::resource('/car-stats', CarStatController::class)->except(['destroy']);
+        });
+        /* ---------------------------------------- */
+
+        //Expire
+        Route::controller(ExpireController::class)->group(function () {
+            Route::delete('/expires/massDestroy', 'massDestroy')->name('expires.massDestroy');
+            Route::resource('/expires', ExpireController::class)->except(['destroy']);
+        });
+        /* ---------------------------------------- */
 
 
-
-
-
-		//CarStatValue
-		Route::controller(CarStatValueController::class)->group(function () {
-			Route::delete('/car-stat-values/massDestroy', 'massDestroy')->name('car-stat-values.massDestroy');
-			Route::resource('/car-stat-values', CarStatValueController::class)->except(['destroy']);
-		});
-		/* ---------------------------------------- */
-
-		//CarPropValue
-		Route::controller(CarPropValueController::class)->group(function () {
-			Route::delete('/car-prop-values/massDestroy', 'massDestroy')->name('car-prop-values.massDestroy');
-			Route::resource('/car-prop-values', CarPropValueController::class)->except(['destroy']);
-		});
-		/* ---------------------------------------- */
-
-		//CarAsigValue
-		Route::controller(CarAsigValueController::class)->group(function () {
-			Route::delete('/car-asig-values/massDestroy', 'massDestroy')->name('car-asig-values.massDestroy');
-			Route::resource('/car-asig-values', CarAsigValueController::class)->except(['destroy']);
-		});
-		/* ---------------------------------------- */
-
-
-
-
-		//CarProp
-		Route::controller(CarPropController::class)->group(function () {
-			Route::delete('/car-props/massDestroy', 'massDestroy')->name('car-props.massDestroy');
-			Route::resource('/car-props', CarPropController::class)->except(['destroy']);
-		});
-		/* ---------------------------------------- */
-
-
-		//CarStat
-		Route::controller(CarStatController::class)->group(function () {
-			Route::delete('/car-stats/massDestroy', 'massDestroy')->name('car-stats.massDestroy');
-			Route::resource('/car-stats', CarStatController::class)->except(['destroy']);
-		});
-		/* ---------------------------------------- */
-
-
-
-
-
-
-
-
-
-
-
-
-
-		//Expire
-		Route::controller(ExpireController::class)->group(function () {
-			Route::delete('/expires/massDestroy', 'massDestroy')->name('expires.massDestroy');
-			Route::resource('/expires', ExpireController::class)->except(['destroy']);
-		});
-		/* ---------------------------------------- */
-
-
-		//Revision
-		Route::controller(RevisionController::class)->group(function () {
-			Route::delete('/revisions/massDestroy', 'massDestroy')->name('revisions.massDestroy');
-			Route::resource('/revisions', RevisionController::class)->except(['destroy']);
-		});
-		/* ---------------------------------------- */
-
-
-
-
-
-
+        //Revision
+        Route::controller(RevisionController::class)->group(function () {
+            Route::delete('/revisions/massDestroy', 'massDestroy')->name('revisions.massDestroy');
+            Route::resource('/revisions', RevisionController::class)->except(['destroy']);
+        });
+        /* ---------------------------------------- */
 
         // General routines
         Route::controller(GeneralController::class)->group(function () {
@@ -187,7 +136,7 @@ Route::middleware('auth')->group(function () {
         Route::controller(UserController::class)->group(function () {
             Route::delete('/users/massDestroy', 'massDestroy')->name('users.massDestroy');
             Route::get('/users/getDepartmentUsers', 'getDepartmentUsers')->name('users.getDepartmentUsers');
-            Route::resource('/users', UserController::class)->except([ 'destroy']);
+            Route::resource('/users', UserController::class)->except(['destroy']);
         });
         /* ---------------------------------------- */
         // Customers
@@ -212,8 +161,8 @@ Route::middleware('auth')->group(function () {
         /* ---------------------------------------- */
         // Brand
         Route::controller(BrandController::class)->group(function () {
-            Route::get('/brands/get-brand-types/{brand_id}','getBrandTypes')->name('get-brand-types');
-            Route::get('/brands/get-brand-types1','getBrandTypes1')->name('get-brand-types1');
+            Route::get('/brands/get-brand-types/{brand_id}', 'getBrandTypes')->name('get-brand-types');
+            Route::get('/brands/get-brand-types1', 'getBrandTypes1')->name('get-brand-types1');
             Route::delete('/brands/massDestroy', 'massDestroy')->name('brands.massDestroy');
             Route::resource('/brands', BrandController::class)->except(['destroy']);
         });
@@ -249,9 +198,9 @@ Route::middleware('auth')->group(function () {
         });
         // Brand
         Route::controller(MonthController::class)->group(function () {
-            Route::post('/months/addNextMonth','addNextMonth')->name('addNextMonth');
-            Route::post('/months/inchideDeschideLuna','inchideDeschideLuna')->name('inchideDeschideLuna');
-            Route::get('/months/getMonthIntervals','getMonthIntervals')->name('getMonthIntervals');
+            Route::post('/months/addNextMonth', 'addNextMonth')->name('addNextMonth');
+            Route::post('/months/inchideDeschideLuna', 'inchideDeschideLuna')->name('inchideDeschideLuna');
+            Route::get('/months/getMonthIntervals', 'getMonthIntervals')->name('getMonthIntervals');
             Route::delete('/months/massDestroy', 'massDestroy')->name('months.massDestroy');
             Route::resource('/months', MonthController::class)->except(['destroy']);
         });
@@ -261,16 +210,16 @@ Route::middleware('auth')->group(function () {
             Route::delete('/intervals/massDestroy', 'massDestroy')->name('intervals.massDestroy');
             Route::resource('/intervals', IntervalController::class)->except(['destroy']);
         });
-         // Departments
-         Route::controller(DepartmentController::class)->group(function () {
-            Route::get('/departments/get-cars/{department_id}','getCars')->name('get-cars');
-            Route::get('/departments/get-users/{department_id}','getUsers')->name('get-users');
+        // Departments
+        Route::controller(DepartmentController::class)->group(function () {
+            Route::get('/departments/get-cars/{department_id}', 'getCars')->name('get-cars');
+            Route::get('/departments/get-users/{department_id}', 'getUsers')->name('get-users');
             Route::delete('/departments/massDestroy', 'massDestroy')->name('departments.massDestroy');
             Route::resource('/departments', DepartmentController::class)->except(['destroy']);
         });
-         // CarConsumptions
-         Route::controller(CarConsumptionController::class)->group(function () {
-            Route::get('/car_consumptions/get-car_consumptions','getCarConsumptions')->name('get-car_consumptions');
+        // CarConsumptions
+        Route::controller(CarConsumptionController::class)->group(function () {
+            Route::get('/car_consumptions/get-car_consumptions', 'getCarConsumptions')->name('get-car_consumptions');
         });
-   });
+    });
 });

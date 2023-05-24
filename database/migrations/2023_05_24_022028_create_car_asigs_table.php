@@ -20,6 +20,7 @@ class CreateCarAsigsTable extends Migration
 			$table->id();
 			$table->string('observatii');
 			$table->string('poza_amenda')->nullable()->comment('image');
+			$table->string('poza_sofer')->nullable()->comment('image');
 			$table->bigInteger('car_asig_value_id')->unsigned()->index()->nullable();
 			$table->foreign('car_asig_value_id')->references('id')->on('car_asig_values');
 			$table->bigInteger('interval_id')->unsigned()->index()->nullable();

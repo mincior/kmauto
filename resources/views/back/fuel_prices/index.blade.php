@@ -205,7 +205,7 @@
                     {
                         data: 'id',
                         render: function(data, type, row, meta) {
-                            console.log (row);
+                            //console.log (row);
                             if ( row.interval === null){
                                 return '';
                             }else{

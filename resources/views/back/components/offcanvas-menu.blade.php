@@ -26,6 +26,11 @@
 
 
 
+
+
+
+
+
 		<li><a  href="{{ route('back.car-stat-values.index') }}" style="color:beige;">CarStatValue</a></li>
 		<li><a  href="{{ route('back.car-prop-values.index') }}" style="color:beige;">CarPropValue</a></li>
 		<li><a  href="{{ route('back.car-asig-values.index') }}" style="color:beige;">CarAsigValue</a></li>

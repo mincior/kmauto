@@ -17,6 +17,7 @@ class CarAsig extends Model
         //Begin craft placeholder #1
 		'observatii', 
 		'poza_amenda', 
+		'poza_sofer', 
 		'car_asig_value_id', 
 		'interval_id', 
 		'car_id', 

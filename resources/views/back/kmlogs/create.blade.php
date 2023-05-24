@@ -161,7 +161,7 @@
                 if (file) {
                     let reader = new FileReader();
                     reader.onload = function(event) {
-                        console.log(event.target.result);
+                        //console.log(event.target.result);
                         $('#my_picture').attr('src', event.target.result);
                     }
                     reader.readAsDataURL(file);

@@ -28,24 +28,24 @@
 
                     <div class="card-body">
                         
-						 <div class="row mb-2">
-							 <label for="observatii" class="col-md-2 col-form-label">Observatii :</label>
+							<div class="row mb-2">
+								<label for="observatii" class="col-md-2 col-form-label">Observatii :</label>
 
-							 <div class="col-md-4">
-								 <input autocomplete="on" id="observatii" name="observatii" type="text" 
-									 class="form-control @error('observatii') is-invalid @enderror" 
-									 value="{{ old('observatii') ? old('observatii') : $carAsig->observatii }}" >
+								<div class="col-md-4">
+									<input autocomplete="on" id="observatii" name="observatii" type="text" 
+										class="form-control @error('observatii') is-invalid @enderror" 
+										value="{{ old('observatii') ? old('observatii') : $carAsig->observatii }}" >
 
-								 @error('observatii')
-									 <span class="invalid-feedback" role="alert">{{ $message }}</span>
-								 @enderror
-							 </div>
-						 </div>
-						 <div class="row mb-2">
+									@error('observatii')
+										<span class="invalid-feedback" role="alert">{{ $message }}</span>
+									@enderror
+								</div>
+							</div>
+						<div class="row mb-2">
 							<label for="poza_amenda" class="col-md-2 col-form-label">Poza_amenda :</label>
 
 							<div class="row md-8">
-								<img id="my_pic_poza_amenda" class="img-fluid">
+								<img id="my_pic_poza_amenda" class="img-fluid"  src="/storage/pictures{{ $carAsig->poza_amenda }}">
 							</div>
 
 							<div class="input-group  custom-file-button col-md-3">
@@ -55,55 +55,73 @@
 									value="{{ old('pic_poza_amenda') }}">
 
 								@error('pic_poza_amenda')
-									 <span class="invalid-feedback" role="alert">{{ $message }}</span>
-								 @enderror
-							 </div>
-						 </div>
-						 <div class="row mb-2">
-							 <label for="carAsigValue" class="col-md-2 col-form-label">CarAsigValue name :</label>
+									<span class="invalid-feedback" role="alert">{{ $message }}</span>
+								@enderror
+							</div>
+						</div>
+						<div class="row mb-2">
+							<label for="poza_sofer" class="col-md-2 col-form-label">Poza_sofer :</label>
 
-							 <div class="col-md-4">
-								 <select name="car_asig_value_id" id="car_asig_values_select" class="form-select">
-									 <option value="0">Alege ...</option>
-									 <@foreach ($carAsigValues as $carAsigValue)
-										 <option {{ (old('carAsigValue') ? (old('carAsigValue') == $carAsigValue->id) : ($carAsigValue_id == $carAsigValue->id)) ? "selected" : "" }} value="{{ $carAsigValue->id }}">{{ $carAsigValue->name }}</option>
-									 <@endforeach
-								 </select>
-								 @error('carAsigValue')
-									 <span class="invalid-feedback" role="alert">{{ $message }}</span>
-								 @enderror
-							 </div>
-						 </div>
-						 <div class="row mb-2">
-							 <label for="interval" class="col-md-2 col-form-label">Interval interval :</label>
+							<div class="row md-8">
+								<img id="my_pic_poza_sofer" class="img-fluid"  src="/storage/pictures{{ $carAsig->poza_sofer }}">
+							</div>
 
-							 <div class="col-md-4">
-								 <select name="interval_id" id="intervals_select" class="form-select">
-									 <option value="0">Alege ...</option>
-									 <@foreach ($intervals as $interval)
-										 <option {{ (old('interval') ? (old('interval') == $interval->id) : ($interval_id == $interval->id)) ? "selected" : "" }} value="{{ $interval->id }}">{{ $interval->interval }}</option>
-									 <@endforeach
-								 </select>
-								 @error('interval')
-									 <span class="invalid-feedback" role="alert">{{ $message }}</span>
-								 @enderror
-							 </div>
-						 </div>
-						 <div class="row mb-2">
-							 <label for="car" class="col-md-2 col-form-label">Car numar :</label>
+							<div class="input-group  custom-file-button col-md-3">
+								<label class="input-group-text" for="pic_poza_sofer">Selectati poza</label>
+								<input autocomplete="on" id="pic_poza_sofer" name="poza_sofer" type="file"
+									class="form-control @error('pic_poza_sofer') is-invalid @enderror"
+									value="{{ old('pic_poza_sofer') }}">
 
-							 <div class="col-md-4">
-								 <select name="car_id" id="cars_select" class="form-select">
-									 <option value="0">Alege ...</option>
-									 <@foreach ($cars as $car)
-										 <option {{ (old('car') ? (old('car') == $car->id) : ($car_id == $car->id)) ? "selected" : "" }} value="{{ $car->id }}">{{ $car->numar }}</option>
-									 <@endforeach
-								 </select>
-								 @error('car')
-									 <span class="invalid-feedback" role="alert">{{ $message }}</span>
-								 @enderror
-							 </div>
-						 </div>
+								@error('pic_poza_sofer')
+									<span class="invalid-feedback" role="alert">{{ $message }}</span>
+								@enderror
+							</div>
+						</div>
+						<div class="row mb-2">
+							<label for="carAsigValue" class="col-md-2 col-form-label">CarAsigValue name :</label>
+
+							<div class="col-md-4">
+								<select name="car_asig_value_id" id="car_asig_values_select" class="form-select">
+									<option value="0">Alege ...</option>
+									<@foreach ($carAsigValues as $carAsigValue)
+										<option {{ (old('carAsigValue') ? (old('carAsigValue') == $carAsigValue->id) : ($carAsig->car_asig_value_id == $carAsigValue->id)) ? "selected" : "" }} value="{{ $carAsigValue->id }}">{{ $carAsigValue->name }}</option>
+									<@endforeach
+								</select>
+								@error('carAsigValue')
+									<span class="invalid-feedback" role="alert">{{ $message }}</span>
+								@enderror
+							</div>
+						</div>
+						<div class="row mb-2">
+							<label for="interval" class="col-md-2 col-form-label">Interval interval :</label>
+
+							<div class="col-md-4">
+								<select name="interval_id" id="intervals_select" class="form-select">
+									<option value="0">Alege ...</option>
+									<@foreach ($intervals as $interval)
+										<option {{ (old('interval') ? (old('interval') == $interval->id) : ($carAsig->interval_id == $interval->id)) ? "selected" : "" }} value="{{ $interval->id }}">{{ $interval->interval }}</option>
+									<@endforeach
+								</select>
+								@error('interval')
+									<span class="invalid-feedback" role="alert">{{ $message }}</span>
+								@enderror
+							</div>
+						</div>
+						<div class="row mb-2">
+							<label for="car" class="col-md-2 col-form-label">Car numar :</label>
+
+							<div class="col-md-4">
+								<select name="car_id" id="cars_select" class="form-select">
+									<option value="0">Alege ...</option>
+									<@foreach ($cars as $car)
+										<option {{ (old('car') ? (old('car') == $car->id) : ($carAsig->car_id == $car->id)) ? "selected" : "" }} value="{{ $car->id }}">{{ $car->numar }}</option>
+									<@endforeach
+								</select>
+								@error('car')
+									<span class="invalid-feedback" role="alert">{{ $message }}</span>
+								@enderror
+							</div>
+						</div>
 
                     </div>
 
@@ -155,15 +173,24 @@
     </style>
         <script>
             jQuery(document).ready(function($) {
-                /$('#my-nav-bar').addClass('d-none'); /*ascunde bara de navigare cand sunt pe create car*/
+                $('#my-nav-bar').addClass('d-none'); /*ascunde bara de navigare cand sunt pe create car*/
                 /* pictures placeholder */
 				$('#pic_poza_amenda').change(function() {
 					const file = this.files[0];
 					if (file) {
 						let reader = new FileReader();
 						reader.onload = function(event) {
-							console.log(event.target.result);
 							$('#my_pic_poza_amenda').attr('src', event.target.result);
+						}
+						reader.readAsDataURL(file);
+					}
+				});
+				$('#pic_poza_sofer').change(function() {
+					const file = this.files[0];
+					if (file) {
+						let reader = new FileReader();
+						reader.onload = function(event) {
+							$('#my_pic_poza_sofer').attr('src', event.target.result);
 						}
 						reader.readAsDataURL(file);
 					}

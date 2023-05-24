@@ -152,11 +152,11 @@
             $('#my-nav-bar').addClass('d-none'); //ascunde bara de navigare cand sunt pe create car
             $('#picture').change(function() {
                 const file = this.files[0];
-                console.log(file);
+                //console.log(file);
                 if (file) {
                     let reader = new FileReader();
                     reader.onload = function(event) {
-                        console.log(event.target.result);
+                        //console.log(event.target.result);
                         $('#my_picture').attr('src', event.target.result);
                     }
                     reader.readAsDataURL(file);

@@ -28,7 +28,7 @@ function get_brand_types( brand_id, type_id) {
 			{
 				//scoate id-ul si numarul masinii curente
 				var id = res.data[i]['id'];
-				console.log(id);
+				//console.log(id);
 				var numar = res.data[i]['numar'];
 				//pune 'selected' pentru masina cu id-ul type_id
 				var sel = ((id == type_id) ? 'selected' : '');

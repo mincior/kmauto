@@ -175,6 +175,7 @@ class KmlogController extends Controller
      */
     public function store(KmlogStoreOrUpdateRequest $request)
     {
+//varianta noua cu requestul transmis prin parametru care nu functioneaza
         $datetime = new DateTime();
         $timezone = new DateTimeZone('Europe/Bucharest');
         $datetime->setTimezone($timezone);
@@ -190,67 +191,15 @@ class KmlogController extends Controller
         $car = Car::where('id', $data['car_id'])->first()->numar;
         $interval = Interval::where('id', $selected_interval_id)->first()->interval;
         $luna = Month::where('id', Interval::where('id', $selected_interval_id)->first()->month_id)->first()->anul_luna;
-        $image_path = '/' . $car . ' - ' . $user  . "/" . $luna .  "/" . $interval;
-
-        if (array_key_exists("picture", $request->all())) {
-            if ($request->file('picture')->getClientOriginalName()) {
-                //pregateste calea pentru poze
-                //get filename with extension
-                $filenamewithextension = $request->file('picture')->getClientOriginalName();
-
-                //get filename without extension
-                $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
-
-                //get file extension
-                $extension = $request->file('picture')->getClientOriginalExtension();
-
-                $time = time();
-
-                //filename to store
-                $filenametostore = $filename . '_' . $time . '.' . $extension;
-
-                //small thumbnail name
-                $smallthumbnail = $filename . '_small_' . $time . '.' . $extension;
-
-                //medium thumbnail name
-                $mediumthumbnail = $filename . '_medium_' . $time . '.' . $extension;
-
-                //large thumbnail name
-                $largethumbnail = $filename . '_large_' . $time . '.' . $extension;
-
-                //Upload File
-                $request->file('picture')->storeAs('public/pictures' . $image_path, $filenametostore);
-                $request->file('picture')->storeAs('public/pictures/thumbnail' . $image_path, $smallthumbnail);
-                $request->file('picture')->storeAs('public/pictures/thumbnail' . $image_path, $mediumthumbnail);
-                $request->file('picture')->storeAs('public/pictures/thumbnail' . $image_path, $largethumbnail);
-
-                $filenametostorepath =  public_path('storage/pictures' . $image_path . '/' . $filenametostore);
-                $this->createThumbnail($filenametostorepath, 1020, 760);
-                //create small thumbnail
-                $smallthumbnailpath = public_path('storage/pictures/thumbnail' . $image_path . '/' . $smallthumbnail);
-                $this->createThumbnail($smallthumbnailpath, 150, 93);
-
-                //create medium thumbnail
-                $mediumthumbnailpath = public_path('storage/pictures/thumbnail' . $image_path . '/' . $mediumthumbnail);
-                $this->createThumbnail($mediumthumbnailpath, 300, 185);
-
-                //create large thumbnail
-                $largethumbnailpath = public_path('storage/pictures/thumbnail' . $image_path . '/' . $largethumbnail);
-                $this->createThumbnail($largethumbnailpath, 550, 340);
-                $data['picture'] =   $image_path  . "/" . $filenametostore;
+        $last_part_image_path = '/' . $car . ' - ' . $user  . "/" . $luna .  "/" . $interval;
+        if (array_key_exists("picture", $data)) {
+            if ($data['picture']->getClientOriginalName()) {
+              $data['picture'] =   \App\MyHelpers\AppHelper::prelPicture($data['picture'], $last_part_image_path);
             }
         }
-        // @mkdir($image_path , 0777, true);
-        // $image_name = $car . ' - ' . $user  . "_" . time() . "." . $request->picture->extension();
-        // $request->picture->move("/storage/pictures/thumbnail".$image_path, $image_name);
 
         $kmlog = Kmlog::create($data);
         $kmlog->update(['is_first' => AppHelper::isFirsRowOfInterval($kmlog->id, $kmlog->user_id, $kmlog->car_id)]);
-        // //sterge masina si utilizatorul selectat
-        // if ($kmlog) {
-        //     Setting::where('nume', "userId")->where('interval_id', 1)->update(array('valoare' => 0));
-        //     Setting::where('nume', "carId")->where('interval_id', 1)->update(array('valoare' => 0));
-        // }
         $notification = [
             "type" => "success",
             "title" => 'Add ...',
@@ -259,7 +208,6 @@ class KmlogController extends Controller
 
         return redirect()->route('back.kmlogs.index')->with('notification', $notification);
     }
-
     /**
      * Afiseaza inregistrarea selectata
      *

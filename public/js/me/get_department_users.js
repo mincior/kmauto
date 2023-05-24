@@ -22,7 +22,7 @@ function get_department_users( department_id, user_id) {
 			//sterge utilizatorii din select pentru a-i aduce pe cei ai filialei selectate
 			$("#user_select").empty();
 			//afla lungimea vectorului cu useri pentru a-i itera
-			console.log(res.data);
+			//console.log(res.data);
 			var len = res.data.length;
 			//itereaza vectorul cu useri
 				$("#user_select").append("<option value='0'>Alege...</option>");
