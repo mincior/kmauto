@@ -20,7 +20,8 @@ return new class extends Migration
 			$table->string('telefon', 100)->nullable();
 			$table->integer('limita_km')->default(20)->nullable();
 			$table->string('observatii', 250)->nullable();
-            $table->boolean('is_admin', 1)->default(0);
+            $table->boolean('is_admin')->default(0);
+			$table->boolean('is_depadmin')->default(0);
 			$table->integer('calificativ')->nullable();
             $table->string('functie')->nullable();		
             $table->string('culoare', 10)->default('#000')->nullable();

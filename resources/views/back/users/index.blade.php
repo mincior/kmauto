@@ -56,6 +56,7 @@ $departments = @\App\Models\Department::get();
                         <th scope="col">Calificativ</th>
                         <th scope="col">Filiala</th>
                         <th scope="col">Is admin</th>
+                        <th scope="col">Is depadmin</th>
                         <th scope="col">Activ</th>
                         <th scope="col" width="4%">ID</th>
                     </tr>
@@ -272,6 +273,19 @@ $departments = @\App\Models\Department::get();
                     {
                         data: 'is_admin',
                         name: 'is_admin',
+                        searchable: false,
+                        className: "text-center no-select",
+                        render: function(data, type, row, meta) {
+                            if (data == 1) {
+                                return 'Da&nbsp;';
+                            } else {
+                                return '';
+                            }
+                        },
+                    },
+                    {
+                        data: 'is_depadmin',
+                        name: 'is_depadmin',
                         searchable: false,
                         className: "text-center no-select",
                         render: function(data, type, row, meta) {

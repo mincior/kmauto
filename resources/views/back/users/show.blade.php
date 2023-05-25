@@ -104,6 +104,14 @@
                                 value="{{ $user->is_admin == 1 ? 'Da':'Nu' }} ">
                         </div>
                     </div>
+                    <div class="row mb-2">
+                        <label for="is_depadmin" class="col-md-3 col-form-label">Este sef de filiala:</label>
+
+                        <div class="col-md-3">
+                            <input id="activ" name="is_depadmin" type="text" readonly class="form-control-plaintext"
+                                value="{{ $user->is_depadmin == 1 ? 'Da':'Nu' }} ">
+                        </div>
+                    </div>
 
                 </div>
             </div>

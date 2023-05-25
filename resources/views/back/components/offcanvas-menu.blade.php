@@ -21,6 +21,7 @@
         </ul>
     </li>
         {{-- craft insert link placeholder --}}
+		<li><a  href="{{ route('back.logs.index') }}" style="color:beige;">Log</a></li>
 		<li><a  href="{{ route('back.car-asigs.index') }}" style="color:beige;">CarAsig</a></li>
 
 

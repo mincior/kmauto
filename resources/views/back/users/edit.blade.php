@@ -192,6 +192,22 @@
                                 </select>
                             </div>
                         </div>
+
+                        <div class="row mb-2">
+                            <label for="is_depadmin" class="col-md-2 col-form-label">Este sef de filiala :</label>
+
+                            <div class="col-md-3">
+                                <select name="is_depadmin" id="is_depadmin_select" class="form-select">
+                                    <option value="">Alege ...</option>
+                                    <option
+                                        {{ (old('is_depadmin') ? old('is_depadmin') == '1' : $user->is_depadmin == 1) ? 'selected' : '' }}
+                                        value="1">Da</option>
+                                    <option
+                                        {{ (old('is_depadmin') ? old('is_depadmin') == '0' : $user->is_depadmin == 0) ? 'selected' : '' }}
+                                        value="0">Nu</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
 
 

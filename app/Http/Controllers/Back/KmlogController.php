@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Back;
 use DateTime;
 use Exception;
 use DateTimeZone;
+use Carbon\Carbon;
 use App\Models\Car;
 use App\Models\Stat;
 use App\Models\Type;
@@ -76,7 +77,10 @@ class KmlogController extends Controller
             return DataTables::of($kmlogs)
                 ->addColumn('DT_RowId', function ($row) {
                     return $row->id;
-                })->toJson();
+                })
+                ->editColumn('created_at', function($data){ $formatedDate = Carbon::createFromFormat('Y-m-d H:i:s', $data->created_at)->format('Y-m-d H:i:s'); return $formatedDate; })
+                ->editColumn('updated_at', function($data){ $formatedDate = Carbon::createFromFormat('Y-m-d H:i:s', $data->created_at)->format('Y-m-d H:i:s'); return $formatedDate; })
+                ->toJson();
         }
 
         return view('back.kmlogs.index');
@@ -176,15 +180,10 @@ class KmlogController extends Controller
     public function store(KmlogStoreOrUpdateRequest $request)
     {
 //varianta noua cu requestul transmis prin parametru care nu functioneaza
-        $datetime = new DateTime();
-        $timezone = new DateTimeZone('Europe/Bucharest');
-        $datetime->setTimezone($timezone);
         $selected_interval_id = \App\MyHelpers\AppHelper::getSelectedInterval()->id;
 
         $data = $request->all();
         $data['interval_id'] =  \App\MyHelpers\AppHelper::getSelectedInterval()->id;
-        $data['created_at'] = $datetime->format('y-m-d H:i:s');
-        $data['updated_at'] = $datetime->format('y-m-d H:i:s');
 
         // $department = Department::where('id', $data['department_id'])->first()->name;
         $user = User::where('id', $data['user_id'])->first()->name;
@@ -306,15 +305,9 @@ class KmlogController extends Controller
     public function update(KmlogStoreOrUpdateRequest $request, Kmlog $kmlog)
     {
 
-        $datetime = new DateTime();
-        $timezone = new DateTimeZone('Europe/Bucharest');
-        $datetime->setTimezone($timezone);
-        //aici intervalul vine din Kmlog->interval_id si nu din tabelul settings
         $selected_interval_id = \App\MyHelpers\AppHelper::getSelectedInterval($kmlog->interval_id)->id;
         $data = $request->all();
-
         $data['interval_id'] =  $selected_interval_id;
-        $data['updated_at'] = $datetime->format('y-m-d H:i:s');
         $user = User::where('id', $data['user_id'])->first()->name;
         $car = Car::where('id', $data['car_id'])->first()->numar;
         $interval = Interval::where('id', $selected_interval_id)->first()->interval;
