@@ -53,13 +53,13 @@
 							</div>
 						</div>
 						<div class="row mb-2">
-							<label for="timestamps" class="col-md-2 col-form-label">Timestamps :</label>
+							<label for="data" class="col-md-2 col-form-label">Data :</label>
 
 							<div class="col-md-4">
-								<input autocomplete="on" id="timestamps" name="timestamps" type="text"
-								class="form-control @error('timestamps') is-invalid @enderror" value="{{ old('timestamps') }}">
+								<input autocomplete="on" id="data" name="data" type="text"
+								class="form-control @error('data') is-invalid @enderror" value="{{ old('data') }}">
 
-								@error('timestamps')
+								@error('data')
 								<span class="invalid-feedback" role="alert">{{ $message }}</span>
 								@enderror
 							</div>

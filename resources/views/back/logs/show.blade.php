@@ -41,11 +41,11 @@
 							</div>
 						</div>
 						<div class="row mb-2">
-							<label for="timestamps" class="col-md-2 col-form-label">Timestamps :</label>
+							<label for="data" class="col-md-2 col-form-label">Data :</label>
 
 							<div class="col-md-8">
-								<input id="timestamps" name="timestamps" type="text" readonly class="form-control-plaintext"
-									value="{{ $log->timestamps }}">
+								<input id="data" name="data" type="text" readonly class="form-control-plaintext"
+									value="{{ $log->data }}">
 							</div>
 						</div>
 

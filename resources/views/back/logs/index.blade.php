@@ -31,6 +31,7 @@
 							 <th scope="col"> Descriere</th>
 							 <th scope="col"> Data crearii</th>
 							 <th scope="col"> Data modificarii</th>
+							 <th scope="col"> Data</th>
 							 <th scope="col"> User Name</th>
 
                         <th scope="col"> Id</th>
@@ -187,6 +188,10 @@
 					{
 						 data: 'updated_at',
 						 name: 'updated_at',
+					},
+					{
+						 data: 'data',
+						 name: 'data',
 					},
 					{
 						 data: 'user_id',

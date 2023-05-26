@@ -44,6 +44,7 @@ class AppHelper
 		return  $array_ids;
 	}
 
+
 	/**
 	 * Create a thumbnail of specified size
 	 *

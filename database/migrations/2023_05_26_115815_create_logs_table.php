@@ -21,6 +21,7 @@ class CreateLogsTable extends Migration
 			$table->string('operatie');
 			$table->string('descriere');
 			$table->timestamps();
+			$table->json('data');
 			$table->bigInteger('user_id')->unsigned()->index()->nullable();
 			$table->foreign('user_id')->references('id')->on('users');		
 		//End craft placeholder #2

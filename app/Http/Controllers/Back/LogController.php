@@ -23,20 +23,6 @@ class LogController extends Controller
                 ->editColumn('created_at', function($data){ $formatedDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $data->created_at)->format('Y-m-d H:i:s'); return $formatedDate; })
 				->editColumn('updated_at', function($data){ $formatedDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $data->updated_at)->format('Y-m-d H:i:s'); return $formatedDate; })
 
-                // ->editColumn('address_street', function ($row) {return $row->address;})
-                // ->editColumn('address_place', function ($row) {return $row->place;})
-                // ->filterColumn('log_last_name', function ($query, $keyword) {
-                //     $sql = "CONCAT(logs.log_last_name, ' ', logs.log_first_name) like ?";
-                //     $query->whereRaw($sql, ["%{$keyword}%"]);
-                // })
-                // ->filterColumn('address_street', function ($query, $keyword) {
-                //     $sql = "CONCAT(logs.address_street, ' ', logs.address_number) like ?";
-                //     $query->whereRaw($sql, ["%{$keyword}%"]);
-                // })
-                // ->filterColumn('address_place', function ($query, $keyword) {
-                //     $sql = "CONCAT(logs.address_postal_code, ' ', logs.address_place) like ?";
-                //     $query->whereRaw($sql, ["%{$keyword}%"]);
-                // })
                 ->toJson();
         }
 

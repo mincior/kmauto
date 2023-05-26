@@ -7,14 +7,13 @@ use Exception;
 use DateTimeZone;
 use Carbon\Carbon;
 use App\Models\Car;
+use App\Models\Log;
 use App\Models\Stat;
 use App\Models\Type;
 use App\Models\User;
 use App\Models\Kmlog;
 use App\Models\Month;
 use App\Models\CarDep;
-use DateTimeImmutable;
-use DateTimeInterface;
 use App\Models\Setting;
 use App\Models\UserCar;
 use App\Models\UserDep;
@@ -24,6 +23,7 @@ use App\MyHelpers\AppHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Intervention\Image\Facades\Image;
 use App\Http\Requests\KmlogStoreRequest;
 use Yajra\DataTables\Facades\DataTables;
@@ -198,6 +198,9 @@ class KmlogController extends Controller
         }
 
         $kmlog = Kmlog::create($data);
+        if($kmlog){
+            Log::create(['operatie' => 'creare', 'descriere'=> 'kmlog', 'data' => $data, 'user_id'=> Auth::user()->id]);
+        }
         $kmlog->update(['is_first' => AppHelper::isFirsRowOfInterval($kmlog->id, $kmlog->user_id, $kmlog->car_id)]);
         $notification = [
             "type" => "success",
@@ -363,6 +366,10 @@ class KmlogController extends Controller
             }
         }
         $kmlog->update($data);
+        if($kmlog){
+            Log::create(['operatie' => 'creare', 'descriere'=> 'kmlog', 'data' => json_encode($data), 'user_id'=> Auth::user()->id]);
+        }
+
         $kmlog->update(['is_first' => AppHelper::isFirsRowOfInterval($kmlog->id, $kmlog->user_id, $kmlog->car_id)]);
 
         $notification = [
