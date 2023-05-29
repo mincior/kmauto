@@ -28,17 +28,17 @@ class Log extends Model
         
     ];
 
-    public function setDataAttribute($value)
-    {
-      $data = [];
-      foreach ($value as $key=>$array_item) {
-        if (!is_null($array_item)) {
-          $data[$key] = $array_item;
-        }
-      }
+    // public function setDataAttribute($value)
+    // {
+    //   $data = [];
+    //   foreach ($value as $key=>$array_item) {
+    //     if (!is_null($array_item)) {
+    //       $data[$key] = $array_item;
+    //     }
+    //   }
   
-      $this->attributes['data'] = $data;
-    }
+    //   $this->attributes['data'] = $data;
+    // }
       
 
 }

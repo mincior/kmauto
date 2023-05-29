@@ -199,7 +199,7 @@ class KmlogController extends Controller
 
         $kmlog = Kmlog::create($data);
         if($kmlog){
-            Log::create(['operatie' => 'creare', 'descriere'=> 'kmlog', 'data' => $data, 'user_id'=> Auth::user()->id]);
+            Log::create(['operatie' => 'creare', 'descriere'=> 'kmlog', 'data' => json_encode($data, JSON_PRETTY_PRINT), 'user_id'=> Auth::user()->id]);
         }
         $kmlog->update(['is_first' => AppHelper::isFirsRowOfInterval($kmlog->id, $kmlog->user_id, $kmlog->car_id)]);
         $notification = [
@@ -367,7 +367,7 @@ class KmlogController extends Controller
         }
         $kmlog->update($data);
         if($kmlog){
-            Log::create(['operatie' => 'creare', 'descriere'=> 'kmlog', 'data' => json_encode($data), 'user_id'=> Auth::user()->id]);
+            Log::create(['operatie' => 'creare', 'descriere'=> 'kmlog', 'data' => json_encode($data, JSON_PRETTY_PRINT), 'user_id'=> Auth::user()->id]);
         }
 
         $kmlog->update(['is_first' => AppHelper::isFirsRowOfInterval($kmlog->id, $kmlog->user_id, $kmlog->car_id)]);
