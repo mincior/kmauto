@@ -84,7 +84,7 @@
                         <div class="row mb-2">
                             <label for="picture" class="col-md-2 col-form-label">Poza bord</label>
                             <div class="col-md-8">
-                                <img id="my_picture" class="img-fluid">
+                                <img id="my_picture" class="img-fluid" src="/storage/pictures{{ $kmlog->picture }}">
                             </div>
 
                             <div class="input-group  custom-file-button col-md-3">

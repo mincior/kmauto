@@ -42,7 +42,7 @@
 						</div>
 						<div class="row mb-2">
 							<label for="data" class="col-md-2 col-form-label">Data :</label>
-								<textarea id="data" name="data"  rows="13" cols="120">{{ str_replace(',','',str_replace('}','',str_replace('{', '', str_replace('"', '',$log->data))))}}</textarea>
+								<textarea id="data" name="data"  rows="20" cols="120">{{ str_replace(',','',str_replace('}','',str_replace('{', '', str_replace('"', '',$log->data))))}}</textarea>
 
 							<div class="col-md-8">
 							</div>

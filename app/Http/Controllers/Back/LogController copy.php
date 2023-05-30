@@ -22,7 +22,7 @@ class LogController extends Controller
     public function index(Request $request) 
     {
         if ($request->ajax()) {
-            $logs = Log::with('user')->select(sprintf('%s.*', (new Log)->getTable()));
+            $logs = Log::with('user')->orderby('id', 'desc')->select(sprintf('%s.*', (new Log)->getTable()));
             return DataTables::of($logs)
                 ->addColumn('DT_RowId', function ($row) {return $row->id;})
                 ->editColumn('created_at', function($data){ $formatedDate = Carbon::createFromFormat('Y-m-d H:i:s', $data->created_at)->format('Y-m-d H:i:s'); return $formatedDate; })
