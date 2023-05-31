@@ -1,12 +1,21 @@
 <?php
 //Begin craft placeholder #1
-
 use App\Http\Controllers\Back\CarAsigController;
-use App\Http\Controllers\Back\CarStatValueController;
+
+
+
+
+
+
+
+
+
+
+
 use App\Http\Controllers\Back\CarPropValueController;
 use App\Http\Controllers\Back\CarAsigValueController;
 use App\Http\Controllers\Back\CarPropController;
-use App\Http\Controllers\Back\CarStatController;
+
 use App\Http\Controllers\Back\ExpireController;
 use App\Http\Controllers\Back\RevisionController;
 use App\Http\Controllers\Back\CarsecondController;

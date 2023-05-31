@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Providers;
+use App\Models\CarAsig;use App\Observers\CarAsigObserver;
 
 use App\Models\Kmlog;
 use App\Observers\KmlogObserver;
@@ -22,7 +23,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Paginator::useBootstrap();
+        // class placeholder
+		CarAsig::observe(CarAsigObserver::class);
+																																						
         Kmlog::observe(KmlogObserver::class);
+        Paginator::useBootstrap();
     }
 }

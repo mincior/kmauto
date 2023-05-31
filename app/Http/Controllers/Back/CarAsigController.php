@@ -20,20 +20,7 @@ class CarAsigController extends Controller
             $carAsigs = CarAsig::with('car_asig_value', 'car_asig_interval', 'car_asig_car')->select(sprintf('%s.*', (new CarAsig)->getTable()));
             return DataTables::of($carAsigs)
                 ->addColumn('DT_RowId', function ($row) {return $row->id;})
-                // ->editColumn('address_street', function ($row) {return $row->address;})
-                // ->editColumn('address_place', function ($row) {return $row->place;})
-                // ->filterColumn('carAsig_last_name', function ($query, $keyword) {
-                //     $sql = "CONCAT(carAsigs.carAsig_last_name, ' ', carAsigs.carAsig_first_name) like ?";
-                //     $query->whereRaw($sql, ["%{$keyword}%"]);
-                // })
-                // ->filterColumn('address_street', function ($query, $keyword) {
-                //     $sql = "CONCAT(carAsigs.address_street, ' ', carAsigs.address_number) like ?";
-                //     $query->whereRaw($sql, ["%{$keyword}%"]);
-                // })
-                // ->filterColumn('address_place', function ($query, $keyword) {
-                //     $sql = "CONCAT(carAsigs.address_postal_code, ' ', carAsigs.address_place) like ?";
-                //     $query->whereRaw($sql, ["%{$keyword}%"]);
-                // })
+                //formated date placeholder
                 ->toJson();
         }
 
@@ -121,7 +108,9 @@ class CarAsigController extends Controller
 
     public function massDestroy(Request $request)
     {
-        CarAsig::whereIn('id', request('ids'))->delete();
+        foreach (CarAsig::whereIn('id', request('ids'))->get() as $delete) {
+            $delete->delete();
+         }
 
         return response()->noContent();
     }//end function massDestroy

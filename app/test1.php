@@ -4,65 +4,67 @@ namespace App\Http\Controllers\Back;
 
 use Exception;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\LogStoreRequest;
-use App\Http\Requests\LogUpdateRequest;
+use App\Http\Requests\CarAsigStoreRequest;
+use App\Http\Requests\CarAsigUpdateRequest;
 use App\Models\Country;
-use App\Models\Log;
+use App\Models\CarAsig;
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
 use Yajra\DataTables\Facades\DataTables;
 
-class LogController extends Controller
+class CarAsigController extends Controller
 {
     public function index(Request $request) 
     {
         if ($request->ajax()) {
-            $logs = Log::with('user')->select(sprintf('%s.*', (new Log)->getTable()));
-            return DataTables::of($logs)
+            $carAsigs = CarAsig::with('car_asig_value', 'car_asig_interval', 'car_asig_car')->select(sprintf('%s.*', (new CarAsig)->getTable()));
+            return DataTables::of($carAsigs)
                 ->addColumn('DT_RowId', function ($row) {return $row->id;})
-                ->editColumn('created_at', function($data){ $formatedDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $data->created_at)->format('Y-m-d H:i:s'); return $formatedDate; })
-				->editColumn('updated_at', function($data){ $formatedDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $data->updated_at)->format('Y-m-d H:i:s'); return $formatedDate; })
-
+                //formated date placeholder
                 ->toJson();
         }
 
-        return view('back.logs.index');
+        return view('back.car_asigs.index');
     }//end function index
 
     public function create()
 	{
-		$users = \App\Models\User::select('id', 'name')->orderBy('name')->get();
-		 return view('back.logs.create', compact('users')); 
+		$carAsigValues = \App\Models\CarAsigValue::select('id', 'name')->orderBy('name')->get();
+		$intervals = \App\Models\Interval::select('id', 'interval')->orderBy('interval')->get();
+		$cars = \App\Models\Car::select('id', 'numar')->orderBy('numar')->get();
+		 return view('back.car_asigs.create', compact('carAsigValues', 'intervals', 'cars')); 
 	}
 	//end function create
 
 
-    public function store(LogStoreRequest $request)
+    public function store(CarAsigStoreRequest $request)
     {
-        $log = Log::create($request->all());
+        $carAsig = CarAsig::create($request->all());
         $notification = ["type" => "success", "title" => 'Add ...', "message" => 'Item added.',];
 
-        return redirect()->route('back.logs.index')->with('notification', $notification);
+        return redirect()->route('back.car-asigs.index')->with('notification', $notification);
     }//end function store
 
-    public function show(Log $log)
+    public function show(CarAsig $carAsig)
     {
 
-        return view('back.logs.show', compact('log'));
+        return view('back.car_asigs.show', compact('carAsig'));
     }//end function show
 
-    public function edit(Log $log)
+    public function edit(CarAsig $carAsig)
 
 									{
-		$users = \App\Models\User::select('id', 'name')->orderBy('name')->get();
-		return view('back.logs.edit', compact('log', 'users')); 
+		$carAsigValues = \App\Models\CarAsigValue::select('id', 'name')->orderBy('name')->get();
+		$intervals = \App\Models\Interval::select('id', 'interval')->orderBy('interval')->get();
+		$cars = \App\Models\Car::select('id', 'numar')->orderBy('numar')->get();
+		return view('back.car_asigs.edit', compact('carAsig', 'carAsigValues', 'intervals', 'cars')); 
 	}
 
 	//end function edit
 
-    public function update(LogUpdateRequest $request, Log $log)
+    public function update(CarAsigUpdateRequest $request, CarAsig $carAsig)
     {
-        $log->update($request->all());
+        $carAsig->update($request->all());
 
         $notification = [
             "type" => "success",
@@ -70,12 +72,12 @@ class LogController extends Controller
             "message" => 'Item updated.',
         ];
 
-        return redirect()->route('back.logs.index')->with('notification', $notification);
+        return redirect()->route('back.car-asigs.index')->with('notification', $notification);
     }//end function update
 
     public function massDestroy(Request $request)
     {
-        foreach (Log::whereIn('id', request('ids'))->get() as $delete) {
+        foreach (CarAsig::whereIn('id', request('ids'))->get() as $delete) {
             $delete->delete();
          }
 
