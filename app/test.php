@@ -72,7 +72,9 @@ class LogController extends Controller
 
     public function massDestroy(Request $request)
     {
-        Log::whereIn('id', request('ids'))->delete();
+        foreach (Log::whereIn('id', request('ids'))->get() as $delete) {
+            $delete->delete();
+         }
 
         return response()->noContent();
     }//end function massDestroy

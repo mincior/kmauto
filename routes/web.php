@@ -1,6 +1,6 @@
 <?php
 //Begin craft placeholder #1
-use App\Http\Controllers\Back\LogController;
+
 use App\Http\Controllers\Back\CarAsigController;
 use App\Http\Controllers\Back\CarStatValueController;
 use App\Http\Controllers\Back\CarPropValueController;
@@ -55,12 +55,6 @@ Route::middleware('auth')->group(function () {
     // Backend routes
     Route::prefix('back')->as('back.')->group(function () {
         //Begin craft placeholder #2
-		//Log
-		Route::controller(LogController::class)->group(function () {
-			Route::delete('/logs/massDestroy', 'massDestroy')->name('logs.massDestroy');
-			Route::resource('/logs', LogController::class)->except(['destroy']);
-		});
-		/* ---------------------------------------- */
 
         //CarAsig
         Route::controller(CarAsigController::class)->group(function () {

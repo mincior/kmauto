@@ -2,8 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\Kmlog;
+use App\Observers\KmlogObserver;
 use Illuminate\Pagination\Paginator;
-use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -22,6 +23,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Paginator::useBootstrap();
-        
+        Kmlog::observe(KmlogObserver::class);
     }
 }

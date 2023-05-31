@@ -198,21 +198,8 @@ class KmlogController extends Controller
         }
 
         $kmlog = Kmlog::create($data);
-        if($kmlog){
-            if($data['car_id']){
-                $data['numar'] = Car::where('id', $data['car_id'])->first()->numar;
-            }
-            if($data['user_id']){
-                $data['name'] = User::where('id', $data['user_id'])->first()->name;
-            }
-            if($data['stat_id']){
-                $data['status'] = Stat::where('id', $data['stat_id'])->first()->name;
-            }
-            $data['interval'] = Interval::where('id', $data['interval_id'])->first()->interval;
-            $data['luna'] = Month::where('id', Interval::where('id', $data['interval_id'])->first()->month_id)->first()->anul_luna;
-            Log::create(['operatie' => 'creare', 'descriere'=> 'kmlog', 'data' => json_encode($data, JSON_PRETTY_PRINT), 'user_id'=> Auth::user()->id]);
-        }
-        $kmlog->update(['is_first' => AppHelper::isFirsRowOfInterval($kmlog->id, $kmlog->user_id, $kmlog->car_id)]);
+        $kmlog->unsetEventDispatcher();
+        $kmlog->update(['is_first' => '1']);// AppHelper::isFirsRowOfInterval($kmlog->id, $kmlog->user_id, $kmlog->car_id)]);
         $notification = [
             "type" => "success",
             "title" => 'Add ...',
@@ -376,22 +363,9 @@ class KmlogController extends Controller
                 $data['picture'] =   $image_path  . "/" . $filenametostore;
             }
         }
+        
         $kmlog->update($data);
-        if($kmlog){
-            if($data['car_id']){
-                $data['numar'] = Car::where('id', $data['car_id'])->first()->numar;
-            }
-            if($data['user_id']){
-                $data['name'] = User::where('id', $data['user_id'])->first()->name;
-            }
-            if($data['stat_id']){
-                $data['status'] = Stat::where('id', $data['stat_id'])->first()->name;
-            }
-            $data['interval'] = Interval::where('id', $data['interval_id'])->first()->interval;
-            $data['luna'] = Month::where('id', Interval::where('id', $data['interval_id'])->first()->month_id)->first()->anul_luna;
-            Log::create(['operatie' => 'creare', 'descriere'=> 'kmlog', 'data' => json_encode($data, JSON_PRETTY_PRINT), 'user_id'=> Auth::user()->id]);
-        }
-
+        $kmlog->unsetEventDispatcher();
         $kmlog->update(['is_first' => AppHelper::isFirsRowOfInterval($kmlog->id, $kmlog->user_id, $kmlog->car_id)]);
 
         $notification = [
@@ -411,17 +385,9 @@ class KmlogController extends Controller
      */
     public function massDestroy(Request $request)
     {
-        $toDelete = [];
-        foreach(request('ids') as $id){
-            $kmlog = Kmlog::where('id', $id)->get()->toArray();
-            $toDelete[] = $kmlog;
-        }
-        $delete = Kmlog::whereIn('id', request('ids'))->delete();
-        if($delete){
-            Log::create(['operatie' => 'delete', 'descriere'=> 'kmlog', 'data' => json_encode($toDelete, JSON_PRETTY_PRINT), 'user_id'=> Auth::user()->id]);
-        }
-
-
+         foreach (Kmlog::whereIn('id', request('ids'))->get() as $delete) {
+            $delete->delete();
+         }
         return response()->noContent();
     }
 }

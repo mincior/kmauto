@@ -28,4 +28,5 @@ class Kmlog extends Model
     'is_first',
   ];
 
+  
 }
