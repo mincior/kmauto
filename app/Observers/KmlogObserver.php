@@ -1,100 +1,61 @@
 <?php
 
-namespace App\Http\Controllers\Back;
+namespace App\Observers;
 
-use DateTime;
-use Exception;
-use DateTimeZone;
-use Carbon\Carbon;
+use App\Models\Car;
 use App\Models\Log;
+use App\Models\Stat;
 use App\Models\User;
-use App\Models\Country;
-use App\MyHelpers\AppHelper;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use Intervention\Image\Facades\Image;
-use App\Http\Requests\LogStoreRequest;
-use App\Http\Requests\LogUpdateRequest;
-use Yajra\DataTables\Facades\DataTables;
+use App\Models\Kmlog;
+use App\Models\Month;
+use App\Models\Interval;
+use Illuminate\Support\Facades\Auth;
 
-class LogController extends Controller
+class KmlogObserver
 {
-    public function index(Request $request) 
+    /**
+     * Handle the Kmlog "created" event.
+     */
+    public function created(Kmlog $kmlog): void
     {
-        if ($request->ajax()) {
-            $logs = Log::with('user')->orderby('id', 'desc')->select(sprintf('%s.*', (new Log)->getTable()));
-            return DataTables::of($logs)
-                ->addColumn('DT_RowId', function ($row) {return $row->id;})
-                ->editColumn('created_at', function($data){ $formatedDate = Carbon::createFromFormat('Y-m-d H:i:s', $data->created_at)->format('Y-m-d H:i:s'); return $formatedDate; })
-                ->editColumn('updated_at', function($data){ $formatedDate = Carbon::createFromFormat('Y-m-d H:i:s', $data->updated_at)->format('Y-m-d H:i:s'); return $formatedDate; })
-                // ->editColumn('address_street', function ($row) {return $row->address;})
-                // ->editColumn('address_place', function ($row) {return $row->place;})
-                // ->filterColumn('log_last_name', function ($query, $keyword) {
-                //     $sql = "CONCAT(logs.log_last_name, ' ', logs.log_first_name) like ?";
-                //     $query->whereRaw($sql, ["%{$keyword}%"]);
-                // })
-                // ->filterColumn('address_street', function ($query, $keyword) {
-                //     $sql = "CONCAT(logs.address_street, ' ', logs.address_number) like ?";
-                //     $query->whereRaw($sql, ["%{$keyword}%"]);
-                // })
-                // ->filterColumn('address_place', function ($query, $keyword) {
-                //     $sql = "CONCAT(logs.address_postal_code, ' ', logs.address_place) like ?";
-                //     $query->whereRaw($sql, ["%{$keyword}%"]);
-                // })
-                ->toJson();
-        }
-
-        return view('back.logs.index');
-    }//end function index
-
-    public function create()
-    {
-        $users = \App\Models\User::select('id', 'name')->orderBy('name')->get();
-         return view('back.logs.create', compact('users')); 
-    }
-    //end function create
-
-
-    public function store(LogStoreRequest $request)
-    {
-        $log = Log::create( $request->all() );
-        $notification = ["type" => "success", "title" => 'Add ...', "message" => 'Item added.',];
-
-        return redirect()->route('back.logs.index')->with('notification', $notification);
-    }//end function store
-
-    public function show(Log $log)
-    {
-
-        return view('back.logs.show', compact('log'));
-    }//end function show
-
-    public function edit(Log $log)
-
-                                    {
-        $users = \App\Models\User::select('id', 'name')->orderBy('name')->get();
-        return view('back.logs.edit', compact('log', 'users')); 
+            $data = $kmlog->toArray();
+            if (array_key_exists('is_first', $data) == false){
+                @$data['numar'] = Car::where('id', $data['car_id'])->first()->numar;
+                @$data['name'] = User::where('id', $data['user_id'])->first()->name;
+                @$data['status'] = Stat::where('id', $data['stat_id'])->first()->name;
+                @$data['interval'] = Interval::where('id', $data['interval_id'])->first()->interval;
+                @$data['luna'] = Month::where('id', Interval::where('id', $data['interval_id'])->first()->month_id)->first()->anul_luna;
+                Log::create(['operatie' => 'creare', 'descriere'=> 'kmlog', 'data' => json_encode($data, JSON_PRETTY_PRINT), 'user_id'=> Auth::user()->id]);
+            }
     }
 
-    //end function edit
-
-    public function update(LogUpdateRequest $request, Log $log)
+    /**
+     * Handle the Kmlog "updated" event.
+     */
+    public function updated(Kmlog $kmlog): void
     {
-        $log->update($request->all());
+            $data = $kmlog->toArray();
+            @$data['numar'] = Car::where('id', $data['car_id'])->first()->numar;
+            @$data['name'] = User::where('id', $data['user_id'])->first()->name;
+            @$data['status'] = Stat::where('id', $data['stat_id'])->first()->name;
+            @$data['interval'] = Interval::where('id', $data['interval_id'])->first()->interval;
+            @$data['luna'] = Month::where('id', Interval::where('id', $data['interval_id'])->first()->month_id)->first()->anul_luna;
+            Log::create(['operatie' => 'modificare', 'descriere'=> 'kmlog', 'data' => json_encode($data, JSON_PRETTY_PRINT), 'user_id'=> Auth::user()->id]);
+    }
 
-        $notification = [
-            "type" => "success",
-            "title" => 'Edit ...',
-            "message" => 'Item updated.',
-        ];
-
-        return redirect()->route('back.logs.index')->with('notification', $notification);
-    }//end function update
-
-    public function massDestroy(Request $request)
+    /**
+     * Handle the Kmlog "deleted" event.
+     */
+    public function deleted(Kmlog $kmlog): void
     {
-        Log::whereIn('id', request('ids'))->delete();
+            $data = $kmlog->toArray();
+            @$data['numar'] = Car::where('id', $data['car_id'])->first()->numar;
+            @$data['name'] = User::where('id', $data['user_id'])->first()->name;
+            @$data['status'] = Stat::where('id', $data['stat_id'])->first()->name;
+            @$data['interval'] = Interval::where('id', $data['interval_id'])->first()->interval;
+            @$data['luna'] = Month::where('id', Interval::where('id', $data['interval_id'])->first()->month_id)->first()->anul_luna;
+            Log::create(['operatie' => 'stergere', 'descriere'=> 'kmlog', 'data' => json_encode($data, JSON_PRETTY_PRINT), 'user_id'=> Auth::user()->id]);
+        
+    }
 
-        return response()->noContent();
-    }//end function massDestroy
 }

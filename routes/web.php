@@ -1,44 +1,45 @@
 <?php
 //Begin craft placeholder #1
-use App\Http\Controllers\Back\CarAsigController;
-
-
-
-
-
-
-
-
-
-
-
-use App\Http\Controllers\Back\CarPropValueController;
-use App\Http\Controllers\Back\CarAsigValueController;
-use App\Http\Controllers\Back\CarPropController;
-
-use App\Http\Controllers\Back\ExpireController;
-use App\Http\Controllers\Back\RevisionController;
-use App\Http\Controllers\Back\CarsecondController;
-
 use Illuminate\Support\Facades\Auth;
+
+
+
+
+
+
+
+
+
+
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ImageController;
+
 use App\Http\Controllers\Back\CarController;
+use App\Http\Controllers\Back\LogController;
 use App\Http\Controllers\Back\FuelController;
+
 use App\Http\Controllers\Back\StatController;
 use App\Http\Controllers\Back\TypeController;
 use App\Http\Controllers\Back\UserController;
 use App\Http\Controllers\Back\BrandController;
 use App\Http\Controllers\Back\KmlogController;
 use App\Http\Controllers\Back\MonthController;
+use App\Http\Controllers\Back\ExpireController;
 use App\Http\Controllers\Back\ImportController;
+use App\Http\Controllers\Back\CarAsigController;
+use App\Http\Controllers\Back\CarPropController;
 use App\Http\Controllers\Back\GeneralController;
 use App\Http\Controllers\Back\CustomerController;
 use App\Http\Controllers\Back\IntervalController;
+use App\Http\Controllers\Back\RevisionController;
+use App\Http\Controllers\Back\CarsecondController;
 use App\Http\Controllers\Back\DeveloperController;
 use App\Http\Controllers\Back\FuelPriceController;
 use App\Http\Controllers\Back\DepartmentController;
+use App\Http\Controllers\Back\CarAsigValueController;
+use App\Http\Controllers\Back\CarPropValueController;
 use App\Http\Controllers\Back\CarConsumptionController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -64,6 +65,12 @@ Route::middleware('auth')->group(function () {
     // Backend routes
     Route::prefix('back')->as('back.')->group(function () {
         //Begin craft placeholder #2
+		//Log
+		Route::controller(LogController::class)->group(function () {
+			Route::delete('/logs/massDestroy', 'massDestroy')->name('logs.massDestroy');
+			Route::resource('/logs', LogController::class)->except(['destroy']);
+		});
+		/* ---------------------------------------- */
 
         //CarAsig
         Route::controller(CarAsigController::class)->group(function () {

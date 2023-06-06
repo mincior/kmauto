@@ -21,59 +21,14 @@
         </ul>
     </li>
         {{-- craft insert link placeholder --}}
-		<li><a  href="{{ route('back.car-asigs.index') }}" style="color:beige;">CarAsig</a></li>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        <li><a  href="{{ route('back.logs.index') }}" style="color:beige;">Log</a></li>
+        		<li><a  href="{{ route('back.car-asigs.index') }}" style="color:beige;">CarAsig</a></li>
 		<li><a  href="{{ route('back.car-prop-values.index') }}" style="color:beige;">CarPropValue</a></li>
 		<li><a  href="{{ route('back.car-asig-values.index') }}" style="color:beige;">CarAsigValue</a></li>
-
-
-
 		<li><a  href="{{ route('back.car-props.index') }}" style="color:beige;">CarProp</a></li>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 		<li><a  href="{{ route('back.expires.index') }}" style="color:beige;">Expire</a></li>
-
 		<li><a  href="{{ route('back.revisions.index') }}" style="color:beige;">Revision</a></li>
 		<li><a  href="{{ route('back.carseconds.index') }}" style="color:beige;">Carsecond</a></li>
-
-
-
-
-
-
-
-
         <li><a  href="{{ route('view-upload-form') }}" style="color:beige;">Incarca tabele din excel</a></li>
         <li><a  href="{{ route('back.departments.index') }}" style="color:beige;">Filiale</a></li>
         <li><a  href="{{ route('back.months.index') }}" style="color:beige;">Luni</a></li>

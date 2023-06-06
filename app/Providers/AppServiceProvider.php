@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Observers\CarAsigObserver;
+use App\Observers\KmlogObserver;
 
 use App\Models\Kmlog;
 use App\Models\CarAsig;
