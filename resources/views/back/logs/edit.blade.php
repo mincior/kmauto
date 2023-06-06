@@ -9,16 +9,16 @@
     /*  Php header placeholder */
     ?>
     
-    <form id="myForm" method="POST" action="{{ route('back.logs.store') }}" enctype="multipart/form-data"
+    <form id="myForm" method="POST" action="{{ route('back.logs.update', [$log->id]) }}" enctype="multipart/form-data"
         onsubmit="return validateForm()">
         @csrf
-        
+        @method('PUT')
         <div class="container mt-4">
             <div class="col-12">
                 <div class="card mb-3">
                     <div class="card-header">
                         <div class="row">
-                            <div id="myToolTip" class="col">Log adaugare</div>
+                            <div id="myToolTip" class="col">Log modificare</div>
 
                             <div class="col fs-5 text-end">
                                 <img src="{{ asset('img/icons/check.png') }}" />
@@ -28,42 +28,45 @@
 
                     <div class="card-body">
                         
-						<div class="row mb-2">
-							<label for="operatie" class="col-md-2 col-form-label">Operatie :</label>
+							<div class="row mb-2">
+								<label for="operatie" class="col-md-2 col-form-label">Operatie :</label>
 
-							<div class="col-md-4">
-								<input autocomplete="on" id="operatie" name="operatie" type="text"
-								class="form-control @error('operatie') is-invalid @enderror" value="{{ old('operatie') }}">
+								<div class="col-md-4">
+									<input autocomplete="on" id="operatie" name="operatie" type="text" 
+										class="form-control @error('operatie') is-invalid @enderror" 
+										value="{{ old('operatie') ? old('operatie') : $log->operatie }}" >
 
-								@error('operatie')
-								<span class="invalid-feedback" role="alert">{{ $message }}</span>
-								@enderror
+									@error('operatie')
+										<span class="invalid-feedback" role="alert">{{ $message }}</span>
+									@enderror
+								</div>
 							</div>
-						</div>
-						<div class="row mb-2">
-							<label for="descriere" class="col-md-2 col-form-label">Descriere :</label>
+							<div class="row mb-2">
+								<label for="descriere" class="col-md-2 col-form-label">Descriere :</label>
 
-							<div class="col-md-4">
-								<input autocomplete="on" id="descriere" name="descriere" type="text"
-								class="form-control @error('descriere') is-invalid @enderror" value="{{ old('descriere') }}">
+								<div class="col-md-4">
+									<input autocomplete="on" id="descriere" name="descriere" type="text" 
+										class="form-control @error('descriere') is-invalid @enderror" 
+										value="{{ old('descriere') ? old('descriere') : $log->descriere }}" >
 
-								@error('descriere')
-								<span class="invalid-feedback" role="alert">{{ $message }}</span>
-								@enderror
+									@error('descriere')
+										<span class="invalid-feedback" role="alert">{{ $message }}</span>
+									@enderror
+								</div>
 							</div>
-						</div>
-						<div class="row mb-2">
-							<label for="data" class="col-md-2 col-form-label">Data :</label>
+							<div class="row mb-2">
+								<label for="data" class="col-md-2 col-form-label">Data :</label>
 
-							<div class="col-md-4">
-								<input autocomplete="on" id="data" name="data" type="text"
-								class="form-control @error('data') is-invalid @enderror" value="{{ old('data') }}">
+								<div class="col-md-4">
+									<input autocomplete="on" id="data" name="data" type="text" 
+										class="form-control @error('data') is-invalid @enderror" 
+										value="{{ old('data') ? old('data') : $log->data }}" >
 
-								@error('data')
-								<span class="invalid-feedback" role="alert">{{ $message }}</span>
-								@enderror
+									@error('data')
+										<span class="invalid-feedback" role="alert">{{ $message }}</span>
+									@enderror
+								</div>
 							</div>
-						</div>
 						<div class="row mb-2">
 							<label for="user" class="col-md-2 col-form-label">User name :</label>
 
@@ -71,11 +74,11 @@
 								<select name="user_id" id="users_select" class="form-select">
 									<option value="0">Alege ...</option>
 									<@foreach ($users as $user)
-										<option {{ old('user') ==  $user->id ? "selected" : "" }}  value="{{ $user->id }}">{{ $user->name }}</option>
+										<option {{ (old('user') ? (old('user') == $user->id) : ($log->user_id == $user->id)) ? "selected" : "" }} value="{{ $user->id }}">{{ $user->name }}</option>
 									<@endforeach
 								</select>
 								@error('user')
-								<span class="invalid-feedback" role="alert">{{ $message }}</span>
+									<span class="invalid-feedback" role="alert">{{ $message }}</span>
 								@enderror
 							</div>
 						</div>
