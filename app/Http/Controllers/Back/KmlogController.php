@@ -199,7 +199,7 @@ class KmlogController extends Controller
 
         $kmlog = Kmlog::create($data);
         $kmlog->unsetEventDispatcher();
-        $kmlog->update(['is_first' => '1']);// AppHelper::isFirsRowOfInterval($kmlog->id, $kmlog->user_id, $kmlog->car_id)]);
+        $kmlog->update(['is_first' => AppHelper::isFirsRowOfInterval($kmlog->id, $kmlog->user_id, $kmlog->car_id)]);
         $notification = [
             "type" => "success",
             "title" => 'Add ...',
@@ -366,6 +366,7 @@ class KmlogController extends Controller
         
         $kmlog->update($data);
         $kmlog->unsetEventDispatcher();
+        $kmlog->unsetEventDispatcher();
         $kmlog->update(['is_first' => AppHelper::isFirsRowOfInterval($kmlog->id, $kmlog->user_id, $kmlog->car_id)]);
 
         $notification = [
@@ -385,9 +386,10 @@ class KmlogController extends Controller
      */
     public function massDestroy(Request $request)
     {
-         foreach (Kmlog::whereIn('id', request('ids'))->get() as $delete) {
+        foreach (Kmlog::whereIn('id', request('ids'))->get() as $delete) {
             $delete->delete();
          }
+
         return response()->noContent();
     }
 }

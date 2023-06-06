@@ -1,10 +1,11 @@
 <?php
 
 namespace App\Providers;
-use App\Models\CarAsig;use App\Observers\CarAsigObserver;
+
+use App\Observers\CarAsigObserver;
 
 use App\Models\Kmlog;
-use App\Observers\KmlogObserver;
+use App\Models\CarAsig;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 

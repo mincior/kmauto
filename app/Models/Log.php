@@ -15,7 +15,12 @@ class Log extends Model
      */
     protected $fillable = [
         //Begin craft placeholder #1
-        //End craft placeholder #1
+        'operatie', 
+        'descriere', 
+        'timestamps', 
+        'data', 
+        'user_id', 
+		//End craft placeholder #1
         
     ];
     
