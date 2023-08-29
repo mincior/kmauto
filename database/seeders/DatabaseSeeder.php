@@ -36,7 +36,7 @@ class DatabaseSeeder extends Seeder
         $this->call(CarsTableSeeder::class);
         $this->call(RevisionsTableSeeder::class);
         $this->call(CarAsigValuesTableSeeder::class);
-        $this->call(CarStatValuesTableSeeder::class);
+        //$this->call(CarStatValuesTableSeeder::class);
         $this->call(CarDepsTableSeeder::class);
         $this->call(FramesTableSeeder::class);
         $this->call(CarsecondsTableSeeder::class);
@@ -54,6 +54,6 @@ class DatabaseSeeder extends Seeder
         /* database table seeder placeholder */
 		$this->call(CarPropsTableSeeder::class);
         $this->call(CarAsigsTableSeeder::class);
-        $this->call(CarStatsTableSeeder::class);
+        //$this->call(CarStatsTableSeeder::class);
     }
 }
