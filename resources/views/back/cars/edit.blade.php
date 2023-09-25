@@ -72,7 +72,7 @@
                         <div class="col-md-4">
                             <select name="user_id" id="user_select" class="form-select my-select2">
                                 <option value="0">Choose ...</option>
-                                @if (old('department_id')){
+                                @if (old('user_id')){
                                     @foreach ($old_users as $user)
                                         <option style="color: {{$user->culoare}} " data-color=" {{$user->culoare}} " {{ old('user_id') == $user->id? "selected" : "" }}  value="{{ $user->id }}">{{ $user->name }}</option>
                                     @endforeach

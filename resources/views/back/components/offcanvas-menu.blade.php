@@ -16,7 +16,6 @@
         </a>
         <ul class="dropdown-menu" aria-labelledby="offcanvasNavbarDropdown">
             <li><a  href="{{ route('back.brands.index') }}" style="color:rgb(22, 22, 11);">Masini - marca</a></li>
-            <li><a  href="{{ route('back.types.index') }}" style="color:rgb(22, 22, 11);">Masini - model</a></li>
             <hr class="narrow">
         </ul>
     </li>
